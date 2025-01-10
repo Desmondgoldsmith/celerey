@@ -1,11 +1,11 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Home, MoreHorizontal, TrendingUp } from "lucide-react";
+import { ApexOptions } from "apexcharts";
+import { ChartType } from "../../types";
 
 interface RiskAllocationProps {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  Chart: any;
+  Chart: ChartType;
 }
 
 export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
@@ -14,6 +14,39 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
     { label: "Medium", value: 49, color: "#FFA726" },
     { label: "High", value: 17, color: "#EF5350" },
   ];
+
+  const getChartOptions = (color: string): ApexOptions => ({
+    chart: {
+      type: "radialBar",
+      sparkline: {
+        enabled: true,
+      },
+    },
+    colors: [color],
+    plotOptions: {
+      radialBar: {
+        hollow: {
+          size: "55%",
+        },
+        track: {
+          background: "#f5f5f5",
+        },
+        dataLabels: {
+          name: {
+            show: false,
+          },
+          value: {
+            show: true,
+            fontSize: "14px",
+            fontFamily: "Helvetica",
+            formatter: function (val: number) {
+              return `${val}%`;
+            },
+          },
+        },
+      },
+    },
+  });
 
   return (
     <Card className="p-6">
@@ -30,28 +63,7 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
               }
             >
               <Chart
-                options={{
-                  chart: {
-                    type: "radialBar",
-                    sparkline: { enabled: true },
-                  },
-                  colors: [item.color],
-                  plotOptions: {
-                    radialBar: {
-                      hollow: { size: "55%" },
-                      track: { background: "#f5f5f5" },
-                      dataLabels: {
-                        name: { show: false },
-                        value: {
-                          show: true,
-                          fontSize: "14px",
-                          fontFamily: "Helvetica",
-                          formatter: (val: number) => `${val}%`,
-                        },
-                      },
-                    },
-                  },
-                }}
+                options={getChartOptions(item.color)}
                 series={[item.value]}
                 type="radialBar"
                 height={100}
@@ -64,7 +76,7 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
           </div>
         ))}
       </div>
-      <div className="border-t border-[#AAAAAA]  pb-2">
+      <div className="border-t border-[#AAAAAA] pb-2">
         <div className="flex items-center py-3 border-b pt-4 border-[#AAAAAA]">
           <Home className="h-5 w-5 text-gray-400 mr-3" />
           <span className="text-gray-700">Real Estate</span>

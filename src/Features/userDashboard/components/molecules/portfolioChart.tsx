@@ -1,13 +1,11 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal } from "lucide-react";
-
-export type TimeframeKey = "1D" | "1W" | "1M" | "3M" | "1Y";
+import { ApexOptions } from "apexcharts";
+import { ChartType, TimeframeKey } from "../../types";
 
 interface PortfolioChartProps {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  Chart: any;
+  Chart: ChartType;
   timeframe: TimeframeKey;
   onTimeframeChange: (timeframe: TimeframeKey) => void;
 }
@@ -17,11 +15,15 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
   timeframe,
   onTimeframeChange,
 }) => {
-  const chartOptions = {
+  const chartOptions: ApexOptions = {
     chart: {
       type: "area",
-      toolbar: { show: false },
-      zoom: { enabled: false },
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
       height: 600,
     },
     colors: ["#6B4EFF"],
@@ -34,19 +36,30 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
         stops: [0, 100],
       },
     },
-    stroke: { curve: "smooth", width: 2 },
-    dataLabels: { enabled: false },
+    stroke: {
+      curve: "smooth",
+      width: 2,
+    },
+    dataLabels: {
+      enabled: false,
+    },
     xaxis: {
       type: "datetime",
       labels: {
-        style: { fontFamily: "Helvetica" },
+        style: {
+          fontFamily: "Helvetica",
+        },
         format: "dd MMM",
       },
     },
     yaxis: {
       labels: {
-        formatter: (value: number) => `$${value.toLocaleString()}`,
-        style: { fontFamily: "Helvetica" },
+        formatter: function (value: number) {
+          return `$${value.toLocaleString()}`;
+        },
+        style: {
+          fontFamily: "Helvetica",
+        },
       },
     },
     grid: {
@@ -55,21 +68,29 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
     },
   };
 
-  // Sample data generation
+  // Modified to return the correct series type
   const generateData = () => {
-    const data = [];
+    const data: [number, number][] = [];
     const date = new Date();
     for (let i = 30; i >= 0; i--) {
-      data.push({
-        x: date.setDate(date.getDate() - 1),
-        y: Math.floor(Math.random() * (120000 - 90000) + 90000),
-      });
+      data.push([
+        date.setDate(date.getDate() - 1),
+        Math.floor(Math.random() * (120000 - 90000) + 90000),
+      ]);
     }
     return data;
   };
 
+  const series = [
+    {
+      name: "Portfolio Value",
+      data: generateData(),
+    },
+  ];
+
   return (
     <Card className="bg-white pt-5 pb-10">
+      {/* Header section */}
       <div className="p-6 border-b border-[#AAAAAA]">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-cirka text-navy">
@@ -79,21 +100,23 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
         </div>
       </div>
 
+      {/* Chart section */}
       <div className="p-6">
         <Chart
           options={chartOptions}
-          series={[{ name: "Portfolio Value", data: generateData() }]}
+          series={series}
           type="area"
           height={280}
         />
       </div>
 
+      {/* Timeframe buttons */}
       <div className="border-t border-[#AAAAAA]">
         <div className="flex justify-between px-6 py-4">
-          {["1D", "1W", "1M", "3M", "1Y"].map((period) => (
+          {(["1D", "1W", "1M", "3M", "1Y"] as TimeframeKey[]).map((period) => (
             <button
               key={period}
-              onClick={() => onTimeframeChange(period as TimeframeKey)}
+              onClick={() => onTimeframeChange(period)}
               className={`px-4 py-2 rounded-full text-sm font-helvetica transition-colors
                 ${
                   timeframe === period
@@ -107,6 +130,7 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
         </div>
       </div>
 
+      {/* Performance indicator */}
       <div className="border-t border-[#AAAAAA] p-3 pt-10">
         <div className="text-sm text-gray-600">
           <span className="text-green-500 font-medium">↑ 12%</span>
