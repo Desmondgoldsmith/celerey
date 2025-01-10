@@ -68,7 +68,7 @@ export const GeographicSpread: React.FC = () => {
               },
             ],
           }}
-          onRegionTipShow={() => false} // Disable tooltips
+          onRegionTipShow={() => false}
         />
       </div>
 
