@@ -1,7 +1,16 @@
+"use client";
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal } from "lucide-react";
-import { VectorMap } from "@react-jvectormap/core";
+import dynamic from "next/dynamic";
+
+// Dynamically import VectorMap with SSR disabled
+const VectorMap = dynamic(
+  () => import("@react-jvectormap/core").then((mod) => mod.VectorMap),
+  { ssr: false }
+);
+
+// Import `worldMill` statically, as it's just data, not a React component
 import { worldMill } from "@react-jvectormap/world";
 
 export const GeographicSpread: React.FC = () => {

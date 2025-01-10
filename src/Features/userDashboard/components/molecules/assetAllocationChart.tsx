@@ -1,7 +1,14 @@
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal } from "lucide-react";
+import { ApexOptions } from "apexcharts";
+import { ChartType } from "../../types";
 
-export const AssetAllocation: React.FC<{ Chart: any }> = ({ Chart }) => {
+interface AssetAllocationProps {
+  Chart: ChartType;
+}
+
+export const AssetAllocation: React.FC<AssetAllocationProps> = ({ Chart }) => {
   const assets = [
     { name: "Cash", value: 300000, color: "#6B4EFF" },
     { name: "Credit Card", value: 200000, color: "#4CAF50" },
@@ -10,7 +17,7 @@ export const AssetAllocation: React.FC<{ Chart: any }> = ({ Chart }) => {
     { name: "Real Estate", value: 300000, color: "#FF5722" },
   ];
 
-  const chartOptions = {
+  const chartOptions: ApexOptions = {
     chart: {
       type: "bar",
       stacked: true,
@@ -39,7 +46,9 @@ export const AssetAllocation: React.FC<{ Chart: any }> = ({ Chart }) => {
     },
     yaxis: {
       labels: {
-        formatter: (value: number) => `$${(value / 1000000).toFixed(1)}m`,
+        formatter: function (val: number) {
+          return `$${(val / 1000000).toFixed(1)}m`;
+        },
         style: {
           colors: "#64748B",
           fontSize: "14px",
@@ -68,9 +77,10 @@ export const AssetAllocation: React.FC<{ Chart: any }> = ({ Chart }) => {
       floating: false,
       fontSize: "14px",
       markers: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         width: 8,
         height: 8,
-        radius: 4,
       },
       itemMargin: {
         vertical: 8,

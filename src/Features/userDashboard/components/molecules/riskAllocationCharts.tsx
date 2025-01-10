@@ -2,17 +2,10 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Home, MoreHorizontal, TrendingUp } from "lucide-react";
 import { ApexOptions } from "apexcharts";
-
-type ChartComponentProps = {
-  options: ApexOptions;
-  series: number[];
-  type: "radialBar";
-  height: number;
-  width: number;
-};
+import { ChartType } from "../../types";
 
 interface RiskAllocationProps {
-  Chart: React.ComponentType<ChartComponentProps>;
+  Chart: ChartType;
 }
 
 export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
@@ -24,7 +17,7 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
 
   const getChartOptions = (color: string): ApexOptions => ({
     chart: {
-      type: "radialBar" as const,
+      type: "radialBar",
       sparkline: {
         enabled: true,
       },

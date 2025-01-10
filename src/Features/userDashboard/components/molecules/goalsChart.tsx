@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Plus, MoreHorizontal } from "lucide-react";
+import { ChartType } from "../../types";
+import { ApexOptions } from "apexcharts";
 
 interface Goal {
   name: string;
@@ -8,9 +10,12 @@ interface Goal {
   amount: number;
   lastUpdated: string;
 }
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const Goals: React.FC<{ Chart: any }> = ({ Chart }) => {
+
+interface GoalsProps {
+  Chart: ChartType;
+}
+
+export const Goals: React.FC<GoalsProps> = ({ Chart }) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const goals: Goal[] = [
@@ -44,8 +49,6 @@ export const Goals: React.FC<{ Chart: any }> = ({ Chart }) => {
     },
   ];
 
-  const totalPairs = Math.ceil(allCards.length / 2);
-
   const renderGoalCard = (goal: Goal) => {
     if (goal.name === "add-goal") {
       return (
@@ -58,6 +61,31 @@ export const Goals: React.FC<{ Chart: any }> = ({ Chart }) => {
       );
     }
 
+    const options: ApexOptions = {
+      chart: {
+        type: "radialBar",
+        sparkline: { enabled: true },
+      },
+      colors: ["#0b026aFF"],
+      plotOptions: {
+        radialBar: {
+          hollow: { size: "55%" },
+          track: { background: "#E5E7EB" },
+          dataLabels: {
+            name: { show: false },
+            value: {
+              fontSize: "18px",
+              fontWeight: "500",
+              formatter: function (val: number) {
+                return `${val}%`;
+              },
+              color: "#1C1F33",
+            },
+          },
+        },
+      },
+    };
+
     return (
       <div className="bg-[#F5F5F5] rounded-lg p-4 w-full h-[220px]">
         <div className="flex justify-between items-center mb-2">
@@ -69,30 +97,9 @@ export const Goals: React.FC<{ Chart: any }> = ({ Chart }) => {
         </div>
 
         <div className="w-full flex justify-center items-center">
-          <div className="w-32 h-24 justify-center items-center pl-3 ">
+          <div className="w-32 h-24 justify-center items-center pl-3">
             <Chart
-              options={{
-                chart: {
-                  type: "radialBar",
-                  sparkline: { enabled: true },
-                },
-                colors: ["#0b026aFF"],
-                plotOptions: {
-                  radialBar: {
-                    hollow: { size: "55%" },
-                    track: { background: "#E5E7EB" },
-                    dataLabels: {
-                      name: { show: false },
-                      value: {
-                        fontSize: "18px",
-                        fontWeight: "500",
-                        formatter: (val: number) => `${val}%`,
-                        color: "#1C1F33",
-                      },
-                    },
-                  },
-                },
-              }}
+              options={options}
               series={[goal.progress]}
               type="radialBar"
               height={100}
@@ -112,6 +119,8 @@ export const Goals: React.FC<{ Chart: any }> = ({ Chart }) => {
       </div>
     );
   };
+
+  const totalPairs = Math.ceil(allCards.length / 2);
 
   return (
     <Card className="p-6 bg-white">

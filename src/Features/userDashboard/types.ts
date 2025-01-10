@@ -31,13 +31,6 @@ export interface ChartData {
   value: number;
 }
 
-export type TimeframeKey =
-  | "daily"
-  | "weekly"
-  | "monthly"
-  | "quarterly"
-  | "yearly";
-
 export interface PortfolioData {
   daily: ChartData[];
   weekly: ChartData[];
@@ -46,8 +39,32 @@ export interface PortfolioData {
   yearly: ChartData[];
 }
 
-export interface PortfolioChartProps {
-  data: PortfolioData;
-  Chart: any;
-  timeframe: "1D" | "1W" | "1M" | "3M" | "1Y";
+import { ApexOptions } from "apexcharts";
+
+export type TimeframeKey = "1D" | "1W" | "1M" | "3M" | "1Y";
+
+export interface ChartComponentProps {
+  options: ApexOptions;
+  series: ApexAxisChartSeries | number[];
+  type:
+    | "line"
+    | "area"
+    | "bar"
+    | "pie"
+    | "donut"
+    | "radialBar"
+    | "scatter"
+    | "bubble"
+    | "heatmap"
+    | "candlestick"
+    | "boxPlot"
+    | "radar"
+    | "polarArea"
+    | "rangeBar"
+    | "rangeArea"
+    | "treemap";
+  height?: string | number;
+  width?: string | number;
 }
+
+export type ChartType = React.ComponentType<ChartComponentProps>;

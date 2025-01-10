@@ -1,9 +1,11 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal } from "lucide-react";
+import { ChartType } from "../../types";
+import { ApexOptions } from "apexcharts";
 
 interface IncomeVsExpenditureProps {
-  Chart: any;
+  Chart: ChartType;
 }
 
 export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
@@ -14,7 +16,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
     totalLiabilities: 400000,
   };
 
-  const options = {
+  const options: ApexOptions = {
     chart: {
       type: "bar",
       stacked: true,
@@ -31,7 +33,9 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
     xaxis: {
       categories: ["Total Assets", "Total Liabilities"],
       labels: {
-        formatter: (value: number) => `$${(value / 1000000).toFixed(1)}M`,
+        formatter: function (val) {
+          return `$${(Number(val) / 1000000).toFixed(1)}M`;
+        },
       },
     },
     grid: { show: false },
