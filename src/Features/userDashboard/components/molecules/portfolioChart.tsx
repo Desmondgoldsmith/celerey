@@ -1,13 +1,22 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal } from "lucide-react";
+import { ApexOptions } from "apexcharts";
 
 export type TimeframeKey = "1D" | "1W" | "1M" | "3M" | "1Y";
 
+type ChartComponentProps = {
+  options: ApexOptions;
+  series: {
+    name: string;
+    data: { x: number; y: number }[];
+  }[];
+  type: "area";
+  height: number;
+};
+
 interface PortfolioChartProps {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  Chart: any;
+  Chart: React.ComponentType<ChartComponentProps>;
   timeframe: TimeframeKey;
   onTimeframeChange: (timeframe: TimeframeKey) => void;
 }
@@ -17,16 +26,20 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
   timeframe,
   onTimeframeChange,
 }) => {
-  const chartOptions = {
+  const chartOptions: ApexOptions = {
     chart: {
-      type: "area",
-      toolbar: { show: false },
-      zoom: { enabled: false },
+      type: "area" as const,
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
       height: 600,
     },
     colors: ["#6B4EFF"],
     fill: {
-      type: "gradient",
+      type: "gradient" as const,
       gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.45,
@@ -34,19 +47,30 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
         stops: [0, 100],
       },
     },
-    stroke: { curve: "smooth", width: 2 },
-    dataLabels: { enabled: false },
+    stroke: {
+      curve: "smooth" as const,
+      width: 2,
+    },
+    dataLabels: {
+      enabled: false,
+    },
     xaxis: {
-      type: "datetime",
+      type: "datetime" as const,
       labels: {
-        style: { fontFamily: "Helvetica" },
+        style: {
+          fontFamily: "Helvetica",
+        },
         format: "dd MMM",
       },
     },
     yaxis: {
       labels: {
-        formatter: (value: number) => `$${value.toLocaleString()}`,
-        style: { fontFamily: "Helvetica" },
+        formatter: function (value: number) {
+          return `$${value.toLocaleString()}`;
+        },
+        style: {
+          fontFamily: "Helvetica",
+        },
       },
     },
     grid: {
@@ -55,9 +79,8 @@ export const PortfolioChart: React.FC<PortfolioChartProps> = ({
     },
   };
 
-  // Sample data generation
   const generateData = () => {
-    const data = [];
+    const data: { x: number; y: number }[] = [];
     const date = new Date();
     for (let i = 30; i >= 0; i--) {
       data.push({
