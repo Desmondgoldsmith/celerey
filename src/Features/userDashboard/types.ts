@@ -68,3 +68,14 @@ export interface ChartComponentProps {
 }
 
 export type ChartType = React.ComponentType<ChartComponentProps>;
+
+export interface Advisor {
+  id: string;
+  name: string;
+  title: string;
+  bio: string;
+  imageUrl: string;
+  specialties: string[];
+  strengths: string[];
+  calendlyUrl: string;
+}
