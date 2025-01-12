@@ -6,7 +6,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Mark Speer",
     title: "Investment Advisor",
     bio: "Mark brings an innovative investment approach focused on helping clients achieve their financial goals with a background in market analysis and portfolio management.",
-    imageUrl: "/assets/advisors/mark-speer.jpg",
+    imageUrl: "/assets/mark-speer.svg",
     specialties: [
       "Investment Planning",
       "Retirement Planning",
@@ -27,7 +27,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Rory Walker",
     title: "Financial Planner",
     bio: "Rory Walker is an experienced financial planner with over a decade of helping clients achieve their financial goals. With a background in economics and a passion for personalized financial strategies, Rory specializes in crafting comprehensive financial plans.",
-    imageUrl: "/assets/advisors/rory-walker.jpg",
+    imageUrl: "/assets/rory-walker.svg",
     specialties: [
       "Investment Planning",
       "Retirement Planning",

@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { Mail, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface UserProfileProps {
   userName: string;
@@ -34,6 +35,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     },
   ];
 
+  const router = useRouter();
+
+  const handleAdvisors = () => {
+    router.push("/advisors");
+  };
   // Only render on desktop
   return (
     <Card className="hidden lg:block bg-white rounded-3xl">
@@ -100,7 +106,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
                 {item.text}
               </span>
             </div>
-            <button className="p-2 rounded-full bg-navy flex items-center justify-center">
+            <button
+              onClick={handleAdvisors}
+              className="p-2 rounded-full bg-navy flex items-center justify-center"
+            >
               <ChevronRight className="h-6 w-6 text-white" />
             </button>
           </div>

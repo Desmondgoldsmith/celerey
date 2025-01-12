@@ -1,6 +1,7 @@
+"use client";
 import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import UserProfile from "../molecules/userProfile";
 import { DUMMY_ADVISORS } from "../../constants";
 
