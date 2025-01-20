@@ -10,6 +10,7 @@ import { OnboardingLayout } from "@/Features/onboarding/components/templates/sha
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/welcomeScreen";
 import { FinancialGoalScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/financialGoalScreeen";
 import { TargetAmountScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/targetAmountScreen";
+import { InvestmentScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/investmentScreen";
 import { GoalsScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/goalsScreen";
 
 export default function GoalsInfo() {
@@ -54,6 +55,12 @@ export default function GoalsInfo() {
       case 2:
         return parseFloat(data.targetAmount || "0") >= 0;
       default:
+case 3:
+    return (
+      data.hasInvestments === "no" ||
+      (data.hasInvestments === "yes" &&
+        parseFloat(data.investmentType || "0") >= 0)
+    );
         return true;
     }
   }, [currentSection, sections, formData.goals]);

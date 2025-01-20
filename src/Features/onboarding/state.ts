@@ -37,7 +37,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   goals: {
     id: "goals",
     title: "Goals & Aspirations",
-    totalSteps: 2,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
