@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { Home, MoreHorizontal, TrendingUp } from "lucide-react";
+import { Info, MoreHorizontal } from "lucide-react";
 import { ApexOptions } from "apexcharts";
 import { ChartType } from "../../types";
 
@@ -9,84 +9,186 @@ interface RiskAllocationProps {
 }
 
 export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
-  const riskData = [
-    { label: "Low", value: 33, color: "#4CAF50" },
-    { label: "Medium", value: 49, color: "#FFA726" },
-    { label: "High", value: 17, color: "#EF5350" },
-  ];
+  // Financial data constants
+  const financialGoal = 54000;
+  const currentAmount = 1329;
+  const targetAmount = 2571;
+  const monthsToGoal = 21;
 
-  const getChartOptions = (color: string): ApexOptions => ({
+  // Gauge chart configuration for risk level
+  const gaugeChartOptions: ApexOptions = {
     chart: {
       type: "radialBar",
+      height: 250,
       sparkline: {
         enabled: true,
       },
     },
-    colors: [color],
+    colors: ["#4ADE80"],
     plotOptions: {
       radialBar: {
+        startAngle: 0,
+        endAngle: 90,
         hollow: {
           size: "55%",
         },
         track: {
-          background: "#f5f5f5",
+          background: "#808285",
+          strokeWidth: "100%",
         },
         dataLabels: {
           name: {
-            show: false,
+            show: true,
+            color: "#111827",
+            fontSize: "16px",
+            fontWeight: "500",
+            offsetY: 10,
+            fontFamily: "Helvetica",
           },
           value: {
-            show: true,
-            fontSize: "14px",
-            fontFamily: "Helvetica",
-            formatter: function (val: number) {
-              return `${val}%`;
-            },
+            show: false,
           },
         },
       },
     },
-  });
+    labels: ["Low"],
+  };
+
+  // Area chart configuration for progress visualization
+  const areaChartOptions: ApexOptions = {
+    chart: {
+      type: "area",
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true,
+      },
+    },
+    stroke: {
+      curve: "smooth",
+      width: 2,
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.45,
+        opacityTo: 0.05,
+        stops: [0, 100],
+      },
+    },
+    colors: ["#2563eb"],
+    xaxis: {
+      labels: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      },
+      axisTicks: {
+        show: false,
+      },
+    },
+    yaxis: {
+      labels: {
+        show: false,
+      },
+    },
+    grid: {
+      show: false,
+    },
+    tooltip: {
+      enabled: false,
+    },
+  };
+
+  // Sample data for the area chart
+  const areaChartSeries = [
+    {
+      name: "Progress",
+      data: [30, 150, 50, 120, 80, 150, 60, 100, 50, 130, 80, 100],
+    },
+  ];
 
   return (
-    <Card className="p-6">
+    <Card className="p-4">
+      {/* Header */}
+
       <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
         <h2 className="text-xl font-cirka text-navy">Risk Allocation</h2>
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        {riskData.map((item) => (
-          <div key={item.label} className="flex flex-col items-center">
-            <React.Suspense
-              fallback={
-                <div className="h-20 w-20 animate-pulse bg-gray-100 rounded-full" />
-              }
-            >
-              <Chart
-                options={getChartOptions(item.color)}
-                series={[item.value]}
-                type="radialBar"
-                height={100}
-                width={100}
-              />
-            </React.Suspense>
-            <span className="mt-2 text-sm font-helvetica text-gray-600">
-              {item.label}
-            </span>
-          </div>
-        ))}
+
+      {/* Risk Summary Section */}
+      <div className="mb-6">
+        <div className="flex items-center gap-1 mb-3">
+          <span className="text-sm text-gray-600">Risk Summary</span>
+          <Info className="h-4 w-4 text-gray-400" />
+        </div>
+        <div className="h-32">
+          <Chart
+            options={gaugeChartOptions}
+            series={[60]}
+            type="radialBar"
+            height="100%"
+          />
+        </div>
+        <p className="text-xs text-gray-600 text-center mt-2 mb-4">
+          Based on the risk assessment you are a Low Risk individual who might
+          be a bit more passive about investing in financial instruments.
+        </p>
       </div>
-      <div className="border-t border-[#AAAAAA] pb-2">
-        <div className="flex items-center py-3 border-b pt-4 border-[#AAAAAA]">
-          <Home className="h-5 w-5 text-gray-400 mr-3" />
-          <span className="text-gray-700">Real Estate</span>
-          <span className="ml-auto font-medium">$980,000</span>
+
+      {/* Financial Goal Section */}
+      <div className="mb-6">
+        <div className="flex items-center gap-1 mb-3">
+          <span className="text-sm text-gray-600">Financial Goal</span>
+          <Info className="h-4 w-4 text-gray-400" />
         </div>
-        <div className="flex items-center py-3">
-          <TrendingUp className="h-5 w-5 text-gray-400 mr-3" />
-          <span className="text-gray-700">Fixed Income</span>
-          <span className="ml-auto font-medium">$200,000</span>
+        <div className="flex justify-between items-center mb-1">
+          <span className="text-2xl font-bold">
+            ${financialGoal.toLocaleString()}
+          </span>
+          <button className="bg-orange-500 text-white text-xs px-3 py-1 rounded">
+            Change Goal
+          </button>
         </div>
+        <div className="text-xs text-gray-500 mb-4">
+          Suggested Financial Goal
+        </div>
+      </div>
+
+      {/* Progress Chart */}
+      <div className="h-24 mb-4">
+        <Chart
+          options={areaChartOptions}
+          series={areaChartSeries}
+          type="area"
+          height="100%"
+        />
+      </div>
+
+      {/* Progress Bar */}
+      <div className="mb-2">
+        <div className="flex justify-between text-sm mb-1">
+          <span>${currentAmount.toLocaleString()}</span>
+          <span className="font-bold">${targetAmount.toLocaleString()}</span>
+        </div>
+        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-purple-600 rounded-full"
+            style={{ width: `${(currentAmount / targetAmount) * 100}%` }}
+          />
+        </div>
+        <div className="text-right text-xs text-gray-500 mt-1">
+          Paid For This Month
+        </div>
+      </div>
+
+      {/* Months to Goal */}
+      <div className="text-sm text-gray-600 text-right">
+        {monthsToGoal} Months To Achieve Goal
       </div>
     </Card>
   );

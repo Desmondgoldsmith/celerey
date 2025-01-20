@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
-import { ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronRight, Info } from "lucide-react";
+// import { useRouter } from "next/navigation";
 
 interface UserProfileProps {
   userName: string;
@@ -19,7 +19,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   investmentExperience,
   profileCompletion,
 }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const currentDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -32,22 +32,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       {/* Account Header */}
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-2">
-          <span className="text-gray-900 font-medium ">Free Account</span>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8 1.5V3M8 13V14.5M3 8H1.5M14.5 8H13M12.5 3.5L11.5 4.5M4.5 11.5L3.5 12.5M3.5 3.5L4.5 4.5M11.5 11.5L12.5 12.5M11.5 8C11.5 9.933 9.933 11.5 8 11.5C6.067 11.5 4.5 9.933 4.5 8C4.5 6.067 6.067 4.5 8 4.5C9.933 4.5 11.5 6.067 11.5 8Z"
-              stroke="#98A2B3"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <span className="text-gray-900 font-bold">Free Account</span>
+          <Info className="h-4 w-4 text-gray-400" />
         </div>
         <button className="text-[#6938EF] text-sm font-medium hover:underline">
           Upgrade to Pro

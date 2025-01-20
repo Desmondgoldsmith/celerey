@@ -13,9 +13,7 @@ interface IncomeVsExpenditureProps {
   Chart: ChartType;
 }
 
-export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
-  Chart,
-}) => {
+export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
   const data = {
     netIncome: 24256.12,
     income: {
@@ -36,11 +34,8 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
 
-      {/* Border line */}
-      <div className="border-b border-gray-200 mb-6" />
-
       {/* Info Section */}
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-4">
         {/* First row: Net Income text and Last Updated */}
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
