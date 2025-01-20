@@ -94,10 +94,10 @@ export default function FinancialInfo() {
   
 const handleBack = useCallback(() => {
   const currentStepIndex = sections[currentSection].currentStep;
-  console.log("Current Step Index:", currentStepIndex); // Debugging line
+  console.log("Current Step Index:", currentStepIndex); 
   if (currentStepIndex > 0) {
     const newStep = currentStepIndex - 1;
-    console.log("New Step:", newStep); // Debugging line
+    console.log("New Step:", newStep); 
     updateSectionProgress(currentSection, newStep);
   } else {
     router.push("/personal-info");
@@ -146,11 +146,11 @@ const handleBack = useCallback(() => {
       case 1:
         return (
           <IncomeScreen
-            values={financialData.passiveIncome}
+            values={financialData.monthlyIncome}
             onChange={(field, value) =>
               handleFormUpdate({
                 passiveIncome: {
-                  ...financialData.passiveIncome,
+                  ...financialData.monthlyIncome,
                   [field]: value,
                 },
               })

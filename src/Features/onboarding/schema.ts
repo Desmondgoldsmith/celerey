@@ -1,7 +1,11 @@
 export interface PersonalInfoSchema {
   firstName: string;
   lastName: string;
-  birthDate: string;
+  dob:{
+    day: string;
+    month: string;
+    year: string;
+  }
   citizenship: string;
   dualCitizenship: string;
   dependents: {
@@ -30,12 +34,7 @@ export interface PersonalInfoSchema {
 
 export interface FinancialInfoSchema {
   currency: string;
-  passiveIncome: {
-    rentalIncome: string;
-    dividends: string;
-    interestIncome: string;
-    otherIncome: string;
-  };
+  monthlyIncome: string;
   annualExpenses: {
     home: string;
     childcare: string;

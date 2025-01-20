@@ -21,7 +21,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   personal: {
     id: "personal",
     title: "Personal Information",
-    totalSteps: 11,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: true,
@@ -73,7 +73,11 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   personal: {
     firstName: "",
     lastName: "",
-    birthDate: "",
+    dob: {
+      day: "",
+      month: "",
+      year: "",
+    },
     citizenship: "",
     dualCitizenship: "",
     dependents: {
@@ -101,12 +105,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   },
   financial: {
     currency: "",
-    passiveIncome: {
-      rentalIncome: "",
-      dividends: "",
-      interestIncome: "",
-      otherIncome: "",
-    },
+    monthlyIncome: "",
     annualExpenses: {
       home: "",
       childcare: "",

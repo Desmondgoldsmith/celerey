@@ -19,9 +19,11 @@ export interface FileUploadProps {
 
 export interface FormInputProps {
   //   label: string;
+  id?: string;
+  name?: string;
   placeholder: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   type?: string;
 }
@@ -76,9 +78,26 @@ export interface DateOfBirthScreenProps {
   onContinue: () => void;
 }
 
-export interface FirstNameScreenProps {
-  value: string;
-  onChange: (value: string) => void;
+export interface BioDataScreenProps {
+  value: {
+    firstName: string;
+    lastName: string;
+    dob: {
+      day: string;
+      month: string;
+      year: string;
+    };
+  };
+  onChange: (value: {
+    firstName: string;
+    lastName: string;
+    dob: {
+      day: string;
+      month: string;
+      year: string;
+    };
+  }) => void;
+  // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   onBack: () => void;
   onContinue: () => void;
 }
