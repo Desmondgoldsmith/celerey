@@ -35,27 +35,16 @@ export interface PersonalInfoSchema {
 export interface FinancialInfoSchema {
   currency: string;
   monthlyIncome: string;
-  annualExpenses: {
+  monthlyExpenses: {
     home: string;
-    childcare: string;
-    education: string;
-    healthcare: string;
-    travel: string;
-    giving: string;
+    loan: string;
+    otherExpenses: string;
   };
-  assets: {
-    realEstate: string;
-    cash: string;
-    publicSecurities: string;
-    privateSecurities: string;
-  };
-  liabilities: {
-    mortgages: string;
-    loans: string;
-    creditCards: string;
-    assetFinance: string;
-    otherLiabilities: string;
-  };
+  savings: string;
+  hasEmergencyFunds: string;
+  emergencyFund: string;
+  hasDebt: string;
+  debt: string;
 }
 
 export interface GoalsInfoSchema {

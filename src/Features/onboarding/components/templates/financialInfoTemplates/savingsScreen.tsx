@@ -2,44 +2,48 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface IncomeScreenProps {
+interface SavingsScreenProps {
   values: {
-    monthlyIncome: string;
+    savings: string;
   };
   onBack: () => void;
   onContinue: () => void;
   onChange: (field: string, value: string) => void;
 }
 
-export const IncomeScreen: React.FC<IncomeScreenProps> = ({ values, onChange, onContinue, onBack }) => {
-  const isComplete = values.monthlyIncome !== "";
+export const SavingsScreen: React.FC<SavingsScreenProps> = ({
+  values,
+  onChange,
+  onContinue,
+  onBack,
+}) => {
+  const isComplete = values.savings !== "";
 
-const handleInputChange = (field: "monthlyIncome", value: string) => {
-  if (/^\d*$/.test(value)) {
-    onChange(field, value);
-  }
-};
-
+  const handleInputChange = (field: "savings", value: string) => {
+    if (/^\d*$/.test(value)) {
+      onChange(field, value);
+    }
+  };
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-cirka mb-4">
-          What&apos;s your monthly income
+          How much do you have currently saved in your savings account?
         </h1>
-        <p className="text-gray-600">Enter your monthly income</p>
+        <p className="text-gray-600">How much have you saved up?</p>
       </div>
       <div className="space-y-4 mb-12">
         <div className="flex border-b border-gray-300 pb-4 items-center">
-          <label className="flex-1">Total Income</label>
+          <label className="flex-1">Savings</label>
           <Input
             type="text"
             inputMode="numeric"
             pattern="[0-9]*"
             className="flex-1 appearance-none"
-            value={values.monthlyIncome || ""}
+            value={values.savings || ""}
             onChange={(e) => {
-              handleInputChange("monthlyIncome", e.target.value);
+              handleInputChange("savings", e.target.value);
             }}
           />
         </div>

@@ -29,7 +29,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   financial: {
     id: "financial",
     title: "Financial Information",
-    totalSteps: 6,
+    totalSteps: 7,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -106,27 +106,16 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   financial: {
     currency: "",
     monthlyIncome: "",
-    annualExpenses: {
+    monthlyExpenses: {
       home: "",
-      childcare: "",
-      education: "",
-      healthcare: "",
-      travel: "",
-      giving: "",
+      loan: "",
+      otherExpenses: "",
     },
-    assets: {
-      realEstate: "",
-      cash: "",
-      publicSecurities: "",
-      privateSecurities: "",
-    },
-    liabilities: {
-      mortgages: "",
-      loans: "",
-      creditCards: "",
-      assetFinance: "",
-      otherLiabilities: "",
-    },
+    savings: "",
+    hasEmergencyFunds: "",
+    emergencyFund: "",
+    hasDebt: "",
+    debt: "",
   },
   goals: {
     retirementAge: "",

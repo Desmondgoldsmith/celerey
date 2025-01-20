@@ -190,7 +190,7 @@ export interface GoalsScreenProps {
 }
 
 export interface Section {
-  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; // Financial Knowledge section to be added here
+  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; 
   title: string;
   totalSteps: number;
   currentStep: number;
@@ -227,33 +227,17 @@ export interface PersonalInfoFormData {
 
 export interface FinancialInfoFormData {
   currency: string;
-  passiveIncome: {
-    rentalIncome: string;
-    dividends: string;
-    interestIncome: string;
-    otherIncome: string;
-  };
-  annualExpenses: {
+  monthlyIncome: string;
+  monthlyExpenses: {
     home: string;
-    childcare: string;
-    education: string;
-    healthcare: string;
-    travel: string;
-    giving: string;
+    loan: string;
+    otherExpenses: string;
   };
-  assets: {
-    realEstate: string;
-    cash: string;
-    publicSecurities: string;
-    privateSecurities: string;
-  };
-  liabilities: {
-    mortgages: string;
-    loans: string;
-    creditCards: string;
-    assetFinance: string;
-    otherLiabilities: string;
-  };
+  savings: string;
+  hasEmergencyFunds: string;
+  emergencyFund: string;
+  hasDebt: string;
+  debt: string;
 }
 export interface GoalsInfoFormData {
     retirementAge: string;
