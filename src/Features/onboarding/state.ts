@@ -118,9 +118,10 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     debt: "",
   },
   goals: {
-    retirementAge: "",
-    retirementIncome: "",
-    goalsCurrency: "",
+    primamryFinancialGoal: "",
+    targetAmount: "",
+    hasInvestments: "",
+    investmentType: "",
   },
   risk: {
     riskAttitude: "",

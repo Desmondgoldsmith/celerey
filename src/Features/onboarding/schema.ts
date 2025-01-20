@@ -48,9 +48,10 @@ export interface FinancialInfoSchema {
 }
 
 export interface GoalsInfoSchema {
-  retirementAge: string;
-  retirementIncome: string;
-  goalsCurrency: string;
+  primamryFinancialGoal: string;
+  targetAmount: string;
+  hasInvestments: string;
+  investmentType: string;
 }
 
 export interface RiskInfoSchema {

@@ -32,7 +32,7 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
         Do you have any outstanding debt (e.g loans, credit cards, mortgages)?
       </h1>
       <p className="text-gray-600">
-        Approximate total debt amount
+        Any applicable debt?
       </p>
 
       <div className="w-full max-w-md mx-auto">
@@ -67,7 +67,7 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
 
         {value.hasDebt === "yes" && (
           <div className="flex border-y border-gray-300 py-4 items-center">
-            <label className="flex-1">Months of living expenses saved</label>
+            <label className="flex-1">Approximate total debt amount</label>
             <Input
               type="text"
               inputMode="numeric"

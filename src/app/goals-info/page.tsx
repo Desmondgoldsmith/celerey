@@ -8,6 +8,8 @@ import { useOnboardingStore, SectionId } from "@/Features/onboarding/state";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/welcomeScreen";
+import { FinancialGoalScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/financialGoalScreeen";
+import { TargetAmountScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/targetAmountScreen";
 import { GoalsScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/goalsScreen";
 
 export default function GoalsInfo() {
@@ -45,14 +47,12 @@ export default function GoalsInfo() {
     const data = formData.goals;
 
     switch (currentStepIndex) {
-      case 0: // Welcome screen, no validation needed
+      case 0: 
         return true;
       case 1: 
-        return (
-          !!data.retirementAge &&
-          !!data.retirementIncome &&
-          !!data.goalsCurrency
-        );
+             return !!data.primamryFinancialGoal.trim();
+      case 2:
+        return parseFloat(data.targetAmount || "0") >= 0;
       default:
         return true;
     }
@@ -129,16 +129,24 @@ export default function GoalsInfo() {
           />
         );
       case 1:
-        return (
-          <GoalsScreen
-            retirementAge={goalsData.retirementAge}
-            retirementIncome={goalsData.retirementIncome}
-            goalsCurrency={goalsData.goalsCurrency}
-            onChange={(field, value) => handleFormUpdate({ [field]: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
+            return (
+              <FinancialGoalScreen
+                value={goalsData.primamryFinancialGoal}
+                onChange={(value) => handleFormUpdate({ primamryFinancialGoal: value })}
+                onBack={handleBack}
+                onContinue={handleContinue}
+              />
+            );
+
+      case 2:
+            return (
+                  <TargetAmountScreen
+                    values={{ targetAmount: goalsData.targetAmount }}
+                    onChange={(field, value) => handleFormUpdate({ [field]: value })}
+                    onBack={handleBack}
+                    onContinue={handleContinue}
+                  />
+                );
       default:
         return null;
     }
