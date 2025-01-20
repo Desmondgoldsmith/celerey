@@ -24,10 +24,9 @@ interface GoalsProps {
 }
 
 export const Goals: React.FC<GoalsProps> = () => {
-  // Track which slide is currently visible
+  // checkwhich slide is currently visible
   const [activeSlide, setActiveSlide] = useState(0);
 
-  // Extended goals array to include multiple slides
   const goals: Goal[][] = [
     [
       {
@@ -84,11 +83,9 @@ export const Goals: React.FC<GoalsProps> = () => {
 
     return (
       <div className="mb-3">
-        {/* Header with title and help icon */}
         <div className="mb-2">
           <div className="flex items-center justify-between  mb-3">
             <div></div>
-            {/* Last updated section - only show for first goal */}
             {goal.name === "Current Savings" && (
               <div className="flex items-center gap-2  bg-gray-50 border border-gray-200 rounded-lg px-3 py-1">
                 <RefreshCw className="h-4 w-4 text-green-500" />
@@ -168,7 +165,7 @@ export const Goals: React.FC<GoalsProps> = () => {
 
       {/* Navigation */}
       <div className="flex justify-between items-center">
-        <div className="flex-1" /> {/* Spacer */}
+        <div className="flex-1" /> 
         <div className="flex gap-2">
           {goals.map((_, index) => (
             <button

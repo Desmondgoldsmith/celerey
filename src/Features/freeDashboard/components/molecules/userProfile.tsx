@@ -42,7 +42,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
 
       {/* Welcome Section */}
       <div className="space-y-1">
-        <h1 className="text-3xl font-medium font-cirka">Welcome {userName}</h1>
+        <h1 className="text-4xl font-medium font-cirka">Welcome {userName}</h1>
         <p className="text-gray-600 mt-2 text-small font-cirka">
           {currentDate}
         </p>
@@ -55,14 +55,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       {/* Profile Completion */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <span className="text-gray-900 font-medium text-xl">
+          <span className="text-gray-900 font-medium text-medium">
             Profile Completion
           </span>
           <span className="text-gray-600 bg-gray-100 p-1 text-sm">
             You&apos;re almost there!
           </span>
         </div>
-        <span className="text-3xl font-medium">{profileCompletion}%</span>
+        <span className="text-2xl font-medium">{profileCompletion}%</span>
         <div className="relative h-2 bg-[#EBE9FE] rounded-full overflow-hidden">
           <div
             className="absolute h-full bg-[#281FBB] rounded-full"

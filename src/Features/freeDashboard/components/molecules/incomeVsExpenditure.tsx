@@ -36,7 +36,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
 
       {/* Info Section */}
       <div className="flex flex-col mb-4">
-        {/* First row: Net Income text and Last Updated */}
+        {/*  Net Income text and Last Updated */}
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
             <span className="text-gray-600">Net Income</span>
@@ -50,7 +50,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
           </div>
         </div>
 
-        {/* Second row: Amount and Action Buttons */}
+        {/* Amount and Action Buttons */}
         <div className="flex justify-between items-center mb-8">
           <div className="text-3xl font-normal">
             $
