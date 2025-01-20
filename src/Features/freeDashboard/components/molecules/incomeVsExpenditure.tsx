@@ -31,9 +31,9 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
   return (
     <Card className="p-6 bg-white">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl">Income And Expenditure</h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400" />
+      <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-xl font-cirka text-navy">Income And Expenditure</h2>
+        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
 
       {/* Border line */}
@@ -57,7 +57,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
 
         {/* Second row: Amount and Action Buttons */}
         <div className="flex justify-between items-center mb-8">
-          <div className="text-4xl font-normal">
+          <div className="text-3xl font-normal">
             $
             {data.netIncome.toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -124,7 +124,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = ({
               </div>
               <div className="text-gray-600">expenditure last month</div>
             </div>
-            <div className="mt-2 text-orange-500 font-medium">
+            <div className="mt-2 ml-2 text-orange-500 font-medium">
               {data.expenditure.percentage}%
             </div>
             <div className="h-2 bg-orange-500 rounded-full w-[69.2%]" />
