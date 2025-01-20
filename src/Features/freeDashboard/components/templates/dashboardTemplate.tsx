@@ -5,7 +5,6 @@ import { ChartType } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { BalanceOverview } from "../molecules/balanceOverview";
-import { GeographicSpread } from "../molecules/geographicSpread";
 import { RiskAllocation } from "../molecules/riskAllocationCharts";
 import { AssetAllocation } from "../molecules/assetAllocationChart";
 import { Goals } from "../molecules/goalsChart";
@@ -31,9 +30,10 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 
 const DEFAULT_USER_DATA = {
   userName: "Jude",
-  netWorth: 103550.43,
-  riskAttitude: "Somewhat Aggressive",
-  investmentExperience: "Advanced",
+  netWorth: 103550.0,
+  riskAttitude: "Low",
+  investmentExperience: "Beginner",
+  profileCompletion: 40,
 };
 
 // Mobile components remain the same
@@ -115,8 +115,13 @@ const MobileActionItems = () => {
 
 const DashboardTemplate: React.FC = () => {
   const [selectMonths, setSelectedMonths] = useState<string>("12");
-  const { userName, netWorth, riskAttitude, investmentExperience } =
-    DEFAULT_USER_DATA;
+  const {
+    userName,
+    netWorth,
+    riskAttitude,
+    investmentExperience,
+    profileCompletion,
+  } = DEFAULT_USER_DATA;
 
   // Handler for timeframe changes
   const handleTimeframeChange = (months: string) => {
@@ -135,6 +140,7 @@ const DashboardTemplate: React.FC = () => {
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
+              profileCompletion={profileCompletion}
             />
             <Goals Chart={Chart} />
           </div>
@@ -147,7 +153,7 @@ const DashboardTemplate: React.FC = () => {
               onTimeframeChange={handleTimeframeChange}
               lastUpdated={new Date("2025-01-20")}
             />
-            <GeographicSpread />
+            <IncomeVsExpenditure Chart={Chart} />
           </div>
 
           {/* Right Column */}
@@ -174,7 +180,7 @@ const DashboardTemplate: React.FC = () => {
           <RiskAllocation Chart={Chart} />
           <AssetAllocation Chart={Chart} />
           <IncomeVsExpenditure Chart={Chart} />
-          <GeographicSpread />
+          <IncomeVsExpenditure Chart={Chart} />
         </div>
       </div>
     </div>

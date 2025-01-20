@@ -165,8 +165,8 @@ export const BalanceOverview: React.FC<BalanceOverviewProps> = ({
       </div>
 
       {/* Help Section */}
-      <div className="mt-8 pt-6 border-t">
-        <h3 className="font-semibold mb-2 font-cirka">Need Help?</h3>
+      <div className="mt-8 pt-6 border-t border-[#AAAAAA]">
+        <h3 className="font-bold mb-2 text-2xl font-cirka">Need Help?</h3>
         <p className="text-sm text-gray-600 mb-4">
           Get insights on your total expenses with a personalised report for
           your major expenses and advisory services to assist you to make the
@@ -176,6 +176,8 @@ export const BalanceOverview: React.FC<BalanceOverviewProps> = ({
           Request Advisory Service
         </button>
       </div>
+
+      <div className="border-b border-[#AAAAAA] p-3 mb-5"></div>
     </Card>
   );
 };
