@@ -100,6 +100,12 @@ export const PricingCard: React.FC<PricingCardProps> = ({ tier }) => {
         </button>
       </Link>
 
+      <Link href="/freebie" passHref>
+        <button className="bg-[#F4F5F6] w-full border border-navy text-navy rounded-md py-2 px-4 hover:bg-navy hover:text-white transition-colors mb-6">
+          Free mode
+        </button>
+      </Link>
+
       <div className="border-t">
         <h4 className="font-semibold mt-5 text-[#242424] mb-4">Features</h4>
         <p className="font-helvatica text-[#242424] mt-2 font-small mb-4">
