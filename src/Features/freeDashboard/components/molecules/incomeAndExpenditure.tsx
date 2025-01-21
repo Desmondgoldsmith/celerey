@@ -128,7 +128,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
       </div>
 
       {/* Bottom Border */}
-      <div className="border-b border-gray-200 mt-8" />
+      <div className="border-b border-gray-200 mt-8 p-4 mb-10" />
     </Card>
   );
 };

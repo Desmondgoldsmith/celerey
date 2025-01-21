@@ -49,9 +49,9 @@ export const IncomeVsDebt: React.FC<IncomeVsDebtProps> = () => {
   return (
     <Card className="p-6 w-full max-w-md bg-white">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-cirka text-gray-900">Income Vs Debt</h2>
-        <MoreHorizontal className="h-5 w-5 text-gray-400 cursor-pointer" />
+      <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-xl font-cirka text-navy">Income Vs Debt</h2>
+        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
 
       {/* Net Balance Label and Last Updated */}
