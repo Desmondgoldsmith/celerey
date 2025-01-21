@@ -20,11 +20,9 @@ interface FinancialData {
   };
 }
 
-interface IncomeVsDebtProps {
-  // Add any future props here
-}
+// interface IncomeVsDebtProps {}
 
-export const IncomeVsDebt: React.FC<IncomeVsDebtProps> = () => {
+export const IncomeVsDebt = () => {
   const financialData: FinancialData = {
     netBalance: 52124.24,
     income: {
@@ -137,6 +135,8 @@ export const IncomeVsDebt: React.FC<IncomeVsDebtProps> = () => {
           </span>
         </div>
       </div>
+      {/* Bottom Border */}
+      <div className="border-b border-gray-200 mt-5 p-4 mb-10" />
     </Card>
   );
 };
