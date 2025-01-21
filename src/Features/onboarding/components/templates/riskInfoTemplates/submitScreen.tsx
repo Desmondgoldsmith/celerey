@@ -27,7 +27,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
       <h1 className="text-3xl font-cirka mb-6">
         Thanks
-        <span className="text-navyLight"> {firstName || "User"}</span>, fromt
+        <span className="text-navyLight"> {firstName || "User"}</span>, from
         the assessment based on the answers, &nbsp; 
         <span className="text-navyLight">
            your attitube to risk is: <br /> Medium{" "}
