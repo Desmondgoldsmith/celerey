@@ -95,33 +95,31 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
 
       {/* Risk Summary Section */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-5">
           <span className="text-sm font-medium text-gray-700">
             Risk Summary
           </span>
           <Info className="h-4 w-4 text-gray-400 cursor-help" />
         </div>
 
-        <div className="relative h-32 flex justify-center items-center">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={riskData}
-                cx="50%"
-                cy="50%"
-                startAngle={180}
-                endAngle={0}
-                innerRadius="60%"
-                outerRadius="80%"
-                paddingAngle={0}
-                dataKey="value"
-              >
-                {riskData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="relative h-36 flex justify-center items-center">
+          <PieChart width={200} height={200}>
+            <Pie
+              data={riskData}
+              cx="50%"
+              cy="50%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={60}
+              outerRadius={80}
+              paddingAngle={0}
+              dataKey="value"
+            >
+              {riskData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+          </PieChart>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
             <div className="text-lg font-bold text-gray-900">Low</div>
             <div className="text-xs text-gray-600">Risk</div>
@@ -160,7 +158,7 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={progressData}
-            margin={{ top: 5, right: 0, left: -25, bottom: 0 }}
+            margin={{ top: 5, right: 0, left: -45, bottom: 0 }}
           >
             <defs>
               <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
@@ -177,7 +175,7 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
             />
             <YAxis
               tickFormatter={formatCurrency}
-              tick={{ fontSize: 5 }}
+              tick={{ fontSize: 6 }}
               tickLine={false}
               axisLine={false}
               tickCount={5}

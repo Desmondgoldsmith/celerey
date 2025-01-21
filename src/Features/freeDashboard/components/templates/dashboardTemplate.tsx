@@ -6,10 +6,10 @@ import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { BalanceOverview } from "../molecules/balanceOverview";
 import RiskAllocation from "../molecules/riskAllocationCharts";
-import { AssetAllocation } from "../molecules/assetAllocationChart";
+import IncomeVsExpenditure from "../molecules/incomeAndExpenditure";
 import { Goals } from "../molecules/goalsChart";
 import { UserProfile } from "../molecules/userProfile";
-import { IncomeVsExpenditure } from "../molecules/incomeVsExpenditure";
+import IncomeVsDebt from "../molecules/incomeVsDebt";
 
 // Define the initial expense data structure
 const INITIAL_EXPENSE_DATA = {
@@ -159,8 +159,7 @@ const DashboardTemplate: React.FC = () => {
           {/* Right Column */}
           <div className="col-span-3 space-y-5">
             <RiskAllocation />
-            <AssetAllocation Chart={Chart} />
-            <IncomeVsExpenditure Chart={Chart} />
+            <IncomeVsDebt />
           </div>
         </div>
 
@@ -178,9 +177,9 @@ const DashboardTemplate: React.FC = () => {
           </div>
           <Goals Chart={Chart} />
           <RiskAllocation />
-          <AssetAllocation Chart={Chart} />
-          <IncomeVsExpenditure Chart={Chart} />
-          <IncomeVsExpenditure Chart={Chart} />
+          <IncomeVsExpenditure chart={Chart} />
+          <IncomeVsDebt />
+          <IncomeVsDebt />
         </div>
       </div>
     </div>
