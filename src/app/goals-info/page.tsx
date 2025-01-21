@@ -56,9 +56,8 @@ export default function GoalsInfo() {
       case 3:
         return (
           data.hasInvestments === "no" ||
-         (data.hasInvestments === "yes" &&
-        parseFloat(data.investmentType || "0") >= 0)
-    );
+          (data.hasInvestments === "yes" && !!data.investmentType?.trim())
+        );
         return true;
     }
   }, [currentSection, sections, formData.goals]);
