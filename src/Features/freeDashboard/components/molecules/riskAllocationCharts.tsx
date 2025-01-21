@@ -33,10 +33,9 @@ interface CustomTooltipProps {
   }>;
 }
 
-// Main component interface with required props
-interface RiskAllocationProps {}
+// interface RiskAllocationProps {}
 
-const RiskAllocation: React.FC<RiskAllocationProps> = () => {
+const RiskAllocation = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Financial data constants
@@ -51,7 +50,7 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
     { name: "Remaining", value: 40, color: "#808285" },
   ];
 
-  // Progress chart data with all months
+  // Progress chart data
   const progressData: ProgressData[] = [
     { month: "Jan", amount: 800 },
     { month: "Feb", amount: 1200 },
@@ -71,7 +70,6 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
   const formatCurrency = (value: number): string =>
     `$${value.toLocaleString()}`;
 
-  // Custom tooltip with proper typing
   const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
     if (active && payload && payload.length > 0) {
       return (
@@ -87,7 +85,6 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
 
   return (
     <Card className="p-4 w-full" ref={containerRef}>
-      {/* Header section remains the same */}
       <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-3">
         <h2 className="text-xl font-cirka text-navy">Risk Allocation</h2>
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" />
@@ -153,7 +150,7 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
         </div>
       </div>
 
-      {/* Progress Chart - Optimized for space */}
+      {/* Progress Chart */}
       <div className="h-40">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
@@ -197,7 +194,6 @@ const RiskAllocation: React.FC<RiskAllocationProps> = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Progress Bar and Months to Goal sections remain the same */}
       <div className="mb-2">
         <div className="flex justify-between text-sm mb-1">
           <span className="font-medium text-gray-700">
