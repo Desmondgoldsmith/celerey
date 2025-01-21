@@ -5,14 +5,14 @@ import { useRouter } from "next/navigation";
 import { SectionId, useOnboardingStore } from "@/Features/onboarding/state";
 import { RiskInfoSchema } from "@/Features/onboarding/schema";
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/welcomeScreen";
-import { RiskAttitudeScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskAttitudeScreen";
+// import { RiskAttitudeScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskAttitudeScreen";
 import { RiskToleranceScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskToleranceScreen";
-import { TolerancePercentageScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/tolerancePercentageScreen";
-import { RiskReactionScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskReactionScreen";
-import { RiskApproachScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskApproachScreen";
-import { InvestmentObjectiveScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentObjectiveScreen";
-import { InvestmentHorizonScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentHorizonScreen";
-import { IlliquidInvestmentScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/illiquidInvestmentScreen";
+// import { TolerancePercentageScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/tolerancePercentageScreen";
+// import { RiskReactionScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskReactionScreen";
+// import { RiskApproachScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskApproachScreen";
+// import { InvestmentObjectiveScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentObjectiveScreen";
+// import { InvestmentHorizonScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentHorizonScreen";
+// import { IlliquidInvestmentScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/illiquidInvestmentScreen";
 import { SubmitScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/submitScreen";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
@@ -53,21 +53,7 @@ export default function RiskInfo() {
 
     switch (currentStepIndex) {
       case 1:
-        return !!data.riskAttitude.trim();
-      case 2:
         return !!data.riskTolerance.trim();
-      case 3:
-        return !!data.riskTolerancePercentage.trim();
-      case 4:
-        return !!data.riskReaction.trim();
-      case 5:
-        return !!data.riskApproach.trim();
-      case 6:
-        return !!data.investmentObjective.trim();
-      case 7:
-        return !!data.investmentHorizon.trim();
-      case 8:
-        return !!data.illiquidInvestmentPercentage.trim();
       default:
         return true;
     }
@@ -140,81 +126,72 @@ export default function RiskInfo() {
         return <WelcomeScreen onContinue={handleContinue} onBack={handleBack} />;
       case 1:
         return (
-          <RiskAttitudeScreen
-            value={riskData.riskAttitude}
-            onChange={(value) => handleFormUpdate({ riskAttitude: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 2:
-        return (
           <RiskToleranceScreen
-            value={riskData.riskTolerance}
-            onChange={(value: string) => handleFormUpdate({ riskTolerance: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
+          value={riskData.riskTolerance}
+          onChange={(value: string) => handleFormUpdate({ riskTolerance: value })}
+          onBack={handleBack}
+          onContinue={handleContinue}
           />
         );
-      case 3:
-        return (
-          <TolerancePercentageScreen
-            value={riskData.riskTolerancePercentage}
-            onChange={(value: string) => handleFormUpdate({ riskTolerancePercentage: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 4:
-        return (
-          <RiskReactionScreen
-            value={riskData.riskReaction}
-            onChange={(value: string) => handleFormUpdate({ riskReaction: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 5:
-        return (
-          <RiskApproachScreen
-            value={riskData.riskApproach}
-            onChange={(value: string) => handleFormUpdate({ riskApproach: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 6:
-        return (
-          <InvestmentObjectiveScreen
-            value={riskData.investmentObjective}
-            onChange={(value: string) => handleFormUpdate({ investmentObjective: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 7:
-        return (
-          <InvestmentHorizonScreen
-            value={riskData.investmentHorizon}
-            onChange={(value: string) => handleFormUpdate({ investmentHorizon: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 8:
-        return (
-          <IlliquidInvestmentScreen
-            value={riskData.illiquidInvestmentPercentage}
-            onChange={(value: string) => handleFormUpdate({ illiquidInvestmentPercentage: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 9:
-        return  <SubmitScreen onContinue={handleContinue} onBack={handleBack} />;
-        ;
-      default:
-        return null;
+        case 2:
+          return <SubmitScreen onContinue={handleContinue} onBack={handleBack} />;
+          
+          default:
+            return null;
+      // case 3:
+      //   return (
+      //     <TolerancePercentageScreen
+      //       value={riskData.riskTolerancePercentage}
+      //       onChange={(value: string) => handleFormUpdate({ riskTolerancePercentage: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
+      // case 4:
+      //   return (
+      //     <RiskReactionScreen
+      //       value={riskData.riskReaction}
+      //       onChange={(value: string) => handleFormUpdate({ riskReaction: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
+      // case 5:
+      //   return (
+      //     <RiskApproachScreen
+      //       value={riskData.riskApproach}
+      //       onChange={(value: string) => handleFormUpdate({ riskApproach: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
+      // case 6:
+      //   return (
+      //     <InvestmentObjectiveScreen
+      //       value={riskData.investmentObjective}
+      //       onChange={(value: string) => handleFormUpdate({ investmentObjective: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
+      // case 7:
+      //   return (
+      //     <InvestmentHorizonScreen
+      //       value={riskData.investmentHorizon}
+      //       onChange={(value: string) => handleFormUpdate({ investmentHorizon: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
+      // case 8:
+      //   return (
+      //     <IlliquidInvestmentScreen
+      //       value={riskData.illiquidInvestmentPercentage}
+      //       onChange={(value: string) => handleFormUpdate({ illiquidInvestmentPercentage: value })}
+      //       onBack={handleBack}
+      //       onContinue={handleContinue}
+      //     />
+      //   );
     }
   };
 

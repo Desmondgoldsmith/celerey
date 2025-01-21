@@ -6,11 +6,7 @@ import { KnowledgeInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
-import { Page1 } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/page1";
-import { Page2 } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/page2";
-import { Page3 } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/page3";
-import { Page4 } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/page4";
-import { Page5 } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/page5";
+import { KnowledgeLevelScreen } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/knowledgeLevelScreen";
 import { SubmitScreen } from "@/Features/onboarding/components/templates/knowledgeInfoTemplates/submitScreen";
 
 export default function KnowledgeInfo() {
@@ -53,47 +49,8 @@ export default function KnowledgeInfo() {
     if (!data) return false;
 
     switch (currentStepIndex) {
-      case 0:
-        return true;
       case 1:
-        return (
-          !!data.cashKnowledge &&
-          !!data.investingExperience &&
-          !!data.publicSharesKnowledge &&
-          !!data.publicSharesExperience &&
-          !!data.investmentGradeBondsKnowledge
-        );
-      case 2:
-        return (
-          !!data.investmentGradeBondsExperience &&
-          !!data.nonInvestmentGradeBondsKnowledge &&
-          !!data.nonInvestmentGradeBondsExperience &&
-          !!data.collectiveInvestmentsInstrumentsKnowledge &&
-          !!data.collectiveInvestmentsInstrumentsExperience
-        );
-      case 3:
-        return (
-          !!data.derivativesKnowledge &&
-          !!data.derivativesExperience &&
-          !!data.forexKnowledge &&
-          !!data.commoditiesKnowledge &&
-          !!data.commoditiesExperience
-        );
-      case 4:
-        return (
-          !!data.hybridInvestmentsKnowledge &&
-          !!data.privateMarketInstrumentsKnowledge &&
-          !!data.privateMarketInstrumentsExperience &&
-          !!data.realEstateKnowledge &&
-          !!data.realEstateExperience
-        );
-      case 5:
-        return (
-          !!data.altAssetsKnowledge &&
-          !!data.leveragedInstrumentsKnowledge &&
-          !!data.leveragedInstrumentsExperience &&
-          !!data.privateCreditKnowledge
-        );
+        return !!data.knowledgeLevel.trim();
       default:
         return true;
     }
@@ -144,51 +101,15 @@ export default function KnowledgeInfo() {
 
     switch (currentStepIndex) {
       case 0:
-        return (
-          <Page1
-            value={knowledgeData}
-            onChange={handleFormUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
+      return (
+                <KnowledgeLevelScreen
+                value={knowledgeData.knowledgeLevel}
+                onChange={(value: string) => handleFormUpdate({ knowledgeLevel: value })}
+                onBack={handleBack}
+                onContinue={handleContinue}
+                />
+              );
       case 1:
-        return (
-          <Page2
-            value={knowledgeData}
-            onChange={handleFormUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 2:
-        return (
-          <Page3
-            value={knowledgeData}
-            onChange={handleFormUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 3:
-        return (
-          <Page4
-            value={knowledgeData}
-            onChange={handleFormUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 4:
-        return (
-          <Page5
-            value={knowledgeData}
-            onChange={handleFormUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 5:
         return <SubmitScreen onContinue={handleContinue} onBack={handleBack} />;
       default:
         return null;

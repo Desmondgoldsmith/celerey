@@ -1,6 +1,4 @@
-
 import { Button } from "@/components/ui/button";
-// import { useEffect, useState } from "react";
 import { OptionCard } from "../../molecules/goalsOptionCard";
 
 interface InvestmentScreenProps {
@@ -16,8 +14,16 @@ interface InvestmentScreenProps {
 const INVESTMENT_OPTIONS = [
   { id: "stocks", title: "Stocks", description: "Investing in stocks" },
   { id: "bonds", title: "Bonds", description: "Investing in bonds" },
-  { id: "realEstate", title: "Real Estate", description: "Investing in real estate" },
-  { id: "mutualFunds", title: "Mutual Funds", description: "Investing in mutual funds" },
+  {
+    id: "realEstate",
+    title: "Real Estate",
+    description: "Investing in real estate",
+  },
+  {
+    id: "mutualFunds",
+    title: "Mutual Funds",
+    description: "Investing in mutual funds",
+  },
   { id: "other", title: "Other", description: "Other types of investments" },
 ];
 
@@ -28,34 +34,49 @@ export const InvestmentScreen: React.FC<InvestmentScreenProps> = ({
   onContinue,
 }) => {
   const handleOptionSelect = (optionId: string) => {
+    console.log("Selected option:", optionId);
     onChange({ ...value, investmentType: optionId });
   };
 
   const handleHasInvestmentsChange = (hasInvestments: string) => {
-    onChange({ ...value, hasInvestments });
+    onChange({ ...value, hasInvestments, investmentType: hasInvestments === "no" ? "" : value.investmentType });
   };
 
   return (
     <div className="text-center max-w-xl mx-auto">
-      <h1 className="text-4xl font-cirka mb-4">Do you have any investments?</h1>
-      <div className="space-y-4 mb-8">
-        <OptionCard
-          title="Yes"
-          description=""
-          selected={value.hasInvestments === "yes"}
-          onClick={() => handleHasInvestmentsChange("yes")}
-        />
-        <OptionCard
-          title="No"
-          description=""
-          selected={value.hasInvestments === "no"}
+      <h1 className="text-4xl font-cirka mb-12">
+        Do you currently invest in stocks, bonds, or any other investment
+        vehicles
+      </h1>
+      <p className="text-gray-600">Do you hold any investment vehicles?</p>
+
+      <p className="text-gray-600 mb-6">Select an option below.</p>
+
+      <div className="flex justify-center items-center gap-6 mb-8">
+        <button
+          className={`px-6 py-2 rounded-md font-medium ${
+            value.hasInvestments === "no"
+              ? "bg-navy text-white"
+              : "border border-gray-300"
+          }`}
           onClick={() => handleHasInvestmentsChange("no")}
-        />
+        >
+          No
+        </button>
+        <button
+          className={`px-6 py-2 rounded-md font-medium ${
+            value.hasInvestments === "yes"
+              ? "bg-navy text-white"
+              : "border border-gray-300"
+          }`}
+          onClick={() => handleHasInvestmentsChange("yes")}
+        >
+          Yes
+        </button>
       </div>
 
       {value.hasInvestments === "yes" && (
         <div className="space-y-4 mb-8">
-          <h2 className="text-2xl font-cirka mb-4">What type of investments do you have?</h2>
           {INVESTMENT_OPTIONS.map((option) => (
             <OptionCard
               key={option.id}
@@ -68,7 +89,7 @@ export const InvestmentScreen: React.FC<InvestmentScreenProps> = ({
         </div>
       )}
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
         <Button variant="outline" onClick={onBack} className="flex-1">
           Back
         </Button>

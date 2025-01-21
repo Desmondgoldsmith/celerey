@@ -26,12 +26,11 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
   return (
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
       <h1 className="text-3xl font-cirka mb-6">
-        Thank You
-        <span className="text-navyLight"> {firstName || "User"}</span>, although
-        the risk tolerance is selected at the beginning, was moderate, based on
-        your answers,{" "}
+        Thanks
+        <span className="text-navyLight"> {firstName || "User"}</span>, fromt
+        the assessment based on the answers, &nbsp; 
         <span className="text-navyLight">
-          your attitude to risk is: Somewhat Aggressive
+           your attitube to risk is: <br /> Medium{" "}
         </span>
       </h1>
       <p className=" mb-12 font-helvetica text-sm">

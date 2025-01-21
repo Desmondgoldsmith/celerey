@@ -261,30 +261,7 @@ export interface RiskInfoFormData {
 }
 
 export interface KnowledgeInfoFormData {
-  cashKnowledge: string;
-  investingExperience: string;
-  publicSharesKnowledge: string;
-  publicSharesExperience: string;
-  investmentGradeBondsKnowledge: string;
-  investmentGradeBondsExperience: string;
-  nonInvestmentGradeBondsKnowledge: string;
-  nonInvestmentGradeBondsExperience: string;
-  collectiveInvestmentsInstumentsKnowledge: string;
-  collectiveInvestmentsInstumentsExperience: string;
-  derivativesKnowledge: string;
-  derivativesExperience: string;
-  forexKnowledge: string;
-  commoditiesKnowledge: string;
-  commoditiesExperience: string;
-  hybridInvestmentsKnowledge: string;
-  privateMarketInstrumentsKnowledge: string;
-  privateMarketInstrumentsExperience: string;
-  realEstateKnowledge: string;
-  realEstateExperience: string;
-  altAssetsKnowledge: string;
-  leveragedInstumentsKnowledge: string;
-  leveragedInstumentsExperience: string;
-  privateCreditKnowledge: string;
+  knowledgeLevel: string;
 
 }
 
