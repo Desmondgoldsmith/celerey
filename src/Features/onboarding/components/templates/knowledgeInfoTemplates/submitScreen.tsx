@@ -50,14 +50,22 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
       <div className="flex gap-4 max-w-[200px] mx-auto mb-14">
         <Button
           variant="outline"
-          className={`flex-1 ${selection === "yes" ? "bg-navy text-white" : ""}`}
+          className={`flex-1 ${
+            selection === "yes"
+              ? "bg-navy text-white hover:bg-navy hover:text-white"
+              : ""
+          }`}
           onClick={() => handleSelection("yes")}
         >
           Yes
         </Button>
         <Button
           variant="outline"
-          className={`flex-1 ${selection === "no" ? "bg-navy text-white" : ""}`}
+          className={`flex-1 ${
+            selection === "no"
+              ? "bg-navy text-white hover:bg-navy hover:text-white"
+              : ""
+          }`}
           onClick={() => handleSelection("no")}
         >
           No
@@ -70,7 +78,9 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-navy w-full hover:bg-navyLight text-white"
+          className={`flex-1 w-full text-white ${
+            selection ? "bg-navy hover:bg-navyLight" : "bg-gray-300"
+          }`}
           onClick={handleSave}
           disabled={isLoading || !selection}
         >

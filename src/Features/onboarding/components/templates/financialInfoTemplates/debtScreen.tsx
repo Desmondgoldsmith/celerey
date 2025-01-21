@@ -26,6 +26,13 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
     }
   }, [value.debt]);
 
+  const handleDebtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const debtValue = e.target.value;
+    if (/^\d*$/.test(debtValue)) {
+      onChange({ ...value, debt: debtValue });
+    }
+  };
+
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-12">
@@ -74,9 +81,7 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={value.debt || ""}
-              onChange={(e) =>
-                onChange({ ...value, debt: e.target.value })
-              }
+              onChange={handleDebtChange}
             />
           </div>
         )}

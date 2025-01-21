@@ -26,6 +26,13 @@ export const EmergencyFundsScreen: React.FC<EmergencyFundsScreenProps> = ({
     }
   }, [value.emergencyFund]);
 
+  const handleEmergencyFundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emergencyFundValue = e.target.value;
+    if (/^\d*$/.test(emergencyFundValue)) {
+      onChange({ ...value, emergencyFund: emergencyFundValue });
+    }
+  };
+
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-12">
@@ -74,9 +81,7 @@ export const EmergencyFundsScreen: React.FC<EmergencyFundsScreenProps> = ({
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={value.emergencyFund || ""}
-              onChange={(e) =>
-                onChange({ ...value, emergencyFund: e.target.value })
-              }
+              onChange={handleEmergencyFundChange}
             />
           </div>
         )}

@@ -78,23 +78,6 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       month: "",
       year: "",
     },
-    citizenship: "",
-    dualCitizenship: "",
-    dependents: {
-      hasDependents: "",
-      numberOfDependents: "",
-      agesOfDependents: "",
-    },
-    maritalStatus: "",
-    occupation: "",
-    address: {
-      line1: "",
-      line2: "",
-      city: "",
-      state: "",
-      postalCode: "",
-      country: "",
-    },
     identification: {
       type: "",
       file: null,
@@ -124,14 +107,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     investmentType: "",
   },
   risk: {
-    riskAttitude: "",
     riskTolerance: "",
-    riskTolerancePercentage: "",
-    riskReaction: "",
-    riskApproach: "",
-    investmentObjective: "",
-    investmentHorizon: "",
-    illiquidInvestmentPercentage: "",
   },
   knowledge: {
     knowledgeLevel: "",

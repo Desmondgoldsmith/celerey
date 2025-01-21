@@ -6,23 +6,6 @@ export interface PersonalInfoSchema {
     month: string;
     year: string;
   }
-  citizenship: string;
-  dualCitizenship: string;
-  dependents: {
-    hasDependents: string;
-    numberOfDependents: string;
-    agesOfDependents: string;
-  };
-  maritalStatus: string;
-  occupation: string;
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  };
   identification: {
     type: string;
     file: File | null;
@@ -55,14 +38,8 @@ export interface GoalsInfoSchema {
 }
 
 export interface RiskInfoSchema {
-  riskAttitude: string;
   riskTolerance: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
+
 }
 
 export interface KnowledgeInfoSchema {

@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import { SectionId, useOnboardingStore } from "@/Features/onboarding/state";
 import { RiskInfoSchema } from "@/Features/onboarding/schema";
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/welcomeScreen";
-// import { RiskAttitudeScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskAttitudeScreen";
 import { RiskToleranceScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskToleranceScreen";
-// import { TolerancePercentageScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/tolerancePercentageScreen";
-// import { RiskReactionScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskReactionScreen";
-// import { RiskApproachScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/riskApproachScreen";
-// import { InvestmentObjectiveScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentObjectiveScreen";
-// import { InvestmentHorizonScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/investmentHorizonScreen";
-// import { IlliquidInvestmentScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/illiquidInvestmentScreen";
 import { SubmitScreen } from "@/Features/onboarding/components/templates/riskInfoTemplates/submitScreen";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
@@ -138,61 +131,7 @@ export default function RiskInfo() {
           
           default:
             return null;
-      // case 3:
-      //   return (
-      //     <TolerancePercentageScreen
-      //       value={riskData.riskTolerancePercentage}
-      //       onChange={(value: string) => handleFormUpdate({ riskTolerancePercentage: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-      // case 4:
-      //   return (
-      //     <RiskReactionScreen
-      //       value={riskData.riskReaction}
-      //       onChange={(value: string) => handleFormUpdate({ riskReaction: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-      // case 5:
-      //   return (
-      //     <RiskApproachScreen
-      //       value={riskData.riskApproach}
-      //       onChange={(value: string) => handleFormUpdate({ riskApproach: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-      // case 6:
-      //   return (
-      //     <InvestmentObjectiveScreen
-      //       value={riskData.investmentObjective}
-      //       onChange={(value: string) => handleFormUpdate({ investmentObjective: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-      // case 7:
-      //   return (
-      //     <InvestmentHorizonScreen
-      //       value={riskData.investmentHorizon}
-      //       onChange={(value: string) => handleFormUpdate({ investmentHorizon: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-      // case 8:
-      //   return (
-      //     <IlliquidInvestmentScreen
-      //       value={riskData.illiquidInvestmentPercentage}
-      //       onChange={(value: string) => handleFormUpdate({ illiquidInvestmentPercentage: value })}
-      //       onBack={handleBack}
-      //       onContinue={handleContinue}
-      //     />
-      //   );
-    }
+       }
   };
 
   return (

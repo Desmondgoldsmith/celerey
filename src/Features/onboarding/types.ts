@@ -211,19 +211,10 @@ export interface OnboardingState {
 export interface PersonalInfoFormData {
   firstName: string;
   lastName: string;
-  birthDate: string;
-  citizenship: string;
-  dualCitizenship: string;
-  dependents: DependentsData;
-  maritalStatus: string;
-  occupation: string;
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
+  dob : {
+    day: string;
+    month: string;
+    year: string;
   };
   identification: IdentificationDocument;
   options: string[];
@@ -250,14 +241,7 @@ export interface GoalsInfoFormData {
   investmentType: string;
 }
 export interface RiskInfoFormData {
-  riskAttitude: string;
   riskTolerance: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
 }
 
 export interface KnowledgeInfoFormData {
