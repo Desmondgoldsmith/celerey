@@ -16,10 +16,10 @@ export interface SocialSignupButtonProps {
 export interface AuthState {
   isAuthenticated: boolean;
   accessToken: string | null;
-  user: any;
+  user: unknown;
   loading: boolean;
   error: string;
-  setAuth: (data: { accessToken: string; user: any }) => void;
+  setAuth: (data: { accessToken: string; user: unknown }) => void;
   sendOTP: (email: string) => Promise<void>;
   validateOTP: (otp: string) => Promise<void>;
   logout: () => void;

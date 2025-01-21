@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Info, MoreHorizontal } from "lucide-react";

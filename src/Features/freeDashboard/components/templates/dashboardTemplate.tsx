@@ -36,7 +36,7 @@ const DEFAULT_USER_DATA = {
   profileCompletion: 40,
 };
 
-// Mobile components remain the same
+// Mobile component
 const MobileGreeting: React.FC<{ userName: string }> = ({ userName }) => (
   <div className="mb-6 lg:hidden">
     <div className="text-center items-center mb-4">
