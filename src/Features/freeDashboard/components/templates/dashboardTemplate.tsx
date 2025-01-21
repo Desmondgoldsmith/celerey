@@ -5,7 +5,7 @@ import { ChartType } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import { BalanceOverview } from "../molecules/balanceOverview";
-import { RiskAllocation } from "../molecules/riskAllocationCharts";
+import RiskAllocation from "../molecules/riskAllocationCharts";
 import { AssetAllocation } from "../molecules/assetAllocationChart";
 import { Goals } from "../molecules/goalsChart";
 import { UserProfile } from "../molecules/userProfile";
@@ -129,12 +129,12 @@ const DashboardTemplate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-[1440px] mx-auto">
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-[1990px] mx-auto">
         {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
+        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-4">
           {/* Left Column */}
-          <div className="col-span-4 space-y-6">
+          <div className="col-span-4 space-y-5">
             <UserProfile
               userName={userName}
               netWorth={netWorth}
@@ -146,7 +146,7 @@ const DashboardTemplate: React.FC = () => {
           </div>
 
           {/* Middle Column */}
-          <div className="col-span-5 space-y-6">
+          <div className="col-span-5 space-y-5">
             <BalanceOverview
               totalExpenses={INITIAL_EXPENSE_DATA.totalExpenses}
               data={INITIAL_EXPENSE_DATA.categories}
@@ -157,8 +157,8 @@ const DashboardTemplate: React.FC = () => {
           </div>
 
           {/* Right Column */}
-          <div className="col-span-3 space-y-6">
-            <RiskAllocation Chart={Chart} />
+          <div className="col-span-3 space-y-5">
+            <RiskAllocation />
             <AssetAllocation Chart={Chart} />
             <IncomeVsExpenditure Chart={Chart} />
           </div>
@@ -177,7 +177,7 @@ const DashboardTemplate: React.FC = () => {
             <MobileActionItems />
           </div>
           <Goals Chart={Chart} />
-          <RiskAllocation Chart={Chart} />
+          <RiskAllocation />
           <AssetAllocation Chart={Chart} />
           <IncomeVsExpenditure Chart={Chart} />
           <IncomeVsExpenditure Chart={Chart} />

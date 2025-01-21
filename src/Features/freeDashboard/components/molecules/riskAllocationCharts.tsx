@@ -1,139 +1,133 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Info, MoreHorizontal } from "lucide-react";
-import { ApexOptions } from "apexcharts";
-import { ChartType } from "../../types";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-interface RiskAllocationProps {
-  Chart: ChartType;
+interface RiskData {
+  name: string;
+  value: number;
+  color: string;
 }
 
-export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
+interface ProgressData {
+  month: string;
+  amount: number;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    payload: ProgressData;
+  }>;
+}
+
+// Main component interface with required props
+interface RiskAllocationProps {}
+
+const RiskAllocation: React.FC<RiskAllocationProps> = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // Financial data constants
   const financialGoal = 54000;
   const currentAmount = 1329;
   const targetAmount = 2571;
   const monthsToGoal = 21;
 
-  // Gauge chart configuration for risk level
-  const gaugeChartOptions: ApexOptions = {
-    chart: {
-      type: "radialBar",
-      height: 250,
-      sparkline: {
-        enabled: true,
-      },
-    },
-    colors: ["#4ADE80"],
-    plotOptions: {
-      radialBar: {
-        startAngle: 0,
-        endAngle: 90,
-        hollow: {
-          size: "55%",
-        },
-        track: {
-          background: "#808285",
-          strokeWidth: "100%",
-        },
-        dataLabels: {
-          name: {
-            show: true,
-            color: "#111827",
-            fontSize: "16px",
-            fontWeight: "500",
-            offsetY: 10,
-            fontFamily: "Helvetica",
-          },
-          value: {
-            show: false,
-          },
-        },
-      },
-    },
-    labels: ["Low"],
-  };
-
-  // Area chart configuration for progress visualization
-  const areaChartOptions: ApexOptions = {
-    chart: {
-      type: "area",
-      toolbar: {
-        show: false,
-      },
-      sparkline: {
-        enabled: true,
-      },
-    },
-    stroke: {
-      curve: "smooth",
-      width: 2,
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.45,
-        opacityTo: 0.05,
-        stops: [0, 100],
-      },
-    },
-    colors: ["#2563eb"],
-    xaxis: {
-      labels: {
-        show: false,
-      },
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
-    },
-    yaxis: {
-      labels: {
-        show: false,
-      },
-    },
-    grid: {
-      show: false,
-    },
-    tooltip: {
-      enabled: false,
-    },
-  };
-
-  // Sample data for the area chart
-  const areaChartSeries = [
-    {
-      name: "Progress",
-      data: [30, 150, 50, 120, 80, 150, 60, 100, 50, 130, 80, 100],
-    },
+  // Risk gauge data
+  const riskData: RiskData[] = [
+    { name: "Risk", value: 60, color: "#4ADE80" },
+    { name: "Remaining", value: 40, color: "#808285" },
   ];
 
-  return (
-    <Card className="p-4">
-      {/* Header */}
+  // Progress chart data with all months
+  const progressData: ProgressData[] = [
+    { month: "Jan", amount: 800 },
+    { month: "Feb", amount: 1200 },
+    { month: "Mar", amount: 900 },
+    { month: "Apr", amount: 1500 },
+    { month: "May", amount: 1100 },
+    { month: "Jun", amount: 1800 },
+    { month: "Jul", amount: 1300 },
+    { month: "Aug", amount: 1600 },
+    { month: "Sep", amount: 1400 },
+    { month: "Oct", amount: 1700 },
+    { month: "Nov", amount: 1500 },
+    { month: "Dec", amount: 1800 },
+  ];
 
-      <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
+  // Format currency for axis labels
+  const formatCurrency = (value: number): string =>
+    `$${value.toLocaleString()}`;
+
+  // Custom tooltip with proper typing
+  const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload }) => {
+    if (active && payload && payload.length > 0) {
+      return (
+        <div className="bg-white p-2 border border-gray-200 rounded-md shadow-sm">
+          <p className="text-sm font-medium text-gray-900">
+            ${payload[0].value.toLocaleString()}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <Card className="p-4 w-full" ref={containerRef}>
+      {/* Header section remains the same */}
+      <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-3">
         <h2 className="text-xl font-cirka text-navy">Risk Allocation</h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
+        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-600 transition-colors" />
       </div>
 
       {/* Risk Summary Section */}
       <div className="mb-6">
-        <div className="flex items-center gap-1 mb-3">
-          <span className="text-sm text-gray-600">Risk Summary</span>
-          <Info className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-medium text-gray-700">
+            Risk Summary
+          </span>
+          <Info className="h-4 w-4 text-gray-400 cursor-help" />
         </div>
-        <div className="h-32">
-          <Chart
-            options={gaugeChartOptions}
-            series={[60]}
-            type="radialBar"
-            height="100%"
-          />
+
+        <div className="relative h-32 flex justify-center items-center">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={riskData}
+                cx="50%"
+                cy="50%"
+                startAngle={180}
+                endAngle={0}
+                innerRadius="60%"
+                outerRadius="80%"
+                paddingAngle={0}
+                dataKey="value"
+              >
+                {riskData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <div className="text-lg font-bold text-gray-900">Low</div>
+            <div className="text-xs text-gray-600">Risk</div>
+          </div>
         </div>
+
         <p className="text-xs text-gray-600 text-center mt-2 mb-4">
           Based on the risk assessment you are a Low Risk individual who might
           be a bit more passive about investing in financial instruments.
@@ -142,15 +136,17 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
 
       {/* Financial Goal Section */}
       <div className="mb-6">
-        <div className="flex items-center gap-1 mb-3">
-          <span className="text-sm text-gray-600">Financial Goal</span>
-          <Info className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-sm font-medium text-gray-700">
+            Financial Goal
+          </span>
+          <Info className="h-4 w-4 text-gray-400 cursor-help" />
         </div>
         <div className="flex justify-between items-center mb-1">
-          <span className="text-2xl font-bold">
+          <span className="text-2xl font-bold text-gray-900">
             ${financialGoal.toLocaleString()}
           </span>
-          <button className="bg-orange-500 text-white text-xs px-3 py-1 rounded">
+          <button className="bg-orange-500 hover:bg-orange-600 text-white text-xs px-3 py-1 rounded transition-colors">
             Change Goal
           </button>
         </div>
@@ -159,25 +155,63 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
         </div>
       </div>
 
-      {/* Progress Chart */}
-      <div className="h-24 mb-4">
-        <Chart
-          options={areaChartOptions}
-          series={areaChartSeries}
-          type="area"
-          height="100%"
-        />
+      {/* Progress Chart - Optimized for space */}
+      <div className="h-40">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart
+            data={progressData}
+            margin={{ top: 5, right: 0, left: -25, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#2563eb" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="month"
+              tick={{ fontSize: 10 }}
+              tickLine={false}
+              axisLine={false}
+              interval={0}
+            />
+            <YAxis
+              tickFormatter={formatCurrency}
+              tick={{ fontSize: 5 }}
+              tickLine={false}
+              axisLine={false}
+              tickCount={5}
+            />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              vertical={false}
+              opacity={0.3}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey="amount"
+              stroke="#2563eb"
+              fillOpacity={1}
+              fill="url(#colorAmount)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
 
-      {/* Progress Bar */}
+      {/* Progress Bar and Months to Goal sections remain the same */}
       <div className="mb-2">
         <div className="flex justify-between text-sm mb-1">
-          <span>${currentAmount.toLocaleString()}</span>
-          <span className="font-bold">${targetAmount.toLocaleString()}</span>
+          <span className="font-medium text-gray-700">
+            ${currentAmount.toLocaleString()}
+          </span>
+          <span className="font-bold text-gray-900">
+            ${targetAmount.toLocaleString()}
+          </span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-purple-600 rounded-full"
+            className="h-full bg-purple-600 rounded-full transition-all duration-500"
             style={{ width: `${(currentAmount / targetAmount) * 100}%` }}
           />
         </div>
@@ -186,10 +220,11 @@ export const RiskAllocation: React.FC<RiskAllocationProps> = ({ Chart }) => {
         </div>
       </div>
 
-      {/* Months to Goal */}
-      <div className="text-sm text-gray-600 text-right">
+      <div className="text-sm font-medium text-gray-700 text-right">
         {monthsToGoal} Months To Achieve Goal
       </div>
     </Card>
   );
 };
+
+export default RiskAllocation;
