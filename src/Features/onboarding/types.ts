@@ -80,13 +80,30 @@ export interface DateOfBirthScreenProps {
 
 export interface BioDataScreenProps {
   value: {
-    firstName: string;
-    lastName: string;
-    dob: {
-      day: string;
-      month: string;
-      year: string;
-    };
+   
+
+  prefix: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  dob: {
+
+    day: string;
+
+    month: string;
+
+    year: string;
+
+  };
+
+  citizenship: string;
+
+  residentCountry: string;
+
+  dualCitizenship?: string;
+
   };
   onChange: (value: {
     firstName: string;
@@ -209,6 +226,7 @@ export interface OnboardingState {
 
 // PersonalInfo form data type
 export interface PersonalInfoFormData {
+  prefix: string;
   firstName: string;
   lastName: string;
   dob : {
@@ -216,6 +234,9 @@ export interface PersonalInfoFormData {
     month: string;
     year: string;
   };
+  citizenship: string;
+  dualCitizenship: string;
+  residentCountry: string;
   identification: IdentificationDocument;
   options: string[];
 }

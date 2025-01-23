@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { FormInput } from "../../molecules/formInput";
 import { BioDataScreenProps } from "@/Features/onboarding/types";
+import { citizenshipOptions } from "@/Features/onboarding/constants";
 
+
+const prefixOptions = ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."];
 
 export const BioDataScreen = ({
   value,
@@ -12,28 +15,18 @@ export const BioDataScreen = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (
+      value.prefix &&
       value.firstName.trim() &&
       value.lastName.trim() &&
       value.dob.day &&
       value.dob.month &&
-      value.dob.year
+      value.dob.year &&
+      value.citizenship &&
+      value.residentCountry
     ) {
       onContinue();
     }
   };
-  // const [values, setValues] = useState({
-  //   firstNAme: "",
-  //   lastName: "",
-  //   dob: {
-  //     day: "",
-  //     month: "",
-  //     year: "",
-  //   },
-  // });
-
-  // const changeValues = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setValues({ ...values, [e.target.name]: e.target.value });
-  // };
 
   return (
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
@@ -44,25 +37,41 @@ export const BioDataScreen = ({
       </h1>
       <p className="text-gray-600 mb-8">
         We need your first name as it&apos;s written on your passport or any
-        other forms of identification
+        other forms of identification.
       </p>
+
       <div className="flex flex-col gap-4">
+        {/* Prefix Dropdown */}
+        <select
+          value={value.prefix}
+          onChange={(e) => onChange({ ...value, prefix: e.target.value })}
+          required
+          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+        >
+          <option value="" disabled hidden>
+            Prefix
+          </option>
+          {prefixOptions.map((prefix) => (
+            <option key={prefix} value={prefix}>
+              {prefix}
+            </option>
+          ))}
+        </select>
+
+        {/* First Name Input */}
         <FormInput
           name="firstName"
           id="firstName"
           placeholder="First Name"
           value={value.firstName}
-          // onChange={(e) => {
-          //   console.log("Event", e);
-          //   changeValues(e);
-          // }}
           onChange={(e) => {
-            // console.log("Event", e);
             onChange({ ...value, firstName: e.target.value });
           }}
           required
           type="text"
         />
+
+        {/* Last Name Input */}
         <FormInput
           placeholder="Last Name"
           value={value.lastName}
@@ -70,7 +79,9 @@ export const BioDataScreen = ({
           required
           type="text"
         />
-        <div className="flex gap-4 justify-center items-center space-x-4 text-sm">
+
+        {/* Date of Birth Dropdowns */}
+        <div className="flex gap-4 justify-center items-center text-sm">
           <select
             value={value.dob.day}
             onChange={(e) =>
@@ -79,7 +90,7 @@ export const BioDataScreen = ({
             required
             className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
           >
-            <option value="" disabled hidden className="text-gray-500">
+            <option value="" disabled hidden>
               Day
             </option>
             {[...Array(31).keys()].map((day) => (
@@ -88,6 +99,7 @@ export const BioDataScreen = ({
               </option>
             ))}
           </select>
+
           <select
             value={value.dob.month}
             onChange={(e) =>
@@ -119,6 +131,7 @@ export const BioDataScreen = ({
               </option>
             ))}
           </select>
+
           <select
             value={value.dob.year}
             onChange={(e) =>
@@ -138,7 +151,59 @@ export const BioDataScreen = ({
             ))}
           </select>
         </div>
+
+        {/* Citizenship Dropdown */}
+        <select
+          value={value.citizenship}
+          onChange={(e) => onChange({ ...value, citizenship: e.target.value })}
+          required
+          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+        >
+          <option value="">Select Country</option>
+
+          {citizenshipOptions.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+
+        {/* Dual Citizenship Dropdown (Optional) */}
+        <select
+          value={value.dualCitizenship}
+          onChange={(e) =>
+            onChange({ ...value, dualCitizenship: e.target.value })
+          }
+          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+        >
+          <option value="">Do you hold dual citizenship? (Optional)</option>
+          {citizenshipOptions.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+
+        {/* Resident Country Dropdown */}
+        <select
+          value={value.residentCountry}
+          onChange={(e) =>
+            onChange({ ...value, residentCountry: e.target.value })
+          }
+          required
+          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+        >
+          <option value="">Select Country</option>
+
+          {citizenshipOptions.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Action Buttons */}
       <div className="flex gap-4 mt-8">
         <Button
           type="button"
@@ -149,14 +214,17 @@ export const BioDataScreen = ({
           Back
         </Button>
         <Button
-          type="submit"
+          onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
           disabled={
+            !value.prefix ||
             !value.firstName.trim() ||
             !value.lastName.trim() ||
             !value.dob.day ||
             !value.dob.month ||
-            !value.dob.year
+            !value.dob.year ||
+            !value.citizenship ||
+            !value.residentCountry
           }
         >
           Continue

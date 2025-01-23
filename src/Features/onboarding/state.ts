@@ -21,7 +21,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   personal: {
     id: "personal",
     title: "Personal Information",
-    totalSteps: 4,
+    totalSteps: 3,
     currentStep: 0,
     isCompleted: false,
     isActive: true,
@@ -71,6 +71,7 @@ interface OnboardingFormData {
 // setting the shape of the onboarding data
 const DEFAULT_FORM_DATA: OnboardingFormData = {
   personal: {
+    prefix: "",
     firstName: "",
     lastName: "",
     dob: {
@@ -78,6 +79,9 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       month: "",
       year: "",
     },
+    citizenship: "",
+    dualCitizenship: "",
+    residentCountry: "",
     identification: {
       type: "",
       file: null,

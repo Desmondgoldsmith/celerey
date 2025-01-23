@@ -6,10 +6,10 @@ import { SectionId, useOnboardingStore } from "@/Features/onboarding/state";
 import { PersonalInfoSchema } from "@/Features/onboarding/schema";
 import { WelcomeTemplate } from "@/Features/onboarding/components/templates/personalInfoTemplates/welcomeTemplate";
 import { BioDataScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/bioDataScreen";
-import { IdentificationScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/identificationScreen";
 import { OptionsSelectionScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/optionsSelectionScreen";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
+import { SECTIONS } from "@/Features/onboarding/constants";
 
 export default function PersonalInfo() {
   const router = useRouter();
@@ -52,18 +52,17 @@ export default function PersonalInfo() {
     switch (currentStepIndex) {
       case 1:
         return !!(
+          data.prefix &&
           data.firstName.trim() &&
           data.lastName.trim() &&
           data.dob.day &&
           data.dob.month &&
-          data.dob.year
+          data.dob.year &&
+          data.citizenship &&
+          data.residentCountry &&
+          data.dualCitizenship
         );
       case 2:
-         return !!(
-           data.identification.type &&
-           data.identification.uploadStatus === "completed"
-         );
-      case 3:
         return data.options.length > 0;
       default:
         return true;
@@ -80,13 +79,7 @@ export default function PersonalInfo() {
 
   const getNextSection = useCallback(
     (currentSectionId: SectionId): SectionId | null => {
-      const sectionOrder: SectionId[] = [
-        "personal",
-        "financial",
-        "goals",
-        "risk",
-        "knowledge",
-      ];
+      const sectionOrder: SectionId[] = SECTIONS.map(section => section.id);
       const currentIndex = sectionOrder.indexOf(currentSectionId);
       return currentIndex < sectionOrder.length - 1
         ? sectionOrder[currentIndex + 1]
@@ -95,7 +88,6 @@ export default function PersonalInfo() {
     []
   );
 
-  // And then in handleContinue:
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
     const isLastStep =
@@ -133,11 +125,12 @@ export default function PersonalInfo() {
 
     switch (currentStepIndex) {
       case 0:
-          return <WelcomeTemplate onStart={handleContinue} />;
+        return <WelcomeTemplate onStart={handleContinue} />;
       case 1:
         return (
           <BioDataScreen
             value={{
+              prefix: personalData.prefix,
               firstName: personalData.firstName,
               lastName: personalData.lastName,
               dob: {
@@ -145,23 +138,16 @@ export default function PersonalInfo() {
                 month: personalData.dob.month,
                 year: personalData.dob.year,
               },
+              citizenship: personalData.citizenship,
+              residentCountry: personalData.residentCountry,
+              dualCitizenship: personalData.dualCitizenship,
             }}
             onChange={handleFormUpdate}
             onBack={handleBack}
             onContinue={handleContinue}
           />
         );
-    
       case 2:
-        return (
-          <IdentificationScreen
-            value={personalData.identification}
-            onChange={(value) => handleFormUpdate({ identification: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 3:
         return (
           <OptionsSelectionScreen
             value={personalData.options}

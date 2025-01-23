@@ -1,4 +1,5 @@
 export interface PersonalInfoSchema {
+  prefix : string;
   firstName: string;
   lastName: string;
   dob:{
@@ -6,12 +7,9 @@ export interface PersonalInfoSchema {
     month: string;
     year: string;
   }
-  identification: {
-    type: string;
-    file: File | null;
-    fileName: string;
-    uploadStatus: "idle" | "uploading" | "completed" | "error";
-  };
+  citizenship: string;
+  dualCitizenship: string;
+  residentCountry: string;
   options: string[];
 }
 
