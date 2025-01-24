@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { ChartType } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
-import { PortfolioChart } from "../molecules/portfolioChart";
+import BalanceOverview from "../molecules/balanceOverview";
 import { GeographicSpread } from "../molecules/geographicSpread";
 import { RiskAllocation } from "../molecules/riskAllocationCharts";
 import { AssetAllocation } from "../molecules/assetAllocationChart";
@@ -128,17 +128,18 @@ const DashboardTemplate: React.FC = () => {
 
           {/* Middle Column */}
           <div className="col-span-5 space-y-6">
-            <PortfolioChart
+            <BalanceOverview
               Chart={Chart}
               timeframe={timeframe}
               onTimeframeChange={setTimeframe}
             />
-            <GeographicSpread />
+            {/* <GeographicSpread /> */}
           </div>
 
           {/* Right Column */}
           <div className="col-span-3 space-y-6">
-            <RiskAllocation Chart={Chart} />
+            {/* <RiskAllocation Chart={Chart} /> */}
+            <GeographicSpread />
             <AssetAllocation Chart={Chart} />
             <IncomeVsExpenditure Chart={Chart} />
           </div>
@@ -148,7 +149,7 @@ const DashboardTemplate: React.FC = () => {
         <div className="lg:hidden space-y-6">
           <MobileGreeting userName={userName} />
           <MobileNetWorth netWorth={netWorth} />
-          <PortfolioChart
+          <BalanceOverview
             Chart={Chart}
             timeframe={timeframe}
             onTimeframeChange={setTimeframe}

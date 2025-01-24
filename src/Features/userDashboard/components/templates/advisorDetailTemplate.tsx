@@ -1,12 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { InlineWidget } from "react-calendly";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import UserProfile from "../molecules/userProfile";
 import { Advisor } from "../../types";
-import { CALENDLY_CONFIG } from "../../calendly";
 
 interface AdvisorDetailsTemplateProps {
   advisor: Advisor;
@@ -24,12 +22,6 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
   investmentExperience,
 }) => {
   const router = useRouter();
-  const [isCalendlyLoading, setCalendlyLoading] = useState(true);
-
-  // Function to construct the Calendly URL
-  const getCalendlyUrl = (advisor: Advisor) => {
-    return `${CALENDLY_CONFIG.baseUrl}/${advisor.calendlyUrl}`;
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -105,34 +97,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                   </div>
                 </div>
 
-                {/* Calendly Integration */}
-                <div className="border-t pt-8">
-                  <h2 className="text-xl font-cirka text-navy mb-6">
-                    Schedule a Virtual Consultation
-                  </h2>
-                  <div className="h-[700px] relative">
-                    {isCalendlyLoading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-                        <div className="text-navy">Loading calendar...</div>
-                      </div>
-                    )}
-                    <InlineWidget
-                      url={getCalendlyUrl(advisor)}
-                      styles={{
-                        height: "100%",
-                        width: "100%",
-                      }}
-                      prefill={{
-                        email: "desmondgoldsmith07@gmail.com",
-                        firstName: userName,
-                        lastName: "",
-                        name: userName,
-                      }}
-                      pageSettings={CALENDLY_CONFIG.settings}
-                      onReady={() => setCalendlyLoading(false)}
-                    />
-                  </div>
-                </div>
+                {/* google calendar */}
               </div>
             </div>
           </div>

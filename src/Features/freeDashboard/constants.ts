@@ -27,7 +27,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Rory Walker",
     title: "Financial Planner",
     bio: "Rory Walker is an experienced financial planner with over a decade of helping clients achieve their financial goals...",
-    imageUrl: "/assets/rory-walker.svg",
+    imageUrl: "/assets/Rory.png",
     specialties: [
       "Investment Planning",
       "Retirement Planning",
@@ -47,7 +47,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Angela Appiah",
     title: "International Real Estate Broker",
     bio: "Angela Appiah is a seasoned international real estate broker with extensive knowledge of global property markets...",
-    imageUrl: "/assets/angela-appiah.svg",
+    imageUrl: "/assets/Angela-Appiah.png",
     specialties: [
       "International Real Estate",
       "Property Investment",
