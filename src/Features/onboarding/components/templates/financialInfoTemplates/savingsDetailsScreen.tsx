@@ -71,8 +71,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
             hasEmergencyFunds: localFormData.hasEmergencyFunds,
             emergencyFund: localFormData.emergencyFund,
           }}
-          onChange={(field, value) =>
-            handleFormUpdate("hasEmergencyFunds", field, value)
+          onChange={(field, value) =>{ 
+            console.log("Test", field, value);
+            handleFormUpdate("hasEmergencyFunds", field, value)}
+           
           }
         />
         <DebtSection

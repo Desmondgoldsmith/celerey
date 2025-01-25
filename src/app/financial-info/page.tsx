@@ -79,22 +79,22 @@ export default function FinancialInfo() {
           parseFloat(data.liabilities.assetFinance) >= 0 &&
           parseFloat(data.liabilities.otherLiabilities) >= 0
         );
-      case 5: // Emergency funds validation
-        return (
-          data.hasEmergencyFunds === "no" ||
-          (data.hasEmergencyFunds === "yes" &&
-            parseFloat(data.emergencyFund || "0") >= 0)
+      case 5:   return (
+          parseFloat(data.savings.currentSavings || "0") >= 0 &&
+          parseFloat(data.savings.targetSavings || "0") >= 0
         );
+        
       case 6: // Debt validation
         return (
           data.hasDebt === "no" ||
           (data.hasDebt === "yes" &&
             parseFloat(data.debt || "0") >= 0)
         );
-      case 7: // Savings validation
-        return (
-          parseFloat(data.savings.currentSavings || "0") >= 0 &&
-          parseFloat(data.savings.targetSavings || "0") >= 0
+      case 7:
+      return (
+          data.hasEmergencyFunds === "no" ||
+          (data.hasEmergencyFunds === "yes" &&
+            parseFloat(data.emergencyFund || "0") >= 0)
         );
       case 8: // Retirement goals validation
         return (
