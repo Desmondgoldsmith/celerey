@@ -112,7 +112,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       {/* Consultation Button */}
       <div className="space-y-2 bg-gray-50 mb-10">
         <div className="flex items-center justify-between  rounded-lg">
-          <div className="flex items-center  p-4 gap-4">
+          <div className="flex items-center  p-2 gap-4">
             <div className="flex-shrink-0">
               <Image
                 src="/assets/consultation.svg"

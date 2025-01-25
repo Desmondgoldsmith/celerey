@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ChevronRight, Info } from "lucide-react";
+import Link from "next/link";
 // import { useRouter } from "next/navigation";
 
 interface UserProfileProps {
@@ -113,7 +114,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       {/* Consultation Button */}
       <div className="space-y-2 bg-gray-50 mb-10">
         <div className="flex items-center justify-between  rounded-lg">
-          <div className="flex items-center  p-4 gap-4">
+          <div className="flex items-center  p-2 gap-4">
             <div className="flex-shrink-0">
               <Image
                 src="/assets/consultation.svg"
@@ -125,9 +126,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <span className="font-medium">Book 15 Minutes Consultation</span>
           </div>
-          <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
-            <ChevronRight className="h-5 w-5 text-white" />
-          </button>
+          <Link href="/advisors" passHref>
+            <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
+              <ChevronRight className="h-5 w-5 text-white" />
+            </button>
+          </Link>
         </div>
         {/* Bottom Border */}
         <div className="border-b bg-gray-50 border-gray-200 p-4 " />

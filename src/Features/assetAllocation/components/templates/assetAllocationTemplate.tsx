@@ -37,8 +37,8 @@ const RiskChart: React.FC<{ value: number; color: string; label: string }> = ({
           startAngle: -135,
           endAngle: 135,
           hollow: {
-            margin: 0,
-            size: "58%",
+            margin: 5,
+            size: "50%",
           },
           track: {
             background:

@@ -28,7 +28,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Rory Walker",
     title: "Financial Planner",
     bio: "Rory Walker is an experienced financial planner with over a decade of helping clients achieve their financial goals...",
-    imageUrl: "/assets/Rory.png",
+    imageUrl: "/assets/Rory.jpg.png",
     specialties: [
       "Investment Planning",
       "Retirement Planning",
@@ -70,7 +70,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Graham Goff",
     title: "Retirement Planner",
     bio: "Graham Goff is a retirement planner with a passion for helping clients achieve a secure and fulfilling retirement future...",
-    imageUrl: "/assets/graham-goff.svg",
+    imageUrl: "/assets/graham.png",
     specialties: [
       "Retirement Planning",
       "Pension Optimization",
@@ -91,7 +91,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Sarah Patel",
     title: "Wealth Manager",
     bio: "Sarah Patel is an experienced wealth manager specializing in comprehensive financial planning and investment strategies...",
-    imageUrl: "/assets/sarah-patel.svg",
+    imageUrl: "/assets/mina.png",
     specialties: [
       "Wealth Management",
       "Asset Allocation",
@@ -112,7 +112,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
     name: "Charles Amoah",
     title: "Mortgage Broker",
     bio: "Charles Amoah is a dedicated mortgage broker with a strong background in finance and real estate financing solutions...",
-    imageUrl: "/assets/charles-amoah.svg",
+    imageUrl: "/assets/charles.png",
     specialties: [
       "Mortgage Planning",
       "Real Estate Financing",

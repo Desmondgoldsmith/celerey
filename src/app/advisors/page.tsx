@@ -3,9 +3,10 @@ import { DashboardLayout } from "@/Features/userDashboard/components/templates/d
 
 const DEFAULT_USER_DATA = {
   userName: "Jude",
-  netWorth: 103550.43,
-  riskAttitude: "Somewhat Aggressive",
-  investmentExperience: "Advanced",
+  netWorth: 103550.0,
+  riskAttitude: "Low",
+  investmentExperience: "Beginner",
+  profileCompletion: 40,
 };
 
 export default function AdvisorsPage() {

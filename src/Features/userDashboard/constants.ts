@@ -20,6 +20,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Economics background",
       "Client-centric approach",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "rory-walker",
@@ -39,6 +41,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Retirement strategies",
       "Wealth preservation",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "angela-appiah",
@@ -58,6 +62,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Cross-border transactions",
       "Market trend analysis",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "graham-goff",
@@ -77,12 +83,14 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Risk management",
       "Estate planning",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
-    id: "mina-sharma",
-    name: "Mina Sharma",
+    id: "sarah-patel",
+    name: "Sarah Patel",
     title: "Wealth Manager",
-    bio: "Mina Sharma is an experienced wealth manager specializing in comprehensive financial planning and investment strategies...",
+    bio: "Sarah Patel is an experienced wealth manager specializing in comprehensive financial planning and investment strategies...",
     imageUrl: "/assets/mina.png",
     specialties: [
       "Wealth Management",
@@ -96,6 +104,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Wealth preservation",
       "Family office services",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "charles-amoah",
@@ -115,5 +125,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Credit analysis",
       "Property valuation",
     ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
 ];

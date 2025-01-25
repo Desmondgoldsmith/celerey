@@ -17,20 +17,20 @@ interface BalanceOverviewProps {
   Chart: ChartType;
   timeframe: TimeframeKey;
   onTimeframeChange: (timeframe: TimeframeKey) => void;
-  annualIncome: {
-    Rental: number;
-    Dividends: number;
-    "Interest Income": number;
-    "Other Income": number;
-  };
-  annualExpenditure: {
-    Home: number;
-    Childcare: number;
-    Education: number;
-    Healthcare: number;
-    Travel: number;
-    Giving: number;
-  };
+  // annualIncome: {
+  //   Rental: number;
+  //   Dividends: number;
+  //   "Interest Income": number;
+  //   "Other Income": number;
+  // };
+  // annualExpenditure: {
+  //   Home: number;
+  //   Childcare: number;
+  //   Education: number;
+  //   Healthcare: number;
+  //   Travel: number;
+  //   Giving: number;
+  // };
 }
 
 const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {

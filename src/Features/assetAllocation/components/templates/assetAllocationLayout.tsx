@@ -90,7 +90,7 @@ export const AssetAllocationLayout: React.FC<AssetAllocationLayoutProps> = ({
       <footer className="border-t bg-white">
         <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <span className="text-sm font-helvetica text-gray-500">
-            © Celerey 2024
+            © Celerey 2025
           </span>
           <div className="flex gap-4">
             {footerLinks.map((link) => (

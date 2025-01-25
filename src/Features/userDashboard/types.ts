@@ -71,6 +71,7 @@ export interface Advisor {
   imageUrl: string;
   specialties: string[];
   strengths: string[];
+  googleCalendarUrl: string;
 }
 
 export interface Goal {
