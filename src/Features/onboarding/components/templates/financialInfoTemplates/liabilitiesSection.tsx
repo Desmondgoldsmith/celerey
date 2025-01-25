@@ -19,8 +19,6 @@ interface LiabilitiesSectionProps {
 const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
   values,
   onChange,
-  onBack,
-  onContinue,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

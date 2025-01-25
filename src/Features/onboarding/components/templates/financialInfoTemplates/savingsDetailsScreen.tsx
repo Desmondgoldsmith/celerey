@@ -65,8 +65,6 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
         <SavingsSection
           values={localFormData.savings}
           onChange={(field, value) => handleFormUpdate("savings", field, value)}
-          onBack={onBack}
-          onContinue={onContinue}
         />
         <EmergencyFundsSection
           values={{
@@ -76,14 +74,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
           onChange={(field, value) =>
             handleFormUpdate("hasEmergencyFunds", field, value)
           }
-          onBack={onBack}
-          onContinue={onContinue}
         />
         <DebtSection
           values={{ hasDebt: localFormData.hasDebt, debt: localFormData.debt }}
           onChange={(field, value) => handleFormUpdate("hasDebt", field, value)}
-          onBack={onBack}
-          onContinue={onContinue}
         />
       </div>
       <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">

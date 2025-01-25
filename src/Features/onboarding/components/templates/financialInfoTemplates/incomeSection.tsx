@@ -15,7 +15,7 @@ interface IncomeSectionProps {
   onContinue: () => void;
 }
 
-const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack, onContinue }) => {
+const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {

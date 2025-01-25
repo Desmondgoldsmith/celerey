@@ -18,8 +18,6 @@ interface AssetsSectionProps {
 const AssetsSection: React.FC<AssetsSectionProps> = ({
   values,
   onChange,
-  onBack,
-  onContinue,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

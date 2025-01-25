@@ -20,8 +20,6 @@ interface ExpensesSectionProps {
 const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   values,
   onChange,
-  onBack,
-  onContinue,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

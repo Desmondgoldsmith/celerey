@@ -9,6 +9,7 @@ import { OnboardingLayout } from "@/Features/onboarding/components/templates/sha
 import { CurrencyScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/currencyScreen";
 import { FinancialDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/financialDetailsScreen";
 import { SavingsDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/savingsDetailsScreen";
+import { NetWorthScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/networthScreen";
 
 export default function FinancialInfo() {
   const router = useRouter();
@@ -196,6 +197,8 @@ export default function FinancialInfo() {
             onContinue={handleContinue}
           />
         );
+      case 3:
+        return<NetWorthScreen onContinue={handleContinue} onBack={handleBack} />;
       default:
         return null;
     }

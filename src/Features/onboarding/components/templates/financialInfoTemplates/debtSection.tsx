@@ -9,15 +9,11 @@ interface DebtSectionProps {
     debt: string;
   };
   onChange: (field: string, value: string) => void;
-  onBack: () => void;
-  onContinue: () => void;
 }
 
 const DebtSection: React.FC<DebtSectionProps> = ({
   values,
   onChange,
-  onBack,
-  onContinue,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -86,14 +82,15 @@ const DebtSection: React.FC<DebtSectionProps> = ({
             </div>
           )}
         </div>
-        <div className="flex gap-4 mt-4">
-          <Button variant="outline" onClick={onBack} className="flex-1">
+    <div className="flex gap-4 mt-4">
+          <Button variant="outline"   onClick={() => {
+              setIsModalOpen(false);
+            }} className="flex-1">
             Back
           </Button>
           <Button
             onClick={() => {
               setIsModalOpen(false);
-              onContinue();
             }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
