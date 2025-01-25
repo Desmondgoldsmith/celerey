@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { ChevronRight, Info } from "lucide-react";
-// import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface UserProfileProps {
   userName: string;
@@ -19,7 +19,6 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   investmentExperience,
   profileCompletion,
 }) => {
-  // const router = useRouter();
   const currentDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     year: "numeric",
@@ -125,9 +124,11 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <span className="font-medium">Book 15 Minutes Consultation</span>
           </div>
-          <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
-            <ChevronRight className="h-5 w-5 text-white" />
-          </button>
+          <Link href="/freebie-account/advisors" passHref>
+            <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
+              <ChevronRight className="h-5 w-5 text-white" />
+            </button>
+          </Link>
         </div>
         {/* Bottom Border */}
         <div className="border-b bg-gray-50 border-gray-200 p-4 " />

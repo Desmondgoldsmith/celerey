@@ -1,9 +1,8 @@
 "use client";
+import { AdvisorDetailsTemplate } from "@/Features/freeDashboard/components/templates/advisorDetailTemplate";
+import { DashboardLayout } from "@/Features/freeDashboard/components/templates/dashboardLayout";
+import { DUMMY_ADVISORS } from "@/Features/freeDashboard/constants";
 import { use } from "react";
-import { AdvisorDetailsTemplate } from "@/Features/userDashboard/components/templates/advisorDetailTemplate";
-import { DUMMY_ADVISORS } from "@/Features/userDashboard/constants";
-import { DashboardLayout } from "@/Features/userDashboard/components/templates/dashboardLayout";
-
 interface AdvisorPageProps {
   params: Promise<{
     id: string;
@@ -23,7 +22,7 @@ export default function AdvisorPage({ params }: AdvisorPageProps) {
   const advisor = DUMMY_ADVISORS.find((a) => a.id === unwrappedParams.id);
 
   if (!advisor) {
-    return null;
+    return null; // t
   }
 
   return (

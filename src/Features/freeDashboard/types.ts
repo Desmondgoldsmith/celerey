@@ -77,5 +77,5 @@ export interface Advisor {
   imageUrl: string;
   specialties: string[];
   strengths: string[];
-  calendlyUrl: string;
+  googleCalendarUrl: string;
 }

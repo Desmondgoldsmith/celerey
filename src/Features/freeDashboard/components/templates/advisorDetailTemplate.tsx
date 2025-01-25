@@ -1,7 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import UserProfile from "../molecules/userProfile";
 import { Advisor } from "../../types";
@@ -22,6 +22,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
   investmentExperience,
 }) => {
   const router = useRouter();
+  const [showCalendar, setShowCalendar] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -94,7 +95,28 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                     </ul>
                   </div>
                 </div>
-                {/* calenda integration */}
+                {/* Calendar Integration */}
+                <div className="mt-6 ">
+                  <button
+                    onClick={() => setShowCalendar(!showCalendar)}
+                    className="w-full flex items-center justify-center bg-navy hover:bg-navy/90 text-white rounded-full py-3 text-sm font-medium"
+                  >
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {showCalendar ? "Hide Calendar" : "Book an Appointment"}
+                  </button>
+
+                  {showCalendar && (
+                    <div className="mt-6 w-full h-[600px] border rounded-lg overflow-hidden shadow-lg">
+                      <iframe
+                        src={advisor.googleCalendarUrl}
+                        width="100%"
+                        height="100%"
+                        frameBorder="0"
+                        title={`Book Appointment with ${advisor.name}`}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

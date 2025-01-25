@@ -85,7 +85,9 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
                         {advisor.bio}
                       </p>
                       <button
-                        onClick={() => router.push(`/advisors/${advisor.id}`)}
+                        onClick={() =>
+                          router.push(`/freebie-account/advisors/${advisor.id}`)
+                        }
                         className="w-full bg-[#28134B] hover:bg-[#28134B]/90 text-white rounded-full py-2 text-sm font-medium"
                       >
                         Book A Call

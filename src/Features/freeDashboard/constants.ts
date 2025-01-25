@@ -20,7 +20,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Economics background",
       "Client-centric approach",
     ],
-    calendlyUrl: "30min-consultation",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "rory-walker",
@@ -40,7 +41,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Retirement strategies",
       "Wealth preservation",
     ],
-    calendlyUrl: "rory-walker",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "angela-appiah",
@@ -60,7 +62,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Cross-border transactions",
       "Market trend analysis",
     ],
-    calendlyUrl: "angela-appiah",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "graham-goff",
@@ -80,7 +83,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Risk management",
       "Estate planning",
     ],
-    calendlyUrl: "graham-goff",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "sarah-patel",
@@ -100,7 +104,8 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Wealth preservation",
       "Family office services",
     ],
-    calendlyUrl: "sarah-patel",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
   {
     id: "charles-amoah",
@@ -120,6 +125,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Credit analysis",
       "Property valuation",
     ],
-    calendlyUrl: "charles-amoah",
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
   },
 ];

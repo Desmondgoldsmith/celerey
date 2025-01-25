@@ -10,7 +10,6 @@ const VectorMap = dynamic(
   { ssr: false }
 );
 
-// Import `worldMill` statically, as it's just data, not a React component
 import { worldMill } from "@react-jvectormap/world";
 
 export const GeographicSpread: React.FC = () => {
