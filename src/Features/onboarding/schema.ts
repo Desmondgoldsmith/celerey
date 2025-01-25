@@ -34,7 +34,7 @@ export interface FinancialInfoSchema {
     cash: string;
     publicSecurities: string;
     privateSecurities: string;
-    assetCountries: string[];
+    assetCountries: string[]; 
   };
   liabilities: {
     mortgages: string;

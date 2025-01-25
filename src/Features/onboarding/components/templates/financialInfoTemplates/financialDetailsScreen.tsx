@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from "next/navigation";
 import { IncomeSection } from "./incomeSection";
 import { AssetsSection } from "./assetsSection";
 import { ExpensesSection } from "./expensesSection";
@@ -9,7 +9,8 @@ import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
 const FinancialDetailsScreen: React.FC = () => {
-  const { formData, updateFormData } = useOnboardingStore();
+  const router = useRouter();
+  const { formData, updateFormData, sections, currentSection, updateSectionProgress, completeSection } = useOnboardingStore();
   const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(formData.financial);
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
@@ -46,19 +47,33 @@ const FinancialDetailsScreen: React.FC = () => {
     updateFormData("financial", updatedFormData);
   };
 
-  const handleBack = () => {
-    // Implement back navigation logic
-    console.log("Back button clicked");
-  };
-
-  const handleContinue = () => {
-    if (isSectionComplete) {
-      // Implement continue navigation logic
-      console.log("Continue button clicked");
+  const handleBack = useCallback(() => {
+    const currentStepIndex = sections[currentSection].currentStep;
+    if (currentStepIndex > 0) {
+      const newStep = currentStepIndex - 1;
+      updateSectionProgress(currentSection, newStep);
     } else {
-      alert("Please fill in all the information in the section before continuing.");
+      router.push("/personal-info");
     }
-  };
+  }, [currentSection, sections, router, updateSectionProgress]);
+
+  const handleContinue = useCallback(() => {
+    const currentStepIndex = sections[currentSection].currentStep;
+    const isLastStep = currentStepIndex === sections[currentSection].totalSteps - 1;
+
+    if (!isSectionComplete) {
+      alert("Please fill in all the information in the section before continuing.");
+      return;
+    }
+
+    if (isLastStep) {
+      completeSection("financial");
+      router.push("/goals-info");
+    } else {
+      const newStep = currentStepIndex + 1;
+      updateSectionProgress(currentSection, newStep);
+    }
+  }, [currentSection, sections, isSectionComplete, completeSection, router, updateSectionProgress]);
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">

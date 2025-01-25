@@ -95,7 +95,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
             Back
           </Button>
           <Button
-            onClick={() => { setIsModalOpen(false); onContinue(); }}
+            onClick={() => { setIsModalOpen(false); }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

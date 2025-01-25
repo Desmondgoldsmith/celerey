@@ -8,6 +8,7 @@ import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { CurrencyScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/currencyScreen";
 import { FinancialDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/financialDetailsScreen";
+import { SavingsDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/savingsDetailsScreen";
 
 export default function FinancialInfo() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function FinancialInfo() {
   } = useOnboardingStore();
 
   useEffect(() => {
-    if (!sections.personal.isCompleted) {
+    if (sections.personal && !sections.personal.isCompleted) {
       router.push("/personal-info");
       return;
     }
@@ -30,7 +31,7 @@ export default function FinancialInfo() {
     if (currentSection !== "financial") {
       setActiveSection("financial");
     }
-  }, [sections.personal.isCompleted, currentSection, router, setActiveSection]);
+  }, [sections.personal, currentSection, router, setActiveSection]);
 
   const handleFormUpdate = useCallback(
     (updates: Partial<FinancialInfoSchema>) => {
@@ -89,12 +90,17 @@ export default function FinancialInfo() {
           (data.hasDebt === "yes" &&
             parseFloat(data.debt || "0") >= 0)
         );
-      case 7: // Retirement goals validation
+      case 7: // Savings validation
+        return (
+          parseFloat(data.savings.currentSavings || "0") >= 0 &&
+          parseFloat(data.savings.targetSavings || "0") >= 0
+        );
+      case 8: // Retirement goals validation
         return (
           parseFloat(data.retirement.retirementAge || "0") > 0 &&
           parseFloat(data.retirement.targetRetirementIncome || "0") >= 0
         );
-      case 8: // Net worth
+      case 9: // Net worth
         return true;
       default:
         return true;
@@ -137,14 +143,14 @@ export default function FinancialInfo() {
   ]);
 
   const renderStep = () => {
-    const currentStepIndex = sections[currentSection].currentStep;
-    const financialData = formData.financial;
+    const currentStepIndex = sections[currentSection]?.currentStep || 0;
+    const financialData = formData.financial || {};
 
     switch (currentStepIndex) {
       case 0:
         return (
           <CurrencyScreen
-            value={financialData.currency}
+            value={financialData.currency || ""}
             onChange={(value) => handleFormUpdate({ currency: value })}
             onBack={handleBack}
             onContinue={handleContinue}
@@ -154,115 +160,38 @@ export default function FinancialInfo() {
         return (
           <FinancialDetailsScreen
             values={financialData}
-            onChange={(section, field, value) =>
+            onChange={(
+              section: keyof FinancialInfoSchema,
+              field: string,
+              value: string | number
+            ) => {
+              const sectionData =
+                (financialData[section] as Record<string, string | number>) ||
+                {};
               handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
+                [section]: { ...sectionData, [field]: value },
+              });
+            }}
             onBack={handleBack}
             onContinue={handleContinue}
           />
         );
       case 2:
         return (
-          <FinancialDetailsScreen
+          <SavingsDetailsScreen
             values={financialData}
-            onChange={(section, field, value) =>
+            onChange={(
+              section: keyof FinancialInfoSchema,
+              field: string,
+              value: string | number
+            ) => {
+              const sectionData =
+                (financialData[section] as Record<string, string | number>) ||
+                {};
               handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 3:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 4:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 5:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 6:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 7:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 8:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 9:
-        return (
-          <FinancialDetailsScreen
-            values={financialData}
-            onChange={(section, field, value) =>
-              handleFormUpdate({
-                [section]: { ...financialData[section], [field]: value },
-              })
-            }
+                [section]: { ...sectionData, [field]: value },
+              });
+            }}
             onBack={handleBack}
             onContinue={handleContinue}
           />
