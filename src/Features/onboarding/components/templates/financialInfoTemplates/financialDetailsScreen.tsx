@@ -1,70 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IncomeSection } from "./incomeSection";
 import { AssetsSection } from "./assetsSection";
 import { ExpensesSection } from "./expensesSection";
 import { LiabilitiesSection } from "./liabilitiesSection";
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
-
+import { useOnboardingStore } from "@/Features/onboarding/state";
 
 const FinancialDetailsScreen: React.FC = () => {
-  const [formData, setFormData] = useState<FinancialInfoSchema>({
-    currency: "",
-    income: {
-      rentalIncome: "",
-      dividends: "",
-      interestIncome: "",
-      otherIncome: "",
-    },
-    annualExpenses: {
-      home: "",
-      childcare: "",
-      education: "",
-      healthcare: "",
-      travel: "",
-      giving: "",
-    },
-    assets: {
-      realEstate: "",
-      cash: "",
-      publicSecurities: "",
-      privateSecurities: "",
-      assetCountries: [],
-    },
-    liabilities: {
-      mortgages: "",
-      loans: "",
-      creditCards: "",
-      assetFinance: "",
-      otherLiabilities: "",
-    },
-    savings: {
-      currentSavings: "",
-      targetSavings: "",
-    },
-    hasEmergencyFunds: "",
-    emergencyFund: "",
-    hasDebt: "",
-    debt: "",
-    retirement: {
-      retirementAge: "",
-      targetRetirementIncome: "",
-    },
-  });
+  const { formData, updateFormData } = useOnboardingStore();
+  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(formData.financial);
 
-  
+  useEffect(() => {
+    setLocalFormData(formData.financial);
+  }, [formData.financial]);
+
   const handleFormUpdate = (section: keyof FinancialInfoSchema, field: string, value: string) => {
-    console.log("handleForm update called",section, field, value);
+    const updatedSection = {
+      ...(typeof localFormData[section] === 'object' ? localFormData[section] : {}),
+      [field]: value,
+    };
 
-    
-    setFormData((prevData) => ({
-      ...prevData,
-      [section]: {
-        ...prevData[section],
-        [field]: value,
-      },
-    }));
+    const updatedFormData = {
+      ...localFormData,
+      [section]: updatedSection,
+    };
 
-    console.log(formData);
+    setLocalFormData(updatedFormData);
+    updateFormData("financial", updatedFormData);
   };
 
   const handleBack = () => {
@@ -81,25 +43,25 @@ const FinancialDetailsScreen: React.FC = () => {
       <p className="text-gray-600">Fill the different forms that appear from the pop-ups</p>
       <div className="space-y-4">
         <IncomeSection
-          values={formData.income}
+          values={localFormData.income}
           onChange={(field, value) => handleFormUpdate("income", field, value)}
           onBack={handleBack}
           onContinue={handleContinue}
         />
         <AssetsSection
-          values={formData.assets}
+          values={localFormData.assets}
           onChange={(field, value) => handleFormUpdate("assets", field, value)}
           onBack={handleBack}
           onContinue={handleContinue}
         />
         <ExpensesSection
-          values={formData.annualExpenses}
+          values={localFormData.annualExpenses}
           onChange={(field, value) => handleFormUpdate("annualExpenses", field, value)}
           onBack={handleBack}
           onContinue={handleContinue}
         />
         <LiabilitiesSection
-          values={formData.liabilities}
+          values={localFormData.liabilities}
           onChange={(field, value) => handleFormUpdate("liabilities", field, value)}
           onBack={handleBack}
           onContinue={handleContinue}

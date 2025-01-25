@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import {
   PersonalInfoSchema,
@@ -162,64 +163,32 @@ interface OnboardingStore extends OnboardingState {
 
 export const useOnboardingStore = create<OnboardingStore>()(
   persist(
-    (set) => ({
+    immer((set) => ({
       currentSection: "personal",
       sections: DEFAULT_SECTIONS,
       formData: DEFAULT_FORM_DATA,
 
       updateFormData: (section, updates) =>
-        set((state) => ({
-          formData: {
-            ...state.formData,
-            [section]: {
-              ...state.formData[section],
-              ...updates,
-            },
-          },
-        })),
+        set((state) => {
+          state.formData[section] = { ...state.formData[section], ...updates };
+        }),
 
       updateSectionProgress: (sectionId, step) =>
-        set((state) => ({
-          sections: {
-            ...state.sections,
-            [sectionId]: {
-              ...state.sections[sectionId],
-              currentStep: step,
-            },
-          },
-        })),
+        set((state) => {
+          state.sections[sectionId].currentStep = step;
+        }),
 
       completeSection: (sectionId) =>
-        set((state) => ({
-          sections: {
-            ...state.sections,
-            [sectionId]: {
-              ...state.sections[sectionId],
-              isCompleted: true,
-              isActive: false,
-            },
-          },
-        })),
+        set((state) => {
+          state.sections[sectionId].isCompleted = true;
+        }),
 
       setActiveSection: (sectionId) =>
         set((state) => {
-          const updatedSections = Object.entries(state.sections).reduce<
-            Record<SectionId, Section>
-          >(
-            (acc, [key, section]) => ({
-              ...acc,
-              [key]: {
-                ...section,
-                isActive: key === sectionId,
-              },
-            }),
-            {} as Record<SectionId, Section>
-          );
-
-          return {
-            currentSection: sectionId,
-            sections: updatedSections,
-          };
+          Object.keys(state.sections).forEach((key) => {
+            state.sections[key].isActive = key === sectionId;
+          });
+          state.currentSection = sectionId;
         }),
 
       resetOnboarding: () =>
@@ -228,9 +197,14 @@ export const useOnboardingStore = create<OnboardingStore>()(
           sections: DEFAULT_SECTIONS,
           formData: DEFAULT_FORM_DATA,
         })),
-    }),
+    })),
     {
       name: "onboarding-storage",
+      partialize: (state) => ({
+        currentSection: state.currentSection,
+        sections: state.sections,
+        formData: state.formData,
+      }),
     }
   )
 );

@@ -18,12 +18,18 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, description, children }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+      <DialogContent className="">
+        <DialogHeader className="p-5">
+          <DialogTitle className="text-4xl font-medium font-cirka text-center">
+            {title}
+          </DialogTitle>
+          {description && (
+            <DialogDescription className="text-sm text-gray-500 text-center">
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
-        {children}
+        <div className="max-w-sm flex flex-col mx-auto">{children}</div>
       </DialogContent>
     </Dialog>
   );

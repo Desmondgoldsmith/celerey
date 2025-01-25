@@ -44,8 +44,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
         title="Income Details"
         description="Please fill in your income details below."
       >
-        <div className="space-y-4">
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+        <div className="space-y-2">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Rental Income</label>
             <Input
               type="text"
@@ -56,7 +56,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
               onChange={(e) => handleInputChange("rentalIncome", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Dividends</label>
             <Input
               type="text"
@@ -67,7 +67,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
               onChange={(e) => handleInputChange("dividends", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Interest Income</label>
             <Input
               type="text"
@@ -78,7 +78,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
               onChange={(e) => handleInputChange("interestIncome", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Other Income</label>
             <Input
               type="text"
