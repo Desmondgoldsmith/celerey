@@ -61,6 +61,7 @@ const MobileActionItems = () => {
       icon: "/assets/consultation.svg",
       text: "Book a consultation call with an advisor",
       alt: "Consultation",
+      link: "/freebie-account/advisors",
     },
     // {
     //   icon: "/assets/recommendation.svg",

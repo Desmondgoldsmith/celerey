@@ -10,6 +10,7 @@ import IncomeVsExpenditure from "../molecules/incomeAndExpenditure";
 import { Goals } from "../molecules/goalsChart";
 import { UserProfile } from "../molecules/userProfile";
 import IncomeVsDebt from "../molecules/incomeVsDebt";
+import Link from "next/link";
 
 // expense data structure
 const INITIAL_EXPENSE_DATA = {
@@ -70,16 +71,19 @@ const MobileActionItems = () => {
       icon: "/assets/consultation.svg",
       text: "Book a consultation call with an advisor",
       alt: "Consultation",
+      link: "/freebie-account/advisors",
     },
     {
       icon: "/assets/recommendation.svg",
       text: "View advisors recommendation",
       alt: "Advisor",
+      link: "#",
     },
     {
       icon: "/assets/financialDoc.svg",
       text: "Upload financial documents",
       alt: "Upload Financial Document",
+      link: "#",
     },
   ];
 
@@ -104,9 +108,11 @@ const MobileActionItems = () => {
               {item.text}
             </span>
           </div>
-          <button className="p-2 rounded-full bg-navy flex items-center justify-center">
-            <ChevronRight className="h-6 w-6 text-white" />
-          </button>
+          <Link href={item.link} passHref>
+            <button className="p-2 rounded-full bg-navy flex items-center justify-center">
+              <ChevronRight className="h-6 w-6 text-white" />
+            </button>
+          </Link>
         </div>
       ))}
     </div>
