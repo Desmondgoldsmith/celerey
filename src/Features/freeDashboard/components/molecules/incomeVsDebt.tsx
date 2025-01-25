@@ -137,7 +137,7 @@ export const IncomeVsDebt = () => {
         </div>
       </div>
       {/* Bottom Border */}
-      <div className="border-b border-gray-200 mt-5 p-4 mb-10" />
+      <div className="border-b border-gray-200 mt-2 p-4 mb-10" />
     </Card>
   );
 };
