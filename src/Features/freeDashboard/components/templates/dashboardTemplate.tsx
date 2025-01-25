@@ -115,6 +115,7 @@ const MobileActionItems = () => {
 
 const DashboardTemplate: React.FC = () => {
   const [selectMonths, setSelectedMonths] = useState<string>("12");
+  console.log(selectMonths);
   const {
     userName,
     netWorth,
@@ -123,7 +124,7 @@ const DashboardTemplate: React.FC = () => {
     profileCompletion,
   } = DEFAULT_USER_DATA;
 
-  // Handler for timeframe changes
+  // Handler for timeframe changessss
   const handleTimeframeChange = (months: string) => {
     setSelectedMonths(months);
   };
