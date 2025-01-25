@@ -11,12 +11,6 @@ export interface PortfolioData {
   yearlyData: ChartData[];
 }
 
-export interface Goal {
-  name: string;
-  progress: number;
-  target: number;
-}
-
 export interface DashboardProps {
   userName: string;
   netWorth: number;
@@ -77,4 +71,12 @@ export interface Advisor {
   imageUrl: string;
   specialties: string[];
   strengths: string[];
+}
+
+export interface Goal {
+  name: string;
+  progress: number;
+  amount: number;
+  targetAmount: number;
+  lastUpdated: string;
 }

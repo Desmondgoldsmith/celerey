@@ -1,16 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { ChartType } from "../../types";
+import { ChartType, Goal } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import BalanceOverview from "../molecules/balanceOverview";
 import { GeographicSpread } from "../molecules/geographicSpread";
 import { RiskAllocation } from "../molecules/riskAllocationCharts";
-import { AssetAllocation } from "../molecules/assetAllocationChart";
-import { Goals } from "../molecules/goalsChart";
+import { IncomeVsDebt } from "../molecules/incomeVsDebt";
+import { FinancialGoals } from "../molecules/financialGoals";
 import { UserProfile } from "../molecules/userProfile";
 import { IncomeVsExpenditure } from "../molecules/incomeVsExpenditure";
+import IncomeAndExpenditure from "../molecules/incomeAndExpenditure";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -25,6 +26,36 @@ const DEFAULT_USER_DATA = {
   riskAttitude: "Somewhat Aggressive",
   investmentExperience: "Advanced",
 };
+const sampleGoals: Goal[] = [
+  {
+    name: "Family Holiday",
+    progress: 72,
+    amount: 21234.35,
+    targetAmount: 30000,
+    lastUpdated: "29.12.24",
+  },
+  {
+    name: "Pension Boost",
+    progress: 45,
+    amount: 15221.0,
+    targetAmount: 35000,
+    lastUpdated: "13.09.24",
+  },
+  {
+    name: "Debt Reduction",
+    progress: 20,
+    amount: 1001.23,
+    targetAmount: 5000,
+    lastUpdated: "03.10.24",
+  },
+  {
+    name: "Emergency Fund",
+    progress: 65,
+    amount: 12345.67,
+    targetAmount: 20000,
+    lastUpdated: "19.05.24",
+  },
+];
 
 // Mobile components
 const MobileGreeting: React.FC<{ userName: string }> = ({ userName }) => (
@@ -123,7 +154,7 @@ const DashboardTemplate: React.FC = () => {
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
             />
-            <Goals Chart={Chart} />
+            <FinancialGoals Chart={Chart} />
           </div>
 
           {/* Middle Column */}
@@ -133,14 +164,14 @@ const DashboardTemplate: React.FC = () => {
               timeframe={timeframe}
               onTimeframeChange={setTimeframe}
             />
-            {/* <GeographicSpread /> */}
+            <IncomeAndExpenditure Chart={Chart} />
           </div>
 
           {/* Right Column */}
           <div className="col-span-3 space-y-6">
             {/* <RiskAllocation Chart={Chart} /> */}
             <GeographicSpread />
-            <AssetAllocation Chart={Chart} />
+            <IncomeVsDebt />
             <IncomeVsExpenditure Chart={Chart} />
           </div>
         </div>
@@ -157,9 +188,9 @@ const DashboardTemplate: React.FC = () => {
           <div className="bg-white rounded-lg overflow-hidden">
             <MobileActionItems />
           </div>
-          <Goals Chart={Chart} />
+          <FinancialGoals Chart={Chart} />
           <RiskAllocation Chart={Chart} />
-          <AssetAllocation Chart={Chart} />
+          <IncomeVsExpenditure Chart={Chart} />
           <IncomeVsExpenditure Chart={Chart} />
           <GeographicSpread />
         </div>

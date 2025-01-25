@@ -362,17 +362,17 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
         </div>
       </CardContent>
 
-      <CardContent>
+      <CardContent className="border-b border-[#AAAAAA]">
         <div className="grid grid-cols-2 gap-8">
           {/* Annual Income */}
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3 mb-4">
               <h3 className="text-gray-700 font-cirka text-xl">
                 Annual Income
               </h3>
-              <Info className="h-5 w-5 text-gray-400" />
+              <Info className="h-3 w-3 text-gray-400" />
             </div>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={170}>
               <BarChart data={incomeData}>
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -393,13 +393,13 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
 
           {/* Annual Expenditure */}
           <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-3 mb-4">
               <h3 className="text-gray-700 font-cirka text-xl">
                 Annual Expenditure
               </h3>
-              <Info className="h-5 w-5 text-gray-400" />
+              <Info className="h-3 w-3 text-gray-400" />
             </div>
-            <ResponsiveContainer width="100%" height={200}>
+            <ResponsiveContainer width="100%" height={170}>
               <BarChart data={expenditureData}>
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -419,6 +419,17 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
           </div>
         </div>
       </CardContent>
+      <div className="flex items-center justify-between p-2">
+        <div className="flex items-center">
+          <div className="font-helvetica text-medium pr-2">Need Help?</div>
+          <div className="text-xs font-helvetica text-gray-300 w-[140px]">
+            Get Financial advise on maximizing the returns on your money.
+          </div>
+        </div>
+        <div className="font-bold text-sm text-[#E15B2D]">
+          Request Advisory Service
+        </div>
+      </div>
     </Card>
   );
 };
