@@ -124,7 +124,7 @@ const DashboardTemplate: React.FC = () => {
     profileCompletion,
   } = DEFAULT_USER_DATA;
 
-  // Handler for timeframe changessss
+  // Handler for timeframe changes
   const handleTimeframeChange = (months: string) => {
     setSelectedMonths(months);
   };
