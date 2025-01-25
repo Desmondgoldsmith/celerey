@@ -11,10 +11,7 @@ interface DebtSectionProps {
   onChange: (field: string, value: string) => void;
 }
 
-const DebtSection: React.FC<DebtSectionProps> = ({
-  values,
-  onChange,
-}) => {
+const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -23,7 +20,8 @@ const DebtSection: React.FC<DebtSectionProps> = ({
     }
   };
 
-  const isComplete = values.hasDebt !== "" && (values.hasDebt === "no" || values.debt !== "");
+  const isComplete =
+    values.hasDebt !== "" && (values.hasDebt === "no" || values.debt !== "");
 
   return (
     <div>
@@ -45,7 +43,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Do you have debt?</label>
-            <div className="flex-1">
+            <div className="flex-1 flex gap-4">
               <button
                 className={`px-4 py-2 rounded-md font-medium ${
                   values.hasDebt === "no"
@@ -57,7 +55,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({
                 No
               </button>
               <button
-                className={`px-4 py-2 rounded-md font-medium ml-2 ${
+                className={`px-4 py-2 rounded-md font-medium ${
                   values.hasDebt === "yes"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
@@ -82,16 +80,16 @@ const DebtSection: React.FC<DebtSectionProps> = ({
             </div>
           )}
         </div>
-    <div className="flex gap-4 mt-4">
-          <Button variant="outline"   onClick={() => {
-              setIsModalOpen(false);
-            }} className="flex-1">
+        <div className="flex gap-4 mt-4">
+          <Button
+            variant="outline"
+            onClick={() => setIsModalOpen(false)}
+            className="flex-1"
+          >
             Back
           </Button>
           <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

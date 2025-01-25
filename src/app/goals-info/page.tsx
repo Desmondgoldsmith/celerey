@@ -10,7 +10,6 @@ import { OnboardingLayout } from "@/Features/onboarding/components/templates/sha
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/welcomeScreen";
 import { FinancialGoalScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/financialGoalScreeen";
 import { TargetAmountScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/targetAmountScreen";
-import { InvestmentScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/investmentScreen";
 export default function GoalsInfo() {
   const router = useRouter();
   const {
@@ -53,11 +52,7 @@ export default function GoalsInfo() {
       case 2:
         return parseFloat(data.targetAmount || "0") >= 0;
       default:
-      case 3:
-        return (
-          data.hasInvestments === "no" ||
-          (data.hasInvestments === "yes" && !!data.investmentType?.trim())
-        );
+
         return true;
     }
   }, [currentSection, sections, formData.goals]);
@@ -151,18 +146,6 @@ export default function GoalsInfo() {
                     onContinue={handleContinue}
                   />
                 );
-      case 3:
-               return (
-                       <InvestmentScreen
-                         value={{
-                           hasInvestments: goalsData.hasInvestments,
-                           investmentType: goalsData.investmentType,
-                         }}
-                         onChange={(value) => handleFormUpdate(value)}
-                         onBack={handleBack}
-                         onContinue={handleContinue}
-                       />
-                     );
       default:
         return null;
     }

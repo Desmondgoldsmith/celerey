@@ -30,7 +30,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   financial: {
     id: "financial",
     title: "Financial Information",
-    totalSteps: 7,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -38,7 +38,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   goals: {
     id: "goals",
     title: "Goals & Aspirations",
-    totalSteps: 4,
+    totalSteps: 3,
     currentStep: 0,
     isCompleted: false,
     isActive: false,

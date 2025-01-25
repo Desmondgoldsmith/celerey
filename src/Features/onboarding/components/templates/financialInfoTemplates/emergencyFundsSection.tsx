@@ -24,14 +24,13 @@ const [emergencyFund, setEmergencyFund] = useState('');
     }
   }, [value.emergencyFund]);
 
-  const handleEmergencyFundChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const emergencyFundValue = e.target.value;
-    if (/^\d*$/.test(emergencyFundValue)) {
-      onChange({ ...value, emergencyFund: emergencyFundValue });
-    }
-  };
+ const handleEmergencyFundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   const emergencyFundValue = e.target.value;
+
+   if (/^\d*\.?\d*$/.test(emergencyFundValue)) {
+     onChange({ ...value, emergencyFund: emergencyFundValue });
+   }
+ };
 
   const isComplete =
     emergencyFund !== undefined &&
@@ -104,9 +103,9 @@ const [emergencyFund, setEmergencyFund] = useState('');
               <Input
                 type="text"
                 inputMode="numeric"
-                // pattern="[0-9]*"
+                pattern="[0-9]*"
                 className="flex-1 appearance-none"
-                value={value.emergencyFund || ""}
+                // value={value.emergencyFund || ""}
                 onChange={handleEmergencyFundChange}
               />
             </div>

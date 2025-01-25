@@ -19,16 +19,18 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
   onContinue,
 }) => {
   const [amountValid, setAmountValid] = useState(true);
+  const [debt, setDebt] = useState(value.debt || "");
 
   useEffect(() => {
     if (value.debt !== undefined) {
-      setAmountValid(/^\d*$/.test(value.debt));
+      setAmountValid(/^\d*\.?\d*$/.test(value.debt));
     }
   }, [value.debt]);
 
   const handleDebtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const debtValue = e.target.value;
-    if (/^\d*$/.test(debtValue)) {
+    if (/^\d*\.?\d*$/.test(debtValue)) {
+      setDebt(debtValue);
       onChange({ ...value, debt: debtValue });
     }
   };
@@ -38,9 +40,7 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
       <h1 className="text-4xl font-cirka mb-12">
         Do you have any outstanding debt (e.g loans, credit cards, mortgages)?
       </h1>
-      <p className="text-gray-600">
-        Any applicable debt?
-      </p>
+      <p className="text-gray-600">Any applicable debt?</p>
 
       <div className="w-full max-w-md mx-auto">
         <div className="flex justify-center items-center gap-6 my-6">
@@ -80,19 +80,17 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={value.debt || ""}
+              value={debt}
               onChange={handleDebtChange}
             />
           </div>
         )}
 
-        {value.hasDebt === "yes" &&
-          value.debt &&
-          !amountValid && (
-            <p className="text-sm text-red-500 mt-1">
-              Please enter a valid amount (e.g., 1234.56)
-            </p>
-          )}
+        {value.hasDebt === "yes" && debt && !amountValid && (
+          <p className="text-sm text-red-500 mt-1">
+            Please enter a valid amount (e.g., 1234.56)
+          </p>
+        )}
 
         <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
           <Button variant="outline" onClick={onBack} className="flex-1">
@@ -101,11 +99,7 @@ export const DebtScreen: React.FC<DebtScreenProps> = ({
           <Button
             onClick={onContinue}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={
-              !value.hasDebt ||
-              (value.hasDebt === "yes" &&
-                (!value.debt || !amountValid))
-            }
+            disabled={!value.hasDebt || (value.hasDebt === "yes" && (!debt || !amountValid))}
           >
             Continue
           </Button>

@@ -67,19 +67,24 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
           onChange={(field, value) => handleFormUpdate("savings", field, value)}
         />
         <EmergencyFundsSection
-          values={{
+          value={{
             hasEmergencyFunds: localFormData.hasEmergencyFunds,
             emergencyFund: localFormData.emergencyFund,
           }}
-          onChange={(field, value) =>{ 
-            console.log("Test", field, value);
-            handleFormUpdate("hasEmergencyFunds", field, value)}
-           
-          }
+          onChange={(updatedValue) => {
+            handleFormUpdate("hasEmergencyFunds", "hasEmergencyFunds", updatedValue.hasEmergencyFunds || "");
+            handleFormUpdate("emergencyFund", "emergencyFund", updatedValue.emergencyFund || "");
+          }}
         />
         <DebtSection
-          values={{ hasDebt: localFormData.hasDebt, debt: localFormData.debt }}
-          onChange={(field, value) => handleFormUpdate("hasDebt", field, value)}
+          values={{
+            hasDebt: localFormData.hasDebt,
+            debt: localFormData.debt,
+          }}
+          onChange={(updatedValue) => {
+            handleFormUpdate("hasDebt", "hasDebt", updatedValue.hasDebt || "");
+            handleFormUpdate("debt", "debt", updatedValue.debt || "");
+          }}
         />
       </div>
       <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
