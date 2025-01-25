@@ -6,6 +6,7 @@ import {
   HelpCircle,
   RefreshCw,
 } from "lucide-react";
+import { ChartType } from "../../types";
 
 interface LegendLabels {
   current: string;
