@@ -28,7 +28,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
 
   return (
     <Card className="p-4 sm:p-6 bg-white">
-      {/* Header Section - Responsive */}
+      {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 border-b border-[#AAAAAA] pb-2">
         <h2 className="text-lg sm:text-xl font-cirka text-navy mb-2 sm:mb-0">
           Income And Expenditure
@@ -36,9 +36,9 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
         <MoreHorizontal className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 cursor-pointer" />
       </div>
 
-      {/* Info Section - Responsive */}
+      {/* Info Section */}
       <div className="flex flex-col mb-4">
-        {/*  Net Income text and Last Updated - Responsive */}
+        {/*  Net Income text and Last Updated */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2 sm:gap-0">
           <div className="flex items-center gap-2">
             <span className="text-sm sm:text-base text-gray-600">
@@ -54,7 +54,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
           </div>
         </div>
 
-        {/* Amount and Action Buttons - Responsive */}
+        {/* Amount and Action Buttons */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-8 gap-4 sm:gap-0">
           <div className="text-2xl sm:text-3xl font-normal">
             $
@@ -75,7 +75,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
           </div>
         </div>
 
-        {/* Income and Expenditure Section - Responsive */}
+        {/* Income and Expenditure Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
           {/* Income Section */}
           <div className="relative">
@@ -135,7 +135,7 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
         </div>
       </div>
 
-      {/* Bottom Border - Responsive */}
+      {/* Bottom Border */}
       <div className="border-b border-gray-200 mt-4 sm:mt-8 p-2 sm:p-4 mb-6 sm:mb-10" />
     </Card>
   );
