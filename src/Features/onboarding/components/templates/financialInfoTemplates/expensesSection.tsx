@@ -17,7 +17,12 @@ interface ExpensesSectionProps {
   onContinue: () => void;
 }
 
-const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onBack, onContinue }) => {
+const ExpensesSection: React.FC<ExpensesSectionProps> = ({
+  values,
+  onChange,
+  onBack,
+  onContinue,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -37,9 +42,12 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Expenses</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-500">
-          Fill Details
+        <h3 className="font-medium">Expenses</h3>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-blue-800 text-sm font-semibold"
+        >
+          {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
       <Modal
@@ -48,8 +56,8 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
         title="Expenses Details"
         description="Please fill in your expenses details below."
       >
-        <div className="space-y-4">
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+        <div className="space-y-2">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Home</label>
             <Input
               type="text"
@@ -60,7 +68,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
               onChange={(e) => handleInputChange("home", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Childcare</label>
             <Input
               type="text"
@@ -71,7 +79,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
               onChange={(e) => handleInputChange("childcare", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Education</label>
             <Input
               type="text"
@@ -82,7 +90,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
               onChange={(e) => handleInputChange("education", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Healthcare</label>
             <Input
               type="text"
@@ -93,7 +101,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
               onChange={(e) => handleInputChange("healthcare", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Travel</label>
             <Input
               type="text"
@@ -104,7 +112,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
               onChange={(e) => handleInputChange("travel", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Giving</label>
             <Input
               type="text"
@@ -121,7 +129,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({ values, onChange, onB
             Back
           </Button>
           <Button
-            onClick={onContinue}
+            onClick={() => { setIsModalOpen(false); onContinue(); }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

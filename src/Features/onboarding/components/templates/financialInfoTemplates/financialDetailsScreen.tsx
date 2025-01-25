@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+
 import { IncomeSection } from "./incomeSection";
 import { AssetsSection } from "./assetsSection";
 import { ExpensesSection } from "./expensesSection";
@@ -9,10 +11,25 @@ import { useOnboardingStore } from "@/Features/onboarding/state";
 const FinancialDetailsScreen: React.FC = () => {
   const { formData, updateFormData } = useOnboardingStore();
   const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(formData.financial);
+  const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
     setLocalFormData(formData.financial);
   }, [formData.financial]);
+
+  useEffect(() => {
+    const checkSectionComplete = () => {
+      const { income, assets, annualExpenses, liabilities } = localFormData;
+      const isComplete = 
+        Object.values(income).every(value => value !== "") &&
+        Object.values(assets).every(value => value !== "") &&
+        Object.values(annualExpenses).every(value => value !== "") &&
+        Object.values(liabilities).every(value => value !== "");
+      setIsSectionComplete(isComplete);
+    };
+
+    checkSectionComplete();
+  }, [localFormData]);
 
   const handleFormUpdate = (section: keyof FinancialInfoSchema, field: string, value: string) => {
     const updatedSection = {
@@ -31,17 +48,30 @@ const FinancialDetailsScreen: React.FC = () => {
 
   const handleBack = () => {
     // Implement back navigation logic
+    console.log("Back button clicked");
   };
 
   const handleContinue = () => {
-    // Implement continue navigation logic
+    if (isSectionComplete) {
+      // Implement continue navigation logic
+      console.log("Continue button clicked");
+    } else {
+      alert("Please fill in all the information in the section before continuing.");
+    }
   };
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
-      <h1 className="text-4xl font-cirka mb-8">Help us with these key financial details</h1>
-      <p className="text-gray-600">Fill the different forms that appear from the pop-ups</p>
-      <div className="space-y-4">
+      <div className="text-center mb-8 flex flex-col gap-4">
+        {" "}
+        <h1 className="text-4xl font-cirka">
+          Help us with these key financial details
+        </h1>
+        <p className="text-gray-600">
+          Fill the different forms that appear from the pop-ups
+        </p>
+      </div>
+      <div className="space-y-4 max-w-sm mx-auto">
         <IncomeSection
           values={localFormData.income}
           onChange={(field, value) => handleFormUpdate("income", field, value)}
@@ -56,16 +86,32 @@ const FinancialDetailsScreen: React.FC = () => {
         />
         <ExpensesSection
           values={localFormData.annualExpenses}
-          onChange={(field, value) => handleFormUpdate("annualExpenses", field, value)}
+          onChange={(field, value) =>
+            handleFormUpdate("annualExpenses", field, value)
+          }
           onBack={handleBack}
           onContinue={handleContinue}
         />
         <LiabilitiesSection
           values={localFormData.liabilities}
-          onChange={(field, value) => handleFormUpdate("liabilities", field, value)}
+          onChange={(field, value) =>
+            handleFormUpdate("liabilities", field, value)
+          }
           onBack={handleBack}
           onContinue={handleContinue}
         />
+      </div>
+      <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
+        <Button variant="outline" onClick={handleBack} className="flex-1">
+          Back
+        </Button>
+        <Button
+          onClick={handleContinue}
+          className={`flex-1 bg-navy hover:bg-navyLight text-white ${!isSectionComplete ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={!isSectionComplete}
+        >
+          Continue
+        </Button>
       </div>
     </div>
   );

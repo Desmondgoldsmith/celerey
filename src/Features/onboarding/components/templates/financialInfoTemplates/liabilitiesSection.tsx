@@ -40,9 +40,9 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Liabilities</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-500">
-          Fill Details
+        <h3 className="font-medium">Liabilities</h3>
+        <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
+          {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
       <Modal
@@ -51,8 +51,8 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
         title="What are your liabilities"
         description="Enter your liabilities"
       >
-        <div className="space-y-4">
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+        <div className="space-y-2">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Mortgages</label>
             <Input
               type="text"
@@ -63,7 +63,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               onChange={(e) => handleInputChange("mortgages", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Loans</label>
             <Input
               type="text"
@@ -74,7 +74,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               onChange={(e) => handleInputChange("loans", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Credit Cards</label>
             <Input
               type="text"
@@ -85,7 +85,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               onChange={(e) => handleInputChange("creditCards", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Asset Finance</label>
             <Input
               type="text"
@@ -98,7 +98,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               }
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Other Liabilities</label>
             <Input
               type="text"
@@ -113,11 +113,11 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline" onClick={onBack} className="flex-1">
+          <Button variant="outline" onClick={() => { setIsModalOpen(false); onBack(); }} className="flex-1">
             Back
           </Button>
           <Button
-            onClick={onContinue}
+            onClick={() => { setIsModalOpen(false); onContinue(); }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

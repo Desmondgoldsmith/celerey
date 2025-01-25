@@ -33,9 +33,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Income</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-500">
-          Fill Details
+        <h3 className="font-medium">Income</h3>
+        <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
+          {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
       <Modal
@@ -95,7 +95,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack,
             Back
           </Button>
           <Button
-            onClick={onContinue}
+            onClick={() => { setIsModalOpen(false); onContinue(); }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

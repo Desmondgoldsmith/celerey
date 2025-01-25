@@ -15,7 +15,12 @@ interface AssetsSectionProps {
   onContinue: () => void;
 }
 
-const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack, onContinue }) => {
+const AssetsSection: React.FC<AssetsSectionProps> = ({
+  values,
+  onChange,
+  onBack,
+  onContinue,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -33,9 +38,12 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Assets</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-500">
-          Fill Details
+        <h3 className="font-medium">Assets</h3>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-blue-800 text-sm font-semibold"
+        >
+          {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
       <Modal
@@ -44,8 +52,8 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
         title="Assets Details"
         description="Please fill in the details of your assets."
       >
-        <div className="space-y-4">
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+        <div className="space-y-2">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Real Estate</label>
             <Input
               type="text"
@@ -56,7 +64,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
               onChange={(e) => handleInputChange("realEstate", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Cash</label>
             <Input
               type="text"
@@ -67,7 +75,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
               onChange={(e) => handleInputChange("cash", e.target.value)}
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Public Securities</label>
             <Input
               type="text"
@@ -80,7 +88,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
               }
             />
           </div>
-          <div className="flex border-b border-gray-300 pb-4 items-center">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">Private Securities</label>
             <Input
               type="text"
@@ -95,11 +103,11 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange, onBack,
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline" onClick={() => { setIsModalOpen(false); onBack(); }} className="flex-1">
+          <Button variant="outline" onClick={onBack} className="flex-1">
             Back
           </Button>
           <Button
-            onClick={onContinue}
+            onClick={() => { setIsModalOpen(false); onContinue(); }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >
