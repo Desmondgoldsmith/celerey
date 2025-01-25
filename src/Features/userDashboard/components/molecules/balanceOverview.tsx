@@ -133,14 +133,19 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
   ];
 
   return (
-    <Card className="bg-white p-4">
+    <Card className="bg-white p-4 w-full">
+      {/* Header */}
       <div className="flex justify-between p-2 items-center mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy">Balance Overview</h2>
+        <h2 className="text-xl font-cirka text-navy md:text-2xl">
+          Balance Overview
+        </h2>
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
+
       <CardContent>
-        <div className="flex justify-between items-center  mb-2">
-          <div className="flex items-center space-x-2">
+        {/* Assets Section */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+          <div className="flex items-center space-x-2 mb-2 md:mb-0">
             <h3 className="text-gray-700 font-cirka text-xl">Assets</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
@@ -150,9 +155,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Assets */}
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
+          {/* Pie Chart - Full width on mobile, 1/3 on desktop */}
+          <div className="flex justify-center md:block">
             <ResponsiveContainer width="100%" height={130}>
               <PieChart>
                 <Pie
@@ -175,84 +180,88 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Real Estate */}
-          <div>
-            <div className="mb-2">
-              <div className="flex justify-between text-gray-700 font-medium mb-2">
-                <span>Real Estate</span>
-                <span>{realEstate.percentage}%</span>
-              </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#1B1856] rounded-full"
-                  style={{ width: `${realEstate.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${realEstate.value.toLocaleString()}
-              </div>
-            </div>
-
-            {/* Private Securities */}
+          {/* Asset Details - Stacked on mobile, side-by-side on desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+            {/* Real Estate */}
             <div>
-              <div className="flex justify-around text-gray-700 font-medium mb-2">
-                <span>Private Securities</span>
-                <span>{privateSecurities.percentage}%</span>
+              <div className="mb-2">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Real Estate</span>
+                  <span>{realEstate.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#1B1856] rounded-full"
+                    style={{ width: `${realEstate.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${realEstate.value.toLocaleString()}
+                </div>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#8BA78D] rounded-full"
-                  style={{ width: `${privateSecurities.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${privateSecurities.value.toLocaleString()}
+
+              {/* Private Securities */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Private Securities</span>
+                  <span>{privateSecurities.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#8BA78D] rounded-full"
+                    style={{ width: `${privateSecurities.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${privateSecurities.value.toLocaleString()}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Public Securities and Cash */}
-          <div>
-            {/* Cash */}
+            {/* Cash and Public Securities */}
             <div>
-              <div className="flex justify-between text-gray-700 font-medium mb-2">
-                <span>Cash</span>
-                <span>{cash.percentage}%</span>
+              {/* Cash */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Cash</span>
+                  <span>{cash.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#383396] rounded-full"
+                    style={{ width: `${cash.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${cash.value.toLocaleString()}
+                </div>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#383396] rounded-full"
-                  style={{ width: `${cash.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${cash.value.toLocaleString()}
-              </div>
-            </div>
 
-            {/* Public Securities */}
-            <div className="mb-6">
-              <div className="flex gap-2 text-gray-700 font-medium mb-2">
-                <span>Public Securities</span>
-                <span>{publicSecurities.percentage}%</span>
-              </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#E15B2D] rounded-full"
-                  style={{ width: `${publicSecurities.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${publicSecurities.value.toLocaleString()}
+              {/* Public Securities */}
+              <div className="mb-6">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Public Securities</span>
+                  <span>{publicSecurities.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#E15B2D] rounded-full"
+                    style={{ width: `${publicSecurities.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${publicSecurities.value.toLocaleString()}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </CardContent>
 
+      {/* Liabilities Section - Similar responsive modifications */}
       <CardContent>
-        <div className="flex justify-between items-center  mb-2">
-          <div className="flex items-center space-x-2">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+          <div className="flex items-center space-x-2 mb-2 md:mb-0">
             <h3 className="text-gray-700 font-cirka text-xl">Liabilities</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
@@ -262,9 +271,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Assets */}
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
+          {/* Pie Chart */}
+          <div className="flex justify-center md:block">
             <ResponsiveContainer width="100%" height={130}>
               <PieChart>
                 <Pie
@@ -287,83 +296,88 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Real Estate */}
-          <div>
-            <div className="mb-2">
-              <div className="flex justify-between text-gray-700 font-medium mb-2">
-                <span>Mortgages</span>
-                <span>{mortgages.percentage}%</span>
-              </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#1B1856] rounded-full"
-                  style={{ width: `${mortgages.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${mortgages.value.toLocaleString()}
-              </div>
-            </div>
-
-            {/* Private Securities */}
+          {/* Liability Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+            {/* Mortgages and Credit Cards */}
             <div>
-              <div className="flex justify-around text-gray-700 font-medium mb-2">
-                <span>Credit Cards</span>
-                <span>{creditCards.percentage}%</span>
+              {/* Mortgages */}
+              <div className="mb-2">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Mortgages</span>
+                  <span>{mortgages.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#1B1856] rounded-full"
+                    style={{ width: `${mortgages.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${mortgages.value.toLocaleString()}
+                </div>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#8BA78D] rounded-full"
-                  style={{ width: `${creditCards.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${creditCards.value.toLocaleString()}
+
+              {/* Credit Cards */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Credit Cards</span>
+                  <span>{creditCards.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#8BA78D] rounded-full"
+                    style={{ width: `${creditCards.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${creditCards.value.toLocaleString()}
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Public Securities and Cash */}
-          <div>
-            {/* Cash */}
+            {/* Asset Finance and Loans */}
             <div>
-              <div className="flex justify-between text-gray-700 font-medium mb-2">
-                <span>Asset</span>
-                <span>{assetFinance.percentage}%</span>
+              {/* Asset Finance */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Asset Finance</span>
+                  <span>{assetFinance.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#383396] rounded-full"
+                    style={{ width: `${assetFinance.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${assetFinance.value.toLocaleString()}
+                </div>
               </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#383396] rounded-full"
-                  style={{ width: `${assetFinance.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${assetFinance.value.toLocaleString()}
-              </div>
-            </div>
 
-            {/* Public Securities */}
-            <div className="mb-6">
-              <div className="flex gap-2 text-gray-700 font-medium mb-2">
-                <span>Loans</span>
-                <span>{loans.percentage}%</span>
-              </div>
-              <div className="h-2 bg-gray-200 rounded-full">
-                <div
-                  className="h-full bg-[#E15B2D] rounded-full"
-                  style={{ width: `${loans.percentage}%` }}
-                ></div>
-              </div>
-              <div className="text-left text-gray-700 mb-3 mt-2">
-                ${loans.value.toLocaleString()}
+              {/* Loans */}
+              <div className="mb-6">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Loans</span>
+                  <span>{loans.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#E15B2D] rounded-full"
+                    style={{ width: `${loans.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${loans.value.toLocaleString()}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </CardContent>
 
+      {/* Income and Expenditure Section */}
       <CardContent className="border-b border-[#AAAAAA]">
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Annual Income */}
           <div>
             <div className="flex items-center space-x-3 mb-4">
@@ -419,14 +433,18 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
           </div>
         </div>
       </CardContent>
-      <div className="flex items-center justify-between p-2">
-        <div className="flex items-center">
-          <div className="font-helvetica text-medium pr-2">Need Help?</div>
-          <div className="text-xs font-helvetica text-gray-300 w-[140px]">
-            Get Financial advise on maximizing the returns on your money.
+
+      {/* Footer */}
+      <div className="flex flex-col sm:flex-row items-center justify-between p-2">
+        <div className="flex flex-col sm:flex-row items-center mb-2 sm:mb-0">
+          <div className="font-helvetica text-medium pr-2 text-center sm:text-left">
+            Need Help?
+          </div>
+          <div className="text-xs font-helvetica text-gray-300 text-center sm:text-left sm:w-[140px]">
+            Get Financial advice on maximizing the returns on your money.
           </div>
         </div>
-        <div className="font-bold text-sm text-[#E15B2D]">
+        <div className="font-bold text-sm text-[#E15B2D] text-center sm:text-right">
           Request Advisory Service
         </div>
       </div>

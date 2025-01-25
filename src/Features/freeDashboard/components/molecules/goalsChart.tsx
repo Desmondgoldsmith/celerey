@@ -174,7 +174,7 @@ export const Goals: React.FC<GoalsProps> = () => {
         ))}
       </div>
 
-      <div className="border-b border-gray-200 mb-4" />
+      <div className="border-b border-gray-200 mb-4 mt-7" />
 
       <div className="flex justify-between items-center">
         <div className="flex-1" />

@@ -1,12 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import {
-  MoreHorizontal,
-  HelpCircle,
-  Filter,
-  Settings,
-  RefreshCw,
-} from "lucide-react";
+import { MoreHorizontal, HelpCircle } from "lucide-react";
 
 interface FinancialData {
   netBalance: number;
@@ -52,10 +46,13 @@ export const IncomeVsDebt = () => {
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
 
-      <div className="space-y-2 mb-3">
-        <div className="flex items-center gap-1">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center space-y-2 gap-1">
           <span className="text-sm text-gray-600">Net Balance</span>
           <HelpCircle className="h-4 w-4 text-gray-400" />
+        </div>
+        <div className="text-[#2117DC] text-sm hover:cursor-pointer">
+          Add expense
         </div>
       </div>
 
@@ -63,18 +60,6 @@ export const IncomeVsDebt = () => {
       <div className="mb-4">
         <div className="text-3xl font-normal mb-4">
           {formatCurrency(financialData.netBalance)}
-        </div>
-
-        {/* Controls */}
-        <div className="flex gap-2 mb-4">
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-            <Filter className="h-4 w-4 text-gray-600" />
-            <span className="text-xs">Filter</span>
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg">
-            <span className="text-xs">Manage</span>
-            <Settings className="h-4 w-4 text-gray-600" />
-          </button>
         </div>
 
         <div className="text-xs text-gray-500 mb-4">Distribution</div>

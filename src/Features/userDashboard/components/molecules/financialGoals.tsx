@@ -53,20 +53,22 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
 
   const renderGoalCard = (goal: Goal, color: string) => {
     return (
-      <div className="bg-white p-2 border-b border-[#AAAAAA] mb-3 w-full">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-white sm:p-2 border-b border-[#AAAAAA] mt-4 mb-6 w-full">
+        <div className="flex justify-between items-center mb-5">
           <div className="flex items-center">
-            <span className="text-lg font-helvatica">{goal.name}</span>
+            <span className="text-base sm:text-lg font-helvatica">
+              {goal.name}
+            </span>
             <Info className="h-3 w-3 ml-2 text-gray-400" />
           </div>
-          <p className="text-[#2117DC] font-bold hover:cursor-pointer">
+          <p className="text-[#2117DC] font-bold hover:cursor-pointer text-sm sm:text-base">
             modify
           </p>
         </div>
 
-        <div className="flex justify-between items-center">
-          <div>
-            <div className="w-30 h-32">
+        <div className="flex flex-col sm:flex-row justify-between items-center space-y-6 sm:space-y-0">
+          <div className="w-full sm:w-auto flex justify-center">
+            <div className="w-24 h-24 sm:w-30 sm:h-32">
               <Chart
                 type="radialBar"
                 series={[goal.progress]}
@@ -97,17 +99,19 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
             </div>
           </div>
 
-          <div>
-            <div>
-              <p className="font-helvatica font-bold">Current Savings</p>
-              <div className="text-2xl font-medium text-[#4F028F]">
-                ${goal.amount.toLocaleString()}
-              </div>
-              <div className="text-gray-500 mt-1">out of</div>
-              <div className="text-helvatica mt-1">Target Savings</div>
-              <div className="text-gray-500 text-helvatica text-xl mt-1">
-                ${goal.targetAmount.toLocaleString()}
-              </div>
+          <div className="text-center sm:text-left w-full sm:w-auto">
+            <p className="font-helvatica font-bold text-sm sm:text-base">
+              Current Savings
+            </p>
+            <div className="text-xl sm:text-2xl font-medium text-[#4F028F]">
+              ${goal.amount.toLocaleString()}
+            </div>
+            <div className="text-gray-500 mt-1 text-xs sm:text-sm">out of</div>
+            <div className="text-helvatica mt-1 text-sm sm:text-base">
+              Target Savings
+            </div>
+            <div className="text-gray-500 text-helvatica text-base sm:text-xl mt-1">
+              ${goal.targetAmount.toLocaleString()}
             </div>
           </div>
         </div>
@@ -116,14 +120,16 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
   };
 
   return (
-    <Card className="p-5 bg-white">
+    <Card className="p-3 sm:p-5 bg-white">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy">Income And Expenditure</h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
+        <h2 className="text-lg sm:text-xl font-cirka text-navy">
+          Financial Goals
+        </h2>
+        <MoreHorizontal className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 cursor-pointer" />
       </div>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-6">
           {sampleGoals
             .slice(activeSlide * 2, activeSlide * 2 + 2)
             .map((goal, index) => (
@@ -133,7 +139,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
             ))}
         </div>
 
-        <div className="flex justify-center space-x-2 mt-4">
+        <div className="flex justify-center space-x-2 mt-8">
           {[...Array(Math.ceil(sampleGoals.length / 2))].map((_, index) => (
             <button
               key={index}
@@ -148,3 +154,5 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
     </Card>
   );
 };
+
+export default FinancialGoals;
