@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { FormInput } from "../../molecules/formInput";
 import { BioDataScreenProps } from "@/Features/onboarding/types";
 import { citizenshipOptions } from "@/Features/onboarding/constants";
-
+import {useForm} from "@/hooks/useForm";
+import { useEffect } from "react";
 
 const prefixOptions = ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."];
 
@@ -12,7 +13,14 @@ export const BioDataScreen = ({
   onBack,
   onContinue,
 }: BioDataScreenProps) => {
+
+  const { form, setForm } = useForm();
+  useEffect(() => {
+    console.log("Form state updated:", form);
+  }, [form]);
+
   const handleSubmit = (e: React.FormEvent) => {
+
     e.preventDefault();
     if (
       value.prefix &&
@@ -24,7 +32,17 @@ export const BioDataScreen = ({
       value.citizenship &&
       value.residentCountry
     ) {
+
+      setForm( (form) => ({
+        ...form,
+        personal_info : {
+          ...value
+        }
+      }));
+
+      console.log("Form state updated:", form);
       onContinue();
+
     }
   };
 
@@ -214,7 +232,7 @@ export const BioDataScreen = ({
           Back
         </Button>
         <Button
-          onClick={onContinue}
+          // onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
           disabled={
             !value.prefix ||
@@ -226,6 +244,7 @@ export const BioDataScreen = ({
             !value.citizenship ||
             !value.residentCountry
           }
+          type = "submit"
         >
           Continue
         </Button>

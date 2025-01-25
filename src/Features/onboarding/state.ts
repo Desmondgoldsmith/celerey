@@ -82,27 +82,51 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     citizenship: "",
     dualCitizenship: "",
     residentCountry: "",
-    identification: {
-      type: "",
-      file: null,
-      fileName: "",
-      uploadStatus: "idle",
-    },
+
     options: [],
   },
   financial: {
     currency: "",
-    monthlyIncome: "",
-    monthlyExpenses: {
-      home: "",
-      loan: "",
-      otherExpenses: "",
+    income: {
+      rentalIncome: "",
+      dividends: "",
+      interestIncome: "",
+      otherIncome: "",
     },
-    savings: "",
+    annualExpenses: {
+      home: "",
+      childcare: "",
+      education: "",
+      healthcare: "",
+      travel: "",
+      giving: "",
+    },
+    assets: {
+      realEstate: "",
+      cash: "",
+      publicSecurities: "",
+      privateSecurities: "",
+      assetCountries: [],
+    },
+    liabilities: {
+      mortgages: "",
+      loans: "",
+      creditCards: "",
+      assetFinance: "",
+      otherLiabilities: "",
+    },
+    savings: {
+      currentSavings: "",
+      targetSavings: "",
+    },
     hasEmergencyFunds: "",
     emergencyFund: "",
     hasDebt: "",
     debt: "",
+    retirement: {
+      retirementAge: "",
+      targetRetirementIncome: "",
+    },
   },
   goals: {
     primamryFinancialGoal: "",

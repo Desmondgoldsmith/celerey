@@ -18,7 +18,6 @@ export interface FileUploadProps {
 }
 
 export interface FormInputProps {
-  //   label: string;
   id?: string;
   name?: string;
   placeholder: string;
@@ -243,17 +242,48 @@ export interface PersonalInfoFormData {
 
 export interface FinancialInfoFormData {
   currency: string;
-  monthlyIncome: string;
-  monthlyExpenses: {
-    home: string;
-    loan: string;
-    otherExpenses: string;
+  income: {
+    rentalIncome: string;
+    dividends: string;
+    interestIncome: string;
+    otherIncome: string;
   };
-  savings: string;
+  annualExpenses: {
+    home: string;
+    childcare: string;
+    education: string;
+    healthcare: string;
+    travel: string;
+    giving: string;
+  };
+  assets: {
+    realEstate: string;
+    cash: string;
+    publicSecurities: string;
+    privateSecurities: string;
+    assetCountries: string[];
+  };
+  liabilities: {
+    mortgages: string;
+    loans: string;
+    creditCards: string;
+    assetFinance: string;
+    otherLiabilities: string;
+  };
+
+  savings: {
+    currentSavings: string;
+    targetSavings: string;
+  };
   hasEmergencyFunds: string;
   emergencyFund: string;
   hasDebt: string;
   debt: string;
+
+  retirement: {
+    retirementAge: string;
+    targetRetirementIncome: string;
+  };
 }
 export interface GoalsInfoFormData {
   primamryFinancialGoal: string;

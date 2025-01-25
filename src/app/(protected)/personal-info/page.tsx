@@ -59,8 +59,7 @@ export default function PersonalInfo() {
           data.dob.month &&
           data.dob.year &&
           data.citizenship &&
-          data.residentCountry &&
-          data.dualCitizenship
+          data.residentCountry
         );
       case 2:
         return data.options.length > 0;
