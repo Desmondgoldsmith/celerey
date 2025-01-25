@@ -11,7 +11,7 @@ import { Goals } from "../molecules/goalsChart";
 import { UserProfile } from "../molecules/userProfile";
 import IncomeVsDebt from "../molecules/incomeVsDebt";
 
-// Define the initial expense data structure
+// expense data structure
 const INITIAL_EXPENSE_DATA = {
   totalExpenses: 43256.45,
   categories: [
@@ -177,7 +177,7 @@ const DashboardTemplate: React.FC = () => {
           </div>
           <Goals Chart={Chart} />
           <RiskAllocation />
-          <IncomeVsExpenditure chart={Chart} />
+          <IncomeVsExpenditure Chart={Chart} />
           <IncomeVsDebt />
           <IncomeVsDebt />
         </div>

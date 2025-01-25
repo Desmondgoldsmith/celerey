@@ -7,10 +7,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-export interface ChartType {
-  props: unknown;
-}
-
 interface LegendLabels {
   current: string;
   target: string;
@@ -26,13 +22,12 @@ interface Goal {
 }
 
 interface GoalsProps {
-  Chart?: React.ComponentType<ChartType>;
+  Chart?: ChartType;
 }
 
 export const Goals: React.FC<GoalsProps> = () => {
   const [activeSlide, setActiveSlide] = useState<number>(0);
 
-  // Adding unique IDs to our goals data
   const goals: Goal[][] = [
     [
       {
