@@ -144,8 +144,8 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
 
       <CardContent>
         {/* Assets Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-2">
-          <div className="flex items-center space-x-2 mb-2 md:mb-0">
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center space-x-2">
             <h3 className="text-gray-700 font-cirka text-xl">Assets</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
@@ -156,7 +156,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Pie Chart - Full width on mobile, 1/3 on desktop */}
+          {/* Pie Chart  */}
           <div className="flex justify-center md:block">
             <ResponsiveContainer width="100%" height={130}>
               <PieChart>
@@ -180,7 +180,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
             </ResponsiveContainer>
           </div>
 
-          {/* Asset Details - Stacked on mobile, side-by-side on desktop */}
+          {/* Asset Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
             {/* Real Estate */}
             <div>
@@ -258,10 +258,10 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
         </div>
       </CardContent>
 
-      {/* Liabilities Section - Similar responsive modifications */}
+      {/* Liabilities Section */}
       <CardContent>
-        <div className="flex flex-col md:flex-row justify-between items-center mb-2">
-          <div className="flex items-center space-x-2 mb-2 md:mb-0">
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center space-x-2">
             <h3 className="text-gray-700 font-cirka text-xl">Liabilities</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
