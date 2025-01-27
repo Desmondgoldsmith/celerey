@@ -93,7 +93,6 @@ const FinancialDetailsScreen: React.FC = () => {
             onChange={(field, value) =>
               handleFormUpdate("income", field, value)
             }
-            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>

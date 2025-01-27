@@ -11,11 +11,10 @@ interface IncomeSectionProps {
     otherIncome: string;
   };
   onChange: (field: string, value: string) => void;
-  onBack: () => void;
   onContinue: () => void;
 }
 
-const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack }) => {
+const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -110,7 +109,13 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline" onClick={onBack} className="flex-1">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+            className="flex-1"
+          >
             Back
           </Button>
           <Button
