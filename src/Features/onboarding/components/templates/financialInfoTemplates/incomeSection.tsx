@@ -37,8 +37,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
           <div
             className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
-                ? "bg-navy text-white"
-                : "bg-white border-navy border text-navy"
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
             1
@@ -48,7 +48,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="text-blue-800 text-sm font-semibold"
+          className="text-blue-900 text-sm font-semibold"
         >
           {isComplete ? "Edit" : "Fill Details"}
         </button>

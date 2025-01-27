@@ -42,8 +42,8 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
           <div
             className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
-                ? "bg-navy text-white"
-                : "bg-white border-navy border text-navy"
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
             4

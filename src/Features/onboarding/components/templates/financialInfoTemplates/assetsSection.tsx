@@ -40,13 +40,13 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
           <div
             className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
-                ? "bg-navy text-white"
-                : "bg-white border-navy border text-navy"
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
             2
           </div>
-          <h3 className="font-medium">Assets</h3>
+        <h3 className="font-medium">Assets</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -63,6 +63,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
+            
             <label className="flex-1">Real Estate</label>
             <Input
               type="text"

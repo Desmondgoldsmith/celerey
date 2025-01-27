@@ -27,7 +27,18 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
   return (
     <div>
       <div className="flex justify-between items-center">
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
+            }`}
+          >
+            1
+          </div>
         <h3 className="font-medium">Savings</h3>
+        </div>
         <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
           {isComplete ? "Edit" : "Fill Details"}
         </button>
