@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SavingsSection } from "./savingsSection";
 import { EmergencyFundsSection } from "./emergencyFundsSection";
 import { DebtSection } from "./debtSection";
+import { RetirementSection } from "./retirementSection"; // Import the new section
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 
 interface SavingsDetailsScreenProps {
@@ -33,14 +34,16 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { savings, hasEmergencyFunds, emergencyFund, hasDebt, debt } =
+      const { savings, hasEmergencyFunds, emergencyFund, hasDebt, debt, retirement } =
         localFormData;
       const isComplete =
         Object.values(savings).every((value) => value !== "") &&
         hasEmergencyFunds !== "" &&
         emergencyFund !== "" &&
         hasDebt !== "" &&
-        debt !== "";
+        debt !== "" &&
+        retirement.retirementAge !== "" &&
+        retirement.targetRetirementIncome !== ""
       setIsSectionComplete(isComplete);
     };
 
@@ -62,14 +65,13 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         },
       }));
     } else {
-      // Update single fields like hasEmergencyFunds, emergencyFund, hasDebt, etc.
       setLocalFormData((prev) => ({
         ...prev,
         [field]: value,
       }));
     }
 
-    onChange(section, field, value); // Notify parent of the change
+    onChange(section, field, value);
   };
 
   return (
@@ -131,7 +133,37 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
               hasDebt: localFormData.hasDebt,
               debt: localFormData.debt,
             }}
-            onChange={(field, value) => handleFormUpdate("debt", field, value)}
+            onChange={(updatedValue) => {
+              setLocalFormData((prev) => ({
+                ...prev,
+                ...updatedValue,
+              }));
+
+              // Notify parent of changes
+              if ("hasDebt" in updatedValue) {
+                onChange(
+                  "debt",
+                  "hasDebt",
+                  updatedValue.hasDebt || ""
+                );
+              }
+              if ("debt" in updatedValue) {
+                onChange(
+                  "debt",
+                  "debt",
+                  updatedValue.debt || ""
+                );
+              }
+            }}
+          />
+        </div>
+        {/* Retirement Section */}
+        <div className="border-b pb-4">
+          <RetirementSection
+            values={localFormData.retirement}
+            onChange={(field, value) =>
+              handleFormUpdate("retirement", field, value)
+            }
           />
         </div>
       </div>

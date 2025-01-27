@@ -24,12 +24,24 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
   };
 
   const isComplete =
-    values.retirementAge !== "" && values.targetRetirementIncome !== "";
+    values.retirementAge !== "" &&
+    values.targetRetirementIncome !== "";
 
   return (
     <div>
       <div className="flex justify-between items-center">
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
+            }`}
+          >
+            4
+          </div>
         <h3 className="font-medium">Retirement</h3>
+        </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="text-blue-800 text-sm font-semibold"
