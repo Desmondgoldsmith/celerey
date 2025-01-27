@@ -36,7 +36,18 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">Assets</h3>
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-navy text-white"
+                : "bg-white border-navy border text-navy"
+            }`}
+          >
+            2
+          </div>
+          <h3 className="font-medium">Assets</h3>
+        </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="text-blue-800 text-sm font-semibold"

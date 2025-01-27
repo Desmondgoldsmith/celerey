@@ -34,12 +34,17 @@ export default function FinancialInfo() {
     }
   }, [sections.personal, currentSection, router, setActiveSection]);
 
-  const handleFormUpdate = useCallback(
-    (updates: Partial<FinancialInfoSchema>) => {
-      updateFormData("financial", updates);
-    },
-    [updateFormData]
-  );
+const handleFormUpdate = useCallback(
+  (updates: Partial<FinancialInfoSchema>) => {
+    console.log("Updating financial data:", updates);
+    const updatedFinancialData = { ...formData.financial, ...updates };
+    console.log("Updated financial data:", updatedFinancialData);
+    updateFormData("financial", updatedFinancialData);
+  },
+  [formData.financial, updateFormData]
+);
+
+
 
   const validateCurrentStep = useCallback((): boolean => {
     const currentStepIndex = sections[currentSection].currentStep;
@@ -181,14 +186,8 @@ export default function FinancialInfo() {
         return (
           <SavingsDetailsScreen
             values={financialData}
-            onChange={(
-              section: keyof FinancialInfoSchema,
-              field: string,
-              value: string | number
-            ) => {
-              const sectionData =
-                (financialData[section] as Record<string, string | number>) ||
-                {};
+            onChange={(section, field, value) => {
+              const sectionData = financialData[section] || {};
               handleFormUpdate({
                 [section]: { ...sectionData, [field]: value },
               });

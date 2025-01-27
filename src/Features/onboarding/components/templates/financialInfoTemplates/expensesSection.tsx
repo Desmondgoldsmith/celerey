@@ -40,7 +40,18 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">Expenses</h3>
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-navy text-white"
+                : "bg-white border-navy border text-navy"
+            }`}
+          >
+            3
+          </div>
+          <h3 className="font-medium">Expenses</h3>
+        </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="text-blue-800 text-sm font-semibold"
@@ -123,12 +134,19 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline"             onClick={() => { setIsModalOpen(false);}}
- className="flex-1">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+            className="flex-1"
+          >
             Back
           </Button>
           <Button
-            onClick={() => { setIsModalOpen(false);}}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

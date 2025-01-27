@@ -33,8 +33,23 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">Income</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-navy text-white"
+                : "bg-white border-navy border text-navy"
+            }`}
+          >
+            1
+          </div>
+
+          <h3 className="font-medium">Income</h3>
+        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-blue-800 text-sm font-semibold"
+        >
           {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
@@ -53,7 +68,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={values.rentalIncome || ""}
-              onChange={(e) => handleInputChange("rentalIncome", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("rentalIncome", e.target.value)
+              }
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -75,7 +92,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={values.interestIncome || ""}
-              onChange={(e) => handleInputChange("interestIncome", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("interestIncome", e.target.value)
+              }
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -95,7 +114,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange, onBack 
             Back
           </Button>
           <Button
-            onClick={() => { setIsModalOpen(false); }}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

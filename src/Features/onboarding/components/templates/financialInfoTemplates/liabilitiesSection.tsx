@@ -38,8 +38,23 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h3 className="font-medium">Liabilities</h3>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
+        <div className="flex items-center">
+          <div
+            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-navy text-white"
+                : "bg-white border-navy border text-navy"
+            }`}
+          >
+            4
+          </div>
+          <h3 className="font-medium">Liabilities</h3>
+        </div>
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-blue-800 text-sm font-semibold"
+        >
           {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
@@ -111,12 +126,19 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline"             onClick={() => { setIsModalOpen(false); }}
- className="flex-1">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+            className="flex-1"
+          >
             Back
           </Button>
           <Button
-            onClick={() => { setIsModalOpen(false); }}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

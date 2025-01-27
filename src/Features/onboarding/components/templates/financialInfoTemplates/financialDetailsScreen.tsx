@@ -87,34 +87,46 @@ const FinancialDetailsScreen: React.FC = () => {
         </p>
       </div>
       <div className="space-y-4 max-w-sm mx-auto">
-        <IncomeSection
-          values={localFormData.income}
-          onChange={(field, value) => handleFormUpdate("income", field, value)}
-          onBack={handleBack}
-          onContinue={handleContinue}
-        />
-        <AssetsSection
-          values={localFormData.assets}
-          onChange={(field, value) => handleFormUpdate("assets", field, value)}
-          onBack={handleBack}
-          onContinue={handleContinue}
-        />
-        <ExpensesSection
-          values={localFormData.annualExpenses}
-          onChange={(field, value) =>
-            handleFormUpdate("annualExpenses", field, value)
-          }
-          onBack={handleBack}
-          onContinue={handleContinue}
-        />
-        <LiabilitiesSection
-          values={localFormData.liabilities}
-          onChange={(field, value) =>
-            handleFormUpdate("liabilities", field, value)
-          }
-          onBack={handleBack}
-          onContinue={handleContinue}
-        />
+        <div className="border-b pb-4">
+          <IncomeSection
+            values={localFormData.income}
+            onChange={(field, value) =>
+              handleFormUpdate("income", field, value)
+            }
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        </div>
+        <div className="border-b pb-4">
+          <AssetsSection
+            values={localFormData.assets}
+            onChange={(field, value) =>
+              handleFormUpdate("assets", field, value)
+            }
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        </div>
+        <div className="border-b pb-4">
+          <ExpensesSection
+            values={localFormData.annualExpenses}
+            onChange={(field, value) =>
+              handleFormUpdate("annualExpenses", field, value)
+            }
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        </div>
+        <div className="border-b pb-4">
+          <LiabilitiesSection
+            values={localFormData.liabilities}
+            onChange={(field, value) =>
+              handleFormUpdate("liabilities", field, value)
+            }
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        </div>
       </div>
       <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
         <Button variant="outline" onClick={handleBack} className="flex-1">
@@ -122,7 +134,9 @@ const FinancialDetailsScreen: React.FC = () => {
         </Button>
         <Button
           onClick={handleContinue}
-          className={`flex-1 bg-navy hover:bg-navyLight text-white ${!isSectionComplete ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`flex-1 bg-navy hover:bg-navyLight text-white ${
+            !isSectionComplete ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={!isSectionComplete}
         >
           Continue

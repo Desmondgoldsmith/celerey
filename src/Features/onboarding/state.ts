@@ -186,7 +186,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
       setActiveSection: (sectionId) =>
         set((state) => {
           Object.keys(state.sections).forEach((key) => {
-            state.sections[key].isActive = key === sectionId;
+            state.sections[key as SectionId].isActive = key === sectionId;
           });
           state.currentSection = sectionId;
         }),

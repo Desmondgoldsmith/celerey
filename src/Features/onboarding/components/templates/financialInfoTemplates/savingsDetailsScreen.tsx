@@ -8,13 +8,23 @@ import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 
 interface SavingsDetailsScreenProps {
   values: FinancialInfoSchema;
-  onChange: (section: keyof FinancialInfoSchema, field: string, value: string) => void;
+  onChange: (
+    section: keyof FinancialInfoSchema,
+    field: string,
+    value: string
+  ) => void;
   onBack: () => void;
   onContinue: () => void;
 }
 
-const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onChange, onBack, onContinue }) => {
-  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(values);
+const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
+  values,
+  onChange,
+  onBack,
+  onContinue,
+}) => {
+  const [localFormData, setLocalFormData] =
+    useState<FinancialInfoSchema>(values);
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
@@ -23,9 +33,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { savings, hasEmergencyFunds, emergencyFund, hasDebt, debt } = localFormData;
-      const isComplete = 
-        Object.values(savings).every(value => value !== "") &&
+      const { savings, hasEmergencyFunds, emergencyFund, hasDebt, debt } =
+        localFormData;
+      const isComplete =
+        Object.values(savings).every((value) => value !== "") &&
         hasEmergencyFunds !== "" &&
         emergencyFund !== "" &&
         hasDebt !== "" &&
@@ -36,19 +47,29 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
     checkSectionComplete();
   }, [localFormData]);
 
-  const handleFormUpdate = (section: keyof FinancialInfoSchema, field: string, value: string) => {
-    const updatedSection = {
-      ...(typeof localFormData[section] === 'object' ? localFormData[section] : {}),
-      [field]: value,
-    };
+  const handleFormUpdate = (
+    section: keyof FinancialInfoSchema,
+    field: string,
+    value: string
+  ) => {
+    if (typeof localFormData[section] === "object") {
+      // Update sections like savings
+      setLocalFormData((prev) => ({
+        ...prev,
+        [section]: {
+          ...(prev[section] as Record<string, string>),
+          [field]: value,
+        },
+      }));
+    } else {
+      // Update single fields like hasEmergencyFunds, emergencyFund, hasDebt, etc.
+      setLocalFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
 
-    const updatedFormData = {
-      ...localFormData,
-      [section]: updatedSection,
-    };
-
-    setLocalFormData(updatedFormData);
-    onChange(section, field, value);
+    onChange(section, field, value); // Notify parent of the change
   };
 
   return (
@@ -62,29 +83,49 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({ values, onC
         </p>
       </div>
       <div className="space-y-4 max-w-sm mx-auto">
+        {/* Savings Section */}
         <SavingsSection
           values={localFormData.savings}
           onChange={(field, value) => handleFormUpdate("savings", field, value)}
         />
+
+        {/* Emergency Funds Section */}
         <EmergencyFundsSection
           value={{
             hasEmergencyFunds: localFormData.hasEmergencyFunds,
             emergencyFund: localFormData.emergencyFund,
           }}
           onChange={(updatedValue) => {
-            handleFormUpdate("hasEmergencyFunds", "hasEmergencyFunds", updatedValue.hasEmergencyFunds || "");
-            handleFormUpdate("emergencyFund", "emergencyFund", updatedValue.emergencyFund || "");
+            setLocalFormData((prev) => ({
+              ...prev,
+              ...updatedValue,
+            }));
+
+            // Notify parent of changes
+            if ("hasEmergencyFunds" in updatedValue) {
+              onChange(
+                "emergencyFund",
+                "hasEmergencyFunds",
+                updatedValue.hasEmergencyFunds || ""
+              );
+            }
+            if ("emergencyFund" in updatedValue) {
+              onChange(
+                "emergencyFund",
+                "emergencyFund",
+                updatedValue.emergencyFund || ""
+              );
+            }
           }}
         />
+
+        {/* Debt Section */}
         <DebtSection
           values={{
             hasDebt: localFormData.hasDebt,
             debt: localFormData.debt,
           }}
-          onChange={(updatedValue) => {
-            handleFormUpdate("hasDebt", "hasDebt", updatedValue.hasDebt || "");
-            handleFormUpdate("debt", "debt", updatedValue.debt || "");
-          }}
+          onChange={(field, value) => handleFormUpdate("debt", field, value)}
         />
       </div>
       <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
