@@ -38,10 +38,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         localFormData;
       const isComplete =
         Object.values(savings).every((value) => value !== "") &&
-        hasEmergencyFunds !== "" &&
-        emergencyFund !== "" &&
-        hasDebt !== "" &&
-        debt !== "" &&
+        // hasEmergencyFunds !== "" &&
+        // emergencyFund !== "" &&
+        // hasDebt !== "" &&
+        // debt !== "" &&
         retirement.retirementAge !== "" &&
         retirement.targetRetirementIncome !== ""
       setIsSectionComplete(isComplete);

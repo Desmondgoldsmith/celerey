@@ -44,12 +44,11 @@ const Modal: React.FC<ModalProps> = ({
           )}
         </DialogHeader>
 
-        {/* Render the SectionHeader if sectionNumber and sectionTitle are provided */}
         {sectionNumber !== undefined && sectionTitle && (
-          <div className="flex flex-col sm:flex-row items-center justify-center p-5 gap-2 sm:gap-4">
+          <div className="max-w-lg mx-auto flex items-center justify-center p-5">
             <div className="flex items-center">
               <div
-                className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
                   isSectionComplete
                     ? "bg-blue-900 text-white"
                     : "bg-white border-blue-900 border text-blue-900"
@@ -66,13 +65,13 @@ const Modal: React.FC<ModalProps> = ({
               </h3>
             </div>
             <div
-              className={`hidden sm:block flex-1 h-[2px] my-auto mx-2 ${
+              className={`w-32 h-[2px] my-auto mx-1 ${
                 isSectionComplete ? "bg-blue-900" : "bg-gray-300"
               }`}
             ></div>
             <div className="flex items-center">
               <div
-                className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
                   isSectionComplete
                     ? "bg-blue-900 text-white"
                     : "bg-white border-blue-900 border text-blue-900"

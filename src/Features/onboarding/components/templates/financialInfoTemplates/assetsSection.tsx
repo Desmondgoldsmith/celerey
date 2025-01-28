@@ -27,6 +27,16 @@ interface AssetsSectionProps {
 const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
+  const [bgIndex, setBgIndex] = useState(0);
+
+  // Define the background colors with 5% opacity
+  const backgroundColors = [
+    "rgba(56, 51, 150, 0.05)", // #383396 with 5% opacity
+    "rgba(225, 91, 45, 0.05)", // #E15B2D with 5% opacity
+    "rgba(27, 24, 86, 0.05)", // #1B1856 with 5% opacity
+    "rgba(139, 167, 141, 0.05)", // #8BA78D with 5% opacity
+    "rgba(170, 170, 170, 0.05)", // #AAAAAA with 5% opacity
+  ];
 
   const handleInputChange = (field: string, value: string) => {
     if (/^\d*$/.test(value)) {
@@ -39,6 +49,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
       const updatedCountries = [...values.assetCountries, selectedCountry];
       onChange("assetCountries", updatedCountries);
       setSelectedCountry("");
+      setBgIndex((bgIndex + 1) % backgroundColors.length); // Rotate to the next color
     }
   };
 
@@ -138,7 +149,9 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">In which country(ies) are your assets</label>
+            <label className="flex-1">
+              In which country(ies) are your assets
+            </label>
             <div className="flex-1 flex gap-2">
               <Select
                 value={selectedCountry}
@@ -165,20 +178,24 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            {values.assetCountries.map((country, index) => (
-              <div
-                key={index}
-                className="bg-blue-900 text-white text-xs px-2 py-1 rounded flex items-center gap-1"
-              >
-                {country}
-                <button
-                  onClick={() => handleRemoveCountry(country)}
-                  className="hover:text-gray-400"
+            {values.assetCountries.map((country, index) => {
+              const bgColor = backgroundColors[index % backgroundColors.length]; // Rotate colors
+              return (
+                <div
+                  key={index}
+                  style={{ backgroundColor: bgColor }}
+                  className="text-xs px-2 py-1 rounded flex items-center gap-1"
                 >
-                  <X className="w-3 h-3" />
-                </button>
-              </div>
-            ))}
+                  {country}
+                  <button
+                    onClick={() => handleRemoveCountry(country)}
+                    className="hover:text-gray-400"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="flex gap-4 mt-4">
