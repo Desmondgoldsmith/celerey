@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { X } from "lucide-react"; // Import an icon for the remove button
 
 interface AssetsSectionProps {
   values: {
@@ -9,17 +17,15 @@ interface AssetsSectionProps {
     cash: string;
     publicSecurities: string;
     privateSecurities: string;
+    assetCountries: string[];
   };
-  onChange: (field: string, value: string) => void;
-  onBack: () => void;
+  onChange: (field: string, value: string | string[]) => void;
   onContinue: () => void;
 }
 
-const AssetsSection: React.FC<AssetsSectionProps> = ({
-  values,
-  onChange,
-}) => {
+const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const handleInputChange = (field: string, value: string) => {
     if (/^\d*$/.test(value)) {
@@ -27,11 +33,27 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
     }
   };
 
+  const handleAddCountry = () => {
+    if (selectedCountry && !values.assetCountries.includes(selectedCountry)) {
+      const updatedCountries = [...values.assetCountries, selectedCountry];
+      onChange("assetCountries", updatedCountries);
+      setSelectedCountry("");
+    }
+  };
+
+  const handleRemoveCountry = (countryToRemove: string) => {
+    const updatedCountries = values.assetCountries.filter(
+      (country) => country !== countryToRemove
+    );
+    onChange("assetCountries", updatedCountries);
+  };
+
   const isComplete =
     values.realEstate !== "" &&
     values.cash !== "" &&
     values.publicSecurities !== "" &&
-    values.privateSecurities !== "";
+    values.privateSecurities !== "" &&
+    values.assetCountries.length > 0;
 
   return (
     <div>
@@ -46,7 +68,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
           >
             2
           </div>
-        <h3 className="font-medium">Assets</h3>
+          <h3 className="font-medium">Assets</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -58,12 +80,15 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Assets Details"
-        description="Please fill in the details of your assets."
+        title="What assets do you have?"
+        description="Enter your asset details below."
+        sectionNumber={3}
+        sectionTitle="Assets"
+        nextSectionTitle="Liabilities"
+        isSectionComplete={isComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            
             <label className="flex-1">Real Estate</label>
             <Input
               type="text"
@@ -110,6 +135,45 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({
                 handleInputChange("privateSecurities", e.target.value)
               }
             />
+          </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Asset Countries</label>
+            <div className="flex-1 flex gap-2">
+              <Select
+                value={selectedCountry}
+                onValueChange={setSelectedCountry}
+              >
+                <SelectTrigger className="flex-1">
+                  <SelectValue placeholder="Select a country" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="USA">USA</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                  <SelectItem value="UK">UK</SelectItem>
+                  <SelectItem value="Australia">Australia</SelectItem>
+                  {/* Add more countries as needed */}
+                </SelectContent>
+              </Select>
+              <Button className="bg-navy" onClick={handleAddCountry} disabled={!selectedCountry}>
+                Add
+              </Button>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {values.assetCountries.map((country, index) => (
+              <div
+                key={index}
+                className="bg-gray-200 px-2 py-1 rounded flex items-center gap-1"
+              >
+                {country}
+                <button
+                  onClick={() => handleRemoveCountry(country)}
+                  className="hover:text-gray-400"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex gap-4 mt-4">

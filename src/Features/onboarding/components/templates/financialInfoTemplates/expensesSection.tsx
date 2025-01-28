@@ -13,7 +13,6 @@ interface ExpensesSectionProps {
     giving: string;
   };
   onChange: (field: string, value: string) => void;
-  onBack: () => void;
   onContinue: () => void;
 }
 
@@ -42,13 +41,13 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div
-            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+            className={`text-xs mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
                 ? "bg-blue-900 text-white"
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            3
+            2
           </div>
           <h3 className="font-medium">Expenses</h3>
         </div>
@@ -62,8 +61,12 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Expenses Details"
-        description="Please fill in your expenses details below."
+        title="Whats your annual expenses?"
+        description="Enter your annual expenses below."
+        sectionNumber={2}
+        sectionTitle="Expenses"
+        nextSectionTitle="Assets"
+        isSectionComplete={isComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">

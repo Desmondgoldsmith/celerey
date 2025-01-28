@@ -61,8 +61,12 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="What are your liabilities"
+        title="What are your liabilities?"
         description="Enter your liabilities"
+        sectionNumber={3}
+        sectionTitle="Assets"
+        nextSectionTitle="Liabilities"
+        isSectionComplete={isComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">

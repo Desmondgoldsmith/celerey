@@ -97,32 +97,30 @@ const FinancialDetailsScreen: React.FC = () => {
           />
         </div>
         <div className="border-b pb-4">
-          <AssetsSection
-            values={localFormData.assets}
-            onChange={(field, value) =>
-              handleFormUpdate("assets", field, value)
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        </div>
-        <div className="border-b pb-4">
           <ExpensesSection
             values={localFormData.annualExpenses}
             onChange={(field, value) =>
               handleFormUpdate("annualExpenses", field, value)
             }
-            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>
+        <div className="border-b pb-4">
+          <AssetsSection
+            values={localFormData.assets}
+            onChange={(field, value) =>
+              handleFormUpdate("assets", field, value)
+            }
+            onContinue={handleContinue}
+          />
+        </div>
+
         <div className="border-b pb-4">
           <LiabilitiesSection
             values={localFormData.liabilities}
             onChange={(field, value) =>
               handleFormUpdate("liabilities", field, value)
             }
-            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>

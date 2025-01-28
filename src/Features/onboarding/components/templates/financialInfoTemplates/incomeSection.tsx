@@ -12,6 +12,7 @@ interface IncomeSectionProps {
   };
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
+  // isComplete: boolean;
 }
 
 const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
@@ -34,7 +35,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div
-            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+            className={`text-xs mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
                 ? "bg-blue-900 text-white"
                 : "bg-white border-blue-900 border text-blue-900"
@@ -55,8 +56,12 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Income Details"
-        description="Please fill in your income details below."
+        title="What is your annual passive income?"
+        description="Enter your annual passive income details below."
+        sectionNumber={1}
+        sectionTitle="Income"
+        nextSectionTitle="Expenses"
+        isSectionComplete={isComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -111,17 +116,13 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
         <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1"
           >
             Back
           </Button>
           <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >
