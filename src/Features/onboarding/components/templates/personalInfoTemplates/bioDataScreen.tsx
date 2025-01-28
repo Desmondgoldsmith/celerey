@@ -3,14 +3,14 @@ import { FormInput } from "../../molecules/formInput";
 import { BioDataScreenProps } from "@/Features/onboarding/types";
 import { useForm } from "@/hooks/useForm";
 import { useEffect } from "react";
-import { countries } from "@/Features/onboarding/countries"; // Import the countries array
+import { countries } from "@/Features/onboarding/countries";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"; // Import the Select components
+} from "@/components/ui/select";
 
 const prefixOptions = ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."];
 
@@ -173,8 +173,8 @@ export const BioDataScreen = ({
             </SelectTrigger>
             <SelectContent>
               {[...Array(100).keys()].map((year) => (
-                <SelectItem key={year + 1920} value={(year + 1920).toString()}>
-                  {year + 1920}
+                <SelectItem key={2019 - year} value={(2019 - year).toString()}>
+                  {2019 - year}
                 </SelectItem>
               ))}
             </SelectContent>

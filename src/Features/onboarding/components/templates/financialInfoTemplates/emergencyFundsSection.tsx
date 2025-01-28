@@ -64,15 +64,15 @@ const [emergencyFund, setEmergencyFund] = useState('');
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Emergency Funds Details"
-        description="Please fill in your emergency funds details below."
+        title="What are your emergency fund details?"
+        description="Enter your emergency fund details below."
       >
         <div className="space-y-4">
-          <div className="flex border-b border-gray-300 pb-4 items-center">
-            <label className="flex-1">Do you have emergency funds?</label>
-            <div className="flex-1 flex gap-4">
-              <button
-                className={`px-4 py-2 rounded-md font-medium ${
+          <div className="flex flex-col border-b border-gray-300 pb-4 items-center">
+            <label className="flex-1 text-center pb-3">Have you saved up to cover some living expenses for a duration?</label>
+            <div className="flex-1 w-2/3 flex gap-4">
+              <Button variant={"outline"}
+                className={`flex-1 px-4 py-2 rounded-md font-medium ${
                   emergencyFund === "no"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
@@ -88,9 +88,9 @@ const [emergencyFund, setEmergencyFund] = useState('');
                 }}
               >
                 No
-              </button>
-              <button
-                className={`px-4 py-2 rounded-md font-medium ${
+              </Button>
+              <Button variant={"outline"}
+                className={`flex-1 px-4 py-2 rounded-md font-medium ${
                   emergencyFund === "yes"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
@@ -103,7 +103,7 @@ const [emergencyFund, setEmergencyFund] = useState('');
                 }}
               >
                 Yes
-              </button>
+              </Button>
             </div>
           </div>
 

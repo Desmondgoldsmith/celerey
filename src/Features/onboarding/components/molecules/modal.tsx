@@ -16,7 +16,7 @@ interface ModalProps {
   sectionNumber?: number;
   sectionTitle?: string;
   nextSectionTitle?: string;
-  isSectionComplete?: boolean; 
+  isSectionComplete?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -32,9 +32,9 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="">
+      <DialogContent className="sm:max-w-[425px] md:max-w-[600px] lg:max-w-[800px]">
         <DialogHeader className="pt-5">
-          <DialogTitle className="text-4xl font-medium font-cirka text-center">
+          <DialogTitle className="text-2xl sm:text-3xl md:text-4xl font-medium font-cirka text-center">
             {title}
           </DialogTitle>
           {description && (
@@ -46,48 +46,52 @@ const Modal: React.FC<ModalProps> = ({
 
         {/* Render the SectionHeader if sectionNumber and sectionTitle are provided */}
         {sectionNumber !== undefined && sectionTitle && (
-          <div className="flex p-5">
-            <div
-              className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                isSectionComplete
-                  ? "bg-blue-900 text-white"
-                  : "bg-white border-blue-900 border text-blue-900"
-              }`}
-            >
-              {sectionNumber}
+          <div className="flex flex-col sm:flex-row items-center justify-center p-5 gap-2 sm:gap-4">
+            <div className="flex items-center">
+              <div
+                className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                  isSectionComplete
+                    ? "bg-blue-900 text-white"
+                    : "bg-white border-blue-900 border text-blue-900"
+                }`}
+              >
+                {sectionNumber}
+              </div>
+              <h3
+                className={`font-light text-sm ${
+                  isSectionComplete ? "text-blue-900" : "text-gray-500"
+                }`}
+              >
+                {sectionTitle}
+              </h3>
             </div>
-            <h3
-              className={`font-light text-sm ${
-                isSectionComplete ? "text-blue-900" : "text-gray-500"
-              }`}
-            >
-              {sectionTitle}
-            </h3>
             <div
-              className={`flex-1 h-[2px] my-auto mx-2 ${
+              className={`hidden sm:block flex-1 h-[2px] my-auto mx-2 ${
                 isSectionComplete ? "bg-blue-900" : "bg-gray-300"
               }`}
             ></div>
-            <div
-              className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                isSectionComplete
-                  ? "bg-blue-900 text-white"
-                  : "bg-white border-blue-900 border text-blue-900"
-              }`}
-            >
-              {sectionNumber + 1}
+            <div className="flex items-center">
+              <div
+                className={`text-xs mr-2 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                  isSectionComplete
+                    ? "bg-blue-900 text-white"
+                    : "bg-white border-blue-900 border text-blue-900"
+                }`}
+              >
+                {sectionNumber + 1}
+              </div>
+              <h3
+                className={`font-light text-sm ${
+                  isSectionComplete ? "text-blue-900" : "text-gray-500"
+                }`}
+              >
+                {nextSectionTitle}
+              </h3>
             </div>
-            <h3
-              className={`font-light text-sm ${
-                isSectionComplete ? "text-blue-900" : "text-gray-500"
-              }`}
-            >
-              {nextSectionTitle}
-            </h3>
           </div>
         )}
 
-        <div className="max-w-sm flex flex-col mx-auto">{children}</div>
+        <div className="max-w-sm w-full mx-auto px-4 sm:px-0">{children}</div>
       </DialogContent>
     </Dialog>
   );
