@@ -1,9 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { FormInput } from "../../molecules/formInput";
 import { BioDataScreenProps } from "@/Features/onboarding/types";
-import { citizenshipOptions } from "@/Features/onboarding/constants";
-import {useForm} from "@/hooks/useForm";
+import { useForm } from "@/hooks/useForm";
 import { useEffect } from "react";
+import { countries } from "@/Features/onboarding/countries"; // Import the countries array
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"; // Import the Select components
 
 const prefixOptions = ["Mr.", "Ms.", "Mrs.", "Dr.", "Prof."];
 
@@ -13,14 +20,13 @@ export const BioDataScreen = ({
   onBack,
   onContinue,
 }: BioDataScreenProps) => {
-
   const { form, setForm } = useForm();
+
   useEffect(() => {
     console.log("Form state updated:", form);
   }, [form]);
 
   const handleSubmit = (e: React.FormEvent) => {
-
     e.preventDefault();
     if (
       value.prefix &&
@@ -32,17 +38,15 @@ export const BioDataScreen = ({
       value.citizenship &&
       value.residentCountry
     ) {
-
-      setForm( (form) => ({
+      setForm((form) => ({
         ...form,
-        personal_info : {
-          ...value
-        }
+        personal_info: {
+          ...value,
+        },
       }));
 
       console.log("Form state updated:", form);
       onContinue();
-
     }
   };
 
@@ -60,21 +64,22 @@ export const BioDataScreen = ({
 
       <div className="flex flex-col gap-4">
         {/* Prefix Dropdown */}
-        <select
+        <Select
           value={value.prefix}
-          onChange={(e) => onChange({ ...value, prefix: e.target.value })}
+          onValueChange={(val) => onChange({ ...value, prefix: val })}
           required
-          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
         >
-          <option value="" disabled hidden>
-            Prefix
-          </option>
-          {prefixOptions.map((prefix) => (
-            <option key={prefix} value={prefix}>
-              {prefix}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+            <SelectValue placeholder="Prefix" />
+          </SelectTrigger>
+          <SelectContent>
+            {prefixOptions.map((prefix) => (
+              <SelectItem key={prefix} value={prefix}>
+                {prefix}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* First Name Input */}
         <FormInput
@@ -92,6 +97,8 @@ export const BioDataScreen = ({
         {/* Last Name Input */}
         <FormInput
           placeholder="Last Name"
+          name="lastName"
+          id="lastName"
           value={value.lastName}
           onChange={(e) => onChange({ ...value, lastName: e.target.value })}
           required
@@ -100,125 +107,132 @@ export const BioDataScreen = ({
 
         {/* Date of Birth Dropdowns */}
         <div className="flex gap-4 justify-center items-center text-sm">
-          <select
+          {/* Day Dropdown */}
+          <Select
             value={value.dob.day}
-            onChange={(e) =>
-              onChange({ ...value, dob: { ...value.dob, day: e.target.value } })
+            onValueChange={(val) =>
+              onChange({ ...value, dob: { ...value.dob, day: val } })
             }
             required
-            className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
           >
-            <option value="" disabled hidden>
-              Day
-            </option>
-            {[...Array(31).keys()].map((day) => (
-              <option key={day + 1} value={day + 1}>
-                {day + 1}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+              <SelectValue placeholder="Day" />
+            </SelectTrigger>
+            <SelectContent>
+              {[...Array(31).keys()].map((day) => (
+                <SelectItem key={day + 1} value={(day + 1).toString()}>
+                  {day + 1}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-          <select
+          {/* Month Dropdown */}
+          <Select
             value={value.dob.month}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                dob: { ...value.dob, month: e.target.value },
-              })
+            onValueChange={(val) =>
+              onChange({ ...value, dob: { ...value.dob, month: val } })
             }
             required
-            className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Month</option>
-            {[
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ].map((month, index) => (
-              <option key={index + 1} value={index + 1}>
-                {month}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
+              <SelectValue placeholder="Month" />
+            </SelectTrigger>
+            <SelectContent>
+              {[
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+              ].map((month, index) => (
+                <SelectItem key={index + 1} value={(index + 1).toString()}>
+                  {month}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-          <select
+          {/* Year Dropdown */}
+          <Select
             value={value.dob.year}
-            onChange={(e) =>
-              onChange({
-                ...value,
-                dob: { ...value.dob, year: e.target.value },
-              })
+            onValueChange={(val) =>
+              onChange({ ...value, dob: { ...value.dob, year: val } })
             }
             required
-            className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">Year</option>
-            {[...Array(100).keys()].map((year) => (
-              <option key={year + 1920} value={year + 1920}>
-                {year + 1920}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
+              <SelectValue placeholder="Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {[...Array(100).keys()].map((year) => (
+                <SelectItem key={year + 1920} value={(year + 1920).toString()}>
+                  {year + 1920}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Citizenship Dropdown */}
-        <select
+        <Select
           value={value.citizenship}
-          onChange={(e) => onChange({ ...value, citizenship: e.target.value })}
+          onValueChange={(val) => onChange({ ...value, citizenship: val })}
           required
-          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
         >
-          <option value="">Select Country</option>
-
-          {citizenshipOptions.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+            <SelectValue placeholder="Select Country" />
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((country) => (
+              <SelectItem key={country.code} value={country.code}>
+                {country.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Dual Citizenship Dropdown (Optional) */}
-        <select
+        <Select
           value={value.dualCitizenship}
-          onChange={(e) =>
-            onChange({ ...value, dualCitizenship: e.target.value })
-          }
-          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+          onValueChange={(val) => onChange({ ...value, dualCitizenship: val })}
         >
-          <option value="">Do you hold dual citizenship? (Optional)</option>
-          {citizenshipOptions.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+            <SelectValue placeholder="Do you hold dual citizenship? (Optional)" />
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((country) => (
+              <SelectItem key={country.code} value={country.code}>
+                {country.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {/* Resident Country Dropdown */}
-        <select
+        <Select
           value={value.residentCountry}
-          onChange={(e) =>
-            onChange({ ...value, residentCountry: e.target.value })
-          }
+          onValueChange={(val) => onChange({ ...value, residentCountry: val })}
           required
-          className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
         >
-          <option value="">Select Country</option>
-
-          {citizenshipOptions.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+            <SelectValue placeholder="Select Country" />
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((country) => (
+              <SelectItem key={country.code} value={country.code}>
+                {country.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Action Buttons */}
@@ -232,7 +246,6 @@ export const BioDataScreen = ({
           Back
         </Button>
         <Button
-          // onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
           disabled={
             !value.prefix ||
@@ -244,7 +257,7 @@ export const BioDataScreen = ({
             !value.citizenship ||
             !value.residentCountry
           }
-          type = "submit"
+          type="submit"
         >
           Continue
         </Button>

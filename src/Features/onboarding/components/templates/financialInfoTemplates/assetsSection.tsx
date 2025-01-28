@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { countries } from "@/Features/onboarding/countries";
 import {
   Select,
   SelectContent,
@@ -60,13 +61,13 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div
-            className={`mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+            className={`text-xs mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
               isComplete
                 ? "bg-blue-900 text-white"
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            2
+            3
           </div>
           <h3 className="font-medium">Assets</h3>
         </div>
@@ -137,7 +138,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Asset Countries</label>
+            <label className="flex-1">In which country(ies) are your assets</label>
             <div className="flex-1 flex gap-2">
               <Select
                 value={selectedCountry}
@@ -147,14 +148,18 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
                   <SelectValue placeholder="Select a country" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="USA">USA</SelectItem>
-                  <SelectItem value="Canada">Canada</SelectItem>
-                  <SelectItem value="UK">UK</SelectItem>
-                  <SelectItem value="Australia">Australia</SelectItem>
-                  {/* Add more countries as needed */}
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-              <Button className="bg-navy" onClick={handleAddCountry} disabled={!selectedCountry}>
+              <Button
+                className="bg-navy"
+                onClick={handleAddCountry}
+                disabled={!selectedCountry}
+              >
                 Add
               </Button>
             </div>
@@ -163,7 +168,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             {values.assetCountries.map((country, index) => (
               <div
                 key={index}
-                className="bg-gray-200 px-2 py-1 rounded flex items-center gap-1"
+                className="bg-blue-900 text-white text-xs px-2 py-1 rounded flex items-center gap-1"
               >
                 {country}
                 <button
