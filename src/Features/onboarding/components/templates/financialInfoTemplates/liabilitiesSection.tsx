@@ -12,7 +12,6 @@ interface LiabilitiesSectionProps {
     otherLiabilities: string;
   };
   onChange: (field: string, value: string) => void;
-  onBack: () => void;
   onContinue: () => void;
 }
 
