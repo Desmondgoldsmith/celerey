@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { SubscriptionTier, SubscriptionInterval } from "../../types";
 import { ToggleButton } from "./toggleButton";
 import { FeaturesList } from "./featureList";
-// import Link from "next/link";
 
 const BIENNIAL_DISCOUNTS = {
   Standard: 0.1, // 10% discount
