@@ -1,26 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { ChartType } from "../../types";
+import { ChartType, SubscriptionTier } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
-import { BalanceOverview } from "../molecules/balanceOverview";
-import RiskAllocation from "../molecules/riskAllocationCharts";
-import IncomeVsExpenditure from "../molecules/incomeAndExpenditure";
-import { Goals } from "../molecules/goalsChart";
+import BalanceOverview from "../molecules/balanceOverview";
+import { GeographicSpread } from "../molecules/geographicSpread";
+import { IncomeVsDebt } from "../molecules/incomeVsDebt";
+import { FinancialGoals } from "../molecules/financialGoals";
 import { UserProfile } from "../molecules/userProfile";
-import IncomeVsDebt from "../molecules/incomeVsDebt";
+import { FinancialKnowledgeAssessment } from "../molecules/financialKnowledge";
+import IncomeAndExpenditure from "../molecules/incomeAndExpenditure";
 import Link from "next/link";
-
-// expense data structure
-const INITIAL_EXPENSE_DATA = {
-  totalExpenses: 43256.45,
-  categories: [
-    { name: "Others", value: 24223.61, color: "#1E1B4B", percentage: 56 },
-    { name: "Home", value: 13842.06, color: "#4ADE80", percentage: 32 },
-    { name: "Loans", value: 5190.78, color: "#FB923C", percentage: 12 },
-  ],
-};
+import { CongratulationsModal } from "../molecules/congratulationModal";
+import { SubscriptionModal } from "../molecules/subscriptionModal";
+import { PaymentModal } from "../molecules/paymentModal";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -31,13 +25,13 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 
 const DEFAULT_USER_DATA = {
   userName: "Jude",
-  netWorth: 103550.0,
-  riskAttitude: "Low",
-  investmentExperience: "Beginner",
+  netWorth: 103550.43,
+  riskAttitude: "Incomplete",
+  investmentExperience: "Incomplete",
   profileCompletion: 40,
 };
 
-// Mobile component
+// Mobile components
 const MobileGreeting: React.FC<{ userName: string }> = ({ userName }) => (
   <div className="mb-6 lg:hidden">
     <div className="text-center items-center mb-4">
@@ -59,7 +53,7 @@ const MobileNetWorth: React.FC<{ netWorth: number }> = ({ netWorth }) => (
         Your current networth is
       </div>
       <div className="text-[28px] text-navyLight font-cirka mt-1">
-        ${netWorth.toLocaleString()}
+        {netWorth.toLocaleString()}
       </div>
     </div>
   </div>
@@ -71,20 +65,18 @@ const MobileActionItems = () => {
       icon: "/assets/consultation.svg",
       text: "Book a consultation call with an advisor",
       alt: "Consultation",
-      link: "/advisors",
+      link: "/freebie-account/advisors",
     },
-    {
-      icon: "/assets/recommendation.svg",
-      text: "View advisors recommendation",
-      alt: "Advisor",
-      link: "#",
-    },
-    {
-      icon: "/assets/financialDoc.svg",
-      text: "Upload financial documents",
-      alt: "Upload Financial Document",
-      link: "#",
-    },
+    // {
+    //   icon: "/assets/recommendation.svg",
+    //   text: "View advisors recommendation",
+    //   alt: "Advisor",
+    // },
+    // {
+    //   icon: "/assets/financialDoc.svg",
+    //   text: "Upload financial documents",
+    //   alt: "Upload Financial Document",
+    // },
   ];
 
   return (
@@ -120,8 +112,15 @@ const MobileActionItems = () => {
 };
 
 const DashboardTemplate: React.FC = () => {
-  const [selectMonths, setSelectedMonths] = useState<string>("12");
-  console.log(selectMonths);
+  const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "3M" | "1Y">(
+    "1M"
+  );
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isCongratsModalOpen, setIsCongratsModalOpen] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
+    null
+  );
   const {
     userName,
     netWorth,
@@ -130,65 +129,102 @@ const DashboardTemplate: React.FC = () => {
     profileCompletion,
   } = DEFAULT_USER_DATA;
 
-  // Handler for timeframe changes
-  const handleTimeframeChange = (months: string) => {
-    setSelectedMonths(months);
+  // Handle subscription modal opening
+  const handleOpenSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(true);
+  };
+
+  // Handle tier selection
+  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
+    setSelectedTier(tier);
+    setIsSubscriptionModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
+
+  // Handle payment completion
+  const handlePaymentComplete = () => {
+    setIsPaymentModalOpen(false);
+    setIsCongratsModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-[1990px] mx-auto">
-        {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-4">
-          {/* Left Column */}
-          <div className="col-span-4 space-y-5">
-            <UserProfile
-              userName={userName}
-              netWorth={netWorth}
-              riskAttitude={riskAttitude}
-              investmentExperience={investmentExperience}
-              profileCompletion={profileCompletion}
-            />
-            <Goals Chart={Chart} />
+    <>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-[1440px] mx-auto">
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
+            {/* Left Column */}
+            <div className="col-span-4 space-y-6">
+              <UserProfile
+                userName={userName}
+                netWorth={netWorth}
+                riskAttitude={riskAttitude}
+                investmentExperience={investmentExperience}
+                profileCompletion={profileCompletion}
+                onUpgradeClick={handleOpenSubscriptionModal}
+              />
+              <FinancialGoals Chart={Chart} />
+            </div>
+
+            {/* Middle Column */}
+            <div className="col-span-5 space-y-6">
+              <BalanceOverview
+                Chart={Chart}
+                timeframe={timeframe}
+                onTimeframeChange={setTimeframe}
+              />
+              <IncomeAndExpenditure Chart={Chart} />
+            </div>
+
+            {/* Right Column */}
+            <div className="col-span-3 space-y-6">
+              {/* <RiskAllocation Chart={Chart} /> */}
+              <GeographicSpread />
+              <IncomeVsDebt />
+              <FinancialKnowledgeAssessment progress={72} />
+            </div>
           </div>
 
-          {/* Middle Column */}
-          <div className="col-span-5 space-y-5">
+          {/* Mobile Layout */}
+          <div className="lg:hidden space-y-6">
+            <MobileGreeting userName={userName} />
+            <MobileNetWorth netWorth={netWorth} />
             <BalanceOverview
-              totalExpenses={INITIAL_EXPENSE_DATA.totalExpenses}
-              data={INITIAL_EXPENSE_DATA.categories}
-              onTimeframeChange={handleTimeframeChange}
-              lastUpdated={new Date("2025-01-20")}
+              Chart={Chart}
+              timeframe={timeframe}
+              onTimeframeChange={setTimeframe}
             />
-            <IncomeVsExpenditure Chart={Chart} />
-          </div>
-
-          {/* Right Column */}
-          <div className="col-span-3 space-y-5">
-            <RiskAllocation />
+            <div className="bg-white rounded-lg overflow-hidden">
+              <MobileActionItems />
+            </div>
+            <FinancialGoals Chart={Chart} />
+            <IncomeAndExpenditure Chart={Chart} />
             <IncomeVsDebt />
+            <FinancialKnowledgeAssessment progress={72} />
+            <GeographicSpread />
           </div>
-        </div>
-
-        {/* Mobile Layout */}
-        <div className="lg:hidden space-y-6">
-          <MobileGreeting userName={userName} />
-          <MobileNetWorth netWorth={netWorth} />
-          <BalanceOverview
-            totalExpenses={INITIAL_EXPENSE_DATA.totalExpenses}
-            data={INITIAL_EXPENSE_DATA.categories}
-            onTimeframeChange={handleTimeframeChange}
-          />
-          <div className="bg-white rounded-lg overflow-hidden">
-            <MobileActionItems />
-          </div>
-          <Goals Chart={Chart} />
-          <RiskAllocation />
-          <IncomeVsExpenditure Chart={Chart} />
-          <IncomeVsDebt />
         </div>
       </div>
-    </div>
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={() => setIsSubscriptionModalOpen(false)}
+        onSubscriptionSelect={handleSubscriptionSelect}
+      />
+
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        selectedTier={selectedTier}
+        onPaymentComplete={handlePaymentComplete}
+      />
+
+      <CongratulationsModal
+        isOpen={isCongratsModalOpen}
+        onClose={() => setIsCongratsModalOpen(false)}
+        subscriptionTier={selectedTier?.name || ""}
+      />
+    </>
   );
 };
 

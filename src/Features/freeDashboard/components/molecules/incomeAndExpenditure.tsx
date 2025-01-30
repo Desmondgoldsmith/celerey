@@ -1,22 +1,16 @@
-"use client";
 import React from "react";
 import { Card } from "@/components/ui/card";
-import {
-  MoreHorizontal,
-  HelpCircle,
-  Filter,
-  Settings,
-  RefreshCw,
-} from "lucide-react";
+import { MoreHorizontal, HelpCircle } from "lucide-react";
 import { ChartType } from "../../types";
 
-interface IncomeVsExpenditureProps {
-  Chart?: ChartType;
+interface IncomeAndExpenditureProps {
+  Chart: ChartType;
 }
 
-export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
+export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
   const data = {
-    netIncome: 24256.12,
+    monthlyIncome: 24256.12,
+    monthlyExpediture: 10002.1,
     income: {
       amount: 51424.58,
       percentage: 65,
@@ -30,8 +24,8 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
   return (
     <Card className="p-4 sm:p-6 bg-white">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-lg sm:text-xl font-cirka text-navy mb-2 sm:mb-0">
+      <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-lg sm:text-xl font-cirka text-navy">
           Income And Expenditure
         </h2>
         <MoreHorizontal className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 cursor-pointer" />
@@ -39,56 +33,53 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
 
       {/* Info Section */}
       <div className="flex flex-col mb-4">
-        {/*  Net Income text and Last Updated */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2 sm:gap-0">
-          <div className="flex items-center gap-2">
-            <span className="text-sm sm:text-base text-gray-600">
-              Net Income
+        {/*  Monthly Income and Expenditure Labels */}
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <span className="text-xs sm:text-sm text-gray-600">
+              Monthly Income
             </span>
             <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>
-          <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-2 sm:px-3 py-1">
-            <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
+          <div className="flex items-center gap-1 sm:gap-2">
             <span className="text-xs sm:text-sm text-gray-600">
-              Last Updated on: Jan 20, 2025
+              Monthly Expenditure
             </span>
+            <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>
         </div>
 
-        {/* Amount and Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-8 gap-4 sm:gap-0">
-          <div className="text-2xl sm:text-3xl font-normal">
+        {/* Amount Section */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-2xl sm:text-3xl font-bold text-green-800">
             $
-            {data.netIncome.toLocaleString(undefined, {
+            {data.monthlyIncome.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-2 sm:px-3 py-1">
-              <Filter className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-              <span className="text-xs sm:text-sm">Filter</span>
-            </button>
-            <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-2 sm:px-3 py-1">
-              <span className="text-xs sm:text-sm">Manage</span>
-              <Settings className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-            </button>
+          <div className="text-2xl sm:text-3xl font-bold text-red-800">
+            $
+            {data.monthlyExpediture.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
           </div>
         </div>
 
         {/* Income and Expenditure Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-[70px]">
           {/* Income Section */}
-          <div className="relative">
-            {/* Vertical Line */}
+          <div className="relative mb-6 sm:mb-0">
+            {/* Vertical Line - Adjust for mobile */}
             <div
-              className="absolute left-0 w-[2px] bg-purple-600"
+              className="absolute left-0 w-[2px] bg-green-800 hidden sm:block"
               style={{
                 height: "calc(150% - 7rem)",
                 top: "1rem",
               }}
             />
-            <div className="mb-[60px] sm:mb-[100px] ml-2">
+            <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
                 {data.income.amount.toLocaleString(undefined, {
@@ -96,27 +87,25 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
                   maximumFractionDigits: 2,
                 })}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">
-                income last month
-              </div>
+              <div className="text-sm text-gray-600">income last month</div>
             </div>
-            <div className="mt-2 ml-2 text-purple-600 font-medium text-sm sm:text-base">
+            <div className="mt-2 text-green-800 font-medium">
               {data.income.percentage}%
             </div>
-            <div className="h-2 bg-purple-600 rounded-full w-full" />
+            <div className="h-2 bg-green-800 rounded-full w-full mt-2" />
           </div>
 
           {/* Expenditure Section */}
           <div className="relative">
-            {/* Vertical Line */}
+            {/* Vertical Line - Adjust for mobile */}
             <div
-              className="absolute left-0 w-[2px] bg-orange-500"
+              className="absolute left-0 w-[2px] bg-red-800 hidden sm:block"
               style={{
                 height: "calc(150% - 7rem)",
                 top: "1rem",
               }}
             />
-            <div className="mb-[60px] sm:mb-[100px] ml-2">
+            <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
                 {data.expenditure.amount.toLocaleString(undefined, {
@@ -124,22 +113,22 @@ export const IncomeVsExpenditure: React.FC<IncomeVsExpenditureProps> = () => {
                   maximumFractionDigits: 2,
                 })}
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">
+              <div className="text-sm text-gray-600">
                 expenditure last month
               </div>
             </div>
-            <div className="mt-2 ml-2 text-orange-500 font-medium text-sm sm:text-base">
+            <div className="mt-2 text-red-800 font-medium">
               {data.expenditure.percentage}%
             </div>
-            <div className="h-2 bg-orange-500 rounded-full w-[69.2%]" />
+            <div className="h-2 bg-red-800 rounded-full w-full sm:w-[69.2%] mt-2" />
           </div>
         </div>
       </div>
 
       {/* Bottom Border */}
-      <div className="border-b border-gray-200 mt-4 sm:mt-8 p-2 sm:p-4 mb-6 sm:mb-10" />
+      <div className="border-b border-gray-200 mt-3 p-2 mb-5" />
     </Card>
   );
 };
 
-export default IncomeVsExpenditure;
+export default IncomeAndExpenditure;

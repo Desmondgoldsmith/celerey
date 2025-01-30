@@ -1,189 +1,453 @@
-"use client";
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { MoreHorizontal, Filter, Settings } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Card, CardContent } from "@/components/ui/card";
+import { Info, MoreHorizontal } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-
-interface ExpenseCategory {
-  name: string;
-  value: number;
-  color: string;
-  percentage: number;
-}
+import { ChartType, TimeframeKey } from "../../types";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface BalanceOverviewProps {
-  totalExpenses: number;
-  data: ExpenseCategory[];
-  onTimeframeChange: (months: string) => void;
-  lastUpdated?: Date;
+  Chart: ChartType;
+  timeframe: TimeframeKey;
+  onTimeframeChange: (timeframe: TimeframeKey) => void;
+  // annualIncome: {
+  //   Rental: number;
+  //   Dividends: number;
+  //   "Interest Income": number;
+  //   "Other Income": number;
+  // };
+  // annualExpenditure: {
+  //   Home: number;
+  //   Childcare: number;
+  //   Education: number;
+  //   Healthcare: number;
+  //   Travel: number;
+  //   Giving: number;
+  // };
 }
 
-export const BalanceOverview: React.FC<BalanceOverviewProps> = ({
-  totalExpenses,
-  data = [
-    { name: "Others", value: 24223.61, color: "#1E1B4B", percentage: 56 },
-    { name: "Home", value: 13842.06, color: "#4ADE80", percentage: 32 },
-    { name: "Loans", value: 5190.78, color: "#FB923C", percentage: 12 },
-  ],
-  onTimeframeChange,
-  lastUpdated = new Date(),
-}) => {
-  const months = ["1", "2", "3", "6", "12"];
+const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
+  // Dummy data
+  const realEstate = {
+    percentage: 42,
+    value: 25353.94,
+  };
+  const privateSecurities = {
+    percentage: 20,
+    value: 21536.32,
+  };
+  const publicSecurities = {
+    percentage: 24,
+    value: 23532.25,
+  };
+  const cash = {
+    percentage: 14,
+    value: 19245.35,
+  };
+
+  // =====
+
+  const mortgages = {
+    percentage: 60,
+    value: 25353.94,
+  };
+  const creditCards = {
+    percentage: 16,
+    value: 21536.32,
+  };
+  const loans = {
+    percentage: 30,
+    value: 23532.25,
+  };
+  const assetFinance = {
+    percentage: 50,
+    value: 19245.35,
+  };
+  const otherLiability = {
+    percentage: 14,
+    value: 19245.35,
+  };
+
+  const liabilityData = [
+    { name: "Mortgages", value: realEstate.percentage },
+    { name: "Credit Cards", value: creditCards.percentage },
+    { name: "Loans", value: loans.percentage },
+    { name: "Asset Finance", value: assetFinance.percentage },
+    { name: "Other Liability", value: otherLiability.percentage },
+  ];
+
+  const assetData = [
+    { name: "Real Estate", value: mortgages.percentage },
+    { name: "Private Securities", value: privateSecurities.percentage },
+    { name: "Public Securities", value: publicSecurities.percentage },
+    { name: "Cash", value: cash.percentage },
+  ];
+
+  const assetCOLORS = ["#1B1856", "#8BA78D", "#E15B2D", "#383396"];
+  const liabilityCOLORS = [
+    "#1B1856",
+    "#8BA78D",
+    "#E15B2D",
+    "#383396",
+    "#AAAAAA",
+  ];
+
+  const dummyAnnualIncome = {
+    Rental: 12493.32,
+    Dividends: 18354.23,
+    "Interest Income": 14245.21,
+    "Other Income": 9234.64,
+  };
+
+  const dummyAnnualExpenditure = {
+    Home: 22953.93,
+    Childcare: 24583.84,
+    Education: 28253.29,
+    Healthcare: 5294.95,
+    Travel: 9364.32,
+    Giving: 11245.76,
+  };
+
+  const incomeData = Object.entries(dummyAnnualIncome).map(([name, value]) => ({
+    name,
+    value,
+  }));
+  const expenditureData = Object.entries(dummyAnnualExpenditure).map(
+    ([name, value]) => ({ name, value })
+  );
+
+  const incomeColors = ["#FF6B6B", "#6B4EFF", "#4CAF50", "#2196F3"];
+  const expenditureColors = [
+    "#1B1856",
+    "#8BA78D",
+    "#E15B2D",
+    "#383396",
+    "#AAAAAA",
+  ];
 
   return (
-    <Card className="bg-white p-4 sm:p-6 w-full">
-      {/* Header section  */}
-      <div className="flex justify-between items-start sm:items-center mb-4 sm:mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-lg sm:text-xl font-cirka text-navy mb-2 sm:mb-0">
+    <Card className="bg-white p-4 w-full">
+      {/* Header */}
+      <div className="flex justify-between p-2 items-center mb-6 border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-xl font-cirka text-navy md:text-2xl">
           Balance Overview
         </h2>
-        <MoreHorizontal className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 cursor-pointer" />
+        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
 
-      {/* Total Expenses and Timeframe Selector */}
-      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
-        <div>
-          <div className="text-sm text-gray-500 mb-1">Total Expenses</div>
-          <div className="text-xl sm:text-2xl font-semibold">
-            ${totalExpenses.toLocaleString()}
+      <CardContent>
+        {/* Assets Section */}
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center space-x-2">
+            <h3 className="text-gray-700 font-cirka text-xl">Assets</h3>
+            <Info className="h-3 w-3 text-gray-400" />
+          </div>
+
+          <div>
+            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
           </div>
         </div>
-        <div className="w-full sm:w-auto">
-          <Select defaultValue="12" onValueChange={onTimeframeChange}>
-            <SelectTrigger className="w-full sm:w-[120px] bg-gray-50">
-              <SelectValue placeholder="Select months" />
-            </SelectTrigger>
-            <SelectContent>
-              {months.map((month) => (
-                <SelectItem key={month} value={month}>
-                  {month} months
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
 
-      {/* Chart and Legend */}
-      <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 mb-4 sm:mb-6">
-        {/* Donut Chart  */}
-        <div className="w-[150px] sm:w-[180px] h-[150px] sm:h-[180px] mx-auto md:mx-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={45}
-                outerRadius={65}
-                paddingAngle={4}
-                dataKey="value"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
+          {/* Pie Chart  */}
+          <div className="flex justify-center md:block">
+            <ResponsiveContainer width="100%" height={130}>
+              <PieChart>
+                <Pie
+                  data={assetData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={40}
+                  outerRadius={60}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {assetData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={assetCOLORS[index % assetCOLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
 
-        <div className="w-full md:flex-1">
-          {data.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between mb-3 sm:mb-4 pb-2 sm:pb-3 last:mb-0 border-b border-[#AAAAAA]"
-            >
-              <div className="w-full">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <div className="text-base sm:text-[18px] font-bold font-cirka">
-                    {item.name}
-                  </div>
+          {/* Asset Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+            {/* Real Estate */}
+            <div>
+              <div className="mb-2">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Real Estate</span>
+                  <span>{realEstate.percentage}%</span>
                 </div>
-                <div className="flex items-center justify-between ml-5">
-                  <div className="text-xs sm:text-sm text-gray-500">
-                    {item.percentage}%
-                  </div>
-                  <div className="text-sm sm:text-base font-medium">
-                    ${item.value.toLocaleString()}
-                  </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#1B1856] rounded-full"
+                    style={{ width: `${realEstate.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${realEstate.value.toLocaleString()}
+                </div>
+              </div>
+
+              {/* Private Securities */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Private Securities</span>
+                  <span>{privateSecurities.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#8BA78D] rounded-full"
+                    style={{ width: `${privateSecurities.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${privateSecurities.value.toLocaleString()}
                 </div>
               </div>
             </div>
-          ))}
+
+            {/* Cash and Public Securities */}
+            <div>
+              {/* Cash */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Cash</span>
+                  <span>{cash.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#383396] rounded-full"
+                    style={{ width: `${cash.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${cash.value.toLocaleString()}
+                </div>
+              </div>
+
+              {/* Public Securities */}
+              <div className="mb-6">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Public Securities</span>
+                  <span>{publicSecurities.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#E15B2D] rounded-full"
+                    style={{ width: `${publicSecurities.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${publicSecurities.value.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </CardContent>
 
-      {/* Action Buttons */}
-      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6 justify-center sm:justify-start">
-        <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-md text-center">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8 3.33337V8.00004L11.3333 9.66671"
-              stroke="#344054"
-              strokeWidth="1.33333"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M14.6668 8.00004C14.6668 11.6819 11.6821 14.6667 8.00016 14.6667C4.31826 14.6667 1.3335 11.6819 1.3335 8.00004C1.3335 4.31814 4.31826 1.33337 8.00016 1.33337C11.6821 1.33337 14.6668 4.31814 14.6668 8.00004Z"
-              stroke="#344054"
-              strokeWidth="1.33333"
-            />
-          </svg>
-          <span className="text-xs sm:text-sm text-gray-700">
-            Last Updated on:{" "}
-            {lastUpdated.toLocaleDateString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })}
-          </span>
+      {/* Liabilities Section */}
+      <CardContent>
+        <div className="flex justify-between items-center mb-2">
+          <div className="flex items-center space-x-2">
+            <h3 className="text-gray-700 font-cirka text-xl">Liabilities</h3>
+            <Info className="h-3 w-3 text-gray-400" />
+          </div>
+
+          <div>
+            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
+          </div>
         </div>
 
-        <button className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
-          <Filter className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs sm:text-sm text-gray-700">Filter</span>
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
+          {/* Pie Chart */}
+          <div className="flex justify-center md:block">
+            <ResponsiveContainer width="100%" height={130}>
+              <PieChart>
+                <Pie
+                  data={liabilityData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={40}
+                  outerRadius={60}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {liabilityData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={liabilityCOLORS[index % liabilityCOLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
 
-        <button className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
-          <Settings className="h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs sm:text-sm text-gray-700">Manage</span>
-        </button>
-      </div>
+          {/* Liability Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+            {/* Mortgages and Credit Cards */}
+            <div>
+              {/* Mortgages */}
+              <div className="mb-2">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Mortgages</span>
+                  <span>{mortgages.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#1B1856] rounded-full"
+                    style={{ width: `${mortgages.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${mortgages.value.toLocaleString()}
+                </div>
+              </div>
 
-      {/* Help Section */}
-      <div className="mt-4 sm:mt-8 pt-4 sm:pt-6 border-t border-[#AAAAAA]">
-        <h3 className="font-bold mb-2 text-xl sm:text-2xl font-cirka">
-          Need Help?
-        </h3>
-        <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
-          Get insights on your total expenses with a personalised report for
-          your major expenses and advisory services to assist you to make the
-          best financial decisions.
-        </p>
-        <button className="w-full sm:w-auto bg-[#FF4405] text-white px-4 py-2 rounded-md text-xs sm:text-sm hover:bg-[#E63D04] transition-colors">
+              {/* Credit Cards */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Credit Cards</span>
+                  <span>{creditCards.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#8BA78D] rounded-full"
+                    style={{ width: `${creditCards.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${creditCards.value.toLocaleString()}
+                </div>
+              </div>
+            </div>
+
+            {/* Asset Finance and Loans */}
+            <div>
+              {/* Asset Finance */}
+              <div>
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Asset Finance</span>
+                  <span>{assetFinance.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#383396] rounded-full"
+                    style={{ width: `${assetFinance.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${assetFinance.value.toLocaleString()}
+                </div>
+              </div>
+
+              {/* Loans */}
+              <div className="mb-6">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Loans</span>
+                  <span>{loans.percentage}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#E15B2D] rounded-full"
+                    style={{ width: `${loans.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${loans.value.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+
+      {/* Income and Expenditure Section */}
+      <CardContent className="border-b border-[#AAAAAA]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Annual Income */}
+          <div>
+            <div className="flex items-center space-x-3 mb-4">
+              <h3 className="text-gray-700 font-cirka text-xl">
+                Annual Income
+              </h3>
+              <Info className="h-3 w-3 text-gray-400" />
+            </div>
+            <ResponsiveContainer width="100%" height={170}>
+              <BarChart data={incomeData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#8884d8">
+                  {incomeData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={incomeColors[index % incomeColors.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Annual Expenditure */}
+          <div>
+            <div className="flex items-center space-x-3 mb-4">
+              <h3 className="text-gray-700 font-cirka text-xl">
+                Annual Expenditure
+              </h3>
+              <Info className="h-3 w-3 text-gray-400" />
+            </div>
+            <ResponsiveContainer width="100%" height={170}>
+              <BarChart data={expenditureData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#8884d8">
+                  {expenditureData.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={expenditureColors[index % expenditureColors.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </CardContent>
+
+      {/* Footer */}
+      <div className="flex flex-col sm:flex-row items-center justify-between p-2">
+        <div className="flex flex-col sm:flex-row items-center mb-2 sm:mb-0">
+          <div className="font-helvetica text-medium pr-2 text-center sm:text-left">
+            Need Help?
+          </div>
+          <div className="text-xs font-helvetica text-gray-300 text-center sm:text-left sm:w-[140px]">
+            Get Financial advice on maximizing the returns on your money.
+          </div>
+        </div>
+        <div className="font-bold text-sm text-[#E15B2D] text-center sm:text-right">
           Request Advisory Service
-        </button>
+        </div>
       </div>
-
-      <div className="border-b border-[#AAAAAA] p-2 sm:p-3 mb-3 sm:mb-5"></div>
     </Card>
   );
 };

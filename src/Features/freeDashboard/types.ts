@@ -11,12 +11,6 @@ export interface PortfolioData {
   yearlyData: ChartData[];
 }
 
-export interface Goal {
-  name: string;
-  progress: number;
-  target: number;
-}
-
 export interface DashboardProps {
   userName: string;
   netWorth: number;
@@ -79,3 +73,23 @@ export interface Advisor {
   strengths: string[];
   googleCalendarUrl: string;
 }
+
+export interface Goal {
+  name: string;
+  progress: number;
+  amount: number;
+  targetAmount: number;
+  lastUpdated: string;
+}
+
+export type SubscriptionInterval = "yearly" | "biennial";
+
+export type SubscriptionTier = {
+  name: string;
+  price: number;
+  interval: SubscriptionInterval;
+  description: string;
+  features: string[];
+  intro: string;
+  buttonText?: string;
+};

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import UserProfile from "../molecules/userProfile";
@@ -19,7 +19,11 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
   investmentExperience,
 }) => {
   const router = useRouter();
-
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const handleOpenSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(true);
+  };
+  console.log(isSubscriptionModalOpen);
   return (
     <div className="min-h-screen">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
@@ -31,6 +35,7 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
+              onUpgradeClick={handleOpenSubscriptionModal}
               // className="mb-4 sm:mb-6"
             />
           </div>
@@ -86,9 +91,7 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
                         {advisor.bio}
                       </p>
                       <button
-                        onClick={() =>
-                          router.push(`/freebie-account/advisors/${advisor.id}`)
-                        }
+                        onClick={() => router.push(`/advisors/${advisor.id}`)}
                         className="w-full bg-[#28134B] hover:bg-[#28134B]/90 text-white rounded-full py-2 text-xs sm:text-sm font-medium"
                       >
                         Book A Call
