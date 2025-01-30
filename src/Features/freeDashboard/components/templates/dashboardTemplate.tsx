@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { ChartType } from "../../types";
+import { ChartType, SubscriptionTier } from "../../types";
 import Image from "next/image";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import BalanceOverview from "../molecules/balanceOverview";
@@ -12,6 +12,9 @@ import { UserProfile } from "../molecules/userProfile";
 import { FinancialKnowledgeAssessment } from "../molecules/financialKnowledge";
 import IncomeAndExpenditure from "../molecules/incomeAndExpenditure";
 import Link from "next/link";
+import { CongratulationsModal } from "../molecules/congratulationModal";
+import { SubscriptionModal } from "../molecules/subscriptionModal";
+import { PaymentModal } from "../molecules/paymentModal";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -23,8 +26,8 @@ const Chart = dynamic(() => import("react-apexcharts"), {
 const DEFAULT_USER_DATA = {
   userName: "Jude",
   netWorth: 103550.43,
-  riskAttitude: "Somewhat Aggressive",
-  investmentExperience: "Advanced",
+  riskAttitude: "Incomplete",
+  investmentExperience: "Incomplete",
   profileCompletion: 40,
 };
 
@@ -112,6 +115,12 @@ const DashboardTemplate: React.FC = () => {
   const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "3M" | "1Y">(
     "1M"
   );
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isCongratsModalOpen, setIsCongratsModalOpen] = useState(false);
+  const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
+    null
+  );
   const {
     userName,
     netWorth,
@@ -120,62 +129,102 @@ const DashboardTemplate: React.FC = () => {
     profileCompletion,
   } = DEFAULT_USER_DATA;
 
+  // Handle subscription modal opening
+  const handleOpenSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(true);
+  };
+
+  // Handle tier selection
+  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
+    setSelectedTier(tier);
+    setIsSubscriptionModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
+
+  // Handle payment completion
+  const handlePaymentComplete = () => {
+    setIsPaymentModalOpen(false);
+    setIsCongratsModalOpen(true);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-[1440px] mx-auto">
-        {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
-          {/* Left Column */}
-          <div className="col-span-4 space-y-6">
-            <UserProfile
-              userName={userName}
-              netWorth={netWorth}
-              riskAttitude={riskAttitude}
-              investmentExperience={investmentExperience}
-              profileCompletion={profileCompletion}
-            />
-            <FinancialGoals Chart={Chart} />
+    <>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-[1440px] mx-auto">
+          {/* Desktop Layout */}
+          <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
+            {/* Left Column */}
+            <div className="col-span-4 space-y-6">
+              <UserProfile
+                userName={userName}
+                netWorth={netWorth}
+                riskAttitude={riskAttitude}
+                investmentExperience={investmentExperience}
+                profileCompletion={profileCompletion}
+                onUpgradeClick={handleOpenSubscriptionModal}
+              />
+              <FinancialGoals Chart={Chart} />
+            </div>
+
+            {/* Middle Column */}
+            <div className="col-span-5 space-y-6">
+              <BalanceOverview
+                Chart={Chart}
+                timeframe={timeframe}
+                onTimeframeChange={setTimeframe}
+              />
+              <IncomeAndExpenditure Chart={Chart} />
+            </div>
+
+            {/* Right Column */}
+            <div className="col-span-3 space-y-6">
+              {/* <RiskAllocation Chart={Chart} /> */}
+              <GeographicSpread />
+              <IncomeVsDebt />
+              <FinancialKnowledgeAssessment progress={72} />
+            </div>
           </div>
 
-          {/* Middle Column */}
-          <div className="col-span-5 space-y-6">
+          {/* Mobile Layout */}
+          <div className="lg:hidden space-y-6">
+            <MobileGreeting userName={userName} />
+            <MobileNetWorth netWorth={netWorth} />
             <BalanceOverview
               Chart={Chart}
               timeframe={timeframe}
               onTimeframeChange={setTimeframe}
             />
+            <div className="bg-white rounded-lg overflow-hidden">
+              <MobileActionItems />
+            </div>
+            <FinancialGoals Chart={Chart} />
             <IncomeAndExpenditure Chart={Chart} />
-          </div>
-
-          {/* Right Column */}
-          <div className="col-span-3 space-y-6">
-            {/* <RiskAllocation Chart={Chart} /> */}
-            <GeographicSpread />
             <IncomeVsDebt />
             <FinancialKnowledgeAssessment progress={72} />
+            <GeographicSpread />
           </div>
-        </div>
-
-        {/* Mobile Layout */}
-        <div className="lg:hidden space-y-6">
-          <MobileGreeting userName={userName} />
-          <MobileNetWorth netWorth={netWorth} />
-          <BalanceOverview
-            Chart={Chart}
-            timeframe={timeframe}
-            onTimeframeChange={setTimeframe}
-          />
-          <div className="bg-white rounded-lg overflow-hidden">
-            <MobileActionItems />
-          </div>
-          <FinancialGoals Chart={Chart} />
-          <IncomeAndExpenditure Chart={Chart} />
-          <IncomeVsDebt />
-          <FinancialKnowledgeAssessment progress={72} />
-          <GeographicSpread />
         </div>
       </div>
-    </div>
+      {/* Subscription Modal */}
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={() => setIsSubscriptionModalOpen(false)}
+        onSubscriptionSelect={handleSubscriptionSelect}
+      />
+
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        selectedTier={selectedTier}
+        onPaymentComplete={handlePaymentComplete}
+      />
+
+      <CongratulationsModal
+        isOpen={isCongratsModalOpen}
+        onClose={() => setIsCongratsModalOpen(false)}
+        subscriptionTier={selectedTier?.name || ""}
+      />
+    </>
   );
 };
 

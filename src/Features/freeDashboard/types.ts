@@ -81,3 +81,15 @@ export interface Goal {
   targetAmount: number;
   lastUpdated: string;
 }
+
+export type SubscriptionInterval = "yearly" | "biennial";
+
+export type SubscriptionTier = {
+  name: string;
+  price: number;
+  interval: SubscriptionInterval;
+  description: string;
+  features: string[];
+  intro: string;
+  buttonText?: string;
+};

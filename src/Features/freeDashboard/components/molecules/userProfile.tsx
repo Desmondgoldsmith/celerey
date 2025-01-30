@@ -11,6 +11,7 @@ interface UserProfileProps {
   riskAttitude: string;
   investmentExperience: string;
   profileCompletion?: number;
+  onUpgradeClick: () => void;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
@@ -19,6 +20,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   riskAttitude,
   investmentExperience,
   profileCompletion,
+  onUpgradeClick,
 }) => {
   // const router = useRouter();
   const currentDate = new Date().toLocaleDateString("en-US", {
@@ -34,11 +36,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         {/* Account Header */}
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
-            <span className="text-gray-900 font-bold">Premium Account</span>
+            <span className="text-gray-900 font-bold">Free Account</span>
             <Info className="h-4 w-4 text-gray-400" />
           </div>
-          <button className="text-[#6938EF] text-sm font-medium hover:underline">
-            Upgrade to Pro
+          <button
+            onClick={onUpgradeClick}
+            className="text-[#6938EF] text-sm font-medium hover:underline"
+          >
+            Upgrade
           </button>
         </div>
 
@@ -87,8 +92,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           <div className="text-sm text-gray-500 pl-5 mb-2 font-helvatica">
             Your Risk Attitude
           </div>
-          <div className="text-2xl text-navyLight font-cirka pl-5 font-medium">
-            {riskAttitude}
+          <div className=" flex justify-between items-center ">
+            <div className="text-xl text-black font-cirka pl-5 font-medium">
+              {riskAttitude}
+            </div>
+            <div>
+              <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
+                complete profile
+              </span>
+            </div>
           </div>
         </div>
 
@@ -96,7 +108,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           <div className="text-sm text-gray-500 pl-5 mb-2 font-helvatica">
             Your Current Net Worth
           </div>
-          <div className="text-2xl text-navyLight font-cirka pl-5 font-medium">
+          <div className="text-xl text-navyLight font-cirka pl-5 font-medium">
             ${netWorth.toLocaleString()}
           </div>
         </div>
@@ -105,8 +117,15 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           <div className="text-sm text-gray-500 pl-5 mb-2 font-helvatica">
             Your Investment Experience
           </div>
-          <div className="text-2xl text-navyLight font-cirka pl-5 font-medium">
-            {investmentExperience}
+          <div className=" flex justify-between items-center ">
+            <div className="text-xl text-black font-cirka pl-5 font-medium">
+              {investmentExperience}
+            </div>
+            <div>
+              <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
+                complete profile
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -126,7 +145,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <span className="font-medium">Book 15 Minutes Consultation</span>
           </div>
-          <Link href="/advisors" passHref>
+          <Link href="/freebie-account/advisors" passHref>
             <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
               <ChevronRight className="h-5 w-5 text-white" />
             </button>
