@@ -228,7 +228,7 @@ export interface PersonalInfoFormData {
   prefix: string;
   firstName: string;
   lastName: string;
-  dob : {
+  dob: {
     day: string;
     month: string;
     year: string;
@@ -236,8 +236,20 @@ export interface PersonalInfoFormData {
   citizenship: string;
   dualCitizenship: string;
   residentCountry: string;
-  identification: IdentificationDocument;
   options: string[];
+
+  dependents: DependentsData;
+  maritalStatus: string;
+  occupation: string;
+  address: {
+    line1: string;
+    line2: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  identification: IdentificationDocument;
 }
 
 export interface FinancialInfoFormData {
@@ -293,10 +305,41 @@ export interface GoalsInfoFormData {
 }
 export interface RiskInfoFormData {
   riskTolerance: string;
+
+  riskAttitude: string;
+  riskTolerancePercentage: string;
+  riskReaction: string;
+  riskApproach: string;
+  investmentObjective: string;
+  investmentHorizon: string;
+  illiquidInvestmentPercentage: string;
 }
 
 export interface KnowledgeInfoFormData {
   knowledgeLevel: string;
 
+  investingExperience: string;
+  publicSharesKnowledge: string;
+  publicSharesExperience: string;
+  investmentGradeBondsKnowledge: string;
+  investmentGradeBondsExperience: string;
+  nonInvestmentGradeBondsKnowledge: string;
+  nonInvestmentGradeBondsExperience: string;
+  collectiveInvestmentsInstumentsKnowledge: string;
+  collectiveInvestmentsInstumentsExperience: string;
+  derivativesKnowledge: string;
+  derivativesExperience: string;
+  forexKnowledge: string;
+  commoditiesKnowledge: string;
+  commoditiesExperience: string;
+  hybridInvestmentsKnowledge: string;
+  privateMarketInstrumentsKnowledge: string;
+  privateMarketInstrumentsExperience: string;
+  realEstateKnowledge: string;
+  realEstateExperience: string;
+  altAssetsKnowledge: string;
+  leveragedInstumentsKnowledge: string;
+  leveragedInstumentsExperience: string;
+  privateCreditKnowledge: string;
 }
 

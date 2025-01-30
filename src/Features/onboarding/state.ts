@@ -85,6 +85,28 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     residentCountry: "",
 
     options: [],
+
+    dependents: {
+      hasDependents: "",
+      numberOfDependents: "",
+      agesOfDependents: "",
+    },
+    maritalStatus: "",
+    occupation: "",
+    address: {
+      line1: "",
+      line2: "",
+      city: "",
+      state: "",
+      postalCode: "",
+      country: "",
+    },
+    identification: {
+      type: "",
+      file: null,
+      fileName: "",
+      uploadStatus: "idle",
+    },
   },
   financial: {
     currency: "",
@@ -137,9 +159,42 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   },
   risk: {
     riskTolerance: "",
+
+    riskAttitude: "",
+    riskTolerancePercentage: "",
+    riskReaction: "",
+    riskApproach: "",
+    investmentObjective: "",
+    investmentHorizon: "",
+    illiquidInvestmentPercentage: "",
   },
   knowledge: {
     knowledgeLevel: "",
+
+    cashKnowledge: "",
+    investingExperience: "",
+    publicSharesKnowledge: "",
+    publicSharesExperience: "",
+    investmentGradeBondsKnowledge: "",
+    investmentGradeBondsExperience: "",
+    nonInvestmentGradeBondsKnowledge: "",
+    nonInvestmentGradeBondsExperience: "",
+    collectiveInvestmentsInstumentsKnowledge: "",
+    collectiveInvestmentsInstumentsExperience: "",
+    derivativesKnowledge: "",
+    derivativesExperience: "",
+    forexKnowledge: "",
+    commoditiesKnowledge: "",
+    commoditiesExperience: "",
+    hybridInvestmentsKnowledge: "",
+    privateMarketInstrumentsKnowledge: "",
+    privateMarketInstrumentsExperience: "",
+    realEstateKnowledge: "",
+    realEstateExperience: "",
+    altAssetsKnowledge: "",
+    leveragedInstumentsKnowledge: "",
+    leveragedInstumentsExperience: "",
+    privateCreditKnowledge: "",
   },
 };
 

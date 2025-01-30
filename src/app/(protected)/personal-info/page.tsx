@@ -78,7 +78,7 @@ export default function PersonalInfo() {
 
   const getNextSection = useCallback(
     (currentSectionId: SectionId): SectionId | null => {
-      const sectionOrder: SectionId[] = SECTIONS.map(section => section.id);
+      const sectionOrder: SectionId[] = SECTIONS.map((section) => section.id);
       const currentIndex = sectionOrder.indexOf(currentSectionId);
       return currentIndex < sectionOrder.length - 1
         ? sectionOrder[currentIndex + 1]
