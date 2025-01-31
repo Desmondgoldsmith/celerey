@@ -1,9 +1,17 @@
 export interface PersonalInfoSchema {
+  prefix: string;
   firstName: string;
   lastName: string;
-  birthDate: string;
+  dob: {
+    day: string;
+    month: string;
+    year: string;
+  };
   citizenship: string;
   dualCitizenship: string;
+  residentCountry: string;
+  options: string[];
+
   dependents: {
     hasDependents: string;
     numberOfDependents: string;
@@ -25,12 +33,11 @@ export interface PersonalInfoSchema {
     fileName: string;
     uploadStatus: "idle" | "uploading" | "completed" | "error";
   };
-  options: string[];
 }
 
 export interface FinancialInfoSchema {
   currency: string;
-  passiveIncome: {
+  income: {
     rentalIncome: string;
     dividends: string;
     interestIncome: string;
@@ -49,6 +56,7 @@ export interface FinancialInfoSchema {
     cash: string;
     publicSecurities: string;
     privateSecurities: string;
+    assetCountries: string[]; 
   };
   liabilities: {
     mortgages: string;
@@ -57,17 +65,33 @@ export interface FinancialInfoSchema {
     assetFinance: string;
     otherLiabilities: string;
   };
+
+  savings:{
+    currentSavings: string;
+    targetSavings: string;
+  }
+  hasEmergencyFunds: string;
+  emergencyFund: string;
+  hasDebt: string;
+  debt: string;
+
+  retirement:{
+    retirementAge: string;
+    targetRetirementIncome: string;
+  }
 }
 
 export interface GoalsInfoSchema {
-  retirementAge: string;
-  retirementIncome: string;
-  goalsCurrency: string;
+  primamryFinancialGoal: string;
+  targetAmount: string;
+  hasInvestments: string;
+  investmentType: string;
 }
 
 export interface RiskInfoSchema {
-  riskAttitude: string;
   riskTolerance: string;
+
+  riskAttitude: string;
   riskTolerancePercentage: string;
   riskReaction: string;
   riskApproach: string;
@@ -77,6 +101,8 @@ export interface RiskInfoSchema {
 }
 
 export interface KnowledgeInfoSchema {
+  knowledgeLevel: string;
+
   cashKnowledge?: string;
   investingExperience?: string;
   publicSharesKnowledge?: string;

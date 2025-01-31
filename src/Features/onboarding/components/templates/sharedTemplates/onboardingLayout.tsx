@@ -76,7 +76,7 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
       <footer className="mx-10 border-t bg-offWhite">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-sm font-helvetica text-gray-500">
-            &copy; 2023 Celerey. All rights reserved.
+            &copy; 2025 Celerey. All rights reserved.
           </span>
         </div>
       </footer>

@@ -18,10 +18,11 @@ export interface FileUploadProps {
 }
 
 export interface FormInputProps {
-  //   label: string;
+  id?: string;
+  name?: string;
   placeholder: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   type?: string;
 }
@@ -76,9 +77,43 @@ export interface DateOfBirthScreenProps {
   onContinue: () => void;
 }
 
-export interface FirstNameScreenProps {
-  value: string;
-  onChange: (value: string) => void;
+export interface BioDataScreenProps {
+  value: {
+   
+
+  prefix: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  dob: {
+
+    day: string;
+
+    month: string;
+
+    year: string;
+
+  };
+
+  citizenship: string;
+
+  residentCountry: string;
+
+  dualCitizenship?: string;
+
+  };
+  onChange: (value: {
+    firstName: string;
+    lastName: string;
+    dob: {
+      day: string;
+      month: string;
+      year: string;
+    };
+  }) => void;
+  // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   onBack: () => void;
   onContinue: () => void;
 }
@@ -148,6 +183,10 @@ export interface OptionsScreenProps extends BaseScreenProps {
   value: string[];
   onChange: (value: string[]) => void;
 }
+export interface GoalsOptionsScreenProps extends BaseScreenProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 export interface RiskOptionsScreenProps extends BaseScreenProps {
   value: string;
   onChange: (value: string) => void;
@@ -171,7 +210,7 @@ export interface GoalsScreenProps {
 }
 
 export interface Section {
-  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; // Financial Knowledge section to be added here
+  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; 
   title: string;
   totalSteps: number;
   currentStep: number;
@@ -186,11 +225,19 @@ export interface OnboardingState {
 
 // PersonalInfo form data type
 export interface PersonalInfoFormData {
+  prefix: string;
   firstName: string;
   lastName: string;
-  birthDate: string;
+  dob: {
+    day: string;
+    month: string;
+    year: string;
+  };
   citizenship: string;
   dualCitizenship: string;
+  residentCountry: string;
+  options: string[];
+
   dependents: DependentsData;
   maritalStatus: string;
   occupation: string;
@@ -203,12 +250,11 @@ export interface PersonalInfoFormData {
     country: string;
   };
   identification: IdentificationDocument;
-  options: string[];
 }
 
 export interface FinancialInfoFormData {
   currency: string;
-  passiveIncome: {
+  income: {
     rentalIncome: string;
     dividends: string;
     interestIncome: string;
@@ -227,6 +273,7 @@ export interface FinancialInfoFormData {
     cash: string;
     publicSecurities: string;
     privateSecurities: string;
+    assetCountries: string[];
   };
   liabilities: {
     mortgages: string;
@@ -235,15 +282,31 @@ export interface FinancialInfoFormData {
     assetFinance: string;
     otherLiabilities: string;
   };
+
+  savings: {
+    currentSavings: string;
+    targetSavings: string;
+  };
+  hasEmergencyFunds: string;
+  emergencyFund: string;
+  hasDebt: string;
+  debt: string;
+
+  retirement: {
+    retirementAge: string;
+    targetRetirementIncome: string;
+  };
 }
 export interface GoalsInfoFormData {
-    retirementAge: string;
-    retirementIncome: string;
-    goalsCurrency: string;
+  primamryFinancialGoal: string;
+  targetAmount: string;
+  hasInvestments: string;
+  investmentType: string;
 }
 export interface RiskInfoFormData {
-  riskAttitude: string;
   riskTolerance: string;
+
+  riskAttitude: string;
   riskTolerancePercentage: string;
   riskReaction: string;
   riskApproach: string;
@@ -253,7 +316,8 @@ export interface RiskInfoFormData {
 }
 
 export interface KnowledgeInfoFormData {
-  cashKnowledge: string;
+  knowledgeLevel: string;
+
   investingExperience: string;
   publicSharesKnowledge: string;
   publicSharesExperience: string;
@@ -277,6 +341,5 @@ export interface KnowledgeInfoFormData {
   leveragedInstumentsKnowledge: string;
   leveragedInstumentsExperience: string;
   privateCreditKnowledge: string;
-
 }
 

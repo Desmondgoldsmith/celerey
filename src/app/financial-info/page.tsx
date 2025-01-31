@@ -7,10 +7,8 @@ import { SectionProgressBars } from "@/Features/onboarding/components/molecules/
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { CurrencyScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/currencyScreen";
-import { IncomeScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/incomeScreen";
-import { ExpensesScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/expensesScreen";
-import { AssetsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/assetsScreen";
-import { LiabilitiesScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/liabilitiesScreen";
+import { FinancialDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/financialDetailsScreen";
+import { SavingsDetailsScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/savingsDetailsScreen";
 import { NetWorthScreen } from "@/Features/onboarding/components/templates/financialInfoTemplates/networthScreen";
 
 export default function FinancialInfo() {
@@ -26,7 +24,7 @@ export default function FinancialInfo() {
   } = useOnboardingStore();
 
   useEffect(() => {
-    if (!sections.personal.isCompleted) {
+    if (sections.personal && !sections.personal.isCompleted) {
       router.push("/personal-info");
       return;
     }
@@ -34,15 +32,18 @@ export default function FinancialInfo() {
     if (currentSection !== "financial") {
       setActiveSection("financial");
     }
-  }, [sections.personal.isCompleted, currentSection, router, setActiveSection]);
+  }, [sections.personal, currentSection, router, setActiveSection]);
 
+const handleFormUpdate = useCallback(
+  (updates: Partial<FinancialInfoSchema>) => {
+    console.log("Updating financial data:", updates);
+    const updatedFinancialData = { ...formData.financial, ...updates };
+    console.log("Updated financial data:", updatedFinancialData);
+    updateFormData("financial", updatedFinancialData);
+  },
+  [formData.financial, updateFormData]
+);
 
-    const handleFormUpdate = useCallback(
-      (updates: Partial<FinancialInfoSchema>) => {
-        updateFormData("financial", updates);
-      },
-      [updateFormData]
-    );
 
 
   const validateCurrentStep = useCallback((): boolean => {
@@ -52,12 +53,12 @@ export default function FinancialInfo() {
     switch (currentStepIndex) {
       case 0: // Currency selection
         return !!data.currency;
-      case 1: // Passive income validation
+      case 1: // Income validation
         return (
-        parseFloat(data.passiveIncome.rentalIncome) >= 0 &&
-  parseFloat(data.passiveIncome.dividends) >= 0 &&
-  parseFloat(data.passiveIncome.interestIncome) >= 0 &&
-  parseFloat(data.passiveIncome.otherIncome) >= 0
+          parseFloat(data.income.rentalIncome || "0") >= 0 &&
+          parseFloat(data.income.dividends || "0") >= 0 &&
+          parseFloat(data.income.interestIncome || "0") >= 0 &&
+          parseFloat(data.income.otherIncome || "0") >= 0
         );
       case 2: // Annual expenses validation
         return (
@@ -83,26 +84,44 @@ export default function FinancialInfo() {
           parseFloat(data.liabilities.assetFinance) >= 0 &&
           parseFloat(data.liabilities.otherLiabilities) >= 0
         );
-        case 5: // Net worth
+      case 5:   return (
+          parseFloat(data.savings.currentSavings || "0") >= 0 &&
+          parseFloat(data.savings.targetSavings || "0") >= 0
+        );
+        
+      case 6: // Debt validation
+        return (
+          data.hasDebt === "no" ||
+          (data.hasDebt === "yes" &&
+            parseFloat(data.debt || "0") >= 0)
+        );
+      case 7:
+      return (
+          data.hasEmergencyFunds === "no" ||
+          (data.hasEmergencyFunds === "yes" &&
+            parseFloat(data.emergencyFund || "0") >= 0)
+        );
+      case 8: // Retirement goals validation
+        return (
+          parseFloat(data.retirement.retirementAge || "0") > 0 &&
+          parseFloat(data.retirement.targetRetirementIncome || "0") >= 0
+        );
+      case 9: // Net worth
         return true;
       default:
         return true;
     }
   }, [currentSection, sections, formData.financial]);
 
-
-  
-const handleBack = useCallback(() => {
-  const currentStepIndex = sections[currentSection].currentStep;
-  console.log("Current Step Index:", currentStepIndex); // Debugging line
-  if (currentStepIndex > 0) {
-    const newStep = currentStepIndex - 1;
-    console.log("New Step:", newStep); // Debugging line
-    updateSectionProgress(currentSection, newStep);
-  } else {
-    router.push("/personal-info");
-  }
-}, [currentSection, sections, router, updateSectionProgress]);
+  const handleBack = useCallback(() => {
+    const currentStepIndex = sections[currentSection].currentStep;
+    if (currentStepIndex > 0) {
+      const newStep = currentStepIndex - 1;
+      updateSectionProgress(currentSection, newStep);
+    } else {
+      router.push("/personal-info");
+    }
+  }, [currentSection, sections, router, updateSectionProgress]);
 
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
@@ -130,14 +149,14 @@ const handleBack = useCallback(() => {
   ]);
 
   const renderStep = () => {
-    const currentStepIndex = sections[currentSection].currentStep;
-    const financialData = formData.financial;
+    const currentStepIndex = sections[currentSection]?.currentStep || 0;
+    const financialData = formData.financial || {};
 
     switch (currentStepIndex) {
       case 0:
         return (
           <CurrencyScreen
-            value={financialData.currency}
+            value={financialData.currency || ""}
             onChange={(value) => handleFormUpdate({ currency: value })}
             onBack={handleBack}
             onContinue={handleContinue}
@@ -145,52 +164,40 @@ const handleBack = useCallback(() => {
         );
       case 1:
         return (
-          <IncomeScreen
-            values={financialData.passiveIncome}
-            onChange={(field, value) =>
+          <FinancialDetailsScreen
+            values={financialData}
+            onChange={(
+              section: keyof FinancialInfoSchema,
+              field: string,
+              value: string | number
+            ) => {
+              const sectionData =
+                (financialData[section] as Record<string, string | number>) ||
+                {};
               handleFormUpdate({
-                passiveIncome: {
-                  ...financialData.passiveIncome,
-                  [field]: value,
-                },
-              })
-            }
+                [section]: { ...sectionData, [field]: value },
+              });
+            }}
             onBack={handleBack}
             onContinue={handleContinue}
           />
         );
       case 2:
         return (
-          <ExpensesScreen
-            values={financialData.annualExpenses}
-            onChange={(field, value) => handleFormUpdate({ annualExpenses:{...financialData.annualExpenses,[field]:value,} })}
+          <SavingsDetailsScreen
+            values={financialData}
+            onChange={(section, field, value) => {
+              const sectionData = financialData[section] || {};
+              handleFormUpdate({
+                [section]: { ...sectionData, [field]: value },
+              });
+            }}
             onBack={handleBack}
             onContinue={handleContinue}
           />
         );
       case 3:
-        return (
-          <AssetsScreen
-           values={financialData.assets}
-            onChange={(field, value) => handleFormUpdate({ assets:{...financialData.assets,[field]:value,} })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 4:
-        return (
-          <LiabilitiesScreen
-           values={financialData.liabilities}
-            onChange={(field, value) => handleFormUpdate({ liabilities:{...financialData.liabilities,[field]:value,} })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-        case 5:
-          return (
-            <NetWorthScreen onBack={handleBack} onContinue={handleContinue} />
-          );
-        
+        return<NetWorthScreen onContinue={handleContinue} onBack={handleBack} />;
       default:
         return null;
     }

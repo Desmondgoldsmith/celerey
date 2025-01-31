@@ -1,28 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { Option } from "../../../types";
-import { RiskOptionsScreenProps } from "../../../types";
+import { Option, RiskOptionsScreenProps } from "../../../types";
 import { OptionCard } from "../../molecules/riskOptionCard";
-
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
-    title: "Low",
-    description: "Investers prioritizing capital preservation over high returns",
+    id: "beginner",
+    title: "Beginner,",
+    description: "I have a fair idea oh how finances work",
   },
   {
-    id: "medium",
-    title: "Medium",
-    description: "Investers willing to take on more risk for higher returns",
+    id: "intermediate",
+    title: "Intermediate,",
+    description: "I have a fair idea about asset management",
   },
   {
-    id: "high",
-    title: "High",
-    description: "Investers highest highest tolerance for risk, in for highest possible returns",
+    id: "advanced",
+    title: "Advanced,",
+    description: "i understand how to manage passice and active incomes",
   },
 ];
 
-export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
+export const KnowledgeLevelScreen: React.FC<RiskOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
@@ -34,10 +32,12 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
 
   return (
     <div className="text-center max-w-xl mx-auto">
-      <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
-        describes your risk tolerance?
-      </h1>
+      <div className="mb-4">
+        <h1 className="text-4xl font-cirka mb-4">
+          How would you rate your financial knowledge?
+        </h1>
+        <p>What is your financial knowledge level?</p>
+      </div>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (
           <OptionCard

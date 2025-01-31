@@ -5,18 +5,11 @@ import { useRouter } from "next/navigation";
 import { SectionId, useOnboardingStore } from "@/Features/onboarding/state";
 import { PersonalInfoSchema } from "@/Features/onboarding/schema";
 import { WelcomeTemplate } from "@/Features/onboarding/components/templates/personalInfoTemplates/welcomeTemplate";
-import { FirstNameScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/firstNameScreen";
-import { LastNameScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/lastNameScreen";
-import { DateOfBirthScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/dateOfBirthScreen";
-import { OccupationScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/occupationScreen";
-import { CitizenshipStatusScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/citizenshipStatusScreen";
-import { HomeAddressScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/homeAddressScreen";
-import { MaritalStatusScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/maritalStatusScreen";
-import { DependentsScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/dependantsScreen";
-import { IdentificationScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/identificationScreen";
+import { BioDataScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/bioDataScreen";
 import { OptionsSelectionScreen } from "@/Features/onboarding/components/templates/personalInfoTemplates/optionsSelectionScreen";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
+import { SECTIONS } from "@/Features/onboarding/constants";
 
 export default function PersonalInfo() {
   const router = useRouter();
@@ -58,32 +51,17 @@ export default function PersonalInfo() {
 
     switch (currentStepIndex) {
       case 1:
-        return !!data.firstName.trim();
+        return !!(
+          data.prefix &&
+          data.firstName.trim() &&
+          data.lastName.trim() &&
+          data.dob.day &&
+          data.dob.month &&
+          data.dob.year &&
+          data.citizenship &&
+          data.residentCountry
+        );
       case 2:
-        return !!data.lastName.trim();
-      case 3:
-        return !!data.birthDate;
-      case 4:
-        return !!data.occupation.trim();
-      case 5:
-        return !!data.citizenship;
-      case 6:
-        return !!(
-          data.address.line1 &&
-          data.address.city &&
-          data.address.postalCode &&
-          data.address.country
-        );
-      case 7:
-        return !!data.maritalStatus;
-      case 8:
-        return !!data.dependents.hasDependents;
-      case 9:
-        return !!(
-          data.identification.type &&
-          data.identification.uploadStatus === "completed"
-        );
-      case 10:
         return data.options.length > 0;
       default:
         return true;
@@ -100,13 +78,7 @@ export default function PersonalInfo() {
 
   const getNextSection = useCallback(
     (currentSectionId: SectionId): SectionId | null => {
-      const sectionOrder: SectionId[] = [
-        "personal",
-        "financial",
-        "goals",
-        "risk",
-        "knowledge",
-      ];
+      const sectionOrder: SectionId[] = SECTIONS.map((section) => section.id);
       const currentIndex = sectionOrder.indexOf(currentSectionId);
       return currentIndex < sectionOrder.length - 1
         ? sectionOrder[currentIndex + 1]
@@ -115,7 +87,6 @@ export default function PersonalInfo() {
     []
   );
 
-  // And then in handleContinue:
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
     const isLastStep =
@@ -156,97 +127,26 @@ export default function PersonalInfo() {
         return <WelcomeTemplate onStart={handleContinue} />;
       case 1:
         return (
-          <FirstNameScreen
-            value={personalData.firstName}
-            onChange={(value) => handleFormUpdate({ firstName: value })}
+          <BioDataScreen
+            value={{
+              prefix: personalData.prefix,
+              firstName: personalData.firstName,
+              lastName: personalData.lastName,
+              dob: {
+                day: personalData.dob.day,
+                month: personalData.dob.month,
+                year: personalData.dob.year,
+              },
+              citizenship: personalData.citizenship,
+              residentCountry: personalData.residentCountry,
+              dualCitizenship: personalData.dualCitizenship,
+            }}
+            onChange={handleFormUpdate}
             onBack={handleBack}
             onContinue={handleContinue}
           />
         );
       case 2:
-        return (
-          <LastNameScreen
-            firstName={personalData.firstName}
-            value={personalData.lastName}
-            onChange={(value) => handleFormUpdate({ lastName: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 3:
-        return (
-          <DateOfBirthScreen
-            value={personalData.birthDate}
-            onChange={(value) => handleFormUpdate({ birthDate: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 4:
-        return (
-          <OccupationScreen
-            value={personalData.occupation}
-            onChange={(value) => handleFormUpdate({ occupation: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 5:
-        return (
-          <CitizenshipStatusScreen
-            value={personalData.citizenship}
-            dualCitizenship={personalData.dualCitizenship}
-            onChange={(value, dualValue) =>
-              handleFormUpdate({
-                citizenship: value,
-                dualCitizenship: dualValue || personalData.dualCitizenship,
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 6:
-        return (
-          <HomeAddressScreen
-            values={personalData.address}
-            onChange={(field, value) =>
-              handleFormUpdate({
-                address: { ...personalData.address, [field]: value },
-              })
-            }
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 7:
-        return (
-          <MaritalStatusScreen
-            value={personalData.maritalStatus}
-            onChange={(value) => handleFormUpdate({ maritalStatus: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 8:
-        return (
-          <DependentsScreen
-            value={personalData.dependents}
-            onChange={(value) => handleFormUpdate({ dependents: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 9:
-        return (
-          <IdentificationScreen
-            value={personalData.identification}
-            onChange={(value) => handleFormUpdate({ identification: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case 10:
         return (
           <OptionsSelectionScreen
             value={personalData.options}

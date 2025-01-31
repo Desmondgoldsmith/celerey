@@ -1,28 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { Option } from "../../../types";
-import { RiskOptionsScreenProps } from "../../../types";
-import { OptionCard } from "../../molecules/riskOptionCard";
-
+import { GoalsOptionsScreenProps } from "../../../types";
+import { OptionCard } from "../../molecules/goalsOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
-    title: "Low",
-    description: "Investers prioritizing capital preservation over high returns",
+    id: "retirement",
+    title: "Retirement,",
+    description: "Savings for retirement",
   },
   {
-    id: "medium",
-    title: "Medium",
-    description: "Investers willing to take on more risk for higher returns",
+    id: "debt",
+    title: "Debt,",
+    description: "Paying off debt",
   },
   {
-    id: "high",
-    title: "High",
-    description: "Investers highest highest tolerance for risk, in for highest possible returns",
+    id: "mortgage",
+    title: "Mortgage,",
+    description: "Buying a home",
   },
+  {
+    id: "emergency Fund",
+    title: "Emergency Fund,",
+    description: "Creating an emergency fund",
+  },
+  {
+    id: "other",
+    title: "Other",
+    description: "",
+  },
+
 ];
 
-export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
+export const FinancialGoalScreen: React.FC<GoalsOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
@@ -34,10 +44,12 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
 
   return (
     <div className="text-center max-w-xl mx-auto">
-      <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
-        describes your risk tolerance?
-      </h1>
+      <div className="mb-4">
+        <h1 className="text-4xl font-cirka mb-4">
+          What is your primary financial goal right now?
+        </h1>
+        <p>Select primary financial goal</p>
+      </div>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (
           <OptionCard

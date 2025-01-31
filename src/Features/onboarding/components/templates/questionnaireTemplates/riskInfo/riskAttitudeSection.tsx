@@ -1,28 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { Option } from "../../../types";
-import { RiskOptionsScreenProps } from "../../../types";
-import { OptionCard } from "../../molecules/riskOptionCard";
-
+import { Option } from "@/Features/onboarding/types";
+import { RiskOptionsScreenProps } from "@/Features/onboarding/types";
+import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
-    title: "Low",
-    description: "Investers prioritizing capital preservation over high returns",
+    id: "cautious",
+    title: "Cautious",
+    description:
+      "Investors prioritizing capital preservation over high returns",
   },
   {
-    id: "medium",
-    title: "Medium",
-    description: "Investers willing to take on more risk for higher returns",
+    id: "moderate",
+    title: "Moderate",
+    description: "Investors seeking a balance between risk and return",
   },
   {
-    id: "high",
-    title: "High",
-    description: "Investers highest highest tolerance for risk, in for highest possible returns",
+    id: "somwhat-aggressive",
+    title: "Somewhat Aggressive",
+    description: "Investors willing to take on more risk for higher returns",
+  },
+  {
+    id: "aggressive",
+    title: "Aggressive",
+    description: "Investors with high risk, focused on high returns",
+  },
+  {
+    id: "very-aggressive",
+    title: "Very Aggressive",
+    description:
+      "Investors with highest tolerance for risk, in for the highest possible returns",
   },
 ];
 
-export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
+export const RiskAttitudeScreen: React.FC<RiskOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
@@ -35,8 +46,7 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
-        describes your risk tolerance?
+        How do you describe your attitude towards risk?
       </h1>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (

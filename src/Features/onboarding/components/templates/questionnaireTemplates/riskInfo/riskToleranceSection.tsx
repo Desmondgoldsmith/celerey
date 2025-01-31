@@ -1,24 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { Option } from "../../../types";
-import { RiskOptionsScreenProps } from "../../../types";
-import { OptionCard } from "../../molecules/riskOptionCard";
-
+import { Option } from "@/Features/onboarding/types";
+import { RiskOptionsScreenProps } from "@/Features/onboarding/types";
+import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
-    title: "Low",
-    description: "Investers prioritizing capital preservation over high returns",
+    id: "very-strong",
+    title: "Very Strong growth",
+    description:
+      "Seeking high returns, willing to endure significant losses for potential strong growth",
   },
   {
-    id: "medium",
-    title: "Medium",
-    description: "Investers willing to take on more risk for higher returns",
+    id: "reasonably-strong",
+    title: "Reasonably strong growth",
+    description:
+      "Seeking steady growth, willing to endure losses for long-term capital preservation.",
   },
   {
-    id: "high",
-    title: "High",
-    description: "Investers highest highest tolerance for risk, in for highest possible returns",
+    id: "moderate",
+    title: "Moderate growth",
+    description:
+      "Seeking moderate growth, accepting some risk for potential capital fluctuations.",
+  },
+  {
+    id: "slow-and-steady",
+    title: "Slow and steady growth",
+    description:
+      "Prioritizing capital preservation over growth, minimizing risk to avoid negative changes",
   },
 ];
 
@@ -35,8 +43,8 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
-        describes your risk tolerance?
+        Let&apos;s test that theory, shall we? <br /> Which of the following
+        statement best describes your risk tolerance?
       </h1>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (

@@ -1,28 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { Option } from "../../../types";
-import { RiskOptionsScreenProps } from "../../../types";
-import { OptionCard } from "../../molecules/riskOptionCard";
-
+import { Option } from "@/Features/onboarding/types";
+import { RiskOptionsScreenProps } from "@/Features/onboarding/types";  
+import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
-    title: "Low",
-    description: "Investers prioritizing capital preservation over high returns",
+    id: "20-up",
+    title: "",
+    description: "-20% or more",
   },
   {
-    id: "medium",
-    title: "Medium",
-    description: "Investers willing to take on more risk for higher returns",
+    id: "10-20",
+    title: "",
+    description: "-10% to -20%",
   },
   {
-    id: "high",
-    title: "High",
-    description: "Investers highest highest tolerance for risk, in for highest possible returns",
+    id: "5-10",
+    title: "",
+    description: "-5% to -10%",
+  },
+  {
+    id: "0-5",
+    title: "",
+    description: "0% to -5%",
   },
 ];
 
-export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
+export const TolerancePercentageScreen: React.FC<RiskOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
@@ -35,8 +39,8 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
-        describes your risk tolerance?
+        What decrease, as a percentage of the invested amounts, can you
+        tolerate?
       </h1>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (

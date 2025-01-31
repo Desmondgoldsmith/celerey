@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import {
   PersonalInfoSchema,
@@ -21,7 +22,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   personal: {
     id: "personal",
     title: "Personal Information",
-    totalSteps: 11,
+    totalSteps: 3,
     currentStep: 0,
     isCompleted: false,
     isActive: true,
@@ -29,7 +30,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   financial: {
     id: "financial",
     title: "Financial Information",
-    totalSteps: 6,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -37,7 +38,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   goals: {
     id: "goals",
     title: "Goals & Aspirations",
-    totalSteps: 2,
+    totalSteps: 3,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -45,7 +46,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   risk: {
     id: "risk",
     title: "Risk Profile",
-    totalSteps: 10,
+    totalSteps: 3,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -53,7 +54,7 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   knowledge: {
     id: "knowledge",
     title: "Financial Knowledge",
-    totalSteps: 6,
+    totalSteps: 2,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
@@ -71,11 +72,20 @@ interface OnboardingFormData {
 // setting the shape of the onboarding data
 const DEFAULT_FORM_DATA: OnboardingFormData = {
   personal: {
+    prefix: "",
     firstName: "",
     lastName: "",
-    birthDate: "",
+    dob: {
+      day: "",
+      month: "",
+      year: "",
+    },
     citizenship: "",
     dualCitizenship: "",
+    residentCountry: "",
+
+    options: [],
+
     dependents: {
       hasDependents: "",
       numberOfDependents: "",
@@ -97,11 +107,10 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       fileName: "",
       uploadStatus: "idle",
     },
-    options: [],
   },
   financial: {
     currency: "",
-    passiveIncome: {
+    income: {
       rentalIncome: "",
       dividends: "",
       interestIncome: "",
@@ -120,6 +129,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       cash: "",
       publicSecurities: "",
       privateSecurities: "",
+      assetCountries: [],
     },
     liabilities: {
       mortgages: "",
@@ -128,15 +138,29 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       assetFinance: "",
       otherLiabilities: "",
     },
+    savings: {
+      currentSavings: "",
+      targetSavings: "",
+    },
+    hasEmergencyFunds: "",
+    emergencyFund: "",
+    hasDebt: "",
+    debt: "",
+    retirement: {
+      retirementAge: "",
+      targetRetirementIncome: "",
+    },
   },
   goals: {
-    retirementAge: "",
-    retirementIncome: "",
-    goalsCurrency: "",
+    primamryFinancialGoal: "",
+    targetAmount: "",
+    hasInvestments: "",
+    investmentType: "",
   },
   risk: {
-    riskAttitude: "",
     riskTolerance: "",
+
+    riskAttitude: "",
     riskTolerancePercentage: "",
     riskReaction: "",
     riskApproach: "",
@@ -145,6 +169,8 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     illiquidInvestmentPercentage: "",
   },
   knowledge: {
+    knowledgeLevel: "",
+
     cashKnowledge: "",
     investingExperience: "",
     publicSharesKnowledge: "",
@@ -192,64 +218,32 @@ interface OnboardingStore extends OnboardingState {
 
 export const useOnboardingStore = create<OnboardingStore>()(
   persist(
-    (set) => ({
+    immer((set) => ({
       currentSection: "personal",
       sections: DEFAULT_SECTIONS,
       formData: DEFAULT_FORM_DATA,
 
       updateFormData: (section, updates) =>
-        set((state) => ({
-          formData: {
-            ...state.formData,
-            [section]: {
-              ...state.formData[section],
-              ...updates,
-            },
-          },
-        })),
+        set((state) => {
+          state.formData[section] = { ...state.formData[section], ...updates };
+        }),
 
       updateSectionProgress: (sectionId, step) =>
-        set((state) => ({
-          sections: {
-            ...state.sections,
-            [sectionId]: {
-              ...state.sections[sectionId],
-              currentStep: step,
-            },
-          },
-        })),
+        set((state) => {
+          state.sections[sectionId].currentStep = step;
+        }),
 
       completeSection: (sectionId) =>
-        set((state) => ({
-          sections: {
-            ...state.sections,
-            [sectionId]: {
-              ...state.sections[sectionId],
-              isCompleted: true,
-              isActive: false,
-            },
-          },
-        })),
+        set((state) => {
+          state.sections[sectionId].isCompleted = true;
+        }),
 
       setActiveSection: (sectionId) =>
         set((state) => {
-          const updatedSections = Object.entries(state.sections).reduce<
-            Record<SectionId, Section>
-          >(
-            (acc, [key, section]) => ({
-              ...acc,
-              [key]: {
-                ...section,
-                isActive: key === sectionId,
-              },
-            }),
-            {} as Record<SectionId, Section>
-          );
-
-          return {
-            currentSection: sectionId,
-            sections: updatedSections,
-          };
+          Object.keys(state.sections).forEach((key) => {
+            state.sections[key as SectionId].isActive = key === sectionId;
+          });
+          state.currentSection = sectionId;
         }),
 
       resetOnboarding: () =>
@@ -258,9 +252,14 @@ export const useOnboardingStore = create<OnboardingStore>()(
           sections: DEFAULT_SECTIONS,
           formData: DEFAULT_FORM_DATA,
         })),
-    }),
+    })),
     {
       name: "onboarding-storage",
+      partialize: (state) => ({
+        currentSection: state.currentSection,
+        sections: state.sections,
+        formData: state.formData,
+      }),
     }
   )
 );
