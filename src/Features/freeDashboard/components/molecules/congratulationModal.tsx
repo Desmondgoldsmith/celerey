@@ -45,25 +45,25 @@ export const CongratulationsModal: React.FC<CongratulationsModalProps> = ({
           <div className="flex justify-center mb-6 md:mb-0">
             <div className="relative w-32 h-32 md:w-48 md:h-48 bg-[#E6FBF8] rounded-full flex items-center justify-center">
               <Image
-                src="/api/placeholder/192/192"
+                src="/assets/trophy.png"
                 alt="Trophy"
-                width={120}
-                height={120}
-                className="object-contain w-24 h-24 md:w-32 md:h-32"
+                width={200}
+                height={200}
+                className="object-contain w-24 h-24 md:w-62 md:h-62"
               />
             </div>
           </div>
 
           {/* Congratulations Text */}
           <div className="p-2 md:p-5 text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-cirka text-[#1E1B4B] mb-4">
+            <h2 className="text-3xl md:text-4xl font-cirka text-navy mb-4">
               Congratulations!
             </h2>
 
             {/* Subscription Details */}
             <p className="text-sm md:text-base text-gray-800 mb-6 font-helvetica">
               You just subscribed to the{" "}
-              <span className="text-[#6938EF] font-semibold">
+              <span className="text-navyLight font-semibold">
                 Celerey {subscriptionTier} Account
               </span>
               . This subscription includes (but is not limited to):
@@ -89,6 +89,9 @@ export const CongratulationsModal: React.FC<CongratulationsModalProps> = ({
                 </div>
               ))}
             </div>
+            <button className="w-full bg-navy text-white py-2.5 md:py-3 text-sm md:text-base rounded-lg hover:bg-navyLight mt-3 transition-colors">
+              Next
+            </button>
           </div>
         </div>
       </DialogContent>

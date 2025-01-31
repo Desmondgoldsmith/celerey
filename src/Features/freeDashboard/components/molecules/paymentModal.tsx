@@ -81,7 +81,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
           <button
             onClick={handlePayment}
-            className="w-full bg-[#6938EF] text-white py-2.5 md:py-3 text-sm md:text-base rounded-lg hover:bg-[#5b2ed9] transition-colors"
+            className="w-full bg-navy text-white py-2.5 md:py-3 text-sm md:text-base rounded-lg hover:bg-navyLight transition-colors"
           >
             Pay ${selectedTier?.price}
           </button>
