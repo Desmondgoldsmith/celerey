@@ -1,7 +1,7 @@
 export interface BaseScreenProps {
   onBack: () => void;
-    onContinue: () => void;
-  }
+  onContinue: () => void;
+}
 
 export interface FileUploadProps {
   label: string;
@@ -50,7 +50,7 @@ export interface SurveyOptionCardProps {
   id: string;
   question: string;
   options: {
-    id: string; 
+    id: string;
     value: string;
     selected: boolean;
   }[];
@@ -79,32 +79,7 @@ export interface DateOfBirthScreenProps {
 
 export interface BioDataScreenProps {
   value: {
-   
-
-  prefix: string;
-
-  firstName: string;
-
-  lastName: string;
-
-  dob: {
-
-    day: string;
-
-    month: string;
-
-    year: string;
-
-  };
-
-  citizenship: string;
-
-  residentCountry: string;
-
-  dualCitizenship?: string;
-
-  };
-  onChange: (value: {
+    prefix: string;
     firstName: string;
     lastName: string;
     dob: {
@@ -112,8 +87,11 @@ export interface BioDataScreenProps {
       month: string;
       year: string;
     };
-  }) => void;
-  // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
+    citizenship: string;
+    residentCountry: string;
+    dualCitizenship?: string;
+  };
+  onChange: (value: BioDataScreenProps["value"]) => void;
   onBack: () => void;
   onContinue: () => void;
 }
@@ -192,7 +170,6 @@ export interface RiskOptionsScreenProps extends BaseScreenProps {
   onChange: (value: string) => void;
 }
 
-
 // FinancialInfo Screen Props
 export interface CurrencyScreenProps {
   value: string;
@@ -210,7 +187,7 @@ export interface GoalsScreenProps {
 }
 
 export interface Section {
-  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; 
+  id: "personal" | "financial" | "goals" | "risk" | "knowledge";
   title: string;
   totalSteps: number;
   currentStep: number;
@@ -221,6 +198,15 @@ export interface Section {
 export interface OnboardingState {
   currentSection: Section["id"];
   sections: Record<Section["id"], Section>;
+}
+
+export interface Address {
+  line1: string;
+  line2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
 }
 
 // PersonalInfo form data type
@@ -342,4 +328,3 @@ export interface KnowledgeInfoFormData {
   leveragedInstumentsExperience: string;
   privateCreditKnowledge: string;
 }
-

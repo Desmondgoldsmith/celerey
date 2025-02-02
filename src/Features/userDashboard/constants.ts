@@ -1,131 +1,65 @@
-import { Advisor } from "./types";
+import { DashboardData } from "./types";
 
-export const DUMMY_ADVISORS: Advisor[] = [
-  {
-    id: "mark-speer",
-    name: "Mark Speer",
-    title: "Investment Advisor",
-    bio: "Mark Speer is a seasoned investment advisor known for his astute financial acumen and commitment to delivering tailored investment solutions...",
-    imageUrl: "/assets/mark-speer.svg",
-    specialties: [
-      "Investment Planning",
-      "Retirement Planning",
-      "Tax Planning",
-      "Estate Planning",
-      "Risk Management and Insurance",
-    ],
-    strengths: [
-      "Personalized financial strategies",
-      "Comprehensive financial plans",
-      "Economics background",
-      "Client-centric approach",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+export const DUMMY_DASHBOARD_DATA: DashboardData = {
+  netWorth: { value: 23765970, currency: "USD" },
+  balance: { value: 3875524, currency: "USD" },
+  income: { value: 4736559, currency: "USD" },
+  expenses: { value: 925629, currency: "USD" },
+  savings: { value: 16780273, currency: "USD" },
+  financialPlans: [
+    {
+      id: "1",
+      name: "Savings Plan",
+      progress: 72,
+      currentAmount: 21234.35,
+      targetAmount: 30000,
+      durationStart: "2024-04-01",
+      durationEnd: "2025-04-01",
+      goalDuration: 12,
+      durationLeft: 3,
+    },
+    {
+      id: "2",
+      name: "Emergency Fund",
+      progress: 40,
+      currentAmount: 6000,
+      targetAmount: 15000,
+      durationStart: "2024-05-01",
+      durationEnd: "2025-05-01",
+      goalDuration: 14,
+      durationLeft: 4,
+    },
+    {
+      id: "3",
+      name: "Retirement Fund",
+      progress: 18,
+      currentAmount: 405253,
+      targetAmount: 2435453,
+      durationStart: "2024-07-01",
+      durationEnd: "2025-03-01",
+      goalDuration: 18,
+      durationLeft: 13,
+    },
+  ],
+  assetAllocation: [
+    { category: "Real Estate", amount: 25363.94, percentage: 31.75 },
+    { category: "Public Securities", amount: 23532.75, percentage: 29.45 },
+    { category: "Private Securities", amount: 21556.32, percentage: 27 },
+    { category: "Cash", amount: 9426.35, percentage: 11.8 },
+  ],
+  geographicalSpread: [
+    {
+      country: "United States",
+      amount: 45000,
+      coordinates: [-95.7129, 37.0902],
+    },
+    { country: "China", amount: 34963, coordinates: [104.1954, 35.8617] },
+  ],
+  riskProfile: {
+    riskAttitude: "Somewhat Aggressive",
+    investmentExperience: "Advanced",
+    financialKnowledge: "Intermediate",
+    description:
+      "You are a somewhat aggressive risk taker with an advanced investment experience. Your financial knowledge is intermediate. This means you have a solid grasp of finance.",
   },
-  {
-    id: "rory-walker",
-    name: "Rory Walker",
-    title: "Financial Planner",
-    bio: "Rory Walker is an experienced financial planner with over a decade of helping clients achieve their financial goals...",
-    imageUrl: "/assets/Rory.jpg.png",
-    specialties: [
-      "Investment Planning",
-      "Retirement Planning",
-      "Tax Planning",
-      "Estate Planning",
-    ],
-    strengths: [
-      "Long-term planning expertise",
-      "Risk assessment",
-      "Retirement strategies",
-      "Wealth preservation",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
-  },
-  {
-    id: "angela-appiah",
-    name: "Angela Appiah",
-    title: "International Real Estate Broker",
-    bio: "Angela Appiah is a seasoned international real estate broker with extensive knowledge of global property markets...",
-    imageUrl: "/assets/Angela-Appiah.png",
-    specialties: [
-      "International Real Estate",
-      "Property Investment",
-      "Market Analysis",
-      "Global Portfolio Management",
-    ],
-    strengths: [
-      "Global market expertise",
-      "Investment property analysis",
-      "Cross-border transactions",
-      "Market trend analysis",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
-  },
-  {
-    id: "graham-goff",
-    name: "Graham Goff",
-    title: "Retirement Planner",
-    bio: "Graham Goff is a retirement planner with a passion for helping clients achieve a secure and fulfilling retirement future...",
-    imageUrl: "/assets/graham.png",
-    specialties: [
-      "Retirement Planning",
-      "Pension Optimization",
-      "Social Security Planning",
-      "Legacy Planning",
-    ],
-    strengths: [
-      "Retirement strategy",
-      "Income planning",
-      "Risk management",
-      "Estate planning",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
-  },
-  {
-    id: "sarah-patel",
-    name: "Sarah Patel",
-    title: "Wealth Manager",
-    bio: "Sarah Patel is an experienced wealth manager specializing in comprehensive financial planning and investment strategies...",
-    imageUrl: "/assets/mina.png",
-    specialties: [
-      "Wealth Management",
-      "Asset Allocation",
-      "Tax Strategy",
-      "Estate Planning",
-    ],
-    strengths: [
-      "Portfolio optimization",
-      "Tax-efficient investing",
-      "Wealth preservation",
-      "Family office services",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
-  },
-  {
-    id: "charles-amoah",
-    name: "Charles Amoah",
-    title: "Mortgage Broker",
-    bio: "Charles Amoah is a dedicated mortgage broker with a strong background in finance and real estate financing solutions...",
-    imageUrl: "/assets/charles.png",
-    specialties: [
-      "Mortgage Planning",
-      "Real Estate Financing",
-      "Refinancing Strategy",
-      "First-time Homebuyers",
-    ],
-    strengths: [
-      "Loan structuring",
-      "Rate optimization",
-      "Credit analysis",
-      "Property valuation",
-    ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
-  },
-];
+};

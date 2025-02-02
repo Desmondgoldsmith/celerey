@@ -18,7 +18,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
     setIsLoading(true);
     // Simulate a delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/asset-allocation");
+    router.push("/subscriptions");
   };
 
   const handleSelection = (choice: string) => {

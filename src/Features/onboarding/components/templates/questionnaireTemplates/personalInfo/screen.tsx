@@ -5,13 +5,27 @@ import { OccupationScreen } from "./occupationSection";
 import { MaritalStatusScreen } from "./maritalStatusSection";
 import { IdentificationScreen } from "./identificationSection";
 import { HomeAddressScreen } from "./homeAddressSection";
-import { PersonalInfoSchema } from "@/Features/onboarding/schema";
+import {
+  PersonalInfoFormData,
+  IdentificationDocument,
+  Address,
+} from "../../../../types";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
 const PersonalInfoScreen: React.FC = () => {
   const router = useRouter();
-  const { formData, updateFormData, sections, currentSection, updateSectionProgress, completeSection } = useOnboardingStore();
-  const [localFormData, setLocalFormData] = useState<PersonalInfoSchema>(formData.personal);
+  const {
+    formData,
+    updateFormData,
+    sections,
+    currentSection,
+    updateSectionProgress,
+    completeSection,
+  } = useOnboardingStore();
+
+  const [localFormData, setLocalFormData] = useState<PersonalInfoFormData>(
+    formData.personal
+  );
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
@@ -20,8 +34,9 @@ const PersonalInfoScreen: React.FC = () => {
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { occupation, maritalStatus, identification, address } = localFormData;
-      const isComplete = 
+      const { occupation, maritalStatus, identification, address } =
+        localFormData;
+      const isComplete =
         occupation !== "" &&
         maritalStatus !== "" &&
         identification.type !== "" &&
@@ -37,17 +52,41 @@ const PersonalInfoScreen: React.FC = () => {
     checkSectionComplete();
   }, [localFormData]);
 
-  const handleFormUpdate = (section: keyof PersonalInfoSchema, field: string, value: string) => {
-    const updatedSection = {
-      ...(typeof localFormData[section] === 'object' ? localFormData[section] : {}),
-      [field]: value,
-    };
-
+  // Generic update handler for simple string fields
+  const handleSimpleUpdate = (
+    section: keyof PersonalInfoFormData,
+    value: string
+  ) => {
     const updatedFormData = {
       ...localFormData,
-      [section]: updatedSection,
+      [section]: value,
     };
+    setLocalFormData(updatedFormData);
+    updateFormData("personal", updatedFormData);
+  };
 
+  // Specific handler for address updates
+  const handleAddressUpdate = (field: keyof Address, value: string) => {
+    const updatedAddress = {
+      ...localFormData.address,
+      [field]: value,
+    };
+    const updatedFormData = {
+      ...localFormData,
+      address: updatedAddress,
+    };
+    setLocalFormData(updatedFormData);
+    updateFormData("personal", updatedFormData);
+  };
+
+  // Specific handler for identification updates
+  const handleIdentificationUpdate = (
+    updatedIdentification: IdentificationDocument
+  ) => {
+    const updatedFormData = {
+      ...localFormData,
+      identification: updatedIdentification,
+    };
     setLocalFormData(updatedFormData);
     updateFormData("personal", updatedFormData);
   };
@@ -64,10 +103,13 @@ const PersonalInfoScreen: React.FC = () => {
 
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
-    const isLastStep = currentStepIndex === sections[currentSection].totalSteps - 1;
+    const isLastStep =
+      currentStepIndex === sections[currentSection].totalSteps - 1;
 
     if (!isSectionComplete) {
-      alert("Please fill in all the information in the section before continuing.");
+      alert(
+        "Please fill in all the information in the section before continuing."
+      );
       return;
     }
 
@@ -78,19 +120,30 @@ const PersonalInfoScreen: React.FC = () => {
       const newStep = currentStepIndex + 1;
       updateSectionProgress(currentSection, newStep);
     }
-  }, [currentSection, sections, isSectionComplete, completeSection, router, updateSectionProgress]);
+  }, [
+    currentSection,
+    sections,
+    isSectionComplete,
+    completeSection,
+    router,
+    updateSectionProgress,
+  ]);
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
-        <h1 className="text-4xl font-cirka">Please provide your personal information</h1>
-        <p className="text-gray-600">Fill the different forms that appear from the pop-ups</p>
+        <h1 className="text-4xl font-cirka">
+          Please provide your personal information
+        </h1>
+        <p className="text-gray-600">
+          Fill the different forms that appear from the pop-ups
+        </p>
       </div>
       <div className="space-y-4 max-w-sm mx-auto">
         <div className="border-b pb-4">
           <OccupationScreen
             value={localFormData.occupation}
-            onChange={(value) => handleFormUpdate("occupation", "occupation", value)}
+            onChange={(value) => handleSimpleUpdate("occupation", value)}
             onBack={handleBack}
             onContinue={handleContinue}
           />
@@ -98,7 +151,7 @@ const PersonalInfoScreen: React.FC = () => {
         <div className="border-b pb-4">
           <MaritalStatusScreen
             value={localFormData.maritalStatus}
-            onChange={(value) => handleFormUpdate("maritalStatus", "maritalStatus", value)}
+            onChange={(value) => handleSimpleUpdate("maritalStatus", value)}
             onBack={handleBack}
             onContinue={handleContinue}
           />
@@ -106,7 +159,7 @@ const PersonalInfoScreen: React.FC = () => {
         <div className="border-b pb-4">
           <IdentificationScreen
             value={localFormData.identification}
-            onChange={(field, value) => handleFormUpdate("identification", field, value)}
+            onChange={handleIdentificationUpdate}
             onBack={handleBack}
             onContinue={handleContinue}
           />
@@ -114,7 +167,9 @@ const PersonalInfoScreen: React.FC = () => {
         <div className="border-b pb-4">
           <HomeAddressScreen
             values={localFormData.address}
-            onChange={(field, value) => handleFormUpdate("address", field, value)}
+            onChange={(field, value) =>
+              handleAddressUpdate(field as keyof Address, value)
+            }
             onBack={handleBack}
             onContinue={handleContinue}
           />

@@ -13,13 +13,18 @@ export interface SocialSignupButtonProps {
   provider: "google" | "linkedin";
   onClick: () => void;
 }
+
+interface User {
+  email: string;
+  // Add other user properties if needed
+}
 export interface AuthState {
   isAuthenticated: boolean;
   accessToken: string | null;
-  user: unknown;
+  user: User | null;
   loading: boolean;
   error: string;
-  setAuth: (data: { accessToken: string; user: unknown }) => void;
+  setAuth: (data: { accessToken: string; user: User }) => void;
   sendOTP: (email: string) => Promise<void>;
   validateOTP: (otp: string) => Promise<void>;
   logout: () => void;

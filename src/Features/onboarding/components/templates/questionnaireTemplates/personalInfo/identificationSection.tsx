@@ -22,6 +22,7 @@ export const IdentificationScreen: React.FC<IdentificationScreenProps> = ({
   ];
 
   const handleTypeSelect = (type: string) => {
+    // Pass the entire updated object to onChange
     onChange({
       ...value,
       type,

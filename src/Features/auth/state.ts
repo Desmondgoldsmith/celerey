@@ -55,10 +55,10 @@ export const useAuthStore = create<AuthState>()(
           });
           const email = get().user?.email;
           if (!email) {
-            set(
-              (state) =>
-                (state.error = "Please Enter Your Email in the Previous Step")
-            );
+            set((state) => {
+              state.error = "Please Enter Your Email in the Previous Step";
+            });
+            return;
           }
           await validateOTPApi(email, otp);
           set((state) => {

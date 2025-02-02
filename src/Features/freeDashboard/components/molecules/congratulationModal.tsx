@@ -47,9 +47,9 @@ export const CongratulationsModal: React.FC<CongratulationsModalProps> = ({
               <Image
                 src="/assets/trophy.png"
                 alt="Trophy"
-                width={200}
-                height={200}
-                className="object-contain w-24 h-24 md:w-62 md:h-62"
+                width={300}
+                height={300}
+                className="object-contain w-24 h-24 md:w-[300px] md:h-[300px]"
               />
             </div>
           </div>

@@ -22,6 +22,11 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
   investmentExperience,
 }) => {
   const router = useRouter();
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const handleOpenSubscriptionModal = () => {
+    setIsSubscriptionModalOpen(true);
+  };
+  console.log(isSubscriptionModalOpen);
   const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   const CalendarModal = () => {
@@ -71,6 +76,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
+              onUpgradeClick={handleOpenSubscriptionModal}
             />
           </div>
 
