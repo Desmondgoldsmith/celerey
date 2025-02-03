@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal, HelpCircle } from "lucide-react";
@@ -16,20 +17,20 @@ interface FinancialData {
 
 // interface IncomeVsDebtProps {}
 
-export const IncomeVsDebt = () => {
+export const IncomeVsDebt = ({income, debt, incomeAndDebt}: any) => {
   const financialData: FinancialData = {
-    netBalance: 52124.24,
+    netBalance: incomeAndDebt,
     income: {
-      amount: 33880.76,
-      percentage: 65,
+      amount: income?.value || 0,
+      percentage: income?.percent?.toFixed(2) || 0,
     },
     debt: {
-      amount: 18243.48,
-      percentage: 35,
+      amount: debt?.value || 0,
+      percentage: debt?.percent?.toFixed(2) || 0,
     },
   };
 
-  const formatCurrency = (amount: number): string => {
+  const formatCurrency = (amount = 0): string => {
     return amount.toLocaleString("en-US", {
       style: "currency",
       currency: "USD",

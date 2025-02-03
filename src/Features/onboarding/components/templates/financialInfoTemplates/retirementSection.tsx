@@ -24,8 +24,8 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
   };
 
   const isComplete =
-    values.retirementAge !== "" &&
-    values.targetRetirementIncome !== "";
+    values?.retirementAge !== "" &&
+    values?.targetRetirementIncome !== "";
 
   return (
     <div>
@@ -63,7 +63,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.retirementAge || ""}
+              value={values?.retirementAge || ""}
               onChange={(e) => handleInputChange("retirementAge", e.target.value)}
             />
           </div>
@@ -74,7 +74,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.targetRetirementIncome || ""}
+              value={values?.targetRetirementIncome || ""}
               onChange={(e) => handleInputChange("targetRetirementIncome", e.target.value)}
             />
           </div>

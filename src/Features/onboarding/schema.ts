@@ -14,6 +14,7 @@ export interface PersonalInfoSchema {
 }
 
 export interface FinancialInfoSchema {
+  netWorth?:string;
   currency: string;
   income: {
     rentalIncome: string;
@@ -68,7 +69,6 @@ export interface GoalsInfoSchema {
 
 export interface RiskInfoSchema {
   riskTolerance: string;
-
 }
 
 export interface KnowledgeInfoSchema {

@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/Features/freeDashboard/components/templates/d
 import DashboardTemplate from "@/Features/freeDashboard/components/templates/dashboardTemplate";
 
 export default function DashboardPage() {
+
   return (
     <DashboardLayout>
       <DashboardTemplate />

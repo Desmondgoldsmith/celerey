@@ -9,6 +9,7 @@ import { useAuthStore } from '../../state'
 import Spinner from '@/components/ui/spinner'
 
 export const SignUpTemplate = () => {
+
   const [email, setEmail] = useState('')
 
   const router = useRouter()
@@ -53,7 +54,7 @@ export const SignUpTemplate = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Button
-          disabled={!email}
+          disabled={!email || loading}
           type="submit"
           className="md:w-[450px] w-full bg-navy hover:bg-navyLight text-white"
         >

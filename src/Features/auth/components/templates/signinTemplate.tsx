@@ -1,24 +1,27 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { SocialLoginButton } from "../molecules/socialLoginButton";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState } from 'react'
+import Image from 'next/image'
+import { Button } from '@/components/ui/button'
+import { SocialLoginButton } from '../molecules/socialLoginButton'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '../../state'
+import Spinner from '@/components/ui/spinner'
 
 export const SignInTemplate = () => {
-  const [email, setEmail] = useState("");
-  const router = useRouter();
+  const [email, setEmail] = useState('')
+  const { sendOTP, loading } = useAuthStore()
+  const router = useRouter()
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    router.push("/auth/otp");
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    await sendOTP(email)
+    router.push('/auth/otp')
+  }
 
   const handleSignup = () => {
-    router.push("/auth/signup");
-  };
+    router.push('/auth/signup')
+  }
 
   return (
     <div className="max-w-md mx-auto text-center">
@@ -32,7 +35,7 @@ export const SignInTemplate = () => {
         />
         <h1 className="text-4xl font-cirka font-light mt-4 mb-2">Sign In</h1>
         <p className="text-sm text-gray-600 font-helvetica">
-          New to Celerey?{" "}
+          New to Celerey?{' '}
           <a
             onClick={handleSignup}
             className="text-navyLight hover:cursor-pointer hover:text-navy hover:underline"
@@ -50,14 +53,13 @@ export const SignInTemplate = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Link href="/auth/otp" passHref>
-          <Button
-            type="submit"
-            className="w-[450px] bg-navy hover:bg-navyLight text-white"
-          >
-            Continue
-          </Button>
-        </Link>
+        <Button
+          disabled={!email || loading}
+          type="submit"
+          className="w-[450px] bg-navy hover:bg-navyLight text-white"
+        >
+          {loading && <Spinner className="text-white" />} Continue
+        </Button>
       </form>
 
       <div className="relative mb-6">
@@ -78,5 +80,5 @@ export const SignInTemplate = () => {
         Need help signing in?
       </p>
     </div>
-  );
-};
+  )
+}

@@ -3,16 +3,15 @@
 import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { SectionId, useOnboardingStore } from '@/Features/onboarding/state'
-import { PersonalInfoSchema } from '@/Features/onboarding/schema'
-import { WelcomeTemplate } from '@/Features/onboarding/components/templates/personalInfoTemplates/welcomeTemplate'
-import { BioDataScreen } from '@/Features/onboarding/components/templates/personalInfoTemplates/bioDataScreen'
-import { OptionsSelectionScreen } from '@/Features/onboarding/components/templates/personalInfoTemplates/optionsSelectionScreen'
+import { RiskInfoSchema } from '@/Features/onboarding/schema'
+import { WelcomeScreen } from '@/Features/onboarding/components/templates/riskInfoTemplates/welcomeScreen'
+import { RiskToleranceScreen } from '@/Features/onboarding/components/templates/riskInfoTemplates/riskToleranceScreen'
+import { SubmitScreen } from '@/Features/onboarding/components/templates/riskInfoTemplates/submitScreen'
 import { OnboardingLayout } from '@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout'
 import { SectionProgressBars } from '@/Features/onboarding/components/molecules/progressBar'
-import { SECTIONS } from '@/Features/onboarding/constants'
 import { useAuthStore } from '@/Features/auth/state'
 
-export default function PersonalInfo() {
+export default function RiskInfo() {
   const router = useRouter()
   const {
     sections,
@@ -22,73 +21,65 @@ export default function PersonalInfo() {
     updateSectionProgress,
     completeSection,
     setActiveSection,
-    resetOnboarding,
-    populatePersonalInfo,
+    populateRiskInfo,
   } = useOnboardingStore()
-  
   const { isAuthenticated } = useAuthStore()
 
   useEffect(() => {
-    const shouldReset =
-      !sections.personal.currentStep && !sections.personal.isCompleted
-    if (shouldReset) {
-      resetOnboarding()
-    }
-    setActiveSection('personal')
-  }, [
-    setActiveSection,
-    sections.personal.currentStep,
-    sections.personal.isCompleted,
-    resetOnboarding,
-  ])
-
-  useEffect(() => {
     if (isAuthenticated) {
-      populatePersonalInfo()
+      populateRiskInfo()
     }
   }, [])
 
+  useEffect(() => {
+    // if (!sections.goals.isCompleted) {
+    //   router.push('/goals-info')
+    //   return
+    // }
+
+    if (currentSection !== 'risk') {
+      setActiveSection('risk')
+    }
+  }, [sections.goals.isCompleted, currentSection, router, setActiveSection])
+
   const handleFormUpdate = useCallback(
-    (updates: Partial<PersonalInfoSchema>) => {
-      updateFormData('personal', updates)
+    (updates: Partial<RiskInfoSchema>) => {
+      updateFormData('risk', updates)
     },
     [updateFormData],
   )
 
   const validateCurrentStep = useCallback((): boolean => {
     const currentStepIndex = sections[currentSection].currentStep
-    const data = formData.personal
+    const data = formData.risk
 
     switch (currentStepIndex) {
       case 1:
-        return !!(
-          data.prefix &&
-          data.firstName.trim() &&
-          data.lastName.trim() &&
-          data.dob.day &&
-          data.dob.month &&
-          data.dob.year &&
-          data.citizenship &&
-          data.residentCountry
-        )
-      case 2:
-        return data.options.length > 0
+        return !!data.riskTolerance.trim()
       default:
         return true
     }
-  }, [currentSection, sections, formData.personal])
+  }, [currentSection, sections, formData.risk])
 
   const handleBack = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep
     if (currentStepIndex > 0) {
       const newStep = currentStepIndex - 1
       updateSectionProgress(currentSection, newStep)
+    } else {
+      router.push('/goals-info')
     }
-  }, [currentSection, sections, updateSectionProgress])
+  }, [currentSection, sections, router, updateSectionProgress])
 
   const getNextSection = useCallback(
     (currentSectionId: SectionId): SectionId | null => {
-      const sectionOrder: SectionId[] = SECTIONS.map((section) => section.id)
+      const sectionOrder: SectionId[] = [
+        'personal',
+        'financial',
+        'goals',
+        'risk',
+        'knowledge',
+      ]
       const currentIndex = sectionOrder.indexOf(currentSectionId)
       return currentIndex < sectionOrder.length - 1
         ? sectionOrder[currentIndex + 1]
@@ -130,41 +121,25 @@ export default function PersonalInfo() {
 
   const renderStep = () => {
     const currentStepIndex = sections[currentSection].currentStep
-    const personalData = formData.personal
+    const riskData = formData.risk
 
     switch (currentStepIndex) {
       case 0:
-        return <WelcomeTemplate onStart={handleContinue} />
+        return <WelcomeScreen onContinue={handleContinue} onBack={handleBack} />
       case 1:
         return (
-          <BioDataScreen
-            value={{
-              prefix: personalData.prefix,
-              firstName: personalData.firstName,
-              lastName: personalData.lastName,
-              dob: {
-                day: personalData.dob.day,
-                month: personalData.dob.month,
-                year: personalData.dob.year,
-              },
-              citizenship: personalData.citizenship,
-              residentCountry: personalData.residentCountry,
-              dualCitizenship: personalData.dualCitizenship,
-            }}
-            onChange={handleFormUpdate}
+          <RiskToleranceScreen
+            value={riskData.riskTolerance}
+            onChange={(value: string) =>
+              handleFormUpdate({ riskTolerance: value })
+            }
             onBack={handleBack}
             onContinue={handleContinue}
           />
         )
       case 2:
-        return (
-          <OptionsSelectionScreen
-            value={personalData.options}
-            onChange={(value) => handleFormUpdate({ options: value })}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        )
+        return <SubmitScreen onContinue={handleContinue} onBack={handleBack} />
+
       default:
         return null
     }

@@ -15,18 +15,20 @@ export interface SocialSignupButtonProps {
 }
 export interface AuthState {
   isAuthenticated: boolean;
-  accessToken: string | null;
-  user: unknown;
+  user: User | null;
   loading: boolean;
   error: string;
-  setAuth: (data: { accessToken: string; user: unknown }) => void;
+  setUser: () => Promise<void>
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
   sendOTP: (email: string) => Promise<void>;
-  validateOTP: (otp: string) => Promise<void>;
+  validateOTP: (otp: string, type: string) => Promise<void>;
   logout: () => void;
 }
 
-export interface AuthResponse {
-  success: boolean;
-  message: string;
-  status: string;
+export interface User {
+  userId?: string;
+  firstName?: string
+  lastName?: string
+  email?: string
+  role?:string
 }

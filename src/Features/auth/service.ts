@@ -1,17 +1,30 @@
+import { ApiResponse } from "@/types/common";
 import apiClient from "../../lib/axios"; // Reuse Axios instance
-import { AuthResponse } from "./types";
 
-export const validateOTP = async (email: string, otp: string): Promise<AuthResponse> => {
-  const response = await apiClient.post("/auth/validate-otp", {
-    email,
-    otp,
+export const getUserApi = async (accessToken: string): Promise<ApiResponse> => {
+  const response = await apiClient.get("/user", {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
   return response.data;
 };
 
-export const sendOTP = async (email: string): Promise<AuthResponse> => {
+export const validateOtpApi = async (
+  email: string,
+  otp: string,
+  type: string
+): Promise<ApiResponse> => {
+  const response = await apiClient.post("/auth/validate-otp", {
+    email,
+    otp,
+    type,
+  });
+  return response.data;
+};
+
+export const sendOtpApi = async (email: string): Promise<ApiResponse> => {
   const response = await apiClient.post("/auth/send-otp", {
     email,
   });
   return response.data;
 };
+

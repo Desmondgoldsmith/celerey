@@ -93,7 +93,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             Your Risk Attitude
           </div>
           <div className=" flex justify-between items-center ">
-            <div className="text-xl text-black font-cirka pl-5 font-medium">
+            <div className="text-xl text-black font-cirka pl-5 font-medium capitalize">
               {riskAttitude}
             </div>
             <div>
@@ -109,7 +109,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             Your Current Net Worth
           </div>
           <div className="text-xl text-navyLight font-cirka pl-5 font-medium">
-            ${netWorth.toLocaleString()}
+            ${netWorth?.toLocaleString()}
           </div>
         </div>
 
@@ -118,7 +118,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             Your Investment Experience
           </div>
           <div className=" flex justify-between items-center ">
-            <div className="text-xl text-black font-cirka pl-5 font-medium">
+            <div className="text-xl text-black font-cirka pl-5 font-medium capitalize">
               {investmentExperience}
             </div>
             <div>

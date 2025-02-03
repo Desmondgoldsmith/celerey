@@ -10,6 +10,7 @@ import Spinner from '@/components/ui/spinner'
 import { OTP_LENGTH } from '../../constants'
 
 export const SignupOTPTemplate = () => {
+  
   const [otpValues, setOTPValues] = useState(Array(6).fill(''))
   const { validateOTP, loading } = useAuthStore()
   const router = useRouter()
@@ -19,9 +20,10 @@ export const SignupOTPTemplate = () => {
   }
 
   const handleAccountCreation = async () => {
-    await validateOTP(otpValues.join(''))
+    await validateOTP(otpValues.join(''), "SIGN_UP")
     router.push('/personal-info')
   }
+
 
   return (
     <div className="max-w-md mx-auto text-center">
@@ -45,7 +47,7 @@ export const SignupOTPTemplate = () => {
       <OTPInput length={OTP_LENGTH} value={otpValues} onChange={setOTPValues} />
 
       <Button
-        disabled={otpValues.join('').length !== OTP_LENGTH}
+        disabled={otpValues.join('').length !== OTP_LENGTH || loading}
         onClick={handleAccountCreation}
         className="md:w-80 w-full bg-navy text-white mb-4 hover:bg-navyLight"
       >

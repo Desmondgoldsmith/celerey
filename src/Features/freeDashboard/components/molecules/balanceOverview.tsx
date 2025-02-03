@@ -1,8 +1,9 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Info, MoreHorizontal } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { ChartType, TimeframeKey } from "../../types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react'
+import { Card, CardContent } from '@/components/ui/card'
+import { Info, MoreHorizontal } from 'lucide-react'
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { ChartType, TimeframeKey } from '../../types'
 import {
   BarChart,
   Bar,
@@ -11,12 +12,16 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-} from "recharts";
+} from 'recharts'
 
 interface BalanceOverviewProps {
-  Chart: ChartType;
-  timeframe: TimeframeKey;
-  onTimeframeChange: (timeframe: TimeframeKey) => void;
+  Chart: ChartType
+  timeframe: TimeframeKey
+  onTimeframeChange: (timeframe: TimeframeKey) => void
+  assets: any
+  liabilities: any
+  income:any,
+  expense: any
   // annualIncome: {
   //   Rental: number;
   //   Dividends: number;
@@ -33,104 +38,109 @@ interface BalanceOverviewProps {
   // };
 }
 
-const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
+const BalanceOverview: React.FC<BalanceOverviewProps> = ({
+  assets,
+  liabilities,
+  expense,
+  income
+}) => {
   // Dummy data
   const realEstate = {
-    percentage: 42,
-    value: 25353.94,
-  };
+    percentage: assets.realEstate.percent,
+    value: assets.realEstate.value,
+  }
   const privateSecurities = {
-    percentage: 20,
-    value: 21536.32,
-  };
+    percentage: assets.privateSecurities.percent,
+    value: assets.privateSecurities.value,
+  }
   const publicSecurities = {
-    percentage: 24,
-    value: 23532.25,
-  };
+    percentage: assets.publicSecurities.percent,
+    value: assets.publicSecurities.value,
+  }
   const cash = {
-    percentage: 14,
-    value: 19245.35,
-  };
+    percentage: assets.cash.percent,
+    value: assets.cash.value,
+  }
 
   // =====
 
   const mortgages = {
-    percentage: 60,
-    value: 25353.94,
-  };
+    percentage: liabilities.mortgages.percent,
+    value: liabilities.mortgages.value
+  }
   const creditCards = {
-    percentage: 16,
-    value: 21536.32,
-  };
+    percentage: liabilities.creditCards.percent,
+    value: liabilities.creditCards.value
+  }
   const loans = {
-    percentage: 30,
-    value: 23532.25,
-  };
+    percentage: liabilities.loans.percent,
+    value:liabilities.loans.value
+  }
   const assetFinance = {
-    percentage: 50,
-    value: 19245.35,
-  };
+    percentage: liabilities.assetFinance.percent,
+    value:liabilities.assetFinance.value
+  }
   const otherLiability = {
-    percentage: 14,
-    value: 19245.35,
-  };
+    percentage: liabilities.otherLiabilities.percent,
+    value: liabilities.otherLiabilities.value
+  }
 
   const liabilityData = [
-    { name: "Mortgages", value: realEstate.percentage },
-    { name: "Credit Cards", value: creditCards.percentage },
-    { name: "Loans", value: loans.percentage },
-    { name: "Asset Finance", value: assetFinance.percentage },
-    { name: "Other Liability", value: otherLiability.percentage },
-  ];
+    { name: 'Mortgages', value: mortgages.percentage },
+    { name: 'Credit Cards', value: creditCards.percentage },
+    { name: 'Loans', value: loans.percentage },
+    { name: 'Asset Finance', value: assetFinance.percentage },
+    { name: 'Other Liability', value: otherLiability.percentage },
+  ]
 
   const assetData = [
-    { name: "Real Estate", value: mortgages.percentage },
-    { name: "Private Securities", value: privateSecurities.percentage },
-    { name: "Public Securities", value: publicSecurities.percentage },
-    { name: "Cash", value: cash.percentage },
-  ];
+    { name: 'Real Estate', value: realEstate.percentage},
+    { name: 'Private Securities', value: privateSecurities.percentage },
+    { name: 'Public Securities', value: publicSecurities.percentage },
+    { name: 'Cash', value: cash.percentage },
+  ]
 
-  const assetCOLORS = ["#1B1856", "#8BA78D", "#E15B2D", "#383396"];
+  const assetCOLORS = ['#1B1856', '#8BA78D', '#E15B2D', '#383396']
   const liabilityCOLORS = [
-    "#1B1856",
-    "#8BA78D",
-    "#E15B2D",
-    "#383396",
-    "#AAAAAA",
-  ];
+    '#1B1856',
+    '#8BA78D',
+    '#E15B2D',
+    '#383396',
+    '#AAAAAA',
+  ]
 
   const dummyAnnualIncome = {
-    Rental: 12493.32,
-    Dividends: 18354.23,
-    "Interest Income": 14245.21,
-    "Other Income": 9234.64,
-  };
+    Rental: +income.rentalIncome,
+    Dividends: +income.dividends,
+    'Interest Income': +income.interestIncome,
+    'Other Income': +income.otherIncome,
+  }
 
   const dummyAnnualExpenditure = {
-    Home: 22953.93,
-    Childcare: 24583.84,
-    Education: 28253.29,
-    Healthcare: 5294.95,
-    Travel: 9364.32,
-    Giving: 11245.76,
-  };
+    Home: +expense.home,
+    Childcare: +expense.childcare,
+    Education: +expense.education,
+    Healthcare:  +expense.healthcare,
+    Travel:  +expense.travel,
+    Giving:  +expense.giving,
+  }
 
   const incomeData = Object.entries(dummyAnnualIncome).map(([name, value]) => ({
     name,
     value,
-  }));
-  const expenditureData = Object.entries(dummyAnnualExpenditure).map(
-    ([name, value]) => ({ name, value })
-  );
+  }))
+  const expenditureData = Object.entries(
+    dummyAnnualExpenditure,
+  ).map(([name, value]) => ({ name, value }))
 
-  const incomeColors = ["#FF6B6B", "#6B4EFF", "#4CAF50", "#2196F3"];
+  const incomeColors = ['#FF6B6B', '#6B4EFF', '#4CAF50', '#2196F3']
   const expenditureColors = [
-    "#1B1856",
-    "#8BA78D",
-    "#E15B2D",
-    "#383396",
-    "#AAAAAA",
-  ];
+    '#1B1856',
+    '#8BA78D',
+    '#E15B2D',
+    '#383396',
+    '#AAAAAA',
+  ]
 
   return (
     <Card className="bg-white p-4 w-full">
@@ -187,7 +197,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div className="mb-2">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Real Estate</span>
-                  <span>{realEstate.percentage}%</span>
+                  <span>{realEstate.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -204,7 +214,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Private Securities</span>
-                  <span>{privateSecurities.percentage}%</span>
+                  <span>{privateSecurities.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -224,7 +234,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Cash</span>
-                  <span>{cash.percentage}%</span>
+                  <span>{cash.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -241,7 +251,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div className="mb-6">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Public Securities</span>
-                  <span>{publicSecurities.percentage}%</span>
+                  <span>{publicSecurities.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -304,7 +314,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div className="mb-2">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Mortgages</span>
-                  <span>{mortgages.percentage}%</span>
+                  <span>{mortgages.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -321,7 +331,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Credit Cards</span>
-                  <span>{creditCards.percentage}%</span>
+                  <span>{creditCards.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -341,7 +351,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Asset Finance</span>
-                  <span>{assetFinance.percentage}%</span>
+                  <span>{assetFinance.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -358,7 +368,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
               <div className="mb-6">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Loans</span>
-                  <span>{loans.percentage}%</span>
+                  <span>{loans.percentage.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -449,7 +459,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
         </div>
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default BalanceOverview;
+export default BalanceOverview
