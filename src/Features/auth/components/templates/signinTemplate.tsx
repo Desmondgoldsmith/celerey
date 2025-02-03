@@ -15,8 +15,10 @@ export const SignInTemplate = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await sendOTP(email)
-    router.push('/auth/otp')
+    const success = await sendOTP(email)
+    if (success) {
+      router.push('/auth/otp')
+    }
   }
 
   const handleSignup = () => {

@@ -11,7 +11,7 @@ interface UserProfileProps {
   riskAttitude: string;
   investmentExperience: string;
   profileCompletion?: number;
-  onUpgradeClick: () => void;
+  onUpgradeClick?: () => void;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({

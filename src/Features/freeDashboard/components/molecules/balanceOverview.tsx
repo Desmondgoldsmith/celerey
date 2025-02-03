@@ -46,42 +46,42 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
 }) => {
   // Dummy data
   const realEstate = {
-    percentage: assets.realEstate.percent,
+    percentage: assets.realEstate.percentage,
     value: assets.realEstate.value,
   }
   const privateSecurities = {
-    percentage: assets.privateSecurities.percent,
+    percentage: assets.privateSecurities.percentage,
     value: assets.privateSecurities.value,
   }
   const publicSecurities = {
-    percentage: assets.publicSecurities.percent,
+    percentage: assets.publicSecurities.percentage,
     value: assets.publicSecurities.value,
   }
   const cash = {
-    percentage: assets.cash.percent,
+    percentage: assets.cash.percentage,
     value: assets.cash.value,
   }
 
   // =====
 
   const mortgages = {
-    percentage: liabilities.mortgages.percent,
+    percentage: liabilities.mortgages.percentage,
     value: liabilities.mortgages.value
   }
   const creditCards = {
-    percentage: liabilities.creditCards.percent,
+    percentage: liabilities.creditCards.percentage,
     value: liabilities.creditCards.value
   }
   const loans = {
-    percentage: liabilities.loans.percent,
+    percentage: liabilities.loans.percentage,
     value:liabilities.loans.value
   }
   const assetFinance = {
-    percentage: liabilities.assetFinance.percent,
+    percentage: liabilities.assetFinance.percentage,
     value:liabilities.assetFinance.value
   }
   const otherLiability = {
-    percentage: liabilities.otherLiabilities.percent,
+    percentage: liabilities.otherLiabilities.percentage,
     value: liabilities.otherLiabilities.value
   }
 
@@ -378,6 +378,23 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
                   ${loans.value.toLocaleString()}
+                </div>
+              </div>
+
+                {/* Loans */}
+                <div className="mb-6">
+                <div className="flex justify-between text-gray-700 font-medium mb-2">
+                  <span>Other Liabilities</span>
+                  <span>{otherLiability.percentage.toFixed(0)}%</span>
+                </div>
+                <div className="h-2 bg-gray-200 rounded-full">
+                  <div
+                    className="h-full bg-[#AAAAAA] rounded-full"
+                    style={{ width: `${otherLiability.percentage}%` }}
+                  ></div>
+                </div>
+                <div className="text-left text-gray-700 mb-3 mt-2">
+                  ${otherLiability.value.toLocaleString()}
                 </div>
               </div>
             </div>

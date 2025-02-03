@@ -22,11 +22,11 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt}: any) => {
     netBalance: incomeAndDebt,
     income: {
       amount: income?.value || 0,
-      percentage: income?.percent?.toFixed(2) || 0,
+      percentage: income?.percentage?.toFixed(2) || 0,
     },
     debt: {
       amount: debt?.value || 0,
-      percentage: debt?.percent?.toFixed(2) || 0,
+      percentage: debt?.percentage?.toFixed(2) || 0,
     },
   };
 

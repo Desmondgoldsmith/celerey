@@ -8,7 +8,7 @@ import { LiabilitiesSection } from "./liabilitiesSection";
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
-const FinancialDetailsScreen: React.FC = () => {
+const FinancialDetailsScreen: React.FC<any> = () => {
   const router = useRouter();
   const { formData, updateFormData, sections, currentSection, updateSectionProgress, completeSection } = useOnboardingStore();
   const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(formData.financial);
@@ -108,7 +108,7 @@ const FinancialDetailsScreen: React.FC = () => {
         <div className="border-b pb-4">
           <AssetsSection
             values={localFormData.assets}
-            onChange={(field, value) =>
+            onChange={(field, value: any) =>
               handleFormUpdate("assets", field, value)
             }
             onContinue={handleContinue}

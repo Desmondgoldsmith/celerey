@@ -62,7 +62,6 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
 
 
   const handleContinue = async () => {
-    console.log(user)
     if (user?.userId) {
       await saveProfileInfo(formData.personal)
       onContinue()

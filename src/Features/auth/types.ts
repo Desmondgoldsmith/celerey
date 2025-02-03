@@ -20,8 +20,8 @@ export interface AuthState {
   error: string;
   setUser: () => Promise<void>
   setIsAuthenticated: (isAuthenticated: boolean) => void;
-  sendOTP: (email: string) => Promise<void>;
-  validateOTP: (otp: string, type: string) => Promise<void>;
+  sendOTP: (email: string) => Promise<boolean>;
+  validateOTP: (otp: string, type: string) => Promise<boolean>;
   logout: () => void;
 }
 

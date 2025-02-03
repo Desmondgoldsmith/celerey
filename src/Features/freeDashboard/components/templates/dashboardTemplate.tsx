@@ -196,13 +196,19 @@ const DashboardTemplate: React.FC = () => {
                     expense={data?.expense}
                   />
                 }
-                <IncomeAndExpenditure Chart={Chart} />
+                <IncomeAndExpenditure
+                  totalIncome={data?.totalIncome}
+                  totalExpense={data?.totalExpense}
+                  totalExpenseFromIncome={data.totalExpenseFromIncome}
+                  totalIncomeFromExpense={data.totalIncomeFromExpense}
+                  Chart={Chart}
+                />
               </div>
 
               {/* Right Column */}
               <div className="col-span-3 space-y-6">
                 {/* <RiskAllocation Chart={Chart} /> */}
-                <GeographicSpread />
+                <GeographicSpread assetCountries={data.assetCountries} />
                 <IncomeVsDebt
                   income={data.income}
                   debt={data.debt}
@@ -229,14 +235,20 @@ const DashboardTemplate: React.FC = () => {
                 <MobileActionItems />
               </div>
               <FinancialGoals Chart={Chart} />
-              <IncomeAndExpenditure Chart={Chart} />
+              <IncomeAndExpenditure
+                totalIncome={data?.totalIncome}
+                totalExpense={data?.totalExpense}
+                totalExpenseFromIncome={data.totalExpenseFromIncome}
+                totalIncomeFromExpense={data.totalIncomeFromExpense}
+                Chart={Chart}
+              />
               <IncomeVsDebt
                 income={data.income}
                 debt={data.debt}
                 incomeAndDebt={data.incomeAndDebt}
               />
               <FinancialKnowledgeAssessment progress={72} />
-              <GeographicSpread />
+              <GeographicSpread assetCountries={data.assetCountries} />
             </div>
           </div>
         )}

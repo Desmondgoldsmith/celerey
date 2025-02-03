@@ -32,6 +32,7 @@ export const useAuthStore = create<AuthState>()(
             });
           } catch (error) {
             if (error instanceof AxiosError) {
+              throw error;
             }
           }
         }
@@ -51,6 +52,7 @@ export const useAuthStore = create<AuthState>()(
             state.user = { email };
             state.loading = false;
           });
+          return true;
         } catch (error) {
           if (error instanceof AxiosError) {
             set((state) => {
@@ -58,7 +60,9 @@ export const useAuthStore = create<AuthState>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error;
           }
+          return false;
         }
       },
 
@@ -73,6 +77,7 @@ export const useAuthStore = create<AuthState>()(
               (state) =>
                 (state.error = "Please Enter Your Email in the Previous Step")
             );
+            return false;
           } else {
             const { data } = await validateOtpApi(email, otp, type);
             if (data) {
@@ -87,16 +92,19 @@ export const useAuthStore = create<AuthState>()(
               state.isAuthenticated = true;
               state.loading = false;
             });
+            return true;
           }
         } catch (error) {
-          console.log("Error", error);
           if (error instanceof AxiosError) {
             set((state) => {
               state.loading = false;
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error;
           }
+
+          return false;
         }
       },
 

@@ -89,7 +89,7 @@ export default function KnowledgeInfo() {
 
     if (isLastStep) {
       completeSection('knowledge')
-      router.push('#')
+      router.replace('/freebie')
     } else {
       updateSectionProgress(currentSection, currentStepIndex + 1)
     }

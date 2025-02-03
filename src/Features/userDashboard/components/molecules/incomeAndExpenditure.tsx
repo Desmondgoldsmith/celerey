@@ -37,13 +37,13 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-1 sm:gap-2">
             <span className="text-xs sm:text-sm text-gray-600">
-              Monthly Income
+            Annual Income
             </span>
             <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
             <span className="text-xs sm:text-sm text-gray-600">
-              Monthly Expenditure
+            Annual Expenditure
             </span>
             <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>

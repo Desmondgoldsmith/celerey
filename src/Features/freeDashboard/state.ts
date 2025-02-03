@@ -16,52 +16,61 @@ interface FreeDashboardState {
     incomeAndDebt: number;
     expense: { [key: string]: string };
     allIncome: { [key: string]: string };
+    totalExpense: number;
+    totalExpenseFromIncome: {
+      value: number;
+      percentage: number;
+    };
+    totalIncomeFromExpense: {
+      value: number;
+      percentage: number;
+    };
     income: {
       value: number;
-      percent: number;
+      percentage: number;
     };
     debt: {
       value: number;
-      percent: number;
+      percentage: number;
     };
     assets: {
       cash: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       realEstate: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       publicSecurities: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       privateSecurities: {
         value: number;
-        percent: number;
+        percentage: number;
       };
     };
     liabilities: {
       loans: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       mortgages: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       creditCards: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       assetFinance: {
         value: number;
-        percent: number;
+        percentage: number;
       };
       otherLiabilities: {
         value: number;
-        percent: number;
+        percentage: number;
       };
     };
     userFinancialKnowledge: string;
@@ -93,50 +102,59 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
         allIncome: {},
         income: {
           value: 0,
-          percent: 0,
+          percentage: 0,
         },
         debt: {
           value: 0,
-          percent: 0,
+          percentage: 0,
         },
         assets: {
           cash: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           realEstate: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           publicSecurities: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           privateSecurities: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
+        },
+        totalExpense: 0,
+        totalExpenseFromIncome:{
+          value: 0,
+          percentage: 0,
+        },
+        totalIncomeFromExpense: {
+          value: 0,
+          percentage: 0,
         },
         liabilities: {
           loans: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           mortgages: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           creditCards: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           assetFinance: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
           otherLiabilities: {
             value: 0,
-            percent: 0,
+            percentage: 0,
           },
         },
         userFinancialKnowledge: "",
@@ -169,6 +187,9 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
               userFinancialKnowledge: response.data.user_financial_knowledge,
               userRiskTolerance: response.data.user_risk_tolerance,
               allIncome: response.data.all_income,
+              totalExpense: response.data.total_expense,
+              totalExpenseFromIncome:response.data.total_expense_from_income,
+              totalIncomeFromExpense:response.data.total_income_from_expense,
             };
           });
         }

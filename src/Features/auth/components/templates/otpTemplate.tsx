@@ -18,8 +18,10 @@ export const OTPTemplate = () => {
   const router = useRouter()
 
   const handleSignIn = async () => {
-    await validateOTP(otpValues.join(''), 'SIGN_IN')
+   const success = await validateOTP(otpValues.join(''), 'SIGN_IN')
+   if(success) {
     router.push('/personal-info')
+   }
 
     // const subscription = await getSubscriptionStatus()
 

@@ -112,6 +112,10 @@ export interface BioDataScreenProps {
       month: string;
       year: string;
     };
+    prefix?: string;
+    dualCitizenship?:string
+    citizenship?:string
+    residentCountry?:string
   }) => void;
   // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
   onBack: () => void;

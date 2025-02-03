@@ -78,12 +78,8 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   }
 
   const handleContinue = async () => {
-    try {
       await saveFinancialInfo()
       onContinue()
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   return (

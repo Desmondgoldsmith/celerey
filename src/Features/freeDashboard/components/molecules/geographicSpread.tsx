@@ -13,11 +13,12 @@ const VectorMap = dynamic(
 // Import `worldMill` statically, as it's just data, not a React component
 import { worldMill } from "@react-jvectormap/world";
 
-export const GeographicSpread: React.FC = () => {
-  const mapData: { [key: string]: number } = {
-    GB: 1, // UK
-    GH: 2, // Ghana
-  };
+export const GeographicSpread: React.FC<{assetCountries: string[]}> = ({assetCountries}: {assetCountries: string[]}) => {
+  const mapData: { [key: string]: number } = {};
+
+  assetCountries.map((country, index) => mapData[country]  = index + 1)
+
+  console.log(mapData)
 
   const colorScale = {
     min: 1,
@@ -72,7 +73,7 @@ export const GeographicSpread: React.FC = () => {
         />
       </div>
 
-      <div className="flex justify-center space-x-8">
+      {/* <div className="flex justify-center space-x-8">
         <div className="flex items-center">
           <div className="w-2.5 h-2.5 rounded-full bg-navy mr-2" />
           <span className="text-sm text-gray-600">Ghana</span>
@@ -81,7 +82,7 @@ export const GeographicSpread: React.FC = () => {
           <div className="w-2.5 h-2.5 rounded-full bg-[#FF1493] mr-2" />
           <span className="text-sm text-gray-600">United Kingdom</span>
         </div>
-      </div>
+      </div> */}
     </Card>
   );
 };

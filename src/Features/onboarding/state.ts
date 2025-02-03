@@ -15,6 +15,7 @@ import {
   getGoalsApi,
   getOnboardingProgressApi,
   getPersonalInfoApi,
+  getRiskProfileApi,
   saveFinancialInfoApi,
   saveGoalsInfoApi,
   saveKnowledgeInfoApi,
@@ -249,7 +250,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
         const response = await getFinancialInfoApi();
         if (response.data) {
           set((state) => {
-            state.formData.financial.annualExpenses = response.data.expense;
+            state.formData.financial.annualExpenses = response.data.expense ;
             state.formData.financial.assets = response.data.assets;
             state.formData.financial.liabilities = response.data.liabilities;
             state.formData.financial.currency = response.data.currency;
@@ -280,7 +281,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
       },
 
       populateRiskInfo: async () => {
-        const response = await getGoalsApi();
+        const response = await getRiskProfileApi();
         if (response.data) {
           set((state) => {
             state.formData.risk.riskTolerance = response.data.risk_tolerance;
@@ -316,7 +317,9 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error;
           }
+      
         }
       },
 
@@ -336,6 +339,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error;
           }
         }
       },
@@ -356,6 +360,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error;
           }
         }
       },
@@ -376,6 +381,8 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+
+            throw error;
           }
         }
       },
@@ -383,15 +390,15 @@ export const useOnboardingStore = create<OnboardingStore>()(
       setSectionProgress: async () => {
         try {
           const response = await getOnboardingProgressApi();
-          if (response.data.current_section !== "completed") {
+          if (response.data.active_section !== "completed") {
             set((state) => {
-              state.currentSection = response.data.current_section;
+              state.currentSection = response.data.active_section;
               state.sections[
-                response.data.current_section as SectionId
+                response.data.active_section as SectionId
               ].currentStep = 0;
             });
           } else {
-            return response.data.current_section;
+            return response.data.active_section;
           }
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -399,6 +406,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
+            throw error
           }
         }
       },
@@ -456,9 +464,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
     {
       name: "onboarding-storage",
       partialize: (state) => ({
-        currentSection: state.currentSection,
-        sections: state.sections,
-        formData: state.formData,
+      
       }),
     }
   )
