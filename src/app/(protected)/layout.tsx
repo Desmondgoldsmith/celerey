@@ -21,6 +21,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       router.replace('/auth/signin')
       return
     }
+    
     setTimeout(()=>{
       setIsAuthenticated(true)
     },1000)
@@ -33,6 +34,8 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const handleOnboardingProgress = async () => {
     setIsFetchingData(true)
     const activeSection = await getSectionProgress()
+
+    console.log(activeSection)
 
     if (activeSection === 'completed') {
       router.replace('/freebie')

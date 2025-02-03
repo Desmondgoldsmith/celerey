@@ -14,8 +14,8 @@ interface FreeDashboardState {
     totalLiabilities: number;
     totalIncome: number;
     incomeAndDebt: number;
-    expense:{[key: string]: string},
-    allIncome:{[key: string]: string},
+    expense: { [key: string]: string };
+    allIncome: { [key: string]: string };
     income: {
       value: number;
       percent: number;
@@ -66,7 +66,7 @@ interface FreeDashboardState {
     };
     userFinancialKnowledge: string;
     userRiskTolerance: string;
-    currency:string
+    currency: string;
   };
   error: string;
   loading: boolean;
@@ -88,7 +88,7 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
         totalLiabilities: 0,
         totalIncome: 0,
         incomeAndDebt: 0,
-        currency:'',
+        currency: "",
         expense: {},
         allIncome: {},
         income: {
@@ -142,10 +142,13 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
         userFinancialKnowledge: "",
         userRiskTolerance: "",
       },
-      loading: false,
+      loading: true,
       error: "",
 
       populateDashboardData: async () => {
+        set((state) => {
+          state.loading = true;
+        });
         const response = await getDashboardDataApi();
         if (response.data) {
           set((state) => {
@@ -163,13 +166,16 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
               assets: response.data.assets,
               liabilities: response.data.liabilities,
               currency: response.data.currency,
-              userFinancialKnowledge:
-                response.data.user_financial_knowledge,
+              userFinancialKnowledge: response.data.user_financial_knowledge,
               userRiskTolerance: response.data.user_risk_tolerance,
-              allIncome:  response.data.all_income,
+              allIncome: response.data.all_income,
             };
           });
         }
+
+        set((state) => {
+          state.loading = false;
+        });
       },
     })),
     {

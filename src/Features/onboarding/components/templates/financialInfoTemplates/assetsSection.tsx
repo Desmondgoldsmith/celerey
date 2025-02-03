@@ -45,8 +45,8 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   };
 
   const handleAddCountry = () => {
-    if (selectedCountry && !values.assetCountries.includes(selectedCountry)) {
-      const updatedCountries = [...values.assetCountries, selectedCountry];
+    if (selectedCountry && !values?.assetCountries?.includes(selectedCountry)) {
+      const updatedCountries = values?.assetCountries ? [...values?.assetCountries, selectedCountry] : [selectedCountry];
       onChange("assetCountries", updatedCountries);
       setSelectedCountry("");
       setBgIndex((bgIndex + 1) % backgroundColors.length); // Rotate to the next color
@@ -61,11 +61,11 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   };
 
   const isComplete =
-    values.realEstate !== "" &&
-    values.cash !== "" &&
-    values.publicSecurities !== "" &&
-    values.privateSecurities !== "" &&
-    values.assetCountries.length > 0;
+    values?.realEstate !== "" &&
+    values?.cash !== "" &&
+    values?.publicSecurities !== "" &&
+    values?.privateSecurities !== "" &&
+    values?.assetCountries?.length > 0;
 
   return (
     <div>
@@ -107,7 +107,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.realEstate || ""}
+              value={values?.realEstate || ""}
               onChange={(e) => handleInputChange("realEstate", e.target.value)}
             />
           </div>
@@ -118,7 +118,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.cash || ""}
+              value={values?.cash || ""}
               onChange={(e) => handleInputChange("cash", e.target.value)}
             />
           </div>
@@ -129,7 +129,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.publicSecurities || ""}
+              value={values?.publicSecurities || ""}
               onChange={(e) =>
                 handleInputChange("publicSecurities", e.target.value)
               }
@@ -142,7 +142,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.privateSecurities || ""}
+              value={values?.privateSecurities || ""}
               onChange={(e) =>
                 handleInputChange("privateSecurities", e.target.value)
               }
@@ -178,7 +178,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            {values.assetCountries.map((country, index) => {
+            {values?.assetCountries?.map((country, index) => {
               const bgColor = backgroundColors[index % backgroundColors.length]; // Rotate colors
               return (
                 <div

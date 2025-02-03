@@ -22,10 +22,10 @@ const FinancialDetailsScreen: React.FC = () => {
     const checkSectionComplete = () => {
       const { income, assets, annualExpenses, liabilities } = localFormData;
       const isComplete = 
-        Object.values(income).every(value => value !== "") &&
-        Object.values(assets).every(value => value !== "") &&
-        Object.values(annualExpenses).every(value => value !== "") &&
-        Object.values(liabilities).every(value => value !== "");
+        Object.values(income || {}).every(value => value !== "") &&
+        Object.values(assets || {}).every(value => value !== "") &&
+        Object.values(annualExpenses || {}).every(value => value !== "") &&
+        Object.values(liabilities || {}).every(value => value !== "");
       setIsSectionComplete(isComplete);
     };
 

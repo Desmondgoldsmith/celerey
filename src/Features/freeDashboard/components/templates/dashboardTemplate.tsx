@@ -16,6 +16,7 @@ import { CongratulationsModal } from '../molecules/congratulationModal'
 import { SubscriptionModal } from '../molecules/subscriptionModal'
 import { PaymentModal } from '../molecules/paymentModal'
 import { useFreeDashboardStore } from '../../state'
+import Spinner from '@/components/ui/spinner'
 
 const Chart = (dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -130,11 +131,15 @@ const DashboardTemplate: React.FC = () => {
     profileCompletion,
   } = DEFAULT_USER_DATA
 
-  const { populateDashboardData, data } = useFreeDashboardStore()
+  const { populateDashboardData, data, loading } = useFreeDashboardStore()
 
   useEffect(() => {
-    populateDashboardData()
+    fetchDashboardData()
   }, [])
+
+  const fetchDashboardData = async () => {
+    await populateDashboardData()
+  }
 
   // Handle subscription modal opening
   const handleOpenSubscriptionModal = () => {
@@ -157,24 +162,60 @@ const DashboardTemplate: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-[1440px] mx-auto">
-          {/* Desktop Layout */}
-          <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
-            {/* Left Column */}
-            <div className="col-span-4 space-y-6">
-              <UserProfile
-                userName={data.userName}
-                netWorth={data.netWorth}
-                riskAttitude={data.userRiskTolerance}
-                investmentExperience={data.userFinancialKnowledge}
-                profileCompletion={profileCompletion}
-                onUpgradeClick={handleOpenSubscriptionModal}
-              />
-              <FinancialGoals Chart={Chart} />
+        {loading ? (
+          <div className="h-screen w-screen flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="max-w-[1440px] mx-auto">
+            {/* Desktop Layout */}
+            <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
+              {/* Left Column */}
+              <div className="col-span-4 space-y-6">
+                <UserProfile
+                  userName={data.userName}
+                  netWorth={data.netWorth}
+                  riskAttitude={data.userRiskTolerance}
+                  investmentExperience={data.userFinancialKnowledge}
+                  profileCompletion={profileCompletion}
+                  onUpgradeClick={handleOpenSubscriptionModal}
+                />
+                <FinancialGoals Chart={Chart} />
+              </div>
+
+              {/* Middle Column */}
+              <div className="col-span-5 space-y-6">
+                {
+                  <BalanceOverview
+                    Chart={Chart}
+                    timeframe={timeframe}
+                    onTimeframeChange={setTimeframe}
+                    assets={data?.assets}
+                    liabilities={data?.liabilities}
+                    income={data?.allIncome}
+                    expense={data?.expense}
+                  />
+                }
+                <IncomeAndExpenditure Chart={Chart} />
+              </div>
+
+              {/* Right Column */}
+              <div className="col-span-3 space-y-6">
+                {/* <RiskAllocation Chart={Chart} /> */}
+                <GeographicSpread />
+                <IncomeVsDebt
+                  income={data.income}
+                  debt={data.debt}
+                  incomeAndDebt={data.incomeAndDebt}
+                />
+                <FinancialKnowledgeAssessment progress={72} />
+              </div>
             </div>
 
-            {/* Middle Column */}
-            <div className="col-span-5 space-y-6">
+            {/* Mobile Layout */}
+            <div className="lg:hidden space-y-6">
+              <MobileGreeting userName={data.userName} />
+              <MobileNetWorth netWorth={data.netWorth} />
               <BalanceOverview
                 Chart={Chart}
                 timeframe={timeframe}
@@ -184,49 +225,21 @@ const DashboardTemplate: React.FC = () => {
                 income={data?.allIncome}
                 expense={data?.expense}
               />
+              <div className="bg-white rounded-lg overflow-hidden">
+                <MobileActionItems />
+              </div>
+              <FinancialGoals Chart={Chart} />
               <IncomeAndExpenditure Chart={Chart} />
-            </div>
-
-            {/* Right Column */}
-            <div className="col-span-3 space-y-6">
-              {/* <RiskAllocation Chart={Chart} /> */}
-              <GeographicSpread />
               <IncomeVsDebt
                 income={data.income}
                 debt={data.debt}
                 incomeAndDebt={data.incomeAndDebt}
               />
               <FinancialKnowledgeAssessment progress={72} />
+              <GeographicSpread />
             </div>
           </div>
-
-          {/* Mobile Layout */}
-          <div className="lg:hidden space-y-6">
-            <MobileGreeting userName={data.userName} />
-            <MobileNetWorth netWorth={data.netWorth} />
-            <BalanceOverview
-              Chart={Chart}
-              timeframe={timeframe}
-              onTimeframeChange={setTimeframe}
-              assets={data?.assets}
-              liabilities={data?.liabilities}
-              income={data?.allIncome}
-              expense={data?.expense}
-            />
-            <div className="bg-white rounded-lg overflow-hidden">
-              <MobileActionItems />
-            </div>
-            <FinancialGoals Chart={Chart} />
-            <IncomeAndExpenditure Chart={Chart} />
-            <IncomeVsDebt
-              income={data.income}
-              debt={data.debt}
-              incomeAndDebt={data.incomeAndDebt}
-            />
-            <FinancialKnowledgeAssessment progress={72} />
-            <GeographicSpread />
-          </div>
-        </div>
+        )}
       </div>
       {/* Subscription Modal */}
       <SubscriptionModal

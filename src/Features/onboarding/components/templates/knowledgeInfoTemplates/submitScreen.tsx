@@ -38,13 +38,13 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    await saveKnowledgeInfo()
     e.preventDefault()
+    await saveKnowledgeInfo()
     onContinue()
   }
 
   return (
-    <form  className="text-center max-w-xl mx-auto">
+    <div  className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-6">
         Congratulations
         <span className="text-navyLight"> {firstName || 'User'}</span>, you have
@@ -82,7 +82,6 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
           Back
         </Button>
         <Button
-          type="submit"
           onClick={handleSubmit}
           className={`flex-1 w-full text-white ${
             selection ? 'bg-navy hover:bg-navyLight' : 'bg-gray-300'
@@ -93,6 +92,6 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
           {isLoading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       </div>
-    </form>
+    </div>
   )
 }

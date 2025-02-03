@@ -406,7 +406,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
       getSectionProgress: async () => {
         try {
           const response = await getOnboardingProgressApi();
-          return response.data.current_section;
+          return response.data.active_section;
         } catch (error) {
           if (error instanceof AxiosError) {
             set((state) => {
