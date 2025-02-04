@@ -36,13 +36,18 @@ const incomeData: IncomeItem[] = [
   },
 ];
 
-const IncomeSection = () => {
+interface IncomeSectionProps {
+  income: IncomeItem[];
+  openIncomeModal: () => void;
+}
+
+const IncomeSection = ({ income, openIncomeModal }: IncomeSectionProps) => {
   // Transform income data for the pie chart
   const pieChartData = incomeData.map((item) => ({
     name: item.category,
     value: item.percentage,
   }));
-
+  console.log(income);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Description and Buttons */}
@@ -70,7 +75,10 @@ const IncomeSection = () => {
             <h3 className="text-sm text-gray-600">Annual Income</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
-          <span className="text-indigo-600 text-sm hover:cursor-pointer">
+          <span
+            onClick={openIncomeModal}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
             Add Income
           </span>
         </div>

@@ -1,65 +1,24 @@
 import React from "react";
 import { Info } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { ExpenseItem } from "../../types";
 
-// Define the data structure for expense items
-interface ExpenseItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
+interface ExpenseSectionProps {
+  onEditClick: () => void;
+  expenses: ExpenseItem[];
 }
 
-// Expense data that matches the UI design
-const expensesData: ExpenseItem[] = [
-  {
-    category: "Home",
-    amount: 33472.81,
-    percentage: 18,
-    color: "#1B1856",
-  },
-  {
-    category: "Healthcare",
-    amount: 25353.94,
-    percentage: 8,
-    color: "#D3D3D3",
-  },
-  {
-    category: "Education",
-    amount: 14353.89,
-    percentage: 23,
-    color: "#FF69B4",
-  },
-  {
-    category: "Travel",
-    amount: 23253.43,
-    percentage: 15,
-    color: "#E15B2D",
-  },
-  {
-    category: "Giving",
-    amount: 19343.65,
-    percentage: 13,
-    color: "#383396",
-  },
-  {
-    category: "Childcare",
-    amount: 14353.89,
-    percentage: 20,
-    color: "#8BA78D",
-  },
-];
-
-const ExpensesSection = () => {
+const ExpensesSection = ({ onEditClick, expenses }: ExpenseSectionProps) => {
   // Transform expenses data for the pie chart visualization
-  const pieChartData = expensesData.map((item) => ({
+  const pieChartData = expenses.map((item) => ({
     name: item.category,
     value: item.percentage,
+    fill: item.color,
   }));
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Left Column - Description and Action Buttons */}
+      {/*  Description and Action Buttons */}
       <div className="flex flex-col">
         <p className="text-sm text-gray-600 mb-6">
           Tracking your expenses allows us to efficiently assist you in
@@ -78,14 +37,17 @@ const ExpensesSection = () => {
         </div>
       </div>
 
-      {/* Right Column - Expenses Overview */}
+      {/* Expenses Overview */}
       <div>
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-2">
             <h3 className="text-sm text-gray-600">Expenses</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
-          <span className="text-indigo-600 text-sm hover:cursor-pointer">
+          <span
+            onClick={onEditClick}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
             Edit Category
           </span>
         </div>
@@ -106,7 +68,7 @@ const ExpensesSection = () => {
                 {pieChartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={expensesData[index].color}
+                    fill={expenses[index].color}
                     stroke="white"
                     strokeWidth={2}
                   />
@@ -132,7 +94,7 @@ const ExpensesSection = () => {
 
         {/* Expenses Breakdown with Progress Bars */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {expensesData.map((expense) => (
+          {expenses.map((expense) => (
             <div key={expense.category} className="mb-4">
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">{expense.category}</span>

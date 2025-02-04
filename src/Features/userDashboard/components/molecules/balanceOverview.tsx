@@ -8,6 +8,8 @@ import IncomeSection from "./incomeSection";
 import ExpensesSection from "./expenseSection";
 import IncomeVsDebtSection from "./incomeVsDebtSection";
 import IncomeVsExpenditure from "./incomeVsExpenditure";
+import { AssetType, CountryType, ExpenseItem, IncomeItem } from "../../types";
+import { useRouter } from "next/navigation";
 
 const tabs = [
   "Assets",
@@ -86,6 +88,10 @@ const LiabilitiesContent = () => {
     value: item.percentage,
   }));
 
+  const router = useRouter();
+  const handleAdvisors = () => {
+    router.push("/advisors");
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
@@ -96,7 +102,10 @@ const LiabilitiesContent = () => {
             service most of these liabilities efficiently while maintaining your
             financial goals.
           </h3>
-          <button className="text-indigo-600 border border-indigo-600 rounded-md px-4 py-2 w-fit text-sm hover:bg-indigo-50 transition-colors">
+          <button
+            onClick={handleAdvisors}
+            className="text-navyLight border border-navyLight rounded-md px-4 py-2 w-fit text-sm hover:bg-indigo-50 transition-colors"
+          >
             Speak to an Advisor
           </button>
         </div>
@@ -108,7 +117,7 @@ const LiabilitiesContent = () => {
             <h3 className="text-sm text-gray-600">Liabilities</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
-          <span className="text-indigo-600 text-sm hover:cursor-pointer">
+          <span className="text-navyLight text-sm hover:cursor-pointer">
             Edit Category
           </span>
         </div>
@@ -182,11 +191,24 @@ const LiabilitiesContent = () => {
 
 interface BalanceOverviewProps {
   onPortfolioRecommendationClick: () => void;
+  onEditAssetClick: () => void;
+  assets: AssetType[];
+  countries: CountryType[];
+  income: IncomeItem[];
+  openIncomeModal: () => void;
+  onEditExpenseClick: () => void;
+  expenses: ExpenseItem[];
+  openDebtModal: () => void;
 }
 
-// Main Component
 export default function BalanceOverview({
   onPortfolioRecommendationClick,
+  onEditAssetClick,
+  income,
+  openIncomeModal,
+  onEditExpenseClick,
+  expenses,
+  openDebtModal,
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
 
@@ -255,6 +277,8 @@ export default function BalanceOverview({
                 {
                   scale: colorScale.scale,
                   values: colorScale.values,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
                   min: colorScale.min,
                   max: colorScale.max,
                   normalizeFunction: "polynomial",
@@ -288,7 +312,10 @@ export default function BalanceOverview({
             <h3 className="text-sm text-gray-600">Assets</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
-          <span className="text-indigo-600 text-sm hover:cursor-pointer">
+          <span
+            onClick={onEditAssetClick}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
             Edit info
           </span>
         </div>
@@ -337,9 +364,7 @@ export default function BalanceOverview({
             <span className="text-sm text-gray-600">Asset Locations</span>
             <div className="flex items-center justify-between">
               <p className="text-sm">Ghana, UK...</p>
-              <button className="text-indigo-600 text-sm px-2 py-1">
-                more
-              </button>
+              <button className="text-navyLight text-sm px-2 py-1">more</button>
             </div>
           </div>
         </div>
@@ -375,7 +400,7 @@ export default function BalanceOverview({
       {/* Header with Title and Icon */}
       <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
         <div className="flex items-center gap-2">
-          <h2 className="text-sm font-bold text-navy font-cirka">
+          <h2 className="text-xl font-bold text-navy font-cirka">
             Balance Overview
           </h2>
           <Info className="h-3 w-3 text-gray-400" />
@@ -406,9 +431,18 @@ export default function BalanceOverview({
       <div className="transition-all duration-300 ease-in-out">
         {activeTab === "Assets" && <AssetsContent />}
         {activeTab === "Liabilities" && <LiabilitiesContent />}
-        {activeTab === "Income" && <IncomeSection />}
-        {activeTab === "Expenses" && <ExpensesSection />}
-        {activeTab === "Income Vs Debt" && <IncomeVsDebtSection />}
+        {activeTab === "Income" && (
+          <IncomeSection income={income} openIncomeModal={openIncomeModal} />
+        )}
+        {activeTab === "Expenses" && (
+          <ExpensesSection
+            onEditClick={onEditExpenseClick}
+            expenses={expenses}
+          />
+        )}
+        {activeTab === "Income Vs Debt" && (
+          <IncomeVsDebtSection openDebtModal={openDebtModal} />
+        )}
         {activeTab === "Income Vs Expenditure" && <IncomeVsExpenditure />}
       </div>
     </Card>

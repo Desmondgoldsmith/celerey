@@ -1,4 +1,3 @@
-// Financial metrics types
 export interface FinancialMetric {
   value: number;
   currency: string;
@@ -45,6 +44,7 @@ export interface DashboardData {
   assetAllocation: AssetAllocation[];
   geographicalSpread: GeographicalData[];
   riskProfile: RiskProfile;
+  expensesData: ExpenseItem[];
 }
 
 // types/financialGoals.ts
@@ -96,4 +96,29 @@ export interface PortfolioRecommendation {
 export interface PortfolioRecommendationsModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+export type AssetType = {
+  id: string;
+  category: string;
+  amount: number;
+};
+
+export type CountryType = {
+  id: string;
+  name: string;
+};
+
+export interface IncomeItem {
+  category: string;
+  amount: number;
+  percentage: number;
+  color: string;
+}
+
+export interface ExpenseItem {
+  category: string;
+  amount: number;
+  percentage: number;
+  color: string;
 }

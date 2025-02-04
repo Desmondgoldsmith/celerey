@@ -1,5 +1,6 @@
 import React from "react";
 import { Info } from "lucide-react";
+import Link from "next/link";
 
 interface DebtMetrics {
   totalDebt: number;
@@ -23,7 +24,11 @@ const initialMetrics: DebtMetrics = {
   amortizedDebtAmount: 18243.48,
 };
 
-const IncomeVsDebtSection = () => {
+interface IncomeVsDebtProps {
+  openDebtModal: () => void;
+}
+
+const IncomeVsDebtSection = ({ openDebtModal }: IncomeVsDebtProps) => {
   const metrics = initialMetrics;
 
   // Helper function to format currency values
@@ -51,7 +56,10 @@ const IncomeVsDebtSection = () => {
                 <span className="text-sm text-gray-600">Total Debt</span>
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
-              <button className="text-navyLight text-sm hover:underline">
+              <button
+                onClick={openDebtModal}
+                className="text-navyLight text-sm hover:underline"
+              >
                 Modify
               </button>
             </div>
@@ -69,7 +77,10 @@ const IncomeVsDebtSection = () => {
                 </span>
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
-              <button className="text-navyLight text-sm hover:underline">
+              <button
+                onClick={openDebtModal}
+                className="text-navyLight text-sm hover:underline"
+              >
                 Add Amount
               </button>
             </div>
@@ -95,13 +106,16 @@ const IncomeVsDebtSection = () => {
 
           {/* Speak to an Advisor Link */}
           <div>
-            <a href="#" className="text-navyLight text-sm hover:underline">
+            <Link
+              href="/advisors"
+              className="text-navyLight text-sm hover:underline"
+            >
               Speak to an Advisor
-            </a>
+            </Link>
           </div>
         </div>
 
-        {/* Right Column - Net Balance and Distribution */}
+        {/* Net Balance and Distribution */}
         <div className="space-y-6">
           {/* Net Balance */}
           <div>

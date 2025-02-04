@@ -55,6 +55,44 @@ export const DUMMY_DASHBOARD_DATA: DashboardData = {
     },
     { country: "China", amount: 34963, coordinates: [104.1954, 35.8617] },
   ],
+  expensesData: [
+    {
+      category: "Home",
+      amount: 33472.81,
+      percentage: 18,
+      color: "#1B1856",
+    },
+    {
+      category: "Healthcare",
+      amount: 25353.94,
+      percentage: 8,
+      color: "#D3D3D3",
+    },
+    {
+      category: "Education",
+      amount: 14353.89,
+      percentage: 23,
+      color: "#FF69B4",
+    },
+    {
+      category: "Travel",
+      amount: 23253.43,
+      percentage: 15,
+      color: "#E15B2D",
+    },
+    {
+      category: "Giving",
+      amount: 19343.65,
+      percentage: 13,
+      color: "#383396",
+    },
+    {
+      category: "Childcare",
+      amount: 14353.89,
+      percentage: 20,
+      color: "#8BA78D",
+    },
+  ],
   riskProfile: {
     riskAttitude: "Somewhat Aggressive",
     investmentExperience: "Advanced",

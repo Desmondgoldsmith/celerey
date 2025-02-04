@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DashboardLayout } from "./dashboardLayout";
 import { MetricCard } from "../molecules/metricCard";
 import { FinancialGoalsCard } from "../molecules/financialGoalsCard";
@@ -12,7 +12,6 @@ import {
   TrendingUp,
   TrendingDown,
   Banknote,
-  CircleDollarSign,
   User,
   Upload,
   MessageSquare,
@@ -20,7 +19,20 @@ import {
   Search,
   Calendar,
 } from "lucide-react";
-import type { FinancialPlan } from "../../types";
+import type {
+  AssetType,
+  CountryType,
+  ExpenseItem,
+  FinancialPlan,
+  IncomeItem,
+} from "../../types";
+import EditAssetModal from "../molecules/editAssetModal";
+import EditIncomeModal from "../molecules/editIncomeModal";
+import EditExpenseModal from "../molecules/editExpenseModal";
+import RiskAttitudeModal from "../molecules/riskAttitudeModal";
+import InvestmentExperienceModal from "../molecules/investmentExperience";
+import FinancialKnowledgeModal from "../molecules/financialknowledgeModal";
+import EditDebtModal from "../molecules/editDebtModal";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = React.useState(false);
@@ -53,6 +65,48 @@ export const Dashboard: React.FC = () => {
     setIsAddGoalModalOpen(true);
   };
 
+  const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
+  const [isEditDebtModalOpen, setIsEditDebtModalOpen] = useState(false);
+  const [incomeData, setIncomeData] = useState<IncomeItem[]>([
+    {
+      category: "Dividends",
+      amount: 18354.23,
+      percentage: 30,
+      color: "#8BA78D",
+    },
+    {
+      category: "Rental",
+      amount: 12493.32,
+      percentage: 28,
+      color: "#1B1856",
+    },
+    {
+      category: "Interest Income",
+      amount: 14245.21,
+      percentage: 18,
+      color: "#E15B2D",
+    },
+    {
+      category: "Other Income",
+      amount: 9234.64,
+      percentage: 24,
+      color: "#383396",
+    },
+  ]);
+  console.log(incomeData);
+
+  const handleSaveIncome = (updatedIncome: IncomeItem[]) => {
+    setIncomeData(updatedIncome);
+  };
+
+  const openIncomeModal = () => {
+    setIsIncomeModalOpen(true);
+  };
+
+  const openDebtModal = () => {
+    setIsEditDebtModalOpen(true);
+  };
+
   const handleSaveModifiedGoal = (modifiedGoal: FinancialPlan) => {
     setFinancialPlans((prev) =>
       prev.map((plan) =>
@@ -61,6 +115,89 @@ export const Dashboard: React.FC = () => {
     );
     setSelectedPlan(undefined);
   };
+
+  const [isEditAssetModalOpen, setIsEditAssetModalOpen] = React.useState(false);
+  const [isViewRiskModal, setisViewRiskModal] = React.useState(false);
+  const [isViewInvestModal, setisViewInvestModal] = React.useState(false);
+  const [isViewFinancialModal, setisViewFinancialModal] = React.useState(false);
+  const [userAssets, setUserAssets] = React.useState<AssetType[]>([
+    { id: "1", category: "Real Estate", amount: 13252.13 },
+    { id: "2", category: "Cash", amount: 43693.52 },
+    { id: "3", category: "Public Securities", amount: 73953.05 },
+    { id: "4", category: "Private Securities", amount: 85386.94 },
+  ]);
+  const [userCountries, setUserCountries] = React.useState<CountryType[]>([
+    { id: "1", name: "South Africa" },
+    { id: "2", name: "Ghana" },
+    { id: "3", name: "United Kingdom" },
+  ]);
+
+  const handleEditAssetClick = () => {
+    setIsEditAssetModalOpen(true);
+  };
+
+  const handleViewRiskModal = () => {
+    setisViewRiskModal(true);
+  };
+
+  const handleViewFinancialModal = () => {
+    setisViewFinancialModal(true);
+  };
+
+  const handleViewInvestModal = () => {
+    setisViewInvestModal(true);
+  };
+
+  const handleSaveAssets = (assets: AssetType[], countries: CountryType[]) => {
+    setUserAssets(assets);
+    setUserCountries(countries);
+  };
+
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
+  const [expensesData, setExpensesData] = useState<ExpenseItem[]>([
+    {
+      category: "Home",
+      amount: 33472.81,
+      percentage: 18,
+      color: "#1B1856",
+    },
+    {
+      category: "Healthcare",
+      amount: 25353.94,
+      percentage: 8,
+      color: "#D3D3D3",
+    },
+    {
+      category: "Education",
+      amount: 14353.89,
+      percentage: 23,
+      color: "#FF69B4",
+    },
+    {
+      category: "Travel",
+      amount: 23253.43,
+      percentage: 15,
+      color: "#E15B2D",
+    },
+    {
+      category: "Giving",
+      amount: 19343.65,
+      percentage: 13,
+      color: "#383396",
+    },
+    {
+      category: "Childcare",
+      amount: 14353.89,
+      percentage: 20,
+      color: "#8BA78D",
+    },
+  ]);
+
+  const handleSaveExpenses = (updatedExpenses: ExpenseItem[]) => {
+    setExpensesData(updatedExpenses);
+    setIsExpenseModalOpen(false);
+  };
+
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
@@ -160,7 +297,7 @@ export const Dashboard: React.FC = () => {
           />
         </div>
 
-        {/* Main Content Grid: Financial Goals and Balance Overview */}
+        {/* Financial Goals and Balance Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FinancialGoalsCard
             plans={financialPlans}
@@ -172,6 +309,14 @@ export const Dashboard: React.FC = () => {
           />
           <BalanceOverviewCard
             onPortfolioRecommendationClick={handlePortfolioRecommendationClick}
+            onEditAssetClick={handleEditAssetClick}
+            assets={userAssets}
+            countries={userCountries}
+            income={handleSaveIncome}
+            openIncomeModal={openIncomeModal}
+            expenses={expensesData}
+            onEditExpenseClick={() => setIsExpenseModalOpen(true)}
+            openDebtModal={openDebtModal}
           />
         </div>
 
@@ -179,81 +324,89 @@ export const Dashboard: React.FC = () => {
         <div className="bg-white rounded-lg p-6 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <User className="w-5 h-5 text-gray-500" />
-            <h2 className="text-lg font-bold">Financial Knowledge</h2>
-            <span className="text-sm text-gray-500">ⓘ</span>
+            <h2 className="text-lg font-bold font-cirka text-navy">
+              Financial Knowledge
+            </h2>
+            <span
+              className="text-sm text-gray-500"
+              title="Your financial knowledge is assessed based on your understanding of financial concepts and principles."
+            >
+              ⓘ
+            </span>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Risk Attitude */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <h3 className="font-medium text-gray-900">
+                <h3 className="font-medium  font-cirka text-navy">
                   Your Risk Attitude
                 </h3>
-                <button className="text-indigo-600 text-sm px-2 py-1 rounded-full bg-indigo-100">
+                <button
+                  onClick={handleViewRiskModal}
+                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
+                >
                   View Details
                 </button>
               </div>
-              <p className="text-xl font-bold">Somewhat Aggressive</p>
+              <p className="text-xl font-bold font-cirka text-navy">
+                Somewhat Aggressive
+              </p>
             </div>
 
             {/* Investment Experience */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <h3 className="font-medium text-gray-900">
+                <h3 className="font-medium font-cirka text-navy">
                   Your Investment Experience
                 </h3>
-                <button className="text-indigo-600 text-sm px-2 py-1 rounded-full bg-indigo-100">
+                <button
+                  onClick={handleViewInvestModal}
+                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
+                >
                   View Details
                 </button>
               </div>
-              <p className="text-xl font-bold">Advanced</p>
+              <p className="text-xl font-bold font-cirka text-navy">Advanced</p>
             </div>
 
             {/* Financial Knowledge Assessment */}
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <h3 className="font-medium text-gray-900">
+                <h3 className="font-medium  font-cirka text-navy ">
                   Financial Knowledge Assessment
                 </h3>
-                <button className="text-indigo-600 text-sm px-2 py-1 rounded-full bg-indigo-100">
+                <button
+                  onClick={handleViewFinancialModal}
+                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
+                >
                   View Details
                 </button>
               </div>
-              <p className="text-xl font-bold">Intermediate</p>
+              <p className="text-xl font-bold font-cirka text-navy">
+                Intermediate
+              </p>
             </div>
           </div>
 
           {/* Description and Action */}
           <div className="mt-6 flex justify-between items-start gap-6">
             <p className="text-gray-600 flex-grow">
-              You are a <span className="font-medium">somewhat aggressive</span>{" "}
-              risk taker with an <span className="font-medium">advanced</span>{" "}
+              You are a{" "}
+              <span className="font-medium ">somewhat aggressive</span> risk
+              taker with an <span className="font-medium ">advanced</span>{" "}
               investment experience. Notwithstanding this, your financial
-              knowledge is <span className="font-medium">intermediate</span>.
+              knowledge is <span className="font-medium ">intermediate</span>.
               This means you have a fair grasp of finance. Although you are not
               an expert, you understand how macroeconomics works in relation to
               financial instruments. We can offer investment advice and assist
               you with proven risk management techniques to potentially improve
               your outcomes.
             </p>
-            <button className="text-indigo-600 whitespace-nowrap hover:text-indigo-700">
+            <button className="text-navyLight whitespace-nowrap hover:text-navy">
               Speak to an Advisor
             </button>
           </div>
-        </div>
-
-        {/* Quick Actions Footer */}
-        <div className="flex justify-end gap-4">
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-            <PiggyBank className="w-5 h-5 text-gray-600" />
-          </button>
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-            <CircleDollarSign className="w-5 h-5 text-gray-600" />
-          </button>
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-            <User className="w-5 h-5 text-gray-600" />
-          </button>
         </div>
       </div>
 
@@ -271,6 +424,51 @@ export const Dashboard: React.FC = () => {
       <PortfolioRecommendationsModal
         isOpen={isPortfolioModalOpen}
         onClose={() => setIsPortfolioModalOpen(false)}
+      />
+
+      <EditAssetModal
+        isOpen={isEditAssetModalOpen}
+        onClose={() => setIsEditAssetModalOpen(false)}
+        onSave={handleSaveAssets}
+        initialAssets={userAssets}
+        initialCountries={userCountries}
+      />
+
+      <EditIncomeModal
+        isOpen={isIncomeModalOpen}
+        onClose={() => setIsIncomeModalOpen(false)}
+        onSave={handleSaveIncome}
+      />
+
+      <EditExpenseModal
+        isOpen={isExpenseModalOpen}
+        onClose={() => setIsExpenseModalOpen(false)}
+        onSave={handleSaveExpenses}
+        initialExpenses={expensesData}
+      />
+
+      <RiskAttitudeModal
+        isOpen={isViewRiskModal}
+        onClose={() => setisViewRiskModal(false)}
+      />
+
+      <InvestmentExperienceModal
+        isOpen={isViewInvestModal}
+        onClose={() => setisViewInvestModal(false)}
+      />
+
+      <FinancialKnowledgeModal
+        isOpen={isViewFinancialModal}
+        onClose={() => setisViewFinancialModal(false)}
+      />
+
+      <EditDebtModal
+        isOpen={isEditDebtModalOpen}
+        onClose={() => setIsEditDebtModalOpen(false)}
+        onSave={(updatedDebts) => {
+          console.log(updatedDebts);
+          setIsEditDebtModalOpen(false);
+        }}
       />
     </DashboardLayout>
   );

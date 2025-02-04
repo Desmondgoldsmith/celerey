@@ -174,7 +174,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <CircleDollarSign className="w-5 h-5 text-gray-500" />
-          <h2 className="text-sm font-cirka text-navy font-medium">
+          <h2 className="text-xl font-cirka text-navy font-medium">
             Financial Goals
           </h2>
           <span className="text-sm text-gray-500 hover:cursor-pointer">ⓘ</span>
@@ -186,12 +186,9 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
         {plans.length} financial plans
       </h3>
 
-      {/* Grid layout for financial plans */}
       <div className="grid grid-cols-2 gap-4 relative">
-        {/* Vertical trace line */}
         <div className="absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
 
-        {/* Horizontal trace line */}
         <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
 
         {/* Render current page plans */}
