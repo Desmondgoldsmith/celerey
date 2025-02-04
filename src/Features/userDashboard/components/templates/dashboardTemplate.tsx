@@ -33,6 +33,7 @@ import RiskAttitudeModal from "../molecules/riskAttitudeModal";
 import InvestmentExperienceModal from "../molecules/investmentExperience";
 import FinancialKnowledgeModal from "../molecules/financialknowledgeModal";
 import EditDebtModal from "../molecules/editDebtModal";
+import { useRouter } from "next/navigation";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = React.useState(false);
@@ -198,6 +199,10 @@ export const Dashboard: React.FC = () => {
     setIsExpenseModalOpen(false);
   };
 
+  const router = useRouter();
+  const handleAdvisors = () => {
+    router.push("/advisors");
+  };
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
@@ -403,7 +408,10 @@ export const Dashboard: React.FC = () => {
               you with proven risk management techniques to potentially improve
               your outcomes.
             </p>
-            <button className="text-navyLight whitespace-nowrap hover:text-navy">
+            <button
+              onClick={handleAdvisors}
+              className="text-navyLight whitespace-nowrap hover:text-navy"
+            >
               Speak to an Advisor
             </button>
           </div>
