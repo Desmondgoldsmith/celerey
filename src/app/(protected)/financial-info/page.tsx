@@ -31,7 +31,7 @@ export default function FinancialInfo() {
     if (isAuthenticated) {
       populateFinancialInfo()
     }
-  }, [])
+  }, [isAuthenticated, populateFinancialInfo])
 
   useEffect(() => {
     // if (sections.personal && !sections.personal.isCompleted) {
@@ -45,7 +45,8 @@ export default function FinancialInfo() {
   }, [sections.personal, currentSection, router, setActiveSection])
 
   const handleFormUpdate = useCallback(
-    (updates: Partial<FinancialInfoSchema>) => {
+    // (updates: Partial<FinancialInfoSchema>) => {
+    (updates:FinancialInfoSchema) => {
       console.log(
         'Updating financial data:',
         updates,
@@ -105,14 +106,14 @@ export default function FinancialInfo() {
 
       case 6: // Debt validation
         return (
-          data.hasDebt === 'no' ||
-          (data.hasDebt === 'yes' && parseFloat(data.debt || '0') >= 0)
+          data.debt.hasDebt === 'no' ||
+          (data.debt.hasDebt === 'yes' && parseFloat(data.debt.debtAmount || '0') >= 0)
         )
       case 7:
         return (
-          data.hasEmergencyFunds === 'no' ||
-          (data.hasEmergencyFunds === 'yes' &&
-            parseFloat(data.emergencyFund || '0') >= 0)
+          data.emergencyFund.hasEmergencyFunds === 'no' ||
+          (data.emergencyFund.hasEmergencyFunds === 'yes' &&
+            parseFloat(data.emergencyFund.emergencyFundAmount || '0') >= 0)
         )
       case 8: // Retirement goals validation
         return (

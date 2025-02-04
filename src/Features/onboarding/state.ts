@@ -136,7 +136,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       currentSavings: "",
       targetSavings: "",
     },
-    emergencyFund: {
+  emergencyFund: {
     hasEmergencyFunds: "",
     emergencyFundAmount: "",
     targetMonths: "",
@@ -253,9 +253,11 @@ export const useOnboardingStore = create<OnboardingStore>()(
       },
 
       populateFinancialInfo: async () => {
+        console.log("anything")
         const response = await getFinancialInfoApi();
         if (response.data) {
           set((state) => {
+            console.log("State:",state)
             state.formData.financial.annualExpenses = response.data.expense ;
             state.formData.financial.assets = response.data.assets;
             state.formData.financial.liabilities = response.data.liabilities;
@@ -263,9 +265,9 @@ export const useOnboardingStore = create<OnboardingStore>()(
             state.formData.financial.debt = response.data.debt;
             state.formData.financial.emergencyFund =
               response.data.emergency_funds;
-            state.formData.financial.hasDebt =
+            state.formData.financial.debt.hasDebt =
               response.data.has_debt === 1 ? "yes" : "no";
-            state.formData.financial.hasEmergencyFunds =
+            state.formData.financial.emergencyFund.hasEmergencyFunds =
               response.data.has_emergency_funds === 1 ? "yes" : "no";
             state.formData.financial.savings = response.data.savings;
             state.formData.financial.netWorth = response.data.net_worth;
@@ -274,6 +276,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           });
         }
       },
+      
 
       populateGoalInfo: async () => {
         const response = await getGoalsApi();
