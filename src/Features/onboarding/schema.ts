@@ -14,7 +14,7 @@ export interface PersonalInfoSchema {
 }
 
 export interface FinancialInfoSchema {
-  netWorth?:string;
+  netWorth?: string;
   currency: string;
   income: {
     rentalIncome: string;
@@ -35,7 +35,7 @@ export interface FinancialInfoSchema {
     cash: string;
     publicSecurities: string;
     privateSecurities: string;
-    assetCountries: string[]; 
+    assetCountries: string[];
   };
   liabilities: {
     mortgages: string;
@@ -45,19 +45,24 @@ export interface FinancialInfoSchema {
     otherLiabilities: string;
   };
 
-  savings:{
+  savings: {
     currentSavings: string;
     targetSavings: string;
-  }
-  hasEmergencyFunds: string;
-  emergencyFund: string;
+  };
+  emergencyFund: {
+    hasEmergencyFunds: string;
+    emergencyFundAmount: string;
+    targetMonths: string;
+  };
+  debt: {
   hasDebt: string;
-  debt: string;
-
-  retirement:{
+  debtAmount: string;
+  };
+  retirement: {
     retirementAge: string;
     targetRetirementIncome: string;
-  }
+    pensionFund: string;
+  };
 }
 
 export interface GoalsInfoSchema {

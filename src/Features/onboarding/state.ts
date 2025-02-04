@@ -136,14 +136,20 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       currentSavings: "",
       targetSavings: "",
     },
+    emergencyFund: {
     hasEmergencyFunds: "",
-    emergencyFund: "",
-    hasDebt: "",
-    debt: "",
-    retirement: {
-      retirementAge: "",
-      targetRetirementIncome: "",
+    emergencyFundAmount: "",
+    targetMonths: "",
     },
+  debt: {
+  hasDebt: "",
+  debtAmount: "",
+  },
+  retirement: {
+    retirementAge: "",
+    targetRetirementIncome: "",
+    pensionFund: "",
+  },
   },
   goals: {
     primamryFinancialGoal: "",
