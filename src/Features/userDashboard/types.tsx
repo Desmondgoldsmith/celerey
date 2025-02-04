@@ -122,3 +122,27 @@ export interface ExpenseItem {
   percentage: number;
   color: string;
 }
+
+
+export type SubscriptionInterval = "yearly" | "biennial";
+
+export type SubscriptionTier = {
+  name: string;
+  price: number;
+  interval: SubscriptionInterval;
+  description: string;
+  features: string[];
+  intro: string;
+  buttonText?: string;
+};
+
+export interface Advisor {
+  id: string;
+  name: string;
+  title: string;
+  bio: string;
+  imageUrl: string;
+  specialties: string[];
+  strengths: string[];
+  googleCalendarUrl: string;
+}

@@ -28,11 +28,11 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
   };
 
   const isComplete =
-    values.mortgages !== "" &&
-    values.loans !== "" &&
-    values.creditCards !== "" &&
-    values.assetFinance !== "" &&
-    values.otherLiabilities !== "";
+    values?.mortgages !== "" &&
+    values?.loans !== "" &&
+    values?.creditCards !== "" &&
+    values?.assetFinance !== "" &&
+    values?.otherLiabilities !== "";
 
   return (
     <div>
@@ -75,7 +75,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.mortgages || ""}
+              value={values?.mortgages || ""}
               onChange={(e) => handleInputChange("mortgages", e.target.value)}
             />
           </div>
@@ -86,7 +86,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.loans || ""}
+              value={values?.loans || ""}
               onChange={(e) => handleInputChange("loans", e.target.value)}
             />
           </div>
@@ -97,7 +97,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.creditCards || ""}
+              value={values?.creditCards || ""}
               onChange={(e) => handleInputChange("creditCards", e.target.value)}
             />
           </div>
@@ -108,7 +108,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.assetFinance || ""}
+              value={values?.assetFinance || ""}
               onChange={(e) =>
                 handleInputChange("assetFinance", e.target.value)
               }
@@ -121,7 +121,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.otherLiabilities || ""}
+              value={values?.otherLiabilities || ""}
               onChange={(e) =>
                 handleInputChange("otherLiabilities", e.target.value)
               }

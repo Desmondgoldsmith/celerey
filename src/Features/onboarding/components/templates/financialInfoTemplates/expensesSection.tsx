@@ -29,12 +29,12 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   };
 
   const isComplete =
-    values.home !== "" &&
-    values.childcare !== "" &&
-    values.education !== "" &&
-    values.healthcare !== "" &&
-    values.travel !== "" &&
-    values.giving !== "";
+    values?.home !== "" &&
+    values?.childcare !== "" &&
+    values?.education !== "" &&
+    values?.healthcare !== "" &&
+    values?.travel !== "" &&
+    values?.giving !== "";
 
   return (
     <div>
@@ -76,7 +76,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.home || ""}
+              value={values?.home || ""}
               onChange={(e) => handleInputChange("home", e.target.value)}
             />
           </div>
@@ -87,7 +87,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.childcare || ""}
+              value={values?.childcare || ""}
               onChange={(e) => handleInputChange("childcare", e.target.value)}
             />
           </div>
@@ -98,7 +98,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.education || ""}
+              value={values?.education || ""}
               onChange={(e) => handleInputChange("education", e.target.value)}
             />
           </div>
@@ -109,7 +109,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.healthcare || ""}
+              value={values?.healthcare || ""}
               onChange={(e) => handleInputChange("healthcare", e.target.value)}
             />
           </div>
@@ -120,7 +120,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.travel || ""}
+              value={values?.travel || ""}
               onChange={(e) => handleInputChange("travel", e.target.value)}
             />
           </div>
@@ -131,7 +131,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.giving || ""}
+              value={values?.giving || ""}
               onChange={(e) => handleInputChange("giving", e.target.value)}
             />
           </div>

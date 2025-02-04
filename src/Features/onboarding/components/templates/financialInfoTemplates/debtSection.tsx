@@ -17,7 +17,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
   const [hasDebt, setHasDebt] = useState('');
 
   useEffect(() => {
-    if (values.debt !== undefined) {
+    if (values?.debt !== undefined) {
       setAmountValid(/^\d*$/.test(values.debt));
     }
   }, [values.debt]);
@@ -34,7 +34,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
     hasDebt !== undefined &&
     (hasDebt === "no" ||
       (hasDebt === "yes" &&
-        values.debt !== "" &&
+        values?.debt !== "" &&
         amountValid));
 
   return (
@@ -115,8 +115,8 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
             </div>
           )}
 
-          {values.hasDebt === "yes" &&
-            values.debt &&
+          {values?.hasDebt === "yes" &&
+            values?.debt &&
             !amountValid && (
               <p className="text-sm text-red-500 mt-1">
                 Please enter a valid amount (e.g., 1234.56)

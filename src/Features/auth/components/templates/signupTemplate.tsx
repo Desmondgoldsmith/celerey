@@ -16,15 +16,16 @@ export const SignUpTemplate = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await sendOTP(email)
-    router.push('/auth/signup-otp')
+    const success = await sendOTP(email)
+    if (success) {
+      router.push('/auth/signup-otp')
+    }
   }
 
   const handleSignup = () => {
     router.push('/auth/signin')
   }
 
- 
   return (
     <div className="max-w-md mx-auto text-center">
       <div className="mb-8">
@@ -53,11 +54,11 @@ export const SignUpTemplate = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Button
-          disabled={!email}
+          disabled={!email || loading}
           type="submit"
           className="md:w-[450px] w-full bg-navy hover:bg-navyLight text-white"
         >
-        {loading && <Spinner className="text-white"/>}  Send Me a Code
+          {loading && <Spinner className="text-white" />} Send Me a Code
         </Button>
       </form>
 
@@ -76,7 +77,7 @@ export const SignUpTemplate = () => {
       </div>
 
       <p className="mt-6 text-sm">
-        <span className="text-navy">Already have an account ?</span>{" "}
+        <span className="text-navy">Already have an account ?</span>{' '}
         <span
           onClick={handleSignup}
           className="text-navyLight hover:cursor-pointer hover:underline "

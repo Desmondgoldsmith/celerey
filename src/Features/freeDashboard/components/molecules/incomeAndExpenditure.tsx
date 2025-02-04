@@ -5,9 +5,19 @@ import { ChartType } from "../../types";
 
 interface IncomeAndExpenditureProps {
   Chart: ChartType;
+  totalIncome: string | number | object
+  totalExpense: string | number | object
+  totalExpenseFromIncome: {
+    value: number;
+    percentage: number;
+  };
+  totalIncomeFromExpense: {
+    value: number;
+    percentage: number;
+  };
 }
 
-export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
+export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({totalIncome, totalExpense, totalExpenseFromIncome, totalIncomeFromExpense}) => {
   const data = {
     monthlyIncome: 24256.12,
     monthlyExpediture: 10002.1,
@@ -37,13 +47,13 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-1 sm:gap-2">
             <span className="text-xs sm:text-sm text-gray-600">
-              Monthly Income
+              Annual Income
             </span>
             <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
             <span className="text-xs sm:text-sm text-gray-600">
-              Monthly Expenditure
+            Annual Expenditure
             </span>
             <HelpCircle className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
           </div>
@@ -53,14 +63,14 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
         <div className="flex justify-between items-center mb-8">
           <div className="text-2xl sm:text-3xl font-bold text-green-800">
             $
-            {data.monthlyIncome.toLocaleString(undefined, {
+            {totalIncome.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-red-800">
             $
-            {data.monthlyExpediture.toLocaleString(undefined, {
+            {totalExpense.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -82,15 +92,15 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
             <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
-                {data.income.amount.toLocaleString(undefined, {
+                {totalIncomeFromExpense.value.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
               </div>
-              <div className="text-sm text-gray-600">income last month</div>
+              <div className="text-sm text-gray-600">income</div>
             </div>
             <div className="mt-2 text-green-800 font-medium">
-              {data.income.percentage}%
+              {totalIncomeFromExpense.percentage.toFixed(2)}%
             </div>
             <div className="h-2 bg-green-800 rounded-full w-full mt-2" />
           </div>
@@ -108,17 +118,17 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = () => {
             <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
-                {data.expenditure.amount.toLocaleString(undefined, {
+                {totalExpenseFromIncome.value.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
               </div>
               <div className="text-sm text-gray-600">
-                expenditure last month
+                expenditure
               </div>
             </div>
             <div className="mt-2 text-red-800 font-medium">
-              {data.expenditure.percentage}%
+              {totalExpenseFromIncome.percentage.toFixed(2)}%
             </div>
             <div className="h-2 bg-red-800 rounded-full w-full sm:w-[69.2%] mt-2" />
           </div>

@@ -8,6 +8,7 @@ import { LiabilitiesSection } from "./liabilitiesSection";
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
+<<<<<<< HEAD
 interface FinancialDetailsScreenProps {
   values: FinancialInfoSchema;
   onChange: (
@@ -20,6 +21,9 @@ interface FinancialDetailsScreenProps {
 }
 
 const FinancialDetailsScreen: React.FC<FinancialDetailsScreenProps> = () => {
+=======
+const FinancialDetailsScreen: React.FC<any> = () => {
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
   const router = useRouter();
   const {
     formData,
@@ -41,11 +45,19 @@ const FinancialDetailsScreen: React.FC<FinancialDetailsScreenProps> = () => {
   useEffect(() => {
     const checkSectionComplete = () => {
       const { income, assets, annualExpenses, liabilities } = localFormData;
+<<<<<<< HEAD
       const isComplete =
         Object.values(income).every((value) => value !== "") &&
         Object.values(assets).every((value) => value !== "") &&
         Object.values(annualExpenses).every((value) => value !== "") &&
         Object.values(liabilities).every((value) => value !== "");
+=======
+      const isComplete = 
+        Object.values(income || {}).every(value => value !== "") &&
+        Object.values(assets || {}).every(value => value !== "") &&
+        Object.values(annualExpenses || {}).every(value => value !== "") &&
+        Object.values(liabilities || {}).every(value => value !== "");
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
       setIsSectionComplete(isComplete);
     };
 
@@ -144,7 +156,7 @@ const FinancialDetailsScreen: React.FC<FinancialDetailsScreenProps> = () => {
         <div className="border-b pb-4">
           <AssetsSection
             values={localFormData.assets}
-            onChange={(field, value) =>
+            onChange={(field, value: any) =>
               handleFormUpdate("assets", field, value)
             }
             onContinue={handleContinue}

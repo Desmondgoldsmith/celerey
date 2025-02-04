@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { BaseScreenProps, Option } from "../../../types";
 import { OptionCard } from "../../molecules/optionCard";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import { useAuthStore } from "@/Features/auth/state";
+import Spinner from "@/components/ui/spinner";
 
 export interface OptionsSelectionScreenProps extends BaseScreenProps {
   value: string[];
@@ -51,6 +54,20 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
   onBack,
   onContinue,
 }) => {
+
+
+  const { loading, saveProfileInfo, formData } = useOnboardingStore()
+  const { user } = useAuthStore()
+
+
+
+  const handleContinue = async () => {
+    if (user?.userId) {
+      await saveProfileInfo(formData.personal)
+      onContinue()
+    }
+  }
+
   const handleOptionToggle = (optionId: string) => {
     const newValue = value.includes(optionId)
       ? value.filter((id) => id !== optionId)
@@ -86,12 +103,13 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
           Back
         </Button>
         <Button
-          onClick={onContinue}
+          
+          onClick={handleContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
-          disabled={value.length === 0}
+          disabled={value.length === 0 || loading}
         >
-          Continue
-        </Button>
+          {loading && <Spinner className="text-white" />} Continue
+          </Button>
       </div>
     </div>
   );

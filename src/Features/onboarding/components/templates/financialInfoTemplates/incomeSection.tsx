@@ -25,10 +25,10 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
   };
 
   const isComplete =
-    values.rentalIncome !== "" &&
-    values.dividends !== "" &&
-    values.interestIncome !== "" &&
-    values.otherIncome !== "";
+    values?.rentalIncome !== "" &&
+    values?.dividends !== "" &&
+    values?.interestIncome !== "" &&
+    values?.otherIncome !== "";
 
   return (
     <div>
@@ -71,7 +71,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.rentalIncome || ""}
+              value={values?.rentalIncome || ""}
               onChange={(e) =>
                 handleInputChange("rentalIncome", e.target.value)
               }
@@ -84,7 +84,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.dividends || ""}
+              value={values?.dividends || ""}
               onChange={(e) => handleInputChange("dividends", e.target.value)}
             />
           </div>
@@ -95,7 +95,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.interestIncome || ""}
+              value={values?.interestIncome || ""}
               onChange={(e) =>
                 handleInputChange("interestIncome", e.target.value)
               }
@@ -108,7 +108,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.otherIncome || ""}
+              value={values?.otherIncome || ""}
               onChange={(e) => handleInputChange("otherIncome", e.target.value)}
             />
           </div>

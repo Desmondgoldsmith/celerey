@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import formatCurrency from "@/utils/formatCurrency";
 import React, { useEffect, useState } from "react";
 
 interface NetWorthScreenProps {
@@ -8,7 +10,7 @@ interface NetWorthScreenProps {
 
 export const NetWorthScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
   const [firstName, setFirstName] = useState<string | null>(null);
-
+  const {formData} = useOnboardingStore()
   useEffect(() => {
     // Fetch the state from local storage
     const storedState = localStorage.getItem("onboarding-storage");
@@ -29,7 +31,10 @@ export const NetWorthScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
         Thank You
         <span className="text-navyLight"> {firstName || "User"}</span>, based on
         the information submitted we estimate your net worth to be{" "}
-        <span className="text-navyLight">$103,550,43</span>
+        <span className="text-navyLight"> {formatCurrency(
+            formData?.financial?.netWorth || '0',
+            formData.financial?.currency?.split('(')[1].split(')')[0] || 'usd',
+          )}</span>
       </h1>
       <p className=" mb-12 font-helvetica text-sm">
         Does this look right? If not, please go back and make some adjustments.

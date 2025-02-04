@@ -19,8 +19,10 @@ export const SignupOTPTemplate = () => {
   }
 
   const handleAccountCreation = async () => {
-    await validateOTP(otpValues.join(''))
-    router.push('/personal-info')
+    const success = await validateOTP(otpValues.join(''), 'SIGN_UP')
+    if (success) {
+      router.push('/personal-info')
+    }
   }
 
   return (
@@ -45,11 +47,11 @@ export const SignupOTPTemplate = () => {
       <OTPInput length={OTP_LENGTH} value={otpValues} onChange={setOTPValues} />
 
       <Button
-        disabled={otpValues.join('').length !== OTP_LENGTH}
+        disabled={otpValues.join('').length !== OTP_LENGTH || loading}
         onClick={handleAccountCreation}
         className="md:w-80 w-full bg-navy text-white mb-4 hover:bg-navyLight"
       >
-       {loading && <Spinner className="text-white"/>} Create My Account
+        {loading && <Spinner className="text-white" />} Create My Account
       </Button>
 
       <div className="space-y-2 text-sm">

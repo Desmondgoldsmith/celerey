@@ -1,25 +1,43 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useOnboardingStore } from '@/Features/onboarding/state'
+import Spinner from '@/components/ui/spinner'
 
 interface TargetAmountScreenProps {
   values: {
-    targetAmount: string;
-  };
-  onBack: () => void;
-  onContinue: () => void;
-  onChange: (field: string, value: string) => void;
+    targetAmount: string
+  }
+  onBack: () => void
+  onContinue: () => void
+  onChange: (field: string, value: string) => void
 }
 
-export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({ values, onChange, onContinue, onBack }) => {
-  const isComplete = values.targetAmount !== "";
+export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
+  values,
+  onChange,
+  onContinue,
+  onBack,
+}) => {
+  const { loading, saveGoalsInfo } = useOnboardingStore()
 
-const handleInputChange = (field: "targetAmount", value: string) => {
-  if (/^\d*$/.test(value)) {
-    onChange(field, value);
+  const isComplete = values.targetAmount !== ''
+
+  const handleInputChange = (field: 'targetAmount', value: string) => {
+    if (/^\d*$/.test(value)) {
+      onChange(field, value)
+    }
   }
-};
 
+  const handleContinue = async () => {
+    try {
+      await saveGoalsInfo()
+      onContinue()
+    }catch(error) {
+      console.log("Error", error)
+    }
+
+  }
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
@@ -37,9 +55,9 @@ const handleInputChange = (field: "targetAmount", value: string) => {
             inputMode="numeric"
             pattern="[0-9]*"
             className="flex-1 appearance-none"
-            value={values.targetAmount || ""}
+            value={values.targetAmount || ''}
             onChange={(e) => {
-              handleInputChange("targetAmount", e.target.value);
+              handleInputChange('targetAmount', e.target.value)
             }}
           />
         </div>
@@ -49,13 +67,14 @@ const handleInputChange = (field: "targetAmount", value: string) => {
           Back
         </Button>
         <Button
-          onClick={onContinue}
+          
+          onClick={handleContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
-          disabled={!isComplete}
+          disabled={!isComplete || loading}
         >
-          Continue
+          {loading && <Spinner />} Continue
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

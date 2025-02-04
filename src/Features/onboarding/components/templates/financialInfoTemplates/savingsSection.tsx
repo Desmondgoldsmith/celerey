@@ -21,8 +21,8 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
   };
 
   const isComplete =
-    values.currentSavings !== "" &&
-    values.targetSavings !== "";
+    values?.currentSavings !== "" &&
+    values?.targetSavings !== "";
 
   return (
     <div>
@@ -57,7 +57,7 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.currentSavings || ""}
+              value={values?.currentSavings || ""}
               onChange={(e) => handleInputChange("currentSavings", e.target.value)}
             />
           </div>
@@ -68,7 +68,7 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.targetSavings || ""}
+              value={values?.targetSavings || ""}
               onChange={(e) => handleInputChange("targetSavings", e.target.value)}
             />
           </div>

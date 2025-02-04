@@ -5,6 +5,7 @@ import axios, {
   AxiosError,
   AxiosHeaders,
 } from "axios";
+import Cookies from 'js-cookie'
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
@@ -15,7 +16,8 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-    const accessToken = useAuthStore.getState().accessToken;
+
+    const accessToken = Cookies.get('accessToken');
 
     if (accessToken) {
       if (!config.headers) {
