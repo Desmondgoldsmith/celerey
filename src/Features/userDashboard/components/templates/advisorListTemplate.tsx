@@ -25,7 +25,7 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/* UserProfile */}
-          {/* <div className="lg:col-span-4 w-full"> */}
+          <div className="lg:col-span-4 w-full">
             {/* <UserProfile
               userName={userName}
               netWorth={netWorth}
@@ -33,10 +33,10 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
               investmentExperience={investmentExperience}
               // className="mb-4 sm:mb-6"
             /> */}
-          {/* </div> */}
+          </div>
 
           {/*Advisors List */}
-          <div className="lg:col-span-10">
+          <div className="lg:col-span-8">
             <div className="bg-white rounded-xl p-4 sm:p-8">
               {/* Header and Filter Section */}
               <div className="flex flex-col sm:flex-row justify-between items-start border-b border-gray-200 pb-4 sm:pb-6 mb-4 sm:mb-8">

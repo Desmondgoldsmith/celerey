@@ -65,17 +65,17 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
       <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/*  UserProfile */}
-          {/* <div className="lg:col-span-4 w-full">
-            <UserProfile
+          <div className="lg:col-span-4 w-full">
+            {/* <UserProfile
               userName={userName}
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
-            />
-          </div> */}
+            />*/}
+          </div>
 
           {/*Advisor Details */}
-          <div className="lg:col-span-10 space-y-4 sm:space-y-6">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             <div className="bg-white rounded-xl p-4 sm:p-8">
               {/* Back Button */}
               <button
