@@ -7,6 +7,7 @@ interface RetirementSectionProps {
   values: {
     retirementAge: string;
     targetRetirementIncome: string;
+    pensionFund: string; // New field
   };
   onChange: (field: string, value: string) => void;
 }
@@ -24,8 +25,9 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
   };
 
   const isComplete =
-    values?.retirementAge !== "" &&
-    values?.targetRetirementIncome !== "";
+    values.retirementAge !== "" &&
+    values.targetRetirementIncome !== "" &&
+    values.pensionFund !== "";
 
   return (
     <div>
@@ -40,7 +42,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
           >
             4
           </div>
-        <h3 className="font-medium">Retirement</h3>
+          <h3 className="font-medium">Retirement</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -57,32 +59,56 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Retirement Age</label>
+            <label className="flex-1">When would you like to retire?</label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.retirementAge || ""}
-              onChange={(e) => handleInputChange("retirementAge", e.target.value)}
+              value={values.retirementAge || ""}
+              onChange={(e) =>
+                handleInputChange("retirementAge", e.target.value)
+              }
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Target Retirement Income</label>
+            <label className="flex-1">
+              How much do you have in your pension fund now?
+            </label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.targetRetirementIncome || ""}
-              onChange={(e) => handleInputChange("targetRetirementIncome", e.target.value)}
+              value={values.targetRetirementIncome || ""}
+              onChange={(e) =>
+                handleInputChange("targetRetirementIncome", e.target.value)
+              }
+            />
+          </div>
+          {/* New Input Field */}
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">
+              What is your desired Annual Retirement Income
+            </label>
+            <Input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              className="flex-1 appearance-none"
+              value={values.pensionFund || ""}
+              onChange={(e) => handleInputChange("pensionFund", e.target.value)}
             />
           </div>
         </div>
         <div className="flex gap-4 mt-4">
-          <Button variant="outline"   onClick={() => {
+          <Button
+            variant="outline"
+            onClick={() => {
               setIsModalOpen(false);
-            }} className="flex-1">
+            }}
+            className="flex-1"
+          >
             Back
           </Button>
           <Button

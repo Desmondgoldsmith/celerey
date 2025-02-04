@@ -279,14 +279,19 @@ export interface FinancialInfoFormData {
     currentSavings: string;
     targetSavings: string;
   };
-  hasEmergencyFunds: string;
-  emergencyFund: string;
+   emergencyFund: {
+    hasEmergencyFunds: string;
+    emergencyFundAmount: string;
+    targetMonths: string;
+  };
+  debt: {
   hasDebt: string;
-  debt: string;
-
+  debtAmount: string;
+  };
   retirement: {
     retirementAge: string;
     targetRetirementIncome: string;
+    pensionFund: string;
   };
 }
 export interface GoalsInfoFormData {
