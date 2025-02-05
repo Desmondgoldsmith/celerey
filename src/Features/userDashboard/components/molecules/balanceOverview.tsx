@@ -1,455 +1,450 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
 import { Info, MoreHorizontal } from "lucide-react";
+import { VectorMap } from "@react-jvectormap/core";
+import { worldMill } from "@react-jvectormap/world";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { ChartType, TimeframeKey } from "../../types";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import IncomeSection from "./incomeSection";
+import ExpensesSection from "./expenseSection";
+import IncomeVsDebtSection from "./incomeVsDebtSection";
+import IncomeVsExpenditure from "./incomeVsExpenditure";
+import { AssetType, CountryType, ExpenseItem, IncomeItem } from "../../types";
+import { useRouter } from "next/navigation";
 
-interface BalanceOverviewProps {
-  Chart: ChartType;
-  timeframe: TimeframeKey;
-  onTimeframeChange: (timeframe: TimeframeKey) => void;
-  // annualIncome: {
-  //   Rental: number;
-  //   Dividends: number;
-  //   "Interest Income": number;
-  //   "Other Income": number;
-  // };
-  // annualExpenditure: {
-  //   Home: number;
-  //   Childcare: number;
-  //   Education: number;
-  //   Healthcare: number;
-  //   Travel: number;
-  //   Giving: number;
-  // };
-}
+const tabs = [
+  "Assets",
+  "Liabilities",
+  "Income",
+  "Expenses",
+  "Income Vs Debt",
+  "Income Vs Expenditure",
+];
 
-const BalanceOverview: React.FC<BalanceOverviewProps> = ({}) => {
-  // Dummy data
-  const realEstate = {
+const assetData = [
+  {
+    category: "Real Estate",
+    amount: 25353.94,
     percentage: 42,
-    value: 25353.94,
-  };
-  const privateSecurities = {
-    percentage: 20,
-    value: 21536.32,
-  };
-  const publicSecurities = {
+    color: "#1B1856",
+  },
+  {
+    category: "Public Securities",
+    amount: 23532.25,
     percentage: 24,
-    value: 23532.25,
-  };
-  const cash = {
+    color: "#E15B2D",
+  },
+  {
+    category: "Private Securities",
+    amount: 21536.32,
+    percentage: 20,
+    color: "#8BA78D",
+  },
+  {
+    category: "Cash",
+    amount: 19245.35,
     percentage: 14,
-    value: 19245.35,
-  };
+    color: "#383396",
+  },
+];
 
-  // =====
-
-  const mortgages = {
-    percentage: 60,
-    value: 25353.94,
-  };
-  const creditCards = {
+//  liabilities data
+const liabilitiesData = [
+  {
+    category: "Mortgages",
+    amount: 33472.81,
+    percentage: 31,
+    color: "#8BA78D",
+  },
+  {
+    category: "Loans",
+    amount: 25353.94,
+    percentage: 23,
+    color: "#383396",
+  },
+  {
+    category: "Credit Cards",
+    amount: 23253.43,
+    percentage: 20,
+    color: "#E15B2D",
+  },
+  {
+    category: "Asset Finance",
+    amount: 19343.65,
     percentage: 16,
-    value: 21536.32,
-  };
-  const loans = {
-    percentage: 30,
-    value: 23532.25,
-  };
-  const assetFinance = {
-    percentage: 50,
-    value: 19245.35,
-  };
-  const otherLiability = {
-    percentage: 14,
-    value: 19245.35,
-  };
+    color: "#1B1856",
+  },
+  {
+    category: "Other Liabilities",
+    amount: 14353.89,
+    percentage: 10,
+    color: "#6B7280",
+  },
+];
 
-  const liabilityData = [
-    { name: "Mortgages", value: realEstate.percentage },
-    { name: "Credit Cards", value: creditCards.percentage },
-    { name: "Loans", value: loans.percentage },
-    { name: "Asset Finance", value: assetFinance.percentage },
-    { name: "Other Liability", value: otherLiability.percentage },
-  ];
-
-  const assetData = [
-    { name: "Real Estate", value: mortgages.percentage },
-    { name: "Private Securities", value: privateSecurities.percentage },
-    { name: "Public Securities", value: publicSecurities.percentage },
-    { name: "Cash", value: cash.percentage },
-  ];
-
-  const assetCOLORS = ["#1B1856", "#8BA78D", "#E15B2D", "#383396"];
-  const liabilityCOLORS = [
-    "#1B1856",
-    "#8BA78D",
-    "#E15B2D",
-    "#383396",
-    "#AAAAAA",
-  ];
-
-  const dummyAnnualIncome = {
-    Rental: 12493.32,
-    Dividends: 18354.23,
-    "Interest Income": 14245.21,
-    "Other Income": 9234.64,
-  };
-
-  const dummyAnnualExpenditure = {
-    Home: 22953.93,
-    Childcare: 24583.84,
-    Education: 28253.29,
-    Healthcare: 5294.95,
-    Travel: 9364.32,
-    Giving: 11245.76,
-  };
-
-  const incomeData = Object.entries(dummyAnnualIncome).map(([name, value]) => ({
-    name,
-    value,
+// Component for the Liabilities Content
+const LiabilitiesContent = () => {
+  const pieChartData = liabilitiesData.map((item) => ({
+    name: item.category,
+    value: item.percentage,
   }));
-  const expenditureData = Object.entries(dummyAnnualExpenditure).map(
-    ([name, value]) => ({ name, value })
-  );
 
-  const incomeColors = ["#FF6B6B", "#6B4EFF", "#4CAF50", "#2196F3"];
-  const expenditureColors = [
-    "#1B1856",
-    "#8BA78D",
-    "#E15B2D",
-    "#383396",
-    "#AAAAAA",
-  ];
-
+  const router = useRouter();
+  const handleAdvisors = () => {
+    router.push("/advisors");
+  };
   return (
-    <Card className="bg-white p-4 w-full">
-      {/* Header */}
-      <div className="flex justify-between p-2 items-center mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy md:text-2xl">
-          Balance Overview
-        </h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
-      </div>
-
-      <CardContent>
-        {/* Assets Section */}
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-2">
-            <h3 className="text-gray-700 font-cirka text-xl">Assets</h3>
-            <Info className="h-3 w-3 text-gray-400" />
-          </div>
-
-          <div>
-            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Pie Chart  */}
-          <div className="flex justify-center md:block">
-            <ResponsiveContainer width="100%" height={130}>
-              <PieChart>
-                <Pie
-                  data={assetData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {assetData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={assetCOLORS[index % assetCOLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Asset Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
-            {/* Real Estate */}
-            <div>
-              <div className="mb-2">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Real Estate</span>
-                  <span>{realEstate.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#1B1856] rounded-full"
-                    style={{ width: `${realEstate.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${realEstate.value.toLocaleString()}
-                </div>
-              </div>
-
-              {/* Private Securities */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Private Securities</span>
-                  <span>{privateSecurities.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#8BA78D] rounded-full"
-                    style={{ width: `${privateSecurities.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${privateSecurities.value.toLocaleString()}
-                </div>
-              </div>
-            </div>
-
-            {/* Cash and Public Securities */}
-            <div>
-              {/* Cash */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Cash</span>
-                  <span>{cash.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#383396] rounded-full"
-                    style={{ width: `${cash.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${cash.value.toLocaleString()}
-                </div>
-              </div>
-
-              {/* Public Securities */}
-              <div className="mb-6">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Public Securities</span>
-                  <span>{publicSecurities.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#E15B2D] rounded-full"
-                    style={{ width: `${publicSecurities.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${publicSecurities.value.toLocaleString()}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-
-      {/* Liabilities Section */}
-      <CardContent>
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-2">
-            <h3 className="text-gray-700 font-cirka text-xl">Liabilities</h3>
-            <Info className="h-3 w-3 text-gray-400" />
-          </div>
-
-          <div>
-            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Pie Chart */}
-          <div className="flex justify-center md:block">
-            <ResponsiveContainer width="100%" height={130}>
-              <PieChart>
-                <Pie
-                  data={liabilityData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {liabilityData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={liabilityCOLORS[index % liabilityCOLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Liability Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
-            {/* Mortgages and Credit Cards */}
-            <div>
-              {/* Mortgages */}
-              <div className="mb-2">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Mortgages</span>
-                  <span>{mortgages.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#1B1856] rounded-full"
-                    style={{ width: `${mortgages.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${mortgages.value.toLocaleString()}
-                </div>
-              </div>
-
-              {/* Credit Cards */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Credit Cards</span>
-                  <span>{creditCards.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#8BA78D] rounded-full"
-                    style={{ width: `${creditCards.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${creditCards.value.toLocaleString()}
-                </div>
-              </div>
-            </div>
-
-            {/* Asset Finance and Loans */}
-            <div>
-              {/* Asset Finance */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Asset Finance</span>
-                  <span>{assetFinance.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#383396] rounded-full"
-                    style={{ width: `${assetFinance.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${assetFinance.value.toLocaleString()}
-                </div>
-              </div>
-
-              {/* Loans */}
-              <div className="mb-6">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Loans</span>
-                  <span>{loans.percentage}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#E15B2D] rounded-full"
-                    style={{ width: `${loans.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${loans.value.toLocaleString()}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-
-      {/* Income and Expenditure Section */}
-      <CardContent className="border-b border-[#AAAAAA]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Annual Income */}
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <h3 className="text-gray-700 font-cirka text-xl">
-                Annual Income
-              </h3>
-              <Info className="h-3 w-3 text-gray-400" />
-            </div>
-            <ResponsiveContainer width="100%" height={170}>
-              <BarChart data={incomeData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value" fill="#8884d8">
-                  {incomeData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={incomeColors[index % incomeColors.length]}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Annual Expenditure */}
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <h3 className="text-gray-700 font-cirka text-xl">
-                Annual Expenditure
-              </h3>
-              <Info className="h-3 w-3 text-gray-400" />
-            </div>
-            <ResponsiveContainer width="100%" height={170}>
-              <BarChart data={expenditureData}>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="value" fill="#8884d8">
-                  {expenditureData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={expenditureColors[index % expenditureColors.length]}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </CardContent>
-
-      {/* Footer */}
-      <div className="flex flex-col sm:flex-row items-center justify-between p-2">
-        <div className="flex flex-col sm:flex-row items-center mb-2 sm:mb-0">
-          <div className="font-helvetica text-medium pr-2 text-center sm:text-left">
-            Need Help?
-          </div>
-          <div className="text-xs font-helvetica text-gray-300 text-center sm:text-left sm:w-[140px]">
-            Get Financial advice on maximizing the returns on your money.
-          </div>
-        </div>
-        <div className="font-bold text-sm text-[#E15B2D] text-center sm:text-right">
-          Request Advisory Service
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <div className="flex flex-col">
+          <h3 className="text-sm text-gray-600 mb-4">
+            We can help you get a better grip of your liabilities. We can offer
+            expert advise and help you structure an appropriate payment plan to
+            service most of these liabilities efficiently while maintaining your
+            financial goals.
+          </h3>
+          <button
+            onClick={handleAdvisors}
+            className="text-navyLight border border-navyLight rounded-md px-4 py-2 w-fit text-sm hover:bg-indigo-50 transition-colors"
+          >
+            Speak to an Advisor
+          </button>
         </div>
       </div>
-    </Card>
+
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm text-gray-600">Liabilities</h3>
+            <Info className="h-3 w-3 text-gray-400" />
+          </div>
+          <span className="text-navyLight text-sm hover:cursor-pointer">
+            Edit Category
+          </span>
+        </div>
+
+        <div className="w-full aspect-square max-w-[180px] mx-auto mb-6">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                innerRadius="70%"
+                outerRadius="100%"
+                paddingAngle={2}
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={liabilitiesData[index].color}
+                    stroke="white"
+                    strokeWidth={2}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Total Liabilities</span>
+            <span className="text-lg font-bold">
+              ${(84395.25).toLocaleString()}
+            </span>
+          </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">
+              Liabilities Categories
+            </span>
+            <span className="text-sm font-bold">5</span>
+          </div>
+        </div>
+
+        {liabilitiesData.map((liability) => (
+          <div key={liability.category} className="mb-4">
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-gray-600">{liability.category}</span>
+              <span className="text-gray-900">{liability.percentage}%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="w-full h-1 bg-gray-100 rounded-full mr-4">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${liability.percentage}%`,
+                    backgroundColor: liability.color,
+                  }}
+                />
+              </div>
+              <span className="text-sm text-gray-600 whitespace-nowrap">
+                ${liability.amount.toLocaleString()}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
-export default BalanceOverview;
+interface BalanceOverviewProps {
+  onPortfolioRecommendationClick: () => void;
+  onEditAssetClick: () => void;
+  assets: AssetType[];
+  countries: CountryType[];
+  income: IncomeItem[];
+  openIncomeModal: () => void;
+  onEditExpenseClick: () => void;
+  expenses: ExpenseItem[];
+  openDebtModal: () => void;
+}
+
+export default function BalanceOverview({
+  onPortfolioRecommendationClick,
+  onEditAssetClick,
+  income,
+  openIncomeModal,
+  onEditExpenseClick,
+  expenses,
+  openDebtModal,
+}: BalanceOverviewProps) {
+  const [activeTab, setActiveTab] = useState("Assets");
+
+  const handlePortfolioRecommendationClick = () => {
+    onPortfolioRecommendationClick();
+  };
+
+  const mapData = {
+    GB: 1,
+    GH: 2,
+    ZA: 3,
+  };
+
+  const colorScale = {
+    min: 1,
+    max: 3,
+    values: mapData,
+    scale: ["#FF1493", "#0f0251", "#E15B2D"],
+  };
+
+  const pieChartData = assetData.map((item) => ({
+    name: item.category,
+    value: item.percentage,
+  }));
+
+  // Component for the Assets Content (existing content)
+  const AssetsContent = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Geographic Spread Section */}
+      <div>
+        <div className="flex flex-col items-center mb-4">
+          <h3 className="text-sm text-navy">
+            Geographical Spread of Assets
+            <Info className="inline-block ml-1 h-3 w-3 text-gray-400" />
+          </h3>
+          <span
+            className="text-navyLight text-sm hover:cursor-pointer"
+            onClick={handlePortfolioRecommendationClick}
+          >
+            portfolio recommendation
+          </span>
+        </div>
+
+        <div className="h-[280px] relative mb-4">
+          <VectorMap
+            map={worldMill}
+            backgroundColor="transparent"
+            zoomOnScroll={false}
+            containerStyle={{
+              width: "100%",
+              height: "100%",
+            }}
+            regionStyle={{
+              initial: {
+                fill: "#F3F4F6",
+                stroke: "#E5E7EB",
+                strokeWidth: 0.5,
+                fillOpacity: 1,
+              },
+              hover: {
+                fillOpacity: 0.8,
+              },
+            }}
+            series={{
+              regions: [
+                {
+                  scale: colorScale.scale,
+                  values: colorScale.values,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  min: colorScale.min,
+                  max: colorScale.max,
+                  normalizeFunction: "polynomial",
+                },
+              ],
+            }}
+            onRegionTipShow={() => false}
+          />
+        </div>
+
+        <div className="flex justify-center space-x-6">
+          <div className="flex items-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#FF1493] mr-2" />
+            <span className="text-sm text-gray-600">United Kingdom</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#0f0251] mr-2" />
+            <span className="text-sm text-gray-600">Ghana</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#E15B2D] mr-2" />
+            <span className="text-sm text-gray-600">South Africa</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Assets Overview Section */}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm text-gray-600">Assets</h3>
+            <Info className="h-3 w-3 text-gray-400" />
+          </div>
+          <span
+            onClick={onEditAssetClick}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
+            Edit info
+          </span>
+        </div>
+
+        <div className="w-full aspect-square max-w-[180px] mx-auto mb-3">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                innerRadius="70%"
+                outerRadius="100%"
+                paddingAngle={2}
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={assetData[index].color}
+                    stroke="white"
+                    strokeWidth={2}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Total Assets</span>
+            <span className="text-lg font-bold">
+              ${(79363.85).toLocaleString()}
+            </span>
+          </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Asset spread</span>
+            <span className="text-sm font-bold">3 countries</span>
+          </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Asset Categories</span>
+            <span className="text-sm font-bold">4</span>
+          </div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Asset Locations</span>
+            <div className="flex items-center justify-between">
+              <p className="text-sm">Ghana, UK...</p>
+              <button className="text-navyLight text-sm px-2 py-1">more</button>
+            </div>
+          </div>
+        </div>
+
+        {assetData.map((asset) => (
+          <div key={asset.category} className="mb-4">
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-gray-600">{asset.category}</span>
+              <span className="text-gray-900">{asset.percentage}%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <div className="w-full h-1 bg-gray-100 rounded-full mr-4">
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${asset.percentage}%`,
+                    backgroundColor: asset.color,
+                  }}
+                />
+              </div>
+              <span className="text-sm text-gray-600 whitespace-nowrap">
+                ${asset.amount.toLocaleString()}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <Card className="bg-white p-3 max-w-7xl mx-auto">
+      {/* Header with Title and Icon */}
+      <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-bold text-navy font-cirka">
+            Balance Overview
+          </h2>
+          <Info className="h-3 w-3 text-gray-400" />
+        </div>
+        <MoreHorizontal className="h-3 w-3 text-gray-400" />
+      </div>
+
+      {/* Tabs */}
+      <div className="bg-gray-50 rounded-lg p-1 mb-6">
+        <div className="flex flex-wrap gap-1">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                activeTab === tab
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Animated Content Section */}
+      <div className="transition-all duration-300 ease-in-out">
+        {activeTab === "Assets" && <AssetsContent />}
+        {activeTab === "Liabilities" && <LiabilitiesContent />}
+        {activeTab === "Income" && (
+          <IncomeSection income={income} openIncomeModal={openIncomeModal} />
+        )}
+        {activeTab === "Expenses" && (
+          <ExpensesSection
+            onEditClick={onEditExpenseClick}
+            expenses={expenses}
+          />
+        )}
+        {activeTab === "Income Vs Debt" && (
+          <IncomeVsDebtSection openDebtModal={openDebtModal} />
+        )}
+        {activeTab === "Income Vs Expenditure" && <IncomeVsExpenditure />}
+      </div>
+    </Card>
+  );
+}
