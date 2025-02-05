@@ -253,30 +253,31 @@ export const useOnboardingStore = create<OnboardingStore>()(
       },
 
       populateFinancialInfo: async () => {
-        console.log("anything")
         const response = await getFinancialInfoApi();
         if (response.data) {
           set((state) => {
-            console.log("State:",state)
-            state.formData.financial.annualExpenses = response.data.expense ;
+            console.log("State:", state);
+            state.formData.financial.annualExpenses = response.data.expense;
             state.formData.financial.assets = response.data.assets;
             state.formData.financial.liabilities = response.data.liabilities;
             state.formData.financial.currency = response.data.currency;
-            state.formData.financial.debt = response.data.debt;
-            state.formData.financial.emergencyFund =
-              response.data.emergency_funds;
-            state.formData.financial.debt.hasDebt =
-              response.data.has_debt === 1 ? "yes" : "no";
-            state.formData.financial.emergencyFund.hasEmergencyFunds =
-              response.data.has_emergency_funds === 1 ? "yes" : "no";
+            state.formData.financial.debt = {
+              ...state.formData.financial.debt,
+              debtAmount: response.data.debt,
+              hasDebt: response.data.has_debt === 1 ? "yes" : "no",
+            };
+            state.formData.financial.emergencyFund = {
+              ...state.formData.financial.emergencyFund,
+              emergencyFundAmount: response.data.emergency_funds,
+              hasEmergencyFunds:
+                response.data.has_emergency_funds === 1 ? "yes" : "no",
+              targetMonths: response.data.target_months,
+            };
             state.formData.financial.savings = response.data.savings;
             state.formData.financial.netWorth = response.data.net_worth;
-            state.formData.financial.retirement = response.data.retirement;
-            state.formData.financial.income = response.data.income;
           });
         }
       },
-      
 
       populateGoalInfo: async () => {
         const response = await getGoalsApi();
@@ -328,7 +329,6 @@ export const useOnboardingStore = create<OnboardingStore>()(
             });
             throw error;
           }
-      
         }
       },
 
@@ -415,7 +415,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
               state.error =
                 error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
             });
-            throw error
+            throw error;
           }
         }
       },
@@ -472,9 +472,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
     })),
     {
       name: "onboarding-storage",
-      partialize: (state) => ({
-      
-      }),
+      partialize: (state) => ({}),
     }
   )
 );
