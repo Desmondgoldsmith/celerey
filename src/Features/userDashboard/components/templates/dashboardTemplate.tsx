@@ -308,13 +308,15 @@ export const Dashboard: React.FC = () => {
               <h1 className="text-3xl lg:text-4xl text-center lg:text-start font-cirka tracking-tight">
                 Welcome, Jude!
               </h1>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm">Premium Account</span>
+              <div className="flex items-center text-center lg:text-start gap-1.5">
+                <span className="text-sm text-center lg:text-start">
+                  Premium Account
+                </span>
                 <span className="text-gray-400 text-sm hover:cursor-pointer">
                   ⓘ
                 </span>
               </div>
-              <p className="text-gray-400 text-medium">
+              <p className="text-gray-400 text-center lg:text-start text-medium">
                 Manage your money easily with Celerey.
               </p>
             </div>
