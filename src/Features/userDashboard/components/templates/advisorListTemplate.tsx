@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import UserProfile from "../molecules/userProfile";
+// import UserProfile from "../molecules/userProfile";
 import { DUMMY_ADVISORS } from "../../constants";
 
 interface AdvisorsListTemplateProps {
@@ -26,13 +26,13 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/* UserProfile */}
           <div className="lg:col-span-4 w-full">
-            <UserProfile
+            {/* <UserProfile
               userName={userName}
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
               // className="mb-4 sm:mb-6"
-            />
+            /> */}
           </div>
 
           {/*Advisors List */}
