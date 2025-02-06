@@ -24,7 +24,9 @@ import type {
   CountryType,
   ExpenseItem,
   FinancialPlan,
+  GeneratedBudget,
   IncomeItem,
+  LiabilityItem,
 } from "../../types";
 import EditAssetModal from "../molecules/editAssetModal";
 import EditIncomeModal from "../molecules/editIncomeModal";
@@ -34,6 +36,11 @@ import InvestmentExperienceModal from "../molecules/investmentExperience";
 import FinancialKnowledgeModal from "../molecules/financialknowledgeModal";
 import EditDebtModal from "../molecules/editDebtModal";
 import { useRouter } from "next/navigation";
+import DebtServicingModal from "../molecules/debtServicingModal";
+import MiniIncomeStatementModal from "../molecules/miniIncomeStatementModal";
+import CreateBudgetModal from "../molecules/createBudgetModal";
+import GenerateBudgetModal from "../molecules/generateBudgetModal";
+import EditLiabilitiesModal from "../molecules/editLiabilityModal";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = React.useState(false);
@@ -67,6 +74,7 @@ export const Dashboard: React.FC = () => {
   };
 
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
+  const [isLiabilityModalOpen, setIsLiabilityModalOpen] = useState(false);
   const [isEditDebtModalOpen, setIsEditDebtModalOpen] = useState(false);
   const [incomeData, setIncomeData] = useState<IncomeItem[]>([
     {
@@ -99,9 +107,48 @@ export const Dashboard: React.FC = () => {
   const handleSaveIncome = (updatedIncome: IncomeItem[]) => {
     setIncomeData(updatedIncome);
   };
+  const [liabilityData, setLiabilityData] = useState<LiabilityItem[]>([
+    {
+      category: "Mortgages",
+      amount: 33472.81,
+      percentage: 31,
+      color: "#8BA78D",
+    },
+    {
+      category: "Loans",
+      amount: 25353.94,
+      percentage: 23,
+      color: "#383396",
+    },
+    {
+      category: "Credit Cards",
+      amount: 23253.43,
+      percentage: 20,
+      color: "#E15B2D",
+    },
+    {
+      category: "Asset Finance",
+      amount: 19343.65,
+      percentage: 16,
+      color: "#1B1856",
+    },
+    {
+      category: "Other Liabilities",
+      amount: 14353.89,
+      percentage: 10,
+      color: "#6B7280",
+    },
+  ]);
+  const handleSaveLiability = (updatedLiability: LiabilityItem[]) => {
+    setLiabilityData(updatedLiability);
+  };
 
   const openIncomeModal = () => {
     setIsIncomeModalOpen(true);
+  };
+
+  const openLiabilityModal = () => {
+    setIsLiabilityModalOpen(true);
   };
 
   const openDebtModal = () => {
@@ -154,6 +201,16 @@ export const Dashboard: React.FC = () => {
     setUserCountries(countries);
   };
 
+  const [isGenBudgetModalOpen, setIsGenBudgetModalOpen] = useState(false);
+  const [generatedBudget, setGeneratedBudget] = useState<
+    GeneratedBudget | undefined
+  >();
+
+  const handleGenerateBudget = (budget: GeneratedBudget) => {
+    setGeneratedBudget(budget);
+    setIsGenBudgetModalOpen(false);
+  };
+
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [expensesData, setExpensesData] = useState<ExpenseItem[]>([
     {
@@ -199,6 +256,43 @@ export const Dashboard: React.FC = () => {
     setIsExpenseModalOpen(false);
   };
 
+  const [isEditDebtServicingModalOpen, setIsEditDebtServicingModalOpen] =
+    useState(false);
+
+  // const handleUpdateDebtServicing = (amount: number) => {
+  //   setDebtMetrics(prev => ({
+  //     ...prev,
+  //     estimatedDebtServicing: amount
+  //   }));
+  //   setIsEditDebtModalOpen(false);
+  // };
+
+  const openDebtServicingModal = () => {
+    setIsEditDebtServicingModalOpen(true);
+  };
+
+  const [isStatementModalOpen, setIsStatementModalOpen] = React.useState(false);
+
+  // Handle statement download
+  const handleStatementDownload = (duration: string) => {
+    console.log(`Downloading statement for ${duration} months`);
+  };
+
+  const openStatementModal = () => {
+    setIsStatementModalOpen(true);
+  };
+
+  const [isBudgetModalOpen, setIsBudgetModalOpen] = React.useState(false);
+
+  // Handle budget creation
+  const handleCreateBudget = (duration: string, categories: any) => {
+    console.log("Creating budget:", { duration, categories });
+  };
+
+  const openBudgetModal = () => {
+    setIsBudgetModalOpen(true);
+  };
+
   const router = useRouter();
   const handleAdvisors = () => {
     router.push("/advisors");
@@ -206,34 +300,34 @@ export const Dashboard: React.FC = () => {
   return (
     <DashboardLayout>
       <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
-        {/* Header Container */}
+        {/* Header */}
         <div className="bg-white rounded-2xl p-3">
-          {/* Main Row */}
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-0">
             {/* Left Section */}
-            <div className="space-y-2">
-              <h1 className="text-4xl font-cirka tracking-tight">
+            <div className="space-y-2 w-full lg:w-auto">
+              <h1 className="text-3xl lg:text-4xl text-center lg:text-start font-cirka tracking-tight">
                 Welcome, Jude!
               </h1>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm">Premium Account</span>
+              <div className="flex items-center text-center lg:text-start gap-1.5">
+                <span className="text-sm text-center lg:text-start">
+                  Premium Account
+                </span>
                 <span className="text-gray-400 text-sm hover:cursor-pointer">
                   ⓘ
                 </span>
               </div>
-              <p className="text-gray-400 text-medium">
+              <p className="text-gray-400 text-center lg:text-start text-medium">
                 Manage your money easily with Celerey.
               </p>
             </div>
 
-            {/* Center Section - Action Buttons */}
-            <div className="flex flex-col items-center">
-              <div className="flex gap-4 mb-4">
-                <button className="flex items-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm">
+            <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full lg:w-auto">
+                <button className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto">
                   Book Virtual Consultation
                   <span className="text-sm">›</span>
                 </button>
-                <button className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-full text-sm">
+                <button className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 rounded-full text-sm w-full sm:w-auto">
                   View Advisors Recommendations
                   <span className="text-sm">›</span>
                 </button>
@@ -244,17 +338,17 @@ export const Dashboard: React.FC = () => {
             </div>
 
             {/* Right Section */}
-            <div className="flex flex-col items-end gap-2">
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600">
+            <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full lg:w-auto">
+                <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
                   <Calendar className="h-3 w-3" />
                   <span>January 20, 2025</span>
                 </div>
-                <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl">
+                <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
                   Export
                 </button>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start lg:justify-end">
                 <button className="p-2 rounded-full border">
                   <Upload className="h-3 w-3 text-gray-600" />
                 </button>
@@ -317,105 +411,79 @@ export const Dashboard: React.FC = () => {
             onEditAssetClick={handleEditAssetClick}
             assets={userAssets}
             countries={userCountries}
-            income={handleSaveIncome}
+            income={incomeData}
+            liabilityData={liabilityData}
             openIncomeModal={openIncomeModal}
+            openLiabilityModal={openLiabilityModal}
             expenses={expensesData}
             onEditExpenseClick={() => setIsExpenseModalOpen(true)}
             openDebtModal={openDebtModal}
+            openDebtServicingModal={openDebtServicingModal}
+            openStatementModal={openStatementModal}
+            openBudgetModal={openBudgetModal}
+            handleGenerateBudget={handleGenerateBudget}
+            openGenBudgetModal={() => setIsGenBudgetModalOpen(true)}
+            generatedBudget={generatedBudget ?? undefined}
           />
         </div>
 
         {/* Financial Knowledge Section */}
-        <div className="bg-white rounded-lg p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-6">
-            <User className="w-5 h-5 text-gray-500" />
-            <h2 className="text-lg font-bold font-cirka text-navy">
-              Financial Knowledge
-            </h2>
-            <span
-              className="text-sm text-gray-500"
-              title="Your financial knowledge is assessed based on your understanding of financial concepts and principles."
-            >
-              ⓘ
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Risk Attitude */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <h3 className="font-medium  font-cirka text-navy">
-                  Your Risk Attitude
-                </h3>
-                <button
-                  onClick={handleViewRiskModal}
-                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
-                >
-                  View Details
-                </button>
-              </div>
-              <p className="text-xl font-bold font-cirka text-navy">
-                Somewhat Aggressive
-              </p>
-            </div>
-
-            {/* Investment Experience */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <h3 className="font-medium font-cirka text-navy">
-                  Your Investment Experience
-                </h3>
-                <button
-                  onClick={handleViewInvestModal}
-                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
-                >
-                  View Details
-                </button>
-              </div>
-              <p className="text-xl font-bold font-cirka text-navy">Advanced</p>
-            </div>
-
-            {/* Financial Knowledge Assessment */}
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <h3 className="font-medium  font-cirka text-navy ">
-                  Financial Knowledge Assessment
-                </h3>
-                <button
-                  onClick={handleViewFinancialModal}
-                  className="text-navyLight text-sm px-2 py-1 rounded-full bg-indigo-100"
-                >
-                  View Details
-                </button>
-              </div>
-              <p className="text-xl font-bold font-cirka text-navy">
-                Intermediate
-              </p>
-            </div>
-          </div>
-
-          {/* Description and Action */}
-          <div className="mt-6 flex justify-between items-start gap-6">
-            <p className="text-gray-600 flex-grow">
-              You are a{" "}
-              <span className="font-medium ">somewhat aggressive</span> risk
-              taker with an <span className="font-medium ">advanced</span>{" "}
-              investment experience. Notwithstanding this, your financial
-              knowledge is <span className="font-medium ">intermediate</span>.
-              This means you have a fair grasp of finance. Although you are not
-              an expert, you understand how macroeconomics works in relation to
-              financial instruments. We can offer investment advice and assist
-              you with proven risk management techniques to potentially improve
-              your outcomes.
-            </p>
+        <div className="bg-gray-50 p-4 rounded-lg space-y-2">
+          <div className="flex justify-between items-center flex-wrap gap-2">
+            <h3 className="font-medium font-cirka text-navy text-sm lg:text-base">
+              Your Investment Experience
+            </h3>
             <button
-              onClick={handleAdvisors}
-              className="text-navyLight whitespace-nowrap hover:text-navy"
+              onClick={handleViewInvestModal}
+              className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
             >
-              Speak to an Advisor
+              View Details
             </button>
           </div>
+          <p className="text-lg lg:text-xl font-bold font-cirka text-navy">
+            Advanced
+          </p>
         </div>
+
+        {/* Financial Knowledge Assessment Card */}
+        <div className="bg-gray-50 p-4 rounded-lg space-y-2 md:col-span-2 lg:col-span-1">
+          <div className="flex justify-between items-center flex-wrap gap-2">
+            <h3 className="font-medium font-cirka text-navy text-sm lg:text-base">
+              Financial Knowledge Assessment
+            </h3>
+            <button
+              onClick={handleViewFinancialModal}
+              className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+          <p className="text-lg lg:text-xl font-bold font-cirka text-navy">
+            Intermediate
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-gray-50 p-4 rounded-lg mt-6 flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-6">
+        <p className="text-gray-600 flex-grow text-sm lg:text-base leading-relaxed">
+          You are a{" "}
+          <span className="font-medium text-navy">somewhat aggressive</span>{" "}
+          risk taker with an{" "}
+          <span className="font-medium text-navy">advanced</span> investment
+          experience. Notwithstanding this, your financial knowledge is{" "}
+          <span className="font-medium text-navy">intermediate</span>. This
+          means you have a fair grasp of finance. Although you are not an
+          expert, you understand how macroeconomics works in relation to
+          financial instruments. We can offer investment advice and assist you
+          with proven risk management techniques to potentially improve your
+          outcomes.
+        </p>
+        <button
+          onClick={handleAdvisors}
+          className="text-navyLight whitespace-nowrap hover:text-navy w-full lg:w-auto text-center lg:text-left py-3 lg:py-0 bg-gray-50 lg:bg-transparent rounded-lg lg:rounded-none transition-colors"
+        >
+          Speak to an Advisor
+        </button>
       </div>
 
       <AddFinancialGoalModal
@@ -448,6 +516,12 @@ export const Dashboard: React.FC = () => {
         onSave={handleSaveIncome}
       />
 
+      <EditLiabilitiesModal
+        isOpen={isLiabilityModalOpen}
+        onClose={() => setIsLiabilityModalOpen(false)}
+        onSave={handleSaveLiability}
+      />
+
       <EditExpenseModal
         isOpen={isExpenseModalOpen}
         onClose={() => setIsExpenseModalOpen(false)}
@@ -469,6 +543,16 @@ export const Dashboard: React.FC = () => {
         isOpen={isViewFinancialModal}
         onClose={() => setisViewFinancialModal(false)}
       />
+      <DebtServicingModal
+        isOpen={isEditDebtServicingModalOpen}
+        onClose={() => setIsEditDebtServicingModalOpen(false)}
+      />
+
+      <MiniIncomeStatementModal
+        isOpen={isStatementModalOpen}
+        onClose={() => setIsStatementModalOpen(false)}
+        onDownload={handleStatementDownload}
+      />
 
       <EditDebtModal
         isOpen={isEditDebtModalOpen}
@@ -477,6 +561,18 @@ export const Dashboard: React.FC = () => {
           console.log(updatedDebts);
           setIsEditDebtModalOpen(false);
         }}
+      />
+
+      <GenerateBudgetModal
+        isOpen={isGenBudgetModalOpen}
+        onClose={() => setIsGenBudgetModalOpen(false)}
+        onGenerateBudget={handleGenerateBudget}
+      />
+
+      <CreateBudgetModal
+        isOpen={isBudgetModalOpen}
+        onClose={() => setIsBudgetModalOpen(false)}
+        onCreateBudget={handleCreateBudget}
       />
     </DashboardLayout>
   );

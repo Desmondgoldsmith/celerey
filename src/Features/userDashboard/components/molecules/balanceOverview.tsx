@@ -8,7 +8,14 @@ import IncomeSection from "./incomeSection";
 import ExpensesSection from "./expenseSection";
 import IncomeVsDebtSection from "./incomeVsDebtSection";
 import IncomeVsExpenditure from "./incomeVsExpenditure";
-import { AssetType, CountryType, ExpenseItem, IncomeItem } from "../../types";
+import {
+  AssetType,
+  CountryType,
+  ExpenseItem,
+  GeneratedBudget,
+  IncomeItem,
+  LiabilityItem,
+} from "../../types";
 import { useRouter } from "next/navigation";
 
 const tabs = [
@@ -47,43 +54,17 @@ const assetData = [
   },
 ];
 
-//  liabilities data
-const liabilitiesData = [
-  {
-    category: "Mortgages",
-    amount: 33472.81,
-    percentage: 31,
-    color: "#8BA78D",
-  },
-  {
-    category: "Loans",
-    amount: 25353.94,
-    percentage: 23,
-    color: "#383396",
-  },
-  {
-    category: "Credit Cards",
-    amount: 23253.43,
-    percentage: 20,
-    color: "#E15B2D",
-  },
-  {
-    category: "Asset Finance",
-    amount: 19343.65,
-    percentage: 16,
-    color: "#1B1856",
-  },
-  {
-    category: "Other Liabilities",
-    amount: 14353.89,
-    percentage: 10,
-    color: "#6B7280",
-  },
-];
+interface LiabilitiesProps {
+  liabilityData: LiabilityItem[];
+  openLiabilityModal: () => void;
+}
 
 // Component for the Liabilities Content
-const LiabilitiesContent = () => {
-  const pieChartData = liabilitiesData.map((item) => ({
+const LiabilitiesContent = ({
+  liabilityData,
+  openLiabilityModal,
+}: LiabilitiesProps) => {
+  const pieChartData = liabilityData.map((item) => ({
     name: item.category,
     value: item.percentage,
   }));
@@ -117,7 +98,10 @@ const LiabilitiesContent = () => {
             <h3 className="text-sm text-gray-600">Liabilities</h3>
             <Info className="h-3 w-3 text-gray-400" />
           </div>
-          <span className="text-navyLight text-sm hover:cursor-pointer">
+          <span
+            onClick={openLiabilityModal}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
             Edit Category
           </span>
         </div>
@@ -137,7 +121,7 @@ const LiabilitiesContent = () => {
                 {pieChartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={liabilitiesData[index].color}
+                    fill={liabilityData[index].color}
                     stroke="white"
                     strokeWidth={2}
                   />
@@ -162,7 +146,7 @@ const LiabilitiesContent = () => {
           </div>
         </div>
 
-        {liabilitiesData.map((liability) => (
+        {liabilityData.map((liability) => (
           <div key={liability.category} className="mb-4">
             <div className="flex justify-between text-sm mb-1">
               <span className="text-gray-600">{liability.category}</span>
@@ -199,6 +183,13 @@ interface BalanceOverviewProps {
   onEditExpenseClick: () => void;
   expenses: ExpenseItem[];
   openDebtModal: () => void;
+  openDebtServicingModal: () => void;
+  openStatementModal: () => void;
+  openBudgetModal: () => void;
+  openGenBudgetModal: () => void;
+  openLiabilityModal: () => void;
+  generatedBudget: GeneratedBudget;
+  liabilityData: LiabilityItem[];
 }
 
 export default function BalanceOverview({
@@ -209,6 +200,13 @@ export default function BalanceOverview({
   onEditExpenseClick,
   expenses,
   openDebtModal,
+  openDebtServicingModal,
+  openStatementModal,
+  openBudgetModal,
+  openGenBudgetModal,
+  generatedBudget,
+  liabilityData,
+  openLiabilityModal,
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
 
@@ -430,9 +428,20 @@ export default function BalanceOverview({
       {/* Animated Content Section */}
       <div className="transition-all duration-300 ease-in-out">
         {activeTab === "Assets" && <AssetsContent />}
-        {activeTab === "Liabilities" && <LiabilitiesContent />}
+        {activeTab === "Liabilities" && (
+          <LiabilitiesContent
+            liabilityData={liabilityData}
+            openLiabilityModal={openLiabilityModal}
+          />
+        )}
         {activeTab === "Income" && (
-          <IncomeSection income={income} openIncomeModal={openIncomeModal} />
+          <IncomeSection
+            income={income}
+            openIncomeModal={openIncomeModal}
+            openBudgetModal={openBudgetModal}
+            openGenBudgetModal={openGenBudgetModal}
+            generatedBudget={generatedBudget}
+          />
         )}
         {activeTab === "Expenses" && (
           <ExpensesSection
@@ -441,9 +450,14 @@ export default function BalanceOverview({
           />
         )}
         {activeTab === "Income Vs Debt" && (
-          <IncomeVsDebtSection openDebtModal={openDebtModal} />
+          <IncomeVsDebtSection
+            openDebtModal={openDebtModal}
+            openDebtServicingModal={openDebtServicingModal}
+          />
         )}
-        {activeTab === "Income Vs Expenditure" && <IncomeVsExpenditure />}
+        {activeTab === "Income Vs Expenditure" && (
+          <IncomeVsExpenditure openStatementModal={openStatementModal} />
+        )}
       </div>
     </Card>
   );
