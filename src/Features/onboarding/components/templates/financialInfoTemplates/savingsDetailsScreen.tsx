@@ -38,17 +38,28 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
 
   useEffect(() => {
     const checkSectionComplete = () => {
+<<<<<<< HEAD
+      const { savings, retirement } = localFormData;
+=======
       const { savings, retirement } = localFormData
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
       const isComplete =
         Object.values(savings || {}).every((value) => value !== '') &&
         // hasEmergencyFunds !== "" &&
         // emergencyFund !== "" &&
         // hasDebt !== "" &&
         // debt !== "" &&
+<<<<<<< HEAD
+        retirement.retirementAge !== "" &&
+        retirement.targetRetirementIncome !== "";
+      setIsSectionComplete(isComplete);
+    };
+=======
         retirement?.retirementAge !== '' &&
         retirement?.targetRetirementIncome !== ''
       setIsSectionComplete(isComplete)
     }
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 
     checkSectionComplete()
   }, [localFormData])
@@ -148,11 +159,19 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
               }))
 
               // Notify parent of changes
+<<<<<<< HEAD
+              if ("hasDebt" in updatedValue) {
+                onChange("debt", "hasDebt", updatedValue.hasDebt || "");
+              }
+              if ("debt" in updatedValue) {
+                onChange("debt", "debt", updatedValue.debt || "");
+=======
               if ('hasDebt' in updatedValue) {
                 onChange('debt', 'hasDebt', updatedValue.hasDebt || '')
               }
               if ('debt' in updatedValue) {
                 onChange('debt', 'debt', updatedValue.debt || '')
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
               }
             }}
           />
