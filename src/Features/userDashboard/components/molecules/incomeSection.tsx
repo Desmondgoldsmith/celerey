@@ -1,6 +1,7 @@
 import React from "react";
 import { Info } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { GeneratedBudget } from "../../types";
 
 interface IncomeItem {
   category: string;
@@ -39,9 +40,18 @@ const incomeData: IncomeItem[] = [
 interface IncomeSectionProps {
   income: IncomeItem[];
   openIncomeModal: () => void;
+  openBudgetModal: () => void;
+  generatedBudget?: GeneratedBudget;
+  openGenBudgetModal: () => void;
 }
 
-const IncomeSection = ({ income, openIncomeModal }: IncomeSectionProps) => {
+const IncomeSection = ({
+  income,
+  openIncomeModal,
+  openBudgetModal,
+  generatedBudget,
+  openGenBudgetModal,
+}: IncomeSectionProps) => {
   // Transform income data for the pie chart
   const pieChartData = incomeData.map((item) => ({
     name: item.category,
@@ -50,6 +60,71 @@ const IncomeSection = ({ income, openIncomeModal }: IncomeSectionProps) => {
   console.log(income);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Budget Visualization Section */}
+      {generatedBudget && (
+        <div className="col-span-full bg-gray-50 p-6 rounded-lg mb-4 border">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-bold">Generated Budget</h3>
+            <span className="text-sm text-gray-600">
+              {generatedBudget.duration}
+            </span>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Donut Chart */}
+            <div className="w-full aspect-square max-w-[250px] mx-auto">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={generatedBudget.areas}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="70%"
+                    outerRadius="100%"
+                    paddingAngle={2}
+                    dataKey="percentage"
+                  >
+                    {generatedBudget?.areas.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.color}
+                        stroke="white"
+                        strokeWidth={2}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            {/* Budget Areas Breakdown */}
+            <div className="space-y-4">
+              {generatedBudget?.areas.map((area, index) => (
+                <div key={area.name}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="text-gray-600">{area.name}</span>
+                    <span className="text-gray-900">{area.percentage}%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="w-full h-1 bg-gray-100 rounded-full mr-4">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${area.percentage}%`,
+                          backgroundColor: area.color,
+                        }}
+                      />
+                    </div>
+                    <span className="text-sm text-gray-600 whitespace-nowrap">
+                      ${area.amount?.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
       {/* Description and Buttons */}
       <div className="flex flex-col">
         <p className="text-sm text-gray-600 mb-6">
@@ -59,10 +134,16 @@ const IncomeSection = ({ income, openIncomeModal }: IncomeSectionProps) => {
           personal finance journey as smooth as possible.
         </p>
         <div className="flex gap-4">
-          <button className="bg-[#1B1856] text-white px-6 py-2 rounded-md text-sm hover:bg-opacity-90 transition-colors">
+          <button
+            onClick={openBudgetModal}
+            className="bg-[#1B1856] text-white px-6 py-2 rounded-md text-sm hover:bg-opacity-90 transition-colors"
+          >
             Create a Budget
           </button>
-          <button className="border border-[#1B1856] text-[#1B1856] px-6 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors">
+          <button
+            onClick={openGenBudgetModal}
+            className="border border-[#1B1856] text-[#1B1856] px-6 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors"
+          >
             Generate my Budget
           </button>
         </div>

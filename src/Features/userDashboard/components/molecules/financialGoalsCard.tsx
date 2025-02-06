@@ -45,13 +45,11 @@ const getProgressBarColor = (progress: number): string => {
   return "bg-green-500";
 };
 
-// Individual financial plan item component
 const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
   plan,
   className = "",
   onModify,
 }) => {
-  // Format currency values with proper formatting
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -61,9 +59,9 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
   };
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Progress bar section */}
-      <div className="mb-4">
+    <div className={`relative w-full ${className}`}>
+      {/* Progress bar section  */}
+      <div className="mb-3 sm:mb-4">
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
             className={`h-full ${getProgressBarColor(
@@ -72,27 +70,30 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
             style={{ width: `${plan.progress}%` }}
           />
         </div>
-        <p className="text-xl font-bold mt-2">{plan.progress.toFixed(1)}%</p>
+        <p className="text-lg sm:text-xl font-bold mt-2">
+          {plan.progress.toFixed(1)}%
+        </p>
       </div>
 
       {/* Plan details card */}
-      <div className="p-4 bg-white rounded-lg border border-gray-100">
-        {/* Header with icon and name */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
+      <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-100">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {getIcon(plan.name)}
-            <span className="font-medium text-gray-900">{plan.name}</span>
+            <span className="font-medium text-gray-900 text-sm sm:text-base">
+              {plan.name}
+            </span>
           </div>
           <button
             onClick={() => onModify(plan)}
-            className="text-navy text-sm hover:text-navy transition-colors"
+            className="text-navy text-sm hover:text-navy transition-colors px-2 py-1 sm:p-0"
           >
             Modify
           </button>
         </div>
 
-        {/* Grid layout for plan details */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+        {/* Grid layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
           {/* Current Amount/Savings */}
           <div>
             <p className="text-gray-600">
@@ -149,17 +150,14 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   onAddGoalClick,
   onModifyGoal,
 }) => {
-  // State for pagination
   const [currentPage, setCurrentPage] = React.useState(0);
-  const plansPerPage = 4;
-  const totalPages = Math.ceil((plans.length + 1) / plansPerPage); // +1 for Add Goal button
+  const plansPerPage = window.innerWidth < 640 ? 2 : 4;
+  const totalPages = Math.ceil((plans.length + 1) / plansPerPage);
 
-  // Function to get plans for current page
   const getCurrentPagePlans = (): FinancialPlan[] => {
     const startIdx = currentPage * plansPerPage;
     let endIdx = startIdx + plansPerPage;
 
-    // First page should reserve space for Add Goal button
     if (currentPage === 0) {
       endIdx = plansPerPage - 1;
       return plans.slice(startIdx, endIdx);
@@ -171,25 +169,26 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   return (
     <div className="bg-white rounded-lg p-3 shadow-sm">
       {/* Header Section */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <CircleDollarSign className="w-5 h-5 text-gray-500" />
-          <h2 className="text-xl font-cirka text-navy font-medium">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <CircleDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+          <h2 className="text-lg sm:text-xl font-cirka text-navy font-medium">
             Financial Goals
           </h2>
           <span className="text-sm text-gray-500 hover:cursor-pointer">ⓘ</span>
         </div>
       </div>
 
-      {/* Plans Count */}
-      <h3 className="text-2xl font-bold mb-6">
+      {/* Plans Count  */}
+      <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
         {plans.length} financial plans
       </h3>
 
-      <div className="grid grid-cols-2 gap-4 relative">
-        <div className="absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
-
-        <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
+      {/* Grid Container  */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
+        {/* Decorative lines */}
+        <div className="hidden sm:block absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
+        <div className="hidden sm:block absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
 
         {/* Render current page plans */}
         {getCurrentPagePlans().map((plan) => (
@@ -201,12 +200,12 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
           />
         ))}
 
-        {/* Add Financial Goal button - only on first page */}
+        {/* Add Financial Goal button */}
         {currentPage === 0 && (
-          <div className="flex items-center justify-center min-h-[200px] border rounded-lg border-dashed border-gray-300">
+          <div className="flex items-center justify-center min-h-[150px] sm:min-h-[200px] border rounded-lg border-dashed border-gray-300">
             <button
               onClick={onAddGoalClick}
-              className="text-navy text-sm hover:text-navyLight font-medium transition-colors"
+              className="text-navy text-sm hover:text-navyLight font-medium transition-colors px-4 py-2 sm:p-0"
             >
               Add Financial Goal
             </button>
@@ -216,7 +215,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
 
       {/* Pagination dots */}
       {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-4">
+        <div className="flex justify-center gap-2 mt-6 sm:mt-4">
           {Array.from({ length: totalPages }).map((_, idx) => (
             <button
               key={idx}

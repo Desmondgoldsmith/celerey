@@ -1,7 +1,13 @@
 import React from "react";
 import { HelpCircle } from "lucide-react";
 
-const IncomeVsExpenditure = () => {
+interface IncomeVsExpenditureProps {
+  openStatementModal: () => void;
+}
+
+const IncomeVsExpenditure = ({
+  openStatementModal,
+}: IncomeVsExpenditureProps) => {
   const data = {
     profitability: 72,
     annualRevenue: 78593.04,
@@ -128,7 +134,10 @@ const IncomeVsExpenditure = () => {
           business decisions. We can generate a mini-income statement to give
           you a high-level perspective of how well you are doing financially.
         </p>
-        <button className="mt-4 px-6 py-2 border border-navyLight text-navyLight rounded-md hover:bg-indigo-50 transition-colors">
+        <button
+          onClick={openStatementModal}
+          className="mt-4 px-6 py-2 border border-navyLight text-navyLight rounded-md hover:bg-indigo-50 transition-colors"
+        >
           Generate Mini Income Statement
         </button>
       </div>
