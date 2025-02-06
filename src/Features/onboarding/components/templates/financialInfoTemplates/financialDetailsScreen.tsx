@@ -8,34 +8,10 @@ import { LiabilitiesSection } from "./liabilitiesSection";
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
-<<<<<<< HEAD
-interface FinancialDetailsScreenProps {
-  values: FinancialInfoSchema;
-  onChange: (
-    section: keyof FinancialInfoSchema,
-    field: string,
-    value: string | number
-  ) => void;
-  onBack: () => void;
-  onContinue: () => void;
-}
-
-const FinancialDetailsScreen: React.FC<FinancialDetailsScreenProps> = () => {
-=======
 const FinancialDetailsScreen: React.FC<any> = () => {
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
   const router = useRouter();
-  const {
-    formData,
-    updateFormData,
-    sections,
-    currentSection,
-    updateSectionProgress,
-    completeSection,
-  } = useOnboardingStore();
-  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
-    formData.financial
-  );
+  const { formData, updateFormData, sections, currentSection, updateSectionProgress, completeSection } = useOnboardingStore();
+  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(formData.financial);
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
@@ -45,34 +21,20 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   useEffect(() => {
     const checkSectionComplete = () => {
       const { income, assets, annualExpenses, liabilities } = localFormData;
-<<<<<<< HEAD
-      const isComplete =
-        Object.values(income).every((value) => value !== "") &&
-        Object.values(assets).every((value) => value !== "") &&
-        Object.values(annualExpenses).every((value) => value !== "") &&
-        Object.values(liabilities).every((value) => value !== "");
-=======
       const isComplete = 
         Object.values(income || {}).every(value => value !== "") &&
         Object.values(assets || {}).every(value => value !== "") &&
         Object.values(annualExpenses || {}).every(value => value !== "") &&
         Object.values(liabilities || {}).every(value => value !== "");
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
       setIsSectionComplete(isComplete);
     };
 
     checkSectionComplete();
   }, [localFormData]);
 
-  const handleFormUpdate = (
-    section: keyof FinancialInfoSchema,
-    field: string,
-    value: string | string[]
-  ) => {
+  const handleFormUpdate = (section: keyof FinancialInfoSchema, field: string, value: string) => {
     const updatedSection = {
-      ...(typeof localFormData[section] === "object"
-        ? localFormData[section]
-        : {}),
+      ...(typeof localFormData[section] === 'object' ? localFormData[section] : {}),
       [field]: value,
     };
 
@@ -97,13 +59,10 @@ const FinancialDetailsScreen: React.FC<any> = () => {
 
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
-    const isLastStep =
-      currentStepIndex === sections[currentSection].totalSteps - 1;
+    const isLastStep = currentStepIndex === sections[currentSection].totalSteps - 1;
 
     if (!isSectionComplete) {
-      alert(
-        "Please fill in all the information in the section before continuing."
-      );
+      alert("Please fill in all the information in the section before continuing.");
       return;
     }
 
@@ -114,14 +73,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       const newStep = currentStepIndex + 1;
       updateSectionProgress(currentSection, newStep);
     }
-  }, [
-    currentSection,
-    sections,
-    isSectionComplete,
-    completeSection,
-    router,
-    updateSectionProgress,
-  ]);
+  }, [currentSection, sections, isSectionComplete, completeSection, router, updateSectionProgress]);
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">

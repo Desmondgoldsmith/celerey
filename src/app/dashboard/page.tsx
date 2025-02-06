@@ -1,7 +1,12 @@
 "use client";
 
-import { Dashboard } from "@/Features/userDashboard/components/templates/dashboardTemplate";
+import { DashboardLayout } from "@/Features/userDashboard/components/templates/dashboardLayout";
+import DashboardTemplate from "@/Features/userDashboard/components/templates/dashboardTemplate";
 
 export default function DashboardPage() {
-  return <Dashboard />;
+  return (
+    <DashboardLayout>
+      <DashboardTemplate />
+    </DashboardLayout>
+  );
 }

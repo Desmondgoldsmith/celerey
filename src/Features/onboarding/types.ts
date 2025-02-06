@@ -1,7 +1,7 @@
 export interface BaseScreenProps {
   onBack: () => void;
-  onContinue: () => void;
-}
+    onContinue: () => void;
+  }
 
 export interface FileUploadProps {
   label: string;
@@ -50,7 +50,7 @@ export interface SurveyOptionCardProps {
   id: string;
   question: string;
   options: {
-    id: string;
+    id: string; 
     value: string;
     selected: boolean;
   }[];
@@ -79,7 +79,32 @@ export interface DateOfBirthScreenProps {
 
 export interface BioDataScreenProps {
   value: {
-    prefix: string;
+   
+
+  prefix: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  dob: {
+
+    day: string;
+
+    month: string;
+
+    year: string;
+
+  };
+
+  citizenship: string;
+
+  residentCountry: string;
+
+  dualCitizenship?: string;
+
+  };
+  onChange: (value: {
     firstName: string;
     lastName: string;
     dob: {
@@ -87,20 +112,12 @@ export interface BioDataScreenProps {
       month: string;
       year: string;
     };
-<<<<<<< HEAD
-    citizenship: string;
-    residentCountry: string;
-    dualCitizenship?: string;
-  };
-  onChange: (value: BioDataScreenProps["value"]) => void;
-=======
     prefix?: string;
     dualCitizenship?:string
     citizenship?:string
     residentCountry?:string
   }) => void;
   // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
   onBack: () => void;
   onContinue: () => void;
 }
@@ -179,6 +196,7 @@ export interface RiskOptionsScreenProps extends BaseScreenProps {
   onChange: (value: string) => void;
 }
 
+
 // FinancialInfo Screen Props
 export interface CurrencyScreenProps {
   value: string;
@@ -196,7 +214,7 @@ export interface GoalsScreenProps {
 }
 
 export interface Section {
-  id: "personal" | "financial" | "goals" | "risk" | "knowledge";
+  id: "personal" | "financial" | "goals" | "risk" | "knowledge" ; 
   title: string;
   totalSteps: number;
   currentStep: number;
@@ -209,21 +227,12 @@ export interface OnboardingState {
   sections: Record<Section["id"], Section>;
 }
 
-export interface Address {
-  line1: string;
-  line2?: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
-
 // PersonalInfo form data type
 export interface PersonalInfoFormData {
   prefix: string;
   firstName: string;
   lastName: string;
-  dob: {
+  dob : {
     day: string;
     month: string;
     year: string;
@@ -231,20 +240,8 @@ export interface PersonalInfoFormData {
   citizenship: string;
   dualCitizenship: string;
   residentCountry: string;
-  options: string[];
-
-  dependents: DependentsData;
-  maritalStatus: string;
-  occupation: string;
-  address: {
-    line1: string;
-    line2: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  };
   identification: IdentificationDocument;
+  options: string[];
 }
 
 export interface FinancialInfoFormData {
@@ -305,40 +302,10 @@ export interface GoalsInfoFormData {
 }
 export interface RiskInfoFormData {
   riskTolerance: string;
-
-  riskAttitude: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
 }
 
 export interface KnowledgeInfoFormData {
   knowledgeLevel: string;
 
-  investingExperience: string;
-  publicSharesKnowledge: string;
-  publicSharesExperience: string;
-  investmentGradeBondsKnowledge: string;
-  investmentGradeBondsExperience: string;
-  nonInvestmentGradeBondsKnowledge: string;
-  nonInvestmentGradeBondsExperience: string;
-  collectiveInvestmentsInstumentsKnowledge: string;
-  collectiveInvestmentsInstumentsExperience: string;
-  derivativesKnowledge: string;
-  derivativesExperience: string;
-  forexKnowledge: string;
-  commoditiesKnowledge: string;
-  commoditiesExperience: string;
-  hybridInvestmentsKnowledge: string;
-  privateMarketInstrumentsKnowledge: string;
-  privateMarketInstrumentsExperience: string;
-  realEstateKnowledge: string;
-  realEstateExperience: string;
-  altAssetsKnowledge: string;
-  leveragedInstumentsKnowledge: string;
-  leveragedInstumentsExperience: string;
-  privateCreditKnowledge: string;
 }
+
