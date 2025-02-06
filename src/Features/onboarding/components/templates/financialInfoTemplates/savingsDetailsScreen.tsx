@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
 
-import { SavingsSection } from "./savingsSection";
-import { EmergencyFundsSection } from "./emergencyFundsSection";
-import { DebtSection } from "./debtSection";
-import { RetirementSection } from "./retirementSection"; // Import the new section
-import { FinancialInfoSchema } from "@/Features/onboarding/schema";
-import { useOnboardingStore } from "@/Features/onboarding/state";
-import Spinner from "@/components/ui/spinner";
+import { SavingsSection } from './savingsSection'
+import { EmergencyFundsSection } from './emergencyFundsSection'
+import { DebtSection } from './debtSection'
+import { RetirementSection } from './retirementSection' // Import the new section
+import { FinancialInfoSchema } from '@/Features/onboarding/schema'
+import { useOnboardingStore } from '@/Features/onboarding/state'
+import Spinner from '@/components/ui/spinner'
 
 interface SavingsDetailsScreenProps {
-  values: FinancialInfoSchema;
+  values: FinancialInfoSchema
   onChange: (
     section: keyof FinancialInfoSchema,
     field: string,
-    value: string
-  ) => void;
-  onBack: () => void;
-  onContinue: () => void;
+    value: string,
+  ) => void
+  onBack: () => void
+  onContinue: () => void
 }
 
 const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
@@ -26,41 +26,50 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const [localFormData, setLocalFormData] =
-    useState<FinancialInfoSchema>(values);
-  const [isSectionComplete, setIsSectionComplete] = useState(false);
-  const { saveFinancialInfo, loading } = useOnboardingStore();
+  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
+    values,
+  )
+  const [isSectionComplete, setIsSectionComplete] = useState(false)
+  const { saveFinancialInfo, loading } = useOnboardingStore()
 
   useEffect(() => {
-    setLocalFormData(values);
-  }, [values]);
+    setLocalFormData(values)
+  }, [values])
 
   useEffect(() => {
     const checkSectionComplete = () => {
-
+<<<<<<< HEAD
       const { savings, retirement } = localFormData;
-
+=======
+      const { savings, retirement } = localFormData
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
       const isComplete =
-        Object.values(savings || {}).every((value) => value !== "") &&
+        Object.values(savings || {}).every((value) => value !== '') &&
         // hasEmergencyFunds !== "" &&
         // emergencyFund !== "" &&
         // hasDebt !== "" &&
         // debt !== "" &&
-        retirement?.retirementAge !== "" &&
-        retirement?.targetRetirementIncome !== "";
+<<<<<<< HEAD
+        retirement.retirementAge !== "" &&
+        retirement.targetRetirementIncome !== "";
       setIsSectionComplete(isComplete);
     };
+=======
+        retirement?.retirementAge !== '' &&
+        retirement?.targetRetirementIncome !== ''
+      setIsSectionComplete(isComplete)
+    }
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 
-
-    checkSectionComplete();
-  }, [localFormData]);
+    checkSectionComplete()
+  }, [localFormData])
 
   const handleFormUpdate = (
     section: keyof FinancialInfoSchema,
     field: string,
-    value: string
+    value: string,
   ) => {
-    if (typeof localFormData[section] === "object") {
+    if (typeof localFormData[section] === 'object') {
       // Update sections like savings
       setLocalFormData((prev) => ({
         ...prev,
@@ -68,21 +77,21 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           ...(prev[section] as Record<string, string>),
           [field]: value,
         },
-      }));
+      }))
     } else {
       setLocalFormData((prev) => ({
         ...prev,
         [field]: value,
-      }));
+      }))
     }
 
-    onChange(section, field, value);
-  };
+    onChange(section, field, value)
+  }
 
   const handleContinue = async () => {
-    await saveFinancialInfo();
-    onContinue();
-  };
+      await saveFinancialInfo()
+      onContinue()
+  }
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
@@ -100,7 +109,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           <SavingsSection
             values={localFormData.savings}
             onChange={(field, value) =>
-              handleFormUpdate("savings", field, value)
+              handleFormUpdate('savings', field, value)
             }
           />
         </div>
@@ -108,37 +117,29 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           <EmergencyFundsSection
             value={{
-              emergencyFund: {
-                hasEmergencyFunds:
-                  localFormData.emergencyFund?.hasEmergencyFunds,
-                emergencyFundAmount:
-                  localFormData.emergencyFund?.emergencyFundAmount,
-                targetMonths: localFormData.emergencyFund?.targetMonths,
-              },
+              hasEmergencyFunds: localFormData.hasEmergencyFunds,
+              emergencyFund: localFormData.emergencyFund,
             }}
             onChange={(updatedValue) => {
               setLocalFormData((prev) => ({
                 ...prev,
-                emergencyFund: {
-                  ...prev.emergencyFund,
-                  ...updatedValue.emergencyFund,
-                },
-              }));
+                ...updatedValue,
+              }))
 
               // Notify parent of changes
-              if ("hasEmergencyFunds" in updatedValue) {
+              if ('hasEmergencyFunds' in updatedValue) {
                 onChange(
-                  "emergencyFund",
-                  "hasEmergencyFunds",
-                  String(updatedValue.hasEmergencyFunds) || ""
-                );
+                  'emergencyFund',
+                  'hasEmergencyFunds',
+                  updatedValue.hasEmergencyFunds || '',
+                )
               }
-              if ("emergencyFund" in updatedValue) {
+              if ('emergencyFund' in updatedValue) {
                 onChange(
-                  "emergencyFund",
-                  "emergencyFund",
-                  JSON.stringify(updatedValue.emergencyFund) || ""
-                );
+                  'emergencyFund',
+                  'emergencyFund',
+                  updatedValue.emergencyFund || '',
+                )
               }
             }}
           />
@@ -148,33 +149,29 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           <DebtSection
             values={{
-              debt: {
-                hasDebt: localFormData.debt?.hasDebt,
-                debtAmount: localFormData.debt?.debtAmount,
-              },
+              hasDebt: localFormData.hasDebt,
+              debt: localFormData.debt,
             }}
             onChange={(updatedValue) => {
               setLocalFormData((prev) => ({
                 ...prev,
-                debt: {
-                  ...prev.debt,
-                  ...updatedValue.debt,
-                },
-              }));
+                ...updatedValue,
+              }))
 
               // Notify parent of changes
+<<<<<<< HEAD
+              if ("hasDebt" in updatedValue) {
+                onChange("debt", "hasDebt", updatedValue.hasDebt || "");
+              }
               if ("debt" in updatedValue) {
-                if (updatedValue.debt && "hasDebt" in updatedValue.debt) {
-                  onChange("debt", "hasDebt", updatedValue.debt.hasDebt || "");
-                }
-                if (updatedValue.debt && "debtAmount" in updatedValue.debt) {
-                  onChange(
-                    "debt",
-                    "debtAmount",
-                    updatedValue.debt.debtAmount || ""
-                  );
-                }
-
+                onChange("debt", "debt", updatedValue.debt || "");
+=======
+              if ('hasDebt' in updatedValue) {
+                onChange('debt', 'hasDebt', updatedValue.hasDebt || '')
+              }
+              if ('debt' in updatedValue) {
+                onChange('debt', 'debt', updatedValue.debt || '')
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
               }
             }}
           />
@@ -184,7 +181,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           <RetirementSection
             values={localFormData.retirement}
             onChange={(field, value) =>
-              handleFormUpdate("retirement", field, value)
+              handleFormUpdate('retirement', field, value)
             }
           />
         </div>
@@ -196,7 +193,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <Button
           onClick={handleContinue}
           className={`flex-1 bg-navy hover:bg-navyLight text-white ${
-            !isSectionComplete ? "opacity-50 cursor-not-allowed" : ""
+            !isSectionComplete ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           disabled={!isSectionComplete}
         >
@@ -204,7 +201,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export { SavingsDetailsScreen };
+export { SavingsDetailsScreen }

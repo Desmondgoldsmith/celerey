@@ -5,22 +5,18 @@ import { Button } from "@/components/ui/button";
 
 interface EmergencyFundsSectionProps {
   value: {
-    emergencyFund?: {
-      hasEmergencyFunds?: string;
-      emergencyFundAmount?: string;
-      targetMonths?: string;
-    };
+    hasEmergencyFunds?: string;
+    emergencyFundAmount?: string;
+    targetMonths?: string;
   };
   onChange: (value: EmergencyFundsSectionProps["value"]) => void;
 }
 
 const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   value = {
-    emergencyFund: {
-      hasEmergencyFunds: "",
-      emergencyFundAmount: "",
-      targetMonths: "",
-    },
+    hasEmergencyFunds: "",
+    emergencyFundAmount: "",
+    targetMonths: "",
   },
   onChange,
 }) => {
@@ -28,61 +24,45 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   const [emergencyFundAmountValid, setEmergencyFundAmountValid] =
     useState(true);
   const [targetMonthsValid, setTargetMonthsValid] = useState(true);
-  const [hasEmergencyFunds, setHasEmergencyFunds] = useState(
-    value.emergencyFund?.hasEmergencyFunds || ""
-  );
 
   useEffect(() => {
-    if (value.emergencyFund?.emergencyFundAmount !== undefined) {
-      setEmergencyFundAmountValid(
-        /^\d*$/.test(value.emergencyFund.emergencyFundAmount)
-      );
+    if (value.emergencyFundAmount !== undefined) {
+      setEmergencyFundAmountValid(/^\d*$/.test(value.emergencyFundAmount));
     }
-    if (value.emergencyFund?.targetMonths !== undefined) {
-      setTargetMonthsValid(/^\d*$/.test(value.emergencyFund.targetMonths));
+    if (value.targetMonths !== undefined) {
+      setTargetMonthsValid(/^\d*$/.test(value.targetMonths));
     }
-  }, [
-    value.emergencyFund?.emergencyFundAmount,
-    value.emergencyFund?.targetMonths,
-  ]);
+  }, [value.emergencyFundAmount, value.targetMonths]);
 
   const handleEmergencyFundAmountChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const emergencyFundAmountValue = e.target.value;
-
-    if (/^\d*\.?\d*$/.test(emergencyFundAmountValue)) {
+    if (/^\d*$/.test(emergencyFundAmountValue)) {
       onChange({
         ...value,
-        emergencyFund: {
-          ...value.emergencyFund,
-          emergencyFundAmount: emergencyFundAmountValue,
-        },
+        emergencyFundAmount: emergencyFundAmountValue,
       });
     }
   };
 
   const handleTargetMonthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetMonthsValue = e.target.value;
-
-    if (/^\d*\.?\d*$/.test(targetMonthsValue)) {
+    if (/^\d*$/.test(targetMonthsValue)) {
       onChange({
         ...value,
-        emergencyFund: {
-          ...value.emergencyFund,
-          targetMonths: targetMonthsValue,
-        },
+        targetMonths: targetMonthsValue,
       });
     }
   };
 
   const isComplete =
-    value.emergencyFund?.hasEmergencyFunds !== undefined &&
-    (value.emergencyFund.hasEmergencyFunds === "no" ||
-      (value.emergencyFund.hasEmergencyFunds === "yes" &&
-        value.emergencyFund.emergencyFundAmount !== "" &&
+    value.hasEmergencyFunds !== "" &&
+    (value.hasEmergencyFunds === "no" ||
+      (value.hasEmergencyFunds === "yes" &&
+        value.emergencyFundAmount !== "" &&
+        value.targetMonths !== "" &&
         emergencyFundAmountValid &&
-        value.emergencyFund.targetMonths !== "" &&
         targetMonthsValid));
 
   return (
@@ -122,20 +102,17 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  hasEmergencyFunds === "no"
+                  value.hasEmergencyFunds === "no"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
                   onChange({
                     ...value,
-                    emergencyFund: {
-                      hasEmergencyFunds: "no",
-                      emergencyFundAmount: "",
-                      targetMonths: "",
-                    },
+                    hasEmergencyFunds: "no",
+                    emergencyFundAmount: "",
+                    targetMonths: "",
                   });
-                  setHasEmergencyFunds("no"); // Update state here
                 }}
               >
                 No
@@ -143,21 +120,15 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  hasEmergencyFunds === "yes"
+                  value.hasEmergencyFunds === "yes"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
                   onChange({
                     ...value,
-                    emergencyFund: {
-                      hasEmergencyFunds: "yes",
-                      emergencyFundAmount:
-                        value.emergencyFund?.emergencyFundAmount || "",
-                      targetMonths: value.emergencyFund?.targetMonths || "",
-                    },
+                    hasEmergencyFunds: "yes",
                   });
-                  setHasEmergencyFunds("yes"); // Update state here
                 }}
               >
                 Yes
@@ -166,7 +137,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
           </div>
 
           {/* Emergency Fund Amount */}
-          {hasEmergencyFunds === "yes" && (
+          {value.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
               <label className="flex-1">Emergency Fund Amount</label>
               <Input
@@ -174,14 +145,14 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
                 inputMode="numeric"
                 pattern="[0-9]*"
                 className="flex-1 appearance-none"
-                value={value.emergencyFund?.emergencyFundAmount || ""}
+                value={value.emergencyFundAmount || ""}
                 onChange={handleEmergencyFundAmountChange}
               />
             </div>
           )}
 
           {/* Target Months */}
-          {hasEmergencyFunds === "yes" && (
+          {value.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
               <label className="flex-1">Target Duration (Months)</label>
               <Input
@@ -189,11 +160,20 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
                 inputMode="numeric"
                 pattern="[0-9]*"
                 className="flex-1 appearance-none"
-                value={value.emergencyFund?.targetMonths || ""}
+                value={value.targetMonths || ""}
                 onChange={handleTargetMonthsChange}
               />
             </div>
           )}
+
+          {value.hasEmergencyFunds === "yes" &&
+            ((value.emergencyFundAmount && !emergencyFundAmountValid) ||
+              (value.targetMonths && !targetMonthsValid)) && (
+              <p className="text-sm text-red-500 mt-1">
+                Please enter valid numbers for amount and months (e.g., 1000 or
+                6)
+              </p>
+            )}
         </div>
 
         {/* Buttons */}
