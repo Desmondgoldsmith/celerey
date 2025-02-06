@@ -105,9 +105,9 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl px-5 w-[95%] md:w-full mx-auto overflow-y-auto max-h-[90vh]">
+      <DialogContent className="max-w-2xl px-5">
         <DialogHeader>
-          <DialogTitle className="text-2xl md:text-3xl font-cirka text-center mb-2">
+          <DialogTitle className="text-3xl font-cirka text-center mb-2">
             Edit Assets
           </DialogTitle>
           <DialogDescription className="text-center text-gray-600">
@@ -120,29 +120,29 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
             {assets.map((asset) => (
               <div
                 key={asset.id}
-                className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-8"
+                className="flex items-center justify-between gap-8"
               >
-                <label className="text-base text-gray-700 min-w-0 md:min-w-[200px]">
+                <label className="text-base text-gray-700 min-w-[200px]">
                   {asset.category}
                 </label>
                 <Input
                   type="number"
                   value={asset.amount}
                   onChange={(e) => handleAmountChange(asset.id, e.target.value)}
-                  className="w-full md:w-[200px] text-right"
+                  className="w-[200px] text-right"
                 />
               </div>
             ))}
 
             {/* Add Additional Asset Field */}
             {showAdditionalField ? (
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-8">
+              <div className="flex items-center justify-between gap-8">
                 <Input
                   type="text"
                   placeholder="Please Specify"
                   value={newAssetName}
                   onChange={(e) => setNewAssetName(e.target.value)}
-                  className="w-full md:min-w-[200px]"
+                  className="min-w-[200px]"
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
                       handleAddAsset();
@@ -152,7 +152,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                 <Input
                   type="number"
                   placeholder="0.00"
-                  className="w-full md:w-[200px] text-right"
+                  className="w-[200px] text-right"
                 />
               </div>
             ) : (
@@ -168,11 +168,11 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
 
           {/* Country Selection */}
           <div className="space-y-4">
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-8">
-              <label className="text-base text-gray-700 md:min-w-[200px]">
+            <div className="flex items-start justify-between gap-8">
+              <label className="text-base text-gray-700 min-w-[200px]">
                 In Which Country(ies) are your assets?
               </label>
-              <div className="flex-1 w-full">
+              <div className="flex-1">
                 <div className="flex gap-2">
                   <Input
                     type="text"
@@ -193,7 +193,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                 </div>
 
                 {countrySearchValue && (
-                  <div className="absolute z-10 w-[calc(100%-3rem)] md:w-[200px] mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-auto">
+                  <div className="absolute z-10 w-[200px] mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-48 overflow-auto">
                     {filteredCountries.map((country) => (
                       <div
                         key={country}
@@ -230,18 +230,18 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col md:flex-row justify-between gap-4 mt-4">
+        <div className="flex justify-between gap-4 mt-4">
           <Button
             type="button"
             variant="outline"
-            className="w-full md:flex-1"
+            className="flex-1"
             onClick={onClose}
           >
             Back
           </Button>
           <Button
             type="button"
-            className="w-full md:flex-1 bg-navy hover:bg-navyLight"
+            className="flex-1 bg-navy hover:bg-navyLight"
             onClick={handleSave}
           >
             Modify
