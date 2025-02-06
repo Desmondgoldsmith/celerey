@@ -1,16 +1,38 @@
 export interface PersonalInfoSchema {
-  prefix : string;
+  prefix: string;
   firstName: string;
   lastName: string;
-  dob:{
+  dob: {
     day: string;
     month: string;
     year: string;
-  }
+  };
   citizenship: string;
   dualCitizenship: string;
   residentCountry: string;
   options: string[];
+
+  dependents: {
+    hasDependents: string;
+    numberOfDependents: string;
+    agesOfDependents: string;
+  };
+  maritalStatus: string;
+  occupation: string;
+  address: {
+    line1: string;
+    line2: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  identification: {
+    type: string;
+    file: File | null;
+    fileName: string;
+    uploadStatus: "idle" | "uploading" | "completed" | "error";
+  };
 }
 
 export interface FinancialInfoSchema {
@@ -74,10 +96,48 @@ export interface GoalsInfoSchema {
 
 export interface RiskInfoSchema {
   riskTolerance: string;
+<<<<<<< HEAD
+
+  riskAttitude: string;
+  riskTolerancePercentage: string;
+  riskReaction: string;
+  riskApproach: string;
+  investmentObjective: string;
+  investmentHorizon: string;
+  illiquidInvestmentPercentage: string;
+=======
+>>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 }
 
 export interface KnowledgeInfoSchema {
   knowledgeLevel: string;
+
+  cashKnowledge?: string;
+  investingExperience?: string;
+  publicSharesKnowledge?: string;
+  publicSharesExperience?: string;
+  investmentGradeBondsKnowledge?: string;
+  investmentGradeBondsExperience?: string;
+  nonInvestmentGradeBondsKnowledge?: string;
+  nonInvestmentGradeBondsExperience?: string;
+  collectiveInvestmentsInstrumentsKnowledge?: string;
+  collectiveInvestmentsInstrumentsExperience?: string;
+  derivativesKnowledge?: string;
+  derivativesExperience?: string;
+  forexKnowledge?: string;
+  commoditiesKnowledge?: string;
+  commoditiesExperience?: string;
+  hybridInvestmentsKnowledge?: string;
+  privateMarketInstrumentsKnowledge?: string;
+  privateMarketInstrumentsExperience?: string;
+  realEstateKnowledge?: string;
+  realEstateExperience?: string;
+  altAssetsKnowledge?: string;
+  leveragedInstrumentsKnowledge?: string;
+  leveragedInstrumentsExperience?: string;
+  privateCreditKnowledge?: string;
+
+  [key: string]: string | undefined;
 }
 
 export interface OnboardingFormData {

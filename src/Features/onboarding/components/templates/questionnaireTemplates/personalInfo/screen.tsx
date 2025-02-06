@@ -1,29 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { IncomeSection } from "./incomeSection";
-import { AssetsSection } from "./assetsSection";
-import { ExpensesSection } from "./expensesSection";
-import { LiabilitiesSection } from "./liabilitiesSection";
-import { FinancialInfoSchema } from "@/Features/onboarding/schema";
+import { OccupationScreen } from "./occupationSection";
+import { MaritalStatusScreen } from "./maritalStatusSection";
+import { IdentificationScreen } from "./identificationSection";
+import { HomeAddressScreen } from "./homeAddressSection";
+import {
+  PersonalInfoFormData,
+  IdentificationDocument,
+  Address,
+} from "../../../../types";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
-<<<<<<< HEAD
-interface FinancialDetailsScreenProps {
-  values: FinancialInfoSchema;
-  onChange: (
-    section: keyof FinancialInfoSchema,
-    field: string,
-    value: string | number
-  ) => void;
-  onBack: () => void;
-  onContinue: () => void;
-}
-
-const FinancialDetailsScreen: React.FC<FinancialDetailsScreenProps> = () => {
-=======
-const FinancialDetailsScreen: React.FC<any> = () => {
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
+const PersonalInfoScreen: React.FC = () => {
   const router = useRouter();
   const {
     formData,
@@ -33,56 +22,73 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     updateSectionProgress,
     completeSection,
   } = useOnboardingStore();
-  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
-    formData.financial
+
+  const [localFormData, setLocalFormData] = useState<PersonalInfoFormData>(
+    formData.personal
   );
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
-    setLocalFormData(formData.financial);
-  }, [formData.financial]);
+    setLocalFormData(formData.personal);
+  }, [formData.personal]);
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { income, assets, annualExpenses, liabilities } = localFormData;
-<<<<<<< HEAD
+      const { occupation, maritalStatus, identification, address } =
+        localFormData;
       const isComplete =
-        Object.values(income).every((value) => value !== "") &&
-        Object.values(assets).every((value) => value !== "") &&
-        Object.values(annualExpenses).every((value) => value !== "") &&
-        Object.values(liabilities).every((value) => value !== "");
-=======
-      const isComplete = 
-        Object.values(income || {}).every(value => value !== "") &&
-        Object.values(assets || {}).every(value => value !== "") &&
-        Object.values(annualExpenses || {}).every(value => value !== "") &&
-        Object.values(liabilities || {}).every(value => value !== "");
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
+        occupation !== "" &&
+        maritalStatus !== "" &&
+        identification.type !== "" &&
+        identification.uploadStatus === "completed" &&
+        address.line1 !== "" &&
+        address.city !== "" &&
+        address.state !== "" &&
+        address.postalCode !== "" &&
+        address.country !== "";
       setIsSectionComplete(isComplete);
     };
 
     checkSectionComplete();
   }, [localFormData]);
 
-  const handleFormUpdate = (
-    section: keyof FinancialInfoSchema,
-    field: string,
-    value: string | string[]
+  // Generic update handler for simple string fields
+  const handleSimpleUpdate = (
+    section: keyof PersonalInfoFormData,
+    value: string
   ) => {
-    const updatedSection = {
-      ...(typeof localFormData[section] === "object"
-        ? localFormData[section]
-        : {}),
-      [field]: value,
-    };
-
     const updatedFormData = {
       ...localFormData,
-      [section]: updatedSection,
+      [section]: value,
     };
-
     setLocalFormData(updatedFormData);
-    updateFormData("financial", updatedFormData);
+    updateFormData("personal", updatedFormData);
+  };
+
+  // Specific handler for address updates
+  const handleAddressUpdate = (field: keyof Address, value: string) => {
+    const updatedAddress = {
+      ...localFormData.address,
+      [field]: value,
+    };
+    const updatedFormData = {
+      ...localFormData,
+      address: updatedAddress,
+    };
+    setLocalFormData(updatedFormData);
+    updateFormData("personal", updatedFormData);
+  };
+
+  // Specific handler for identification updates
+  const handleIdentificationUpdate = (
+    updatedIdentification: IdentificationDocument
+  ) => {
+    const updatedFormData = {
+      ...localFormData,
+      identification: updatedIdentification,
+    };
+    setLocalFormData(updatedFormData);
+    updateFormData("personal", updatedFormData);
   };
 
   const handleBack = useCallback(() => {
@@ -91,7 +97,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       const newStep = currentStepIndex - 1;
       updateSectionProgress(currentSection, newStep);
     } else {
-      router.push("/personal-info");
+      router.push("/previous-page");
     }
   }, [currentSection, sections, router, updateSectionProgress]);
 
@@ -108,8 +114,8 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     }
 
     if (isLastStep) {
-      completeSection("financial");
-      router.push("/goals-info");
+      completeSection("personal");
+      router.push("/next-page");
     } else {
       const newStep = currentStepIndex + 1;
       updateSectionProgress(currentSection, newStep);
@@ -126,9 +132,8 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
-        {" "}
         <h1 className="text-4xl font-cirka">
-          Help us with these key financial details
+          Please provide your personal information
         </h1>
         <p className="text-gray-600">
           Fill the different forms that appear from the pop-ups
@@ -136,39 +141,36 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       </div>
       <div className="space-y-4 max-w-sm mx-auto">
         <div className="border-b pb-4">
-          <IncomeSection
-            values={localFormData.income}
-            onChange={(field, value) =>
-              handleFormUpdate("income", field, value)
-            }
+          <OccupationScreen
+            value={localFormData.occupation}
+            onChange={(value) => handleSimpleUpdate("occupation", value)}
+            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>
         <div className="border-b pb-4">
-          <ExpensesSection
-            values={localFormData.annualExpenses}
-            onChange={(field, value) =>
-              handleFormUpdate("annualExpenses", field, value)
-            }
+          <MaritalStatusScreen
+            value={localFormData.maritalStatus}
+            onChange={(value) => handleSimpleUpdate("maritalStatus", value)}
+            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>
         <div className="border-b pb-4">
-          <AssetsSection
-            values={localFormData.assets}
-            onChange={(field, value: any) =>
-              handleFormUpdate("assets", field, value)
-            }
+          <IdentificationScreen
+            value={localFormData.identification}
+            onChange={handleIdentificationUpdate}
+            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>
-
         <div className="border-b pb-4">
-          <LiabilitiesSection
-            values={localFormData.liabilities}
+          <HomeAddressScreen
+            values={localFormData.address}
             onChange={(field, value) =>
-              handleFormUpdate("liabilities", field, value)
+              handleAddressUpdate(field as keyof Address, value)
             }
+            onBack={handleBack}
             onContinue={handleContinue}
           />
         </div>
@@ -191,4 +193,4 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   );
 };
 
-export { FinancialDetailsScreen };
+export { PersonalInfoScreen };

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, Calendar, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import UserProfile from "../molecules/userProfile";
+// import UserProfile from "../molecules/userProfile";
 import { Advisor } from "../../types";
 
 interface AdvisorDetailsTemplateProps {
@@ -66,12 +66,12 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
           {/*  UserProfile */}
           <div className="lg:col-span-4 w-full">
-            <UserProfile
+            {/* <UserProfile
               userName={userName}
               netWorth={netWorth}
               riskAttitude={riskAttitude}
               investmentExperience={investmentExperience}
-            />
+            />*/}
           </div>
 
           {/*Advisor Details */}

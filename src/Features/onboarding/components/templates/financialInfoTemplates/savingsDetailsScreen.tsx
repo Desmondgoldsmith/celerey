@@ -37,7 +37,9 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
 
   useEffect(() => {
     const checkSectionComplete = () => {
+
       const { savings, retirement } = localFormData;
+
       const isComplete =
         Object.values(savings || {}).every((value) => value !== "") &&
         // hasEmergencyFunds !== "" &&
@@ -48,6 +50,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         retirement?.targetRetirementIncome !== "";
       setIsSectionComplete(isComplete);
     };
+
 
     checkSectionComplete();
   }, [localFormData]);
@@ -171,6 +174,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
                     updatedValue.debt.debtAmount || ""
                   );
                 }
+
               }
             }}
           />
