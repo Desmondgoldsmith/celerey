@@ -123,7 +123,6 @@ export interface ExpenseItem {
   color: string;
 }
 
-
 export type SubscriptionInterval = "yearly" | "biennial";
 
 export type SubscriptionTier = {
@@ -145,4 +144,30 @@ export interface Advisor {
   specialties: string[];
   strengths: string[];
   googleCalendarUrl: string;
+}
+
+export interface LiabilityItem {
+  category: string;
+  amount: number;
+  percentage: number;
+  color: string;
+}
+
+export interface BudgetArea {
+  name: string;
+  percentage?: number;
+  amount?: number;
+  color?: string;
+}
+
+export interface GeneratedBudget {
+  duration: string;
+  areas: BudgetArea[];
+  totalBudget: number;
+}
+
+export interface BudgetModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onGenerateBudget: (budget: GeneratedBudget) => void;
 }

@@ -26,9 +26,13 @@ const initialMetrics: DebtMetrics = {
 
 interface IncomeVsDebtProps {
   openDebtModal: () => void;
+  openDebtServicingModal: () => void;
 }
 
-const IncomeVsDebtSection = ({ openDebtModal }: IncomeVsDebtProps) => {
+const IncomeVsDebtSection = ({
+  openDebtModal,
+  openDebtServicingModal,
+}: IncomeVsDebtProps) => {
   const metrics = initialMetrics;
 
   // Helper function to format currency values
@@ -78,7 +82,7 @@ const IncomeVsDebtSection = ({ openDebtModal }: IncomeVsDebtProps) => {
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
               <button
-                onClick={openDebtModal}
+                onClick={openDebtServicingModal}
                 className="text-navyLight text-sm hover:underline"
               >
                 Add Amount
