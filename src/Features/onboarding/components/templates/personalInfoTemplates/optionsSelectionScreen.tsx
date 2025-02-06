@@ -78,8 +78,8 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Thanks for submitting your personal details. Let&apos;s get you started on
-        your journey to make more informed decisions about your wealth
+        Thanks for verifying your ID. Let&apos;s get you started on your journey
+        to make more informed decisions about your wealth
       </h1>
 
       <p className="text-gray-600 mb-8">
@@ -103,12 +103,13 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
           Back
         </Button>
         <Button
+          
           onClick={handleContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
           disabled={value.length === 0 || loading}
         >
           {loading && <Spinner className="text-white" />} Continue
-        </Button>
+          </Button>
       </div>
     </div>
   );

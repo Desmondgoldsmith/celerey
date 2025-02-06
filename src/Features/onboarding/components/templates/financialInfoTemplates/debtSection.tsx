@@ -5,10 +5,8 @@ import { Button } from "@/components/ui/button";
 
 interface DebtSectionProps {
   values: {
-    debt?: {
-      hasDebt?: string;
-      debtAmount?: string;
-    };
+    hasDebt?: string;
+    debt?: string;
   };
   onChange: (value: DebtSectionProps["values"]) => void;
 }
@@ -16,27 +14,27 @@ interface DebtSectionProps {
 const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amountValid, setAmountValid] = useState(true);
-  const [hasDebt, setHasDebt] = useState("");
+  const [hasDebt, setHasDebt] = useState('');
 
   useEffect(() => {
-    if (values?.debt?.debtAmount !== undefined) {
-      setAmountValid(/^\d*$/.test(values.debt.debtAmount));
+    if (values?.debt !== undefined) {
+      setAmountValid(/^\d*$/.test(values.debt));
     }
-  }, [values.debt?.debtAmount]);
+  }, [values.debt]);
 
   const handleDebtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const debtValue = e.target.value;
 
     if (/^\d*\.?\d*$/.test(debtValue)) {
-      onChange({ ...values, debt: { ...values.debt, debtAmount: debtValue } });
+      onChange({ ...values, debt: debtValue });
     }
   };
 
   const isComplete =
-    values.debt?.hasDebt !== undefined &&
-    (values.debt.hasDebt === "no" ||
-      (values.debt.hasDebt === "yes" &&
-        values.debt.debtAmount !== "" &&
+    hasDebt !== undefined &&
+    (hasDebt === "no" ||
+      (hasDebt === "yes" &&
+        values?.debt !== "" &&
         amountValid));
 
   return (
@@ -52,7 +50,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
           >
             3
           </div>
-          <h3 className="font-medium">Debt</h3>
+        <h3 className="font-medium">Debt</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -80,7 +78,8 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
                 onClick={() => {
                   onChange({
                     ...values,
-                    debt: { hasDebt: "no", debtAmount: "" },
+                    hasDebt: "no",
+                    debt: "",
                   });
                   setHasDebt("no");
                 }}
@@ -94,13 +93,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
-                  onChange({
-                    ...values,
-                    debt: {
-                      hasDebt: "yes",
-                      debtAmount: values.debt?.debtAmount || "",
-                    },
-                  });
+                  onChange({ ...values, hasDebt: "yes" });
                   setHasDebt("yes");
                 }}
               >
@@ -121,6 +114,14 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
               />
             </div>
           )}
+
+          {values?.hasDebt === "yes" &&
+            values?.debt &&
+            !amountValid && (
+              <p className="text-sm text-red-500 mt-1">
+                Please enter a valid amount (e.g., 1234.56)
+              </p>
+            )}
         </div>
 
         <div className="flex gap-4 mt-4">
