@@ -126,6 +126,7 @@ export interface ExpenseItem {
 export type SubscriptionInterval = "yearly" | "biennial";
 
 export type SubscriptionTier = {
+  id: string;
   name: string;
   price: number;
   interval: SubscriptionInterval;

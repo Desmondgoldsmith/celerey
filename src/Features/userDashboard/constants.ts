@@ -159,6 +159,7 @@ export const riskCategories = {
 
 export const subscriptionTiers: SubscriptionTier[] = [
   {
+    id: 'standard',
     name: "Standard",
     price: 25,
     interval: "yearly",
@@ -175,6 +176,7 @@ export const subscriptionTiers: SubscriptionTier[] = [
     ],
   },
   {
+    id: 'pro',
     name: "Pro",
     price: 125,
     interval: "yearly",
@@ -188,6 +190,7 @@ export const subscriptionTiers: SubscriptionTier[] = [
     ],
   },
   {
+    id: 'elite',
     name: "Elite",
     price: 420,
     interval: "yearly",

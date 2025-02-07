@@ -198,6 +198,7 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
           state.loading = false;
         });
       },
+
     })),
     {
       name: "free-dashboard-storage",
