@@ -188,7 +188,7 @@ export const BioDataScreen = ({
           required
         >
           <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Select Country" />
+            <SelectValue placeholder="Select Country of Citizenship" />
           </SelectTrigger>
           <SelectContent>
             {countries.map((country) => (
@@ -223,7 +223,7 @@ export const BioDataScreen = ({
           required
         >
           <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Select Country" />
+            <SelectValue placeholder="Select Country of Residence" />
           </SelectTrigger>
           <SelectContent>
             {countries.map((country) => (

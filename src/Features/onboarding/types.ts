@@ -87,20 +87,12 @@ export interface BioDataScreenProps {
       month: string;
       year: string;
     };
-<<<<<<< HEAD
     citizenship: string;
     residentCountry: string;
     dualCitizenship?: string;
   };
   onChange: (value: BioDataScreenProps["value"]) => void;
-=======
-    prefix?: string;
-    dualCitizenship?:string
-    citizenship?:string
-    residentCountry?:string
-  }) => void;
-  // onChange: (value: React.ChangeEvent<HTMLInputElement>) => void;
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
+
   onBack: () => void;
   onContinue: () => void;
 }
@@ -287,10 +279,10 @@ export interface FinancialInfoFormData {
     emergencyFundAmount: string;
     targetMonths: string;
   };
-  debt: {
-  hasDebt: string;
-  debtAmount: string;
-  };
+  // debt: {
+  // hasDebt: string;
+  // debtAmount: string;
+  // };
   retirement: {
     retirementAge: string;
     targetRetirementIncome: string;
