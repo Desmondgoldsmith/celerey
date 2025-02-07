@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 
 interface DebtSectionProps {
   values: {
-    hasDebt?: string;
-    debt?: string;
+    debt: {
+      hasDebt?: string;
+      debtAmount?: string;
+    };
   };
   onChange: (value: DebtSectionProps["values"]) => void;
 }
@@ -14,28 +16,32 @@ interface DebtSectionProps {
 const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [amountValid, setAmountValid] = useState(true);
-  const [hasDebt, setHasDebt] = useState('');
+  const [hasDebt, setHasDebt] = useState(values.debt.hasDebt || "");
 
   useEffect(() => {
-    if (values?.debt !== undefined) {
-      setAmountValid(/^\d*$/.test(values.debt));
+    if (values.debt.debtAmount !== undefined) {
+      setAmountValid(/^\d*\.?\d*$/.test(values.debt.debtAmount));
     }
-  }, [values.debt]);
+  }, [values.debt.debtAmount]);
 
   const handleDebtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const debtValue = e.target.value;
+    const debtAmountValue = e.target.value;
 
-    if (/^\d*\.?\d*$/.test(debtValue)) {
-      onChange({ ...values, debt: debtValue });
+    if (/^\d*\.?\d*$/.test(debtAmountValue)) {
+      onChange({
+        ...values,
+        debt: {
+          ...values.debt,
+          debtAmount: debtAmountValue,
+        },
+      });
     }
   };
 
   const isComplete =
-    hasDebt !== undefined &&
+    hasDebt !== "" &&
     (hasDebt === "no" ||
-      (hasDebt === "yes" &&
-        values?.debt !== "" &&
-        amountValid));
+      (hasDebt === "yes" && values.debt.debtAmount !== "" && amountValid));
 
   return (
     <div className="text-center max-w-xl mx-auto">
@@ -50,7 +56,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
           >
             3
           </div>
-        <h3 className="font-medium">Debt</h3>
+          <h3 className="font-medium">Debt</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -78,8 +84,10 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
                 onClick={() => {
                   onChange({
                     ...values,
-                    hasDebt: "no",
-                    debt: "",
+                    debt: {
+                      hasDebt: "no",
+                      debtAmount: "",
+                    },
                   });
                   setHasDebt("no");
                 }}
@@ -93,7 +101,13 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
-                  onChange({ ...values, hasDebt: "yes" });
+                  onChange({
+                    ...values,
+                    debt: {
+                      ...values.debt,
+                      hasDebt: "yes",
+                    },
+                  });
                   setHasDebt("yes");
                 }}
               >
@@ -102,7 +116,7 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
             </div>
           </div>
 
-          {hasDebt && hasDebt === "yes" && (
+          {hasDebt === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
               <label className="flex-1">Debt Amount</label>
               <Input
@@ -110,18 +124,17 @@ const DebtSection: React.FC<DebtSectionProps> = ({ values, onChange }) => {
                 inputMode="numeric"
                 pattern="[0-9]*"
                 className="flex-1 appearance-none"
+                value={values.debt.debtAmount || ""}
                 onChange={handleDebtChange}
               />
             </div>
           )}
 
-          {values?.hasDebt === "yes" &&
-            values?.debt &&
-            !amountValid && (
-              <p className="text-sm text-red-500 mt-1">
-                Please enter a valid amount (e.g., 1234.56)
-              </p>
-            )}
+          {hasDebt === "yes" && values.debt.debtAmount && !amountValid && (
+            <p className="text-sm text-red-500 mt-1">
+              Please enter a valid amount (e.g., 1234.56)
+            </p>
+          )}
         </div>
 
         <div className="flex gap-4 mt-4">

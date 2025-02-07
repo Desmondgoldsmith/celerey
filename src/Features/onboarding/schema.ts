@@ -96,7 +96,6 @@ export interface GoalsInfoSchema {
 
 export interface RiskInfoSchema {
   riskTolerance: string;
-<<<<<<< HEAD
 
   riskAttitude: string;
   riskTolerancePercentage: string;
@@ -105,8 +104,6 @@ export interface RiskInfoSchema {
   investmentObjective: string;
   investmentHorizon: string;
   illiquidInvestmentPercentage: string;
-=======
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 }
 
 export interface KnowledgeInfoSchema {
