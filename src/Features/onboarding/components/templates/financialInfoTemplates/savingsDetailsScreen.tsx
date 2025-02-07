@@ -10,7 +10,7 @@ import { useOnboardingStore } from '@/Features/onboarding/state'
 import Spinner from '@/components/ui/spinner'
 
 interface SavingsDetailsScreenProps {
-  values: FinancialInfoSchema
+  values: any
   onChange: (
     section: keyof FinancialInfoSchema,
     field: string,
@@ -26,7 +26,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
+  const [localFormData, setLocalFormData]: any = useState<FinancialInfoSchema>(
     values,
   )
   const [isSectionComplete, setIsSectionComplete] = useState(false)
@@ -38,28 +38,17 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
 
   useEffect(() => {
     const checkSectionComplete = () => {
-<<<<<<< HEAD
-      const { savings, retirement } = localFormData;
-=======
       const { savings, retirement } = localFormData
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
       const isComplete =
         Object.values(savings || {}).every((value) => value !== '') &&
         // hasEmergencyFunds !== "" &&
         // emergencyFund !== "" &&
         // hasDebt !== "" &&
         // debt !== "" &&
-<<<<<<< HEAD
-        retirement.retirementAge !== "" &&
-        retirement.targetRetirementIncome !== "";
-      setIsSectionComplete(isComplete);
-    };
-=======
         retirement?.retirementAge !== '' &&
         retirement?.targetRetirementIncome !== ''
       setIsSectionComplete(isComplete)
     }
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 
     checkSectionComplete()
   }, [localFormData])
@@ -71,7 +60,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   ) => {
     if (typeof localFormData[section] === 'object') {
       // Update sections like savings
-      setLocalFormData((prev) => ({
+      setLocalFormData((prev:any) => ({
         ...prev,
         [section]: {
           ...(prev[section] as Record<string, string>),
@@ -79,7 +68,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         },
       }))
     } else {
-      setLocalFormData((prev) => ({
+      setLocalFormData((prev:any) => ({
         ...prev,
         [field]: value,
       }))
@@ -117,11 +106,11 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           <EmergencyFundsSection
             value={{
-              hasEmergencyFunds: localFormData.hasEmergencyFunds,
-              emergencyFund: localFormData.emergencyFund,
+              hasEmergencyFunds: localFormData.emergencyFund?.hasEmergencyFunds || 0,
+              emergencyFundAmount: localFormData.emergencyFund?.emergencyFundAmount || 0,
             }}
             onChange={(updatedValue) => {
-              setLocalFormData((prev) => ({
+              setLocalFormData((prev:any) => ({
                 ...prev,
                 ...updatedValue,
               }))
@@ -138,7 +127,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
                 onChange(
                   'emergencyFund',
                   'emergencyFund',
-                  updatedValue.emergencyFund || '',
+                  updatedValue.emergencyFundAmount || '',
                 )
               }
             }}
@@ -149,29 +138,21 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           <DebtSection
             values={{
-              hasDebt: localFormData.hasDebt,
-              debt: localFormData.debt,
+              hasDebt: localFormData.debt.hasDebt,
+              debt: localFormData.debt.debtAmount,
             }}
             onChange={(updatedValue) => {
-              setLocalFormData((prev) => ({
+              setLocalFormData((prev: any) => ({
                 ...prev,
                 ...updatedValue,
               }))
 
               // Notify parent of changes
-<<<<<<< HEAD
-              if ("hasDebt" in updatedValue) {
-                onChange("debt", "hasDebt", updatedValue.hasDebt || "");
-              }
-              if ("debt" in updatedValue) {
-                onChange("debt", "debt", updatedValue.debt || "");
-=======
               if ('hasDebt' in updatedValue) {
                 onChange('debt', 'hasDebt', updatedValue.hasDebt || '')
               }
               if ('debt' in updatedValue) {
                 onChange('debt', 'debt', updatedValue.debt || '')
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
               }
             }}
           />
