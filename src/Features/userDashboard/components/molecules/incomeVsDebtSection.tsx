@@ -128,9 +128,9 @@ const IncomeVsDebtSection = ({
                 <span className="text-sm text-gray-600">Net Balance</span>
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
-              <button className="text-navyLight text-sm hover:underline">
-                Modify
-              </button>
+              <div className="text-navyLight text-sm hover:underline">
+                
+              </div>
             </div>
             <span className="text-2xl font-bold">
               {formatCurrency(metrics.netBalance)}
@@ -141,16 +141,39 @@ const IncomeVsDebtSection = ({
           <div className="space-y-4">
             <span className="text-sm text-gray-600">Distribution</span>
 
-            {/* Progress Bar */}
-            <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#8BA78D] rounded-full transition-all duration-500"
-                style={{ width: `${metrics.incomePercentage}%` }}
-              />
+            {/* Progress Bars Container */}
+            <div className="space-y-2">
+              {/* Income Progress Bar */}
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs text-gray-600">
+                  <span>Income ({metrics.incomePercentage}%)</span>
+                  <span>{formatCurrency(metrics.incomeAmount)}</span>
+                </div>
+                <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#8BA78D] rounded-full transition-all duration-500"
+                    style={{ width: `${metrics.incomePercentage}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Amortized Debt Progress Bar */}
+              <div className="space-y-1">
+                <div className="flex mt-5 justify-between text-xs text-gray-600">
+                  <span>Amortized Debt ({metrics.amortizedDebtPercentage}%)</span>
+                  <span>{formatCurrency(metrics.amortizedDebtAmount)}</span>
+                </div>
+                <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#FFA500] rounded-full transition-all duration-500"
+                    style={{ width: `${metrics.amortizedDebtPercentage}%` }}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Distribution Details */}
-            <div className="space-y-4">
+            <div className="space-y-4 mt-4">
               {/* Income */}
               <div className="flex justify-between items-start">
                 <div className="flex items-center gap-2">

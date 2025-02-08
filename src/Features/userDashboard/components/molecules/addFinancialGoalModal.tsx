@@ -1,24 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { differenceInCalendarMonths, parseISO } from "date-fns";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type {
+  FinancialPlan,
   AddFinancialGoalModalProps,
   GoalFormData,
-  FinancialPlan,
 } from "../../types";
+
+const CustomDatePicker: React.FC<{
+  label: string;
+  value: string;
+  onChange: (date: string) => void;
+  placeholder?: string;
+  required?: boolean;
+}> = ({ label, value, onChange, placeholder, required }) => {
+  return (
+    <div className="flex items-center justify-between space-x-4">
+      <label className="text-gray-900 w-1/3">{label}</label>
+      <div className="w-2/3">
+        <input
+          type="date"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          required={required}
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-gray-900 
+            focus:outline-none focus:ring-2 focus:ring-navy focus:border-transparent 
+            placeholder-gray-400 appearance-none"
+        />
+      </div>
+    </div>
+  );
+};
 
 const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
   isOpen,
@@ -27,147 +48,236 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
   initialData,
   isModifying = false,
 }) => {
-  const [formData, setFormData] = React.useState<GoalFormData>(() => ({
+  const [formData, setFormData] = useState<GoalFormData>(() => ({
     name: initialData?.name || "",
     targetAmount: initialData?.targetAmount.toString() || "",
     currentAmount: initialData?.currentAmount.toString() || "",
+    durationStart: initialData?.durationStart || "",
+    durationEnd: initialData?.durationEnd || "",
     goalDuration: initialData?.goalDuration.toString() || "",
+    durationLeft: initialData?.durationLeft.toString() || "",
   }));
 
-  // Update form data when initialData changes
-  React.useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name,
-        targetAmount: initialData.targetAmount.toString(),
-        currentAmount: initialData.currentAmount.toString(),
-        goalDuration: initialData.goalDuration.toString(),
-      });
-    }
-  }, [initialData]);
+  // Calculate goal duration and duration left
+  const calculateDurations = (startDate: string, endDate: string) => {
+    if (!startDate || !endDate) return { goalDuration: "0", durationLeft: "0" };
+    
+    const start = parseISO(startDate);
+    const end = parseISO(endDate);
+    const now = new Date();
+    
+    const goalDuration = Math.max(0, differenceInCalendarMonths(end, start));
+    const durationLeft = Math.max(0, differenceInCalendarMonths(end, now));
 
-  const handleSubmit = (e: React.FormEvent) => {
+    return {
+      goalDuration: goalDuration.toString(),
+      durationLeft: durationLeft.toString(),
+    };
+  };
+
+  // Reset form when modal opens or initial data changes
+  useEffect(() => {
+    if (isOpen) {
+      const updatedFormData = {
+        name: initialData?.name || "",
+        targetAmount: initialData?.targetAmount.toString() || "",
+        currentAmount: initialData?.currentAmount.toString() || "",
+        durationStart: initialData?.durationStart || "",
+        durationEnd: initialData?.durationEnd || "",
+        goalDuration: initialData?.goalDuration.toString() || "",
+        durationLeft: initialData?.durationLeft.toString() || "",
+      };
+
+      if (updatedFormData.durationStart && updatedFormData.durationEnd) {
+        const { goalDuration, durationLeft } = calculateDurations(
+          updatedFormData.durationStart,
+          updatedFormData.durationEnd
+        );
+        updatedFormData.goalDuration = goalDuration;
+        updatedFormData.durationLeft = durationLeft;
+      }
+
+      setFormData(updatedFormData);
+    }
+  }, [isOpen, initialData]);
+
+  // Update durations when start or end dates change
+  useEffect(() => {
+    if (formData.durationStart && formData.durationEnd) {
+      const { goalDuration, durationLeft } = calculateDurations(
+        formData.durationStart,
+        formData.durationEnd
+      );
+
+      setFormData((prev) => ({
+        ...prev,
+        goalDuration,
+        durationLeft,
+      }));
+    }
+  }, [formData.durationStart, formData.durationEnd]);
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const startDate = initialData?.durationStart
-      ? new Date(initialData.durationStart)
-      : new Date();
-    const endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + parseInt(formData.goalDuration));
+    // Get the form element
+    const form = e.currentTarget;
+    
+    if (!form.checkValidity()) {
+      return;
+    }
+
+    // validation for date comparison
+    if (new Date(formData.durationStart) >= new Date(formData.durationEnd)) {
+      alert("End date must be after start date");
+      return;
+    }
+
+    // validation for amounts
+    const targetAmountNum = parseFloat(formData.targetAmount);
+    const currentAmountNum = parseFloat(formData.currentAmount);
+    
+    if (currentAmountNum > targetAmountNum) {
+      alert("Current amount cannot exceed target amount");
+      return;
+    }
+
+    const { goalDuration, durationLeft } = calculateDurations(
+      formData.durationStart,
+      formData.durationEnd
+    );
 
     const newGoal: FinancialPlan = {
-      name: formData.name,
+      name: formData.name.trim(),
       targetAmount: parseFloat(formData.targetAmount),
       currentAmount: parseFloat(formData.currentAmount),
-      progress:
-        (parseFloat(formData.currentAmount) /
-          parseFloat(formData.targetAmount)) *
-        100,
-      durationStart: startDate.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      }),
-      durationEnd: endDate.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric",
-      }),
-      goalDuration: parseInt(formData.goalDuration),
-      durationLeft: parseInt(formData.goalDuration),
+      progress: (parseFloat(formData.currentAmount) / parseFloat(formData.targetAmount)) * 100,
+      durationStart: formData.durationStart,
+      durationEnd: formData.durationEnd,
+      goalDuration: parseInt(goalDuration),
+      durationLeft: parseInt(durationLeft),
     };
 
     onAddGoal(newGoal);
     onClose();
-    // Reset form only if not modifying
-    if (!isModifying) {
-      setFormData({
-        name: "",
-        targetAmount: "",
-        currentAmount: "",
-        goalDuration: "",
-      });
+  };
+
+  // Prevent unintended modal closure
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      onClose();
     }
   };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] p-0">
-        <DialogHeader className="px-8 py-6 space-y-3">
-          <DialogTitle className="text-3xl text-center font-cirka">
-            {isModifying
-              ? `Modify ${initialData?.name}`
-              : "Add New Financial Goal"}
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        className="sm:max-w-[500px] p-0 max-h-[90vh] overflow-y-auto"
+      >
+        <DialogHeader className="px-8 py-4 space-y-2">
+          <DialogTitle className="text-2xl text-center font-cirka">
+            {isModifying ? `Modify ${initialData?.name}` : "Add New Financial Goal"}
           </DialogTitle>
-          <p className="text-gray-600 text-center">
+          <DialogDescription className="text-center text-gray-600">
             {isModifying
-              ? `Update your ${initialData?.name.toLowerCase()} details`
-              : "Enter your new financial goal"}
-          </p>
+              ? `Update the details for your ${initialData?.name.toLowerCase()} goal`
+              : "Enter the details of your new financial goal"}
+          </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="px-8 pb-8 space-y-8">
-          <div className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-gray-900">Name of goal</label>
-              <Input
-                placeholder="e.g Saving towards a new car"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-                className="rounded-lg border-gray-200"
-                disabled={isModifying} // Disable name field when modifying
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-gray-900">Goal target</label>
-              <Input
-                type="number"
-                placeholder="e.g $140,000"
-                value={formData.targetAmount}
-                onChange={(e) =>
-                  setFormData({ ...formData, targetAmount: e.target.value })
-                }
-                required
-                className="rounded-lg border-gray-200"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-gray-900">Amount contributed</label>
-              <Input
-                type="number"
-                placeholder="e.g $20,000"
-                value={formData.currentAmount}
-                onChange={(e) =>
-                  setFormData({ ...formData, currentAmount: e.target.value })
-                }
-                required
-                className="rounded-lg border-gray-200"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-gray-900">Deadline for goal</label>
-              <Select
-                value={formData.goalDuration}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, goalDuration: value })
-                }
-              >
-                <SelectTrigger className="rounded-lg border-gray-200">
-                  <SelectValue placeholder="e.g 18 months" />
-                </SelectTrigger>
-                <SelectContent>
-                  {[6, 12, 18, 24, 36].map((months) => (
-                    <SelectItem key={months} value={months.toString()}>
-                      {months} months
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+        <form onSubmit={handleSubmit} className="px-8 pb-6 space-y-4" noValidate>
+          {/* Goal Name Input */}
+          <div className="flex items-center justify-between space-x-4">
+            <label className="text-gray-900 w-1/3">Name of goal</label>
+            <Input
+              placeholder="e.g., Saving for a new car"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-2/3 rounded-lg border-gray-200"
+              disabled={isModifying}
+              required
+              minLength={1}
+            />
           </div>
+
+          {/* Target Amount Input */}
+          <div className="flex items-center justify-between space-x-4">
+            <label className="text-gray-900 w-1/3">Goal target</label>
+            <Input
+              type="number"
+              placeholder="e.g., 140000"
+              value={formData.targetAmount}
+              onChange={(e) => setFormData({ ...formData, targetAmount: e.target.value })}
+              className="w-2/3 rounded-lg border-gray-200"
+              required
+              min="0.01"
+              step="0.01"
+            />
+          </div>
+
+          {/* Current Amount Input */}
+          <div className="flex items-center justify-between space-x-4">
+            <label className="text-gray-900 w-1/3">Current Savings</label>
+            <Input
+              type="number"
+              placeholder="e.g., 20000"
+              value={formData.currentAmount}
+              onChange={(e) => setFormData({ ...formData, currentAmount: e.target.value })}
+              className="w-2/3 rounded-lg border-gray-200"
+              required
+              min="0"
+              step="0.01"
+            />
+          </div>
+
+          {/* Start Date Picker */}
+          <CustomDatePicker
+            label="Duration Start"
+            value={formData.durationStart}
+            onChange={(date) => setFormData({ ...formData, durationStart: date })}
+            placeholder="Select start date"
+            required
+          />
+
+          {/* End Date Picker */}
+          <CustomDatePicker
+            label="Duration End"
+            value={formData.durationEnd}
+            onChange={(date) => setFormData({ ...formData, durationEnd: date })}
+            placeholder="Select end date"
+            required
+          />
+
+          {/* Goal Duration */}
+          <div className="flex items-center justify-between space-x-4">
+            <label className="text-gray-900 w-1/3">Goal Duration (months)</label>
+            <Input
+              type="number"
+              value={formData.goalDuration}
+              onChange={(e) => setFormData({ ...formData, goalDuration: e.target.value })}
+              className="w-2/3 rounded-lg border-gray-200"
+              required
+              min="1"
+            />
+          </div>
+
+          {/* Duration Left  */}
+          <div className="flex items-center justify-between space-x-4">
+            <label className="text-gray-900 w-1/3">Duration Left (months)</label>
+            <Input
+              type="number"
+              value={formData.durationLeft}
+              onChange={(e) => setFormData({ ...formData, durationLeft: e.target.value })}
+              className="w-2/3 rounded-lg border-gray-200"
+              required
+              min="0"
+            />
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex justify-between gap-4">
             <Button
               type="button"
@@ -175,7 +285,7 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
               onClick={onClose}
               className="flex-1 rounded-lg"
             >
-              Back
+              Cancel
             </Button>
             <Button
               type="submit"

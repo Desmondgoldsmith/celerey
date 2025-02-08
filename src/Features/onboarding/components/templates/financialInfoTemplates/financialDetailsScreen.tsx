@@ -30,7 +30,6 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   useEffect(() => {
     const checkSectionComplete = () => {
       const { income, assets, annualExpenses, liabilities } = localFormData;
-
       const isComplete = 
         Object.values(income || {}).every(value => value !== "") &&
         Object.values(assets || {}).every(value => value !== "") &&

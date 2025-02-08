@@ -8,7 +8,7 @@ import { useOnboardingStore } from "@/Features/onboarding/state";
 import Spinner from "@/components/ui/spinner";
 
 interface SavingsDetailsScreenProps {
-  values: FinancialInfoSchema;
+  values: any
   onChange: (
     section: keyof FinancialInfoSchema,
     field: string,
@@ -24,25 +24,29 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const [localFormData, setLocalFormData] =
-    useState<FinancialInfoSchema>(values);
-  const [isSectionComplete, setIsSectionComplete] = useState(false);
-  const { saveFinancialInfo, loading } = useOnboardingStore();
+  const [localFormData, setLocalFormData]: any = useState<FinancialInfoSchema>(
+    values,
+  )
+  const [isSectionComplete, setIsSectionComplete] = useState(false)
+  const { saveFinancialInfo, loading } = useOnboardingStore()
+
+  useEffect(() => {
+    setLocalFormData(values)
+  }, [values])
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { savings, retirement, emergencyFund } = localFormData;
+      const { savings, retirement } = localFormData
       const isComplete =
-        Object.values(savings || {}).every((value) => value !== "") &&
-        emergencyFund?.hasEmergencyFunds !== undefined &&
-        (!emergencyFund?.hasEmergencyFunds ||
-          (emergencyFund?.hasEmergencyFunds &&
-            emergencyFund?.emergencyFundAmount !== "" &&
-            emergencyFund?.targetMonths !== "")) &&
-        retirement?.retirementAge !== "" &&
-        retirement?.targetRetirementIncome !== "";
-      setIsSectionComplete(!!isComplete);
-    };
+        Object.values(savings || {}).every((value) => value !== '') &&
+        // hasEmergencyFunds !== "" &&
+        // emergencyFund !== "" &&
+        // hasDebt !== "" &&
+        // debt !== "" &&
+        retirement?.retirementAge !== '' &&
+        retirement?.targetRetirementIncome !== ''
+      setIsSectionComplete(isComplete)
+    }
 
     checkSectionComplete();
   }, [localFormData]);
@@ -53,8 +57,9 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
     value: string
 
   ) => {
-    if (typeof localFormData[section] === "object") {
-      setLocalFormData((prev) => ({
+    if (typeof localFormData[section] === 'object') {
+      // Update sections like savings
+      setLocalFormData((prev:any) => ({
         ...prev,
         [section]: {
           ...(prev[section] as Record<string, string>),
@@ -62,7 +67,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         },
       }));
     } else {
-      setLocalFormData((prev) => ({
+      setLocalFormData((prev:any) => ({
         ...prev,
         [field]: value,
       }));
@@ -117,17 +122,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
               }
               if ("emergencyFundAmount" in updatedValue.emergencyFund) {
                 onChange(
-                  "emergencyFund",
-                  "emergencyFundAmount",
-                  updatedValue.emergencyFund.emergencyFundAmount || ""
-                );
-              }
-              if ("targetMonths" in updatedValue.emergencyFund) {
-                onChange(
-                  "emergencyFund",
-                  "targetMonths",
-                  updatedValue.emergencyFund.targetMonths || ""
-                );
+                  'emergencyFund',
+                  'emergencyFund',
+                  updatedValue.emergencyFundAmount || '',
+                )
               }
             }}
           />

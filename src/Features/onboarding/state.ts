@@ -163,10 +163,6 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     emergencyFundAmount: "",
     targetMonths: "",
     },
-    // debt: {
-    // hasDebt: "",
-    // debtAmount: "",
-    // },
   retirement: {
     retirementAge: "",
     targetRetirementIncome: "",
@@ -315,7 +311,6 @@ export const useOnboardingStore = create<OnboardingStore>()(
             state.formData.financial.assets = response.data.assets;
             state.formData.financial.liabilities = response.data.liabilities;
             state.formData.financial.currency = response.data.currency;
-            state.formData.financial.debt = response.data.debt;
             state.formData.financial.emergencyFund = {
               hasEmergencyFunds:
                 response.data.hasEmergencyFunds === 1 ? "yes" : "no",

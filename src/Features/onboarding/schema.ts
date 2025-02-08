@@ -76,10 +76,7 @@ export interface FinancialInfoSchema {
     emergencyFundAmount: string;
     targetMonths: string;
   };
-  debt: {
-  hasDebt: string;
-  debtAmount: string;
-  };
+
   retirement: {
     retirementAge: string;
     targetRetirementIncome: string;
