@@ -77,8 +77,8 @@ export interface FinancialInfoSchema {
     targetMonths: string;
   };
   debt: {
-  hasDebt: string;
-  debtAmount: string;
+    hasDebt: string;
+    debtAmount: string;
   };
   retirement: {
     retirementAge: string;
@@ -96,17 +96,6 @@ export interface GoalsInfoSchema {
 
 export interface RiskInfoSchema {
   riskTolerance: string;
-<<<<<<< HEAD
-
-  riskAttitude: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
-=======
->>>>>>> cc897dfba381dd64f08187e9b7955d4773da8801
 }
 
 export interface KnowledgeInfoSchema {

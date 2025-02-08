@@ -14,10 +14,7 @@ export interface SocialSignupButtonProps {
   onClick: () => void;
 }
 
-interface User {
-  email: string;
-  // Add other user properties if needed
-}
+
 export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;

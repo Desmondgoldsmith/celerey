@@ -1,13 +1,16 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { X } from "lucide-react";
-import { SubscriptionTier } from "../../types";
+import React, { useEffect, useState } from 'react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { X } from 'lucide-react'
+import { SubscriptionTier } from '../../types'
+import { Elements } from '@stripe/react-stripe-js'
+import { getStripe } from '@/lib/stripe'
+import { PaymentForm } from './PaymentForm'
 
 interface PaymentModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  selectedTier: SubscriptionTier | null;
-  onPaymentComplete: () => void;
+  isOpen: boolean
+  onClose: () => void
+  selectedTier: SubscriptionTier | null
+  onPaymentComplete: () => void
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -16,11 +19,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   selectedTier,
   onPaymentComplete,
 }) => {
-  const handlePayment = () => {
-    setTimeout(() => {
-      onPaymentComplete();
-    }, 1500);
-  };
+  
+  const [stripePromise, setStripePromise]: any = useState(null)
+
+  useEffect(() => {
+    getStripe().then(setStripePromise)
+  }, [])
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -43,50 +48,16 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
             {selectedTier?.price}/month
           </p>
 
-          {/* Dummy payment form */}
-          <div className="space-y-4 text-left mb-6">
-            <div>
-              <label className="block text-xs md:text-sm font-medium mb-1">
-                Card Number
-              </label>
-              <input
-                type="text"
-                placeholder="1234 5678 9012 3456"
-                className="w-full p-2 text-sm md:text-base border rounded-md"
+          {stripePromise && (
+            <Elements stripe={stripePromise}>
+              <PaymentForm
+                selectedTier={selectedTier}
+                onPaymentComplete={onPaymentComplete}
               />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs md:text-sm font-medium mb-1">
-                  Expiry Date
-                </label>
-                <input
-                  type="text"
-                  placeholder="MM/YY"
-                  className="w-full p-2 text-sm md:text-base border rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-xs md:text-sm font-medium mb-1">
-                  CVV
-                </label>
-                <input
-                  type="text"
-                  placeholder="123"
-                  className="w-full p-2 text-sm md:text-base border rounded-md"
-                />
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={handlePayment}
-            className="w-full bg-[#6938EF] text-white py-2.5 md:py-3 text-sm md:text-base rounded-lg hover:bg-[#5b2ed9] transition-colors"
-          >
-            Pay ${selectedTier?.price}
-          </button>
+            </Elements>
+          )}
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
