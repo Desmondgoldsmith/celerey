@@ -39,17 +39,18 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
       const { savings, retirement, emergencyFund } = localFormData;
       const isComplete =
         Object.values(savings || {}).every((value) => value !== "") &&
-        emergencyFund?.hasEmergencyFunds !== "" &&
-        (emergencyFund?.hasEmergencyFunds === "no" ||
-          (emergencyFund?.hasEmergencyFunds === "yes" &&
+        emergencyFund?.hasEmergencyFunds !== undefined &&
+        (!emergencyFund?.hasEmergencyFunds ||
+          (emergencyFund?.hasEmergencyFunds &&
             emergencyFund?.emergencyFundAmount !== "" &&
             emergencyFund?.targetMonths !== "")) &&
         retirement?.retirementAge !== "" &&
         retirement?.targetRetirementIncome !== "";
-      setIsSectionComplete(isComplete);
+      setIsSectionComplete(!!isComplete);
     };
 
     checkSectionComplete();
+    console.log("Local Form Data:", localFormData);
   }, [localFormData]);
 
   const handleFormUpdate = (
@@ -104,13 +105,14 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         {/* Emergency Funds Section */}
         <div className="border-b pb-4">
           <EmergencyFundsSection
-            value={{ emergencyFund: localFormData.emergencyFund }}
             onChange={(updatedValue) => {
+              console.log("Updated Value:", updatedValue);
               setLocalFormData((prev) => ({
                 ...prev,
                 emergencyFund: {
-                  hasEmergencyFunds: updatedValue.emergencyFund.hasEmergencyFunds || "",
-                  emergencyFundAmount: updatedValue.emergencyFund.emergencyFundAmount || "",
+                  hasEmergencyFunds:
+                    updatedValue.emergencyFund.hasEmergencyFunds ? "yes" : "no",
+                  emergencyFundAmount:updatedValue.emergencyFund.emergencyFundAmount || "",
                   targetMonths: updatedValue.emergencyFund.targetMonths || "",
                 },
               }));
@@ -120,7 +122,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
                 onChange(
                   "emergencyFund",
                   "hasEmergencyFunds",
-                  updatedValue.emergencyFund.hasEmergencyFunds || ""
+                  updatedValue.emergencyFund.hasEmergencyFunds ? "yes" : "no"
                 );
               }
               if ("emergencyFundAmount" in updatedValue.emergencyFund) {

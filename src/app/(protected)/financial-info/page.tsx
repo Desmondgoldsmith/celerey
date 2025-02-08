@@ -46,14 +46,7 @@ export default function FinancialInfo() {
 
   const handleFormUpdate = useCallback(
     (updates: Partial<FinancialInfoSchema>) => {
-      console.log(
-        'Updating financial data:',
-        updates,
-        'Existing',
-        formData.financial,
-      )
       const updatedFinancialData = { ...formData.financial, ...updates }
-      console.log('Updated financial data:', updatedFinancialData)
       updateFormData('financial', updatedFinancialData)
     },
     [formData.financial, updateFormData],
