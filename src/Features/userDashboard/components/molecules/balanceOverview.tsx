@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Info, MoreHorizontal } from "lucide-react";
+import { Info, MoreHorizontal,ChevronDown } from "lucide-react";
 import { VectorMap } from "@react-jvectormap/core";
 import { worldMill } from "@react-jvectormap/world";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -16,6 +16,11 @@ import {
   IncomeItem,
   LiabilityItem,
 } from "../../types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 
 const tabs = [
@@ -232,8 +237,11 @@ export default function BalanceOverview({
     value: item.percentage,
   }));
 
-  // Component for the Assets Content (existing content)
-  const AssetsContent = () => (
+
+  const [isOpen, setIsOpen] = useState(false)
+    const countries = ["Ghana", "United Kingdom", "South Africa"];
+
+    const AssetsContent = () => (    
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Geographic Spread Section */}
       <div>
@@ -355,14 +363,35 @@ export default function BalanceOverview({
             <span className="text-sm font-bold">3 countries</span>
           </div>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-600">Asset Categories</span>
-            <span className="text-sm font-bold">4</span>
-          </div>
-          <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Asset Locations</span>
             <div className="flex items-center justify-between">
-              <p className="text-sm">Ghana, UK...</p>
-              <button className="text-navyLight text-sm px-2 py-1">more</button>
+              <p className="text-sm text-gray-600">Ghana, UK</p>
+              <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button 
+                    className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors"
+                  >
+                    more
+                    <ChevronDown className="h-3 w-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-48 p-2 bg-white rounded-lg shadow-lg"
+                >
+                  <div className="space-y-1">
+                    {countries.map((country) => (
+                      <div
+                        key={country}
+                        className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md cursor-pointer"
+                      >
+                        <div className="w-2 h-2 rounded-full bg-navy mr-2" />
+                        {country}
+                      </div>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
@@ -395,7 +424,7 @@ export default function BalanceOverview({
 
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
-      {/* Header with Title and Icon */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-bold text-navy font-cirka">
@@ -425,7 +454,7 @@ export default function BalanceOverview({
         </div>
       </div>
 
-      {/* Animated Content Section */}
+      {/* Content Section */}
       <div className="transition-all duration-300 ease-in-out">
         {activeTab === "Assets" && <AssetsContent />}
         {activeTab === "Liabilities" && (
