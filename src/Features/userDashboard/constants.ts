@@ -207,10 +207,6 @@ export const subscriptionTiers: SubscriptionTier[] = [
   },
 ];
 
-
-
-
-
 export const DUMMY_DASHBOARD_DATA: DashboardData = {
   netWorth: { value: 23765970, currency: "USD" },
   balance: { value: 3875524, currency: "USD" },
@@ -231,17 +227,6 @@ export const DUMMY_DASHBOARD_DATA: DashboardData = {
     },
     {
       id: "2",
-      name: "Emergency Fund",
-      progress: 40,
-      currentAmount: 6000,
-      targetAmount: 15000,
-      durationStart: "2024-05-01",
-      durationEnd: "2025-05-01",
-      goalDuration: 14,
-      durationLeft: 4,
-    },
-    {
-      id: "3",
       name: "Retirement Fund",
       progress: 18,
       currentAmount: 405253,
@@ -250,6 +235,18 @@ export const DUMMY_DASHBOARD_DATA: DashboardData = {
       durationEnd: "2025-03-01",
       goalDuration: 18,
       durationLeft: 13,
+    },
+  ],
+  emergencyPlans: [
+    {
+      name: "Emergency Fund",
+      progress: 40,
+      durationStart: "2024-05-01",
+      durationEnd: "2025-05-01",
+      goalDuration: 14,
+      durationLeft: 4,
+      targetDuration: 10,
+      duration: 5,
     },
   ],
   assetAllocation: [

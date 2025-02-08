@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { UserCircle, Menu, ChevronDown, X } from "lucide-react";
+import { UserCircle, Menu, ChevronDown, X, LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 interface DashboardLayoutProps {
@@ -12,6 +12,39 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
 }) => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const UserDropdownMenu = () => (
+    <div className="bg-white rounded-md shadow-lg py-2 w-48">
+      <Link
+        href="/profile"
+        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        <User className="h-4 w-4 mr-2" />
+        Edit Profile
+      </Link>
+      <button
+        onClick={() => {/*  logout logic  */}}
+        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        <LogOut className="h-4 w-4 mr-2" />
+        Logout
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -48,6 +81,21 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               >
                 Knowledge Hub
               </Link>
+              {/* Mobile User Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                  className="flex items-center w-full py-3 border-b"
+                >
+                  <UserCircle className="h-8 w-8 text-navy" />
+                  <ChevronDown className={`ml-2 h-4 w-4 text-gray-600 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isUserDropdownOpen && (
+                  <div className="mt-2" ref={dropdownRef}>
+                    <UserDropdownMenu />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -75,14 +123,42 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <Link href="#" className="text-sm font-helvetica text-gray-600">
               Knowledge Hub
             </Link>
-            <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
+            {/* Desktop User Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                className="flex items-center"
+              >
+                <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
+                <ChevronDown className={`ml-1 h-4 w-4 text-gray-600 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isUserDropdownOpen && (
+                <div className="absolute right-0 mt-2 z-50">
+                  <UserDropdownMenu />
+                </div>
+              )}
+            </div>
           </div>
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center gap-2">
             <button onClick={() => setIsMobileNavOpen(true)}>
               <Menu className="h-6 w-6 text-navy" />
             </button>
-            <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
+            {/* Mobile User Button */}
+            <div className="relative">
+              <button
+                onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                className="flex items-center"
+              >
+                <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
+                <ChevronDown className={`ml-1 h-4 w-4 text-gray-600 transition-transform ${isUserDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {isUserDropdownOpen && (
+                <div className="absolute right-0 mt-2 z-50" ref={dropdownRef}>
+                  <UserDropdownMenu />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>

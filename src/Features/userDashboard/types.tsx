@@ -1,14 +1,42 @@
+import { ApexOptions } from "apexcharts";
+
 export interface FinancialMetric {
   value: number;
   currency: string;
 }
 
+export interface ChartComponentProps {
+  options: ApexOptions;
+  series: ApexAxisChartSeries | number[];
+  type:
+    | "line"
+    | "area"
+    | "bar"
+    | "pie"
+    | "donut"
+    | "radialBar"
+    | "scatter"
+    | "bubble"
+    | "heatmap"
+    | "candlestick"
+    | "boxPlot"
+    | "radar"
+    | "polarArea"
+    | "rangeBar"
+    | "rangeArea"
+    | "treemap";
+  height?: string | number;
+  width?: string | number;
+}
+
+export type ChartType = React.ComponentType<ChartComponentProps>;
+
 export interface FinancialPlan {
   id?: string;
   name: string;
-  progress: number;
   currentAmount: number;
   targetAmount: number;
+  progress: number;
   durationStart: string;
   durationEnd: string;
   goalDuration: number;
@@ -41,6 +69,7 @@ export interface DashboardData {
   expenses: FinancialMetric;
   savings: FinancialMetric;
   financialPlans: FinancialPlan[];
+  emergencyPlans: EmergencyPlan[];
   assetAllocation: AssetAllocation[];
   geographicalSpread: GeographicalData[];
   riskProfile: RiskProfile;
@@ -53,6 +82,16 @@ export interface FinancialPlan {
   name: string;
   currentAmount: number;
   targetAmount: number;
+  progress: number;
+  durationStart: string;
+  durationEnd: string;
+  goalDuration: number;
+  durationLeft: number;
+}
+export interface EmergencyPlan {
+  name: string;
+  duration: number;
+  targetDuration: number;
   progress: number;
   durationStart: string;
   durationEnd: string;
@@ -85,6 +124,9 @@ export interface GoalFormData {
   targetAmount: string;
   currentAmount: string;
   goalDuration: string;
+  durationStart: string;
+  durationEnd: string;
+  durationLeft: string;
 }
 
 export interface PortfolioRecommendation {

@@ -1,30 +1,27 @@
 import React from "react";
 import { CircleDollarSign, Shield, Heart } from "lucide-react";
-
-interface FinancialPlan {
-  name: string;
-  currentAmount: number;
-  targetAmount: number;
-  progress: number;
-  durationStart: string;
-  durationEnd: string;
-  goalDuration: number;
-  durationLeft: number;
-}
+import { FinancialPlan, EmergencyPlan } from "../../types";
 
 interface FinancialPlanItemProps {
-  plan: FinancialPlan;
+  plan: FinancialPlan | EmergencyPlan;
   className?: string;
-  onModify: (plan: FinancialPlan) => void;
-}
-
-interface FinancialGoalsCardProps {
-  plans: FinancialPlan[];
-  onAddGoalClick: () => void;
+  onModifyEmergency: (plan: EmergencyPlan) => void;
   onModifyGoal: (plan: FinancialPlan) => void;
 }
 
-// Helper function to determine the appropriate icon based on plan type
+interface FinancialGoalsCardProps {
+  plans: (FinancialPlan | EmergencyPlan)[];
+  onAddGoalClick: () => void;
+  onModifyGoal: (plan: FinancialPlan) => void;
+  onModifyEmergency: (plan: EmergencyPlan) => void;
+}
+
+const isEmergencyPlan = (
+  plan: FinancialPlan | EmergencyPlan
+): plan is EmergencyPlan => {
+  return plan.name === "Emergency Fund";
+};
+
 const getIcon = (name: string) => {
   switch (name) {
     case "Savings Plan":
@@ -38,7 +35,6 @@ const getIcon = (name: string) => {
   }
 };
 
-// Helper function to determine progress bar color based on completion percentage
 const getProgressBarColor = (progress: number): string => {
   if (progress < 30) return "bg-red-500";
   if (progress < 70) return "bg-yellow-500";
@@ -48,8 +44,17 @@ const getProgressBarColor = (progress: number): string => {
 const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
   plan,
   className = "",
-  onModify,
+  onModifyEmergency,
+  onModifyGoal,
 }) => {
+  const handleModifyClick = () => {
+    if (isEmergencyPlan(plan)) {
+      onModifyEmergency(plan);
+    } else {
+      onModifyGoal(plan);
+    }
+  };
+
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -58,9 +63,31 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
     }).format(amount);
   };
 
+  const getCurrentAmountLabel = (): string => {
+    if (isEmergencyPlan(plan)) {
+      return "Duration";
+    }
+    return plan.name === "Retirement Fund"
+      ? "Current Amount"
+      : "Current Savings";
+  };
+
+  const getCurrentAmountDisplay = (): string => {
+    if (isEmergencyPlan(plan)) {
+      return `${plan.duration} months`;
+    }
+    return formatCurrency(plan.currentAmount);
+  };
+
+  const getTargetAmountDisplay = (): string => {
+    if (isEmergencyPlan(plan)) {
+      return `${plan.targetDuration} months`;
+    }
+    return formatCurrency(plan.targetAmount);
+  };
+
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Progress bar section  */}
       <div className="mb-3 sm:mb-4">
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
@@ -75,7 +102,6 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
         </p>
       </div>
 
-      {/* Plan details card */}
       <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-100">
         <div className="flex justify-between items-center mb-3 sm:mb-4">
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -85,46 +111,60 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
             </span>
           </div>
           <button
-            onClick={() => onModify(plan)}
+            onClick={handleModifyClick}
             className="text-navy text-sm hover:text-navy transition-colors px-2 py-1 sm:p-0"
           >
             Modify
           </button>
         </div>
 
-        {/* Grid layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
-          {/* Current Amount/Savings */}
           <div>
-            <p className="text-gray-600">
-              {plan.name === "Emergency Fund"
-                ? "Current Amount"
-                : "Current Savings"}
-            </p>
+            <p className="text-gray-600">{getCurrentAmountLabel()}</p>
             <p className="font-medium text-gray-900">
-              {formatCurrency(plan.currentAmount)}
+              {getCurrentAmountDisplay()}
             </p>
           </div>
 
-          {/* Duration Start */}
           <div>
             <p className="text-gray-600">Duration Start</p>
-            <p className="text-green-600 font-medium">{plan.durationStart}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-green-600 font-medium">
+                {plan.durationStart || "Not Set"}
+              </p>
+              {!plan.durationStart && (
+                <button
+                  onClick={handleModifyClick}
+                  className="text-navy text-xs font-bold hover:text-navyLight"
+                >
+                  Add
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Target Amount */}
           <div>
-            <p className="text-gray-600">Target Amount</p>
-            <p className="text-gray-400">{formatCurrency(plan.targetAmount)}</p>
+            <p className="text-gray-600">
+              {isEmergencyPlan(plan) ? "Target Duration" : "Target Amount"}
+            </p>
+            <p className="text-gray-400">{getTargetAmountDisplay()}</p>
           </div>
 
-          {/* Duration End */}
           <div>
             <p className="text-gray-600">Duration End</p>
-            <p className="text-gray-400">{plan.durationEnd}</p>
+            <div className="flex items-center justify-between">
+              <p className="text-gray-400">{plan.durationEnd || "Not Set"}</p>
+              {!plan.durationEnd && (
+                <button
+                  onClick={handleModifyClick}
+                  className="text-navy text-xs font-bold hover:text-navyLight"
+                >
+                  Add
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Goal Duration */}
           <div>
             <p className="text-gray-600">Goal Duration</p>
             <p className="font-medium text-gray-900">
@@ -132,7 +172,6 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
             </p>
           </div>
 
-          {/* Duration Left */}
           <div>
             <p className="text-gray-600">Duration Left</p>
             <p className="text-red-500 font-medium">
@@ -149,71 +188,68 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   plans,
   onAddGoalClick,
   onModifyGoal,
+  onModifyEmergency,
 }) => {
   const [currentPage, setCurrentPage] = React.useState(0);
   const plansPerPage = window.innerWidth < 640 ? 2 : 4;
   const totalPages = Math.ceil((plans.length + 1) / plansPerPage);
 
-  const getCurrentPagePlans = (): FinancialPlan[] => {
+  const getCurrentPagePlans = () => {
     const startIdx = currentPage * plansPerPage;
     let endIdx = startIdx + plansPerPage;
 
+    // Show all types of plans on the first page
     if (currentPage === 0) {
       endIdx = plansPerPage - 1;
       return plans.slice(startIdx, endIdx);
     }
 
+    // Show remaining plans on subsequent pages
     return plans.slice(startIdx - 1, endIdx - 1);
   };
 
   return (
     <div className="bg-white rounded-lg p-3 shadow-sm">
-      {/* Header Section */}
       <div className="flex items-center justify-between mb-4 sm:mb-6">
         <div className="flex items-center gap-1.5 sm:gap-2">
           <CircleDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
           <h2 className="text-lg sm:text-xl font-cirka text-navy font-medium">
-            Financial Goals
+            Financial & Emergency Goals
           </h2>
           <span className="text-sm text-gray-500 hover:cursor-pointer">ⓘ</span>
         </div>
       </div>
 
-      {/* Plans Count  */}
       <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-        {plans.length} financial plans
+        {plans.length} plans
       </h3>
 
-      {/* Grid Container  */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
-        {/* Decorative lines */}
         <div className="hidden sm:block absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
         <div className="hidden sm:block absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
 
-        {/* Render current page plans */}
         {getCurrentPagePlans().map((plan) => (
           <FinancialPlanItem
             key={plan.name}
             plan={plan}
-            onModify={onModifyGoal}
+            onModifyEmergency={onModifyEmergency}
+            onModifyGoal={onModifyGoal}
             className="relative"
           />
         ))}
 
-        {/* Add Financial Goal button */}
         {currentPage === 0 && (
           <div className="flex items-center justify-center min-h-[150px] sm:min-h-[200px] border rounded-lg border-dashed border-gray-300">
             <button
               onClick={onAddGoalClick}
               className="text-navy text-sm hover:text-navyLight font-medium transition-colors px-4 py-2 sm:p-0"
             >
-              Add Financial Goal
+              Add Goal
             </button>
           </div>
         )}
       </div>
 
-      {/* Pagination dots */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-6 sm:mt-4">
           {Array.from({ length: totalPages }).map((_, idx) => (
