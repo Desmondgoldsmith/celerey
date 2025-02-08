@@ -3,22 +3,27 @@ import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface EmergencyFundsSectionProps {
-  value: {
-    emergencyFund: {
-      hasEmergencyFunds?: string;
-      emergencyFundAmount?: string;
-      targetMonths?: string;
-    };
+
+
+
+
+type EmergencyFundsDataType = {
+  emergencyFund: {
+    hasEmergencyFunds?: string;
+    emergencyFundAmount?: string;
+    targetMonths?: string;
   };
-  onChange: (value: EmergencyFundsSectionProps["value"]) => void;
+};
+interface EmergencyFundsSectionProps {
+ 
+  onChange: (value: EmergencyFundsDataType) => void;
 }
 
 const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   onChange,
 }) => {
   const [inputValue, setInputValue] = useState
-  <EmergencyFundsSectionProps["value"]>
+  <EmergencyFundsDataType>
   ({
     emergencyFund: {
       hasEmergencyFunds: "",
@@ -26,7 +31,6 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
       targetMonths: "",
     },
   });
-  const [buttonState, setButtonState] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emergencyFundAmountValid, setEmergencyFundAmountValid] =
     useState(true);
@@ -125,12 +129,11 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  buttonState === "no"
+                  inputValue.emergencyFund.hasEmergencyFunds === "no"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
-                  setButtonState("no");
                   handleChanges({
                     ...inputValue,
                     emergencyFund: {
@@ -146,12 +149,11 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  buttonState === "yes"
+                  inputValue.emergencyFund.hasEmergencyFunds === "yes"
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
                 onClick={() => {
-                  setButtonState("yes");
                   handleChanges({
                     ...inputValue,
                     emergencyFund: {
@@ -171,7 +173,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
           </div>
 
           {/* Emergency Fund Amount */}
-          {buttonState === "yes" && (
+          { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
               <label className="flex-1">Emergency Fund Amount</label>
               <Input
@@ -179,20 +181,14 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
                 inputMode="numeric"
                 pattern="[0-9]*"
                 className="flex-1 appearance-none"
-                value={(() => {
-                  console.log(
-                    "Emergency Input Value: ",
-                    inputValue.emergencyFund?.emergencyFundAmount
-                  );
-                  return inputValue.emergencyFund?.emergencyFundAmount || "";
-                })()}
+                value= {inputValue.emergencyFund?.emergencyFundAmount || ""}
                 onChange={handleEmergencyFundAmountChange}
               />
             </div>
           )}
 
           {/* Target Months */}
-          {buttonState === "yes" && (
+          { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
               <label className="flex-1">Target Duration (Months)</label>
               <Input

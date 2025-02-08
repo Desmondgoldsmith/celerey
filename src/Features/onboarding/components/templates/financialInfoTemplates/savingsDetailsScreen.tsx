@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-
 import { SavingsSection } from "./savingsSection";
 import { EmergencyFundsSection } from "./emergencyFundsSection";
 import { RetirementSection } from "./retirementSection"; // Import the new section
@@ -31,10 +30,6 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   const { saveFinancialInfo, loading } = useOnboardingStore();
 
   useEffect(() => {
-    setLocalFormData(values);
-  }, [values]);
-
-  useEffect(() => {
     const checkSectionComplete = () => {
       const { savings, retirement, emergencyFund } = localFormData;
       const isComplete =
@@ -50,16 +45,15 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
     };
 
     checkSectionComplete();
-    console.log("Local Form Data:", localFormData);
   }, [localFormData]);
 
   const handleFormUpdate = (
     section: keyof FinancialInfoSchema,
     field: string,
     value: string
+
   ) => {
     if (typeof localFormData[section] === "object") {
-      // Update sections like savings
       setLocalFormData((prev) => ({
         ...prev,
         [section]: {
@@ -105,17 +99,13 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         {/* Emergency Funds Section */}
         <div className="border-b pb-4">
           <EmergencyFundsSection
-            onChange={(updatedValue) => {
-              console.log("Updated Value:", updatedValue);
-              setLocalFormData((prev) => ({
-                ...prev,
+            onChange={(updatedValue:any) => {
+       
+              setLocalFormData({
+                ...localFormData,
                 emergencyFund: {
-                  hasEmergencyFunds:
-                    updatedValue.emergencyFund.hasEmergencyFunds ? "yes" : "no",
-                  emergencyFundAmount:updatedValue.emergencyFund.emergencyFundAmount || "",
-                  targetMonths: updatedValue.emergencyFund.targetMonths || "",
-                },
-              }));
+                  ...updatedValue.emergencyFund,
+              }});
 
               // Notify parent of changes
               if ("hasEmergencyFunds" in updatedValue.emergencyFund) {
