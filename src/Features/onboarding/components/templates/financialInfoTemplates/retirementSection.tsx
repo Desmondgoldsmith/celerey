@@ -7,7 +7,7 @@ interface RetirementSectionProps {
   values: {
     retirementAge: string;
     targetRetirementIncome: string;
-    pensionFund: string; // New field
+    pensionFund: string;
   };
   onChange: (field: string, value: string) => void;
 }
@@ -40,7 +40,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            4
+            3
           </div>
           <h3 className="font-medium">Retirement</h3>
         </div>
