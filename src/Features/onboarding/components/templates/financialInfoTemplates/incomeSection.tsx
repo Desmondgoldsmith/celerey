@@ -12,10 +12,14 @@ interface IncomeSectionProps {
   };
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
-  // isComplete: boolean;
+  isComplete: boolean; 
 }
 
-const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
+const IncomeSection: React.FC<IncomeSectionProps> = ({
+  values,
+  onChange,
+  isComplete,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -23,12 +27,6 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({ values, onChange }) => {
       onChange(field, value);
     }
   };
-
-  const isComplete =
-    values?.rentalIncome !== "" &&
-    values?.dividends !== "" &&
-    values?.interestIncome !== "" &&
-    values?.otherIncome !== "";
 
   return (
     <div>
