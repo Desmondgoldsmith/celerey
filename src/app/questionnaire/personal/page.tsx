@@ -1,16 +1,19 @@
-import React, { useState, useCallback } from "react";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import React, { useState, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
-import { OccupationScreen } from "./occupationSection";
-import { MaritalStatusScreen } from "./maritalStatusSection";
-import { IdentificationScreen } from "./identificationSection";
-import { HomeAddressScreen } from "./homeAddressSection";
+import { OccupationScreen } from "@/Features/onboarding/components/templates/questionnaireTemplates/personalInfo/occupationSection";
+import { MaritalStatusScreen } from "@/Features/onboarding/components/templates/questionnaireTemplates/personalInfo/maritalStatusSection";
+import { IdentificationScreen } from "@/Features/onboarding/components/templates/questionnaireTemplates/personalInfo/identificationSection";
+import { DependentsScreen } from "@/Features/onboarding/components/templates/questionnaireTemplates/personalInfo/dependentsSection";
+import { HomeAddressScreen } from "@/Features/onboarding/components/templates/questionnaireTemplates/personalInfo/homeAddressSection";
 import {
   PersonalInfoFormData,
   IdentificationDocument,
   Address,
-} from "../../../../types";
+} from "@/Features/onboarding/types";
 import { useOnboardingStore } from "@/Features/onboarding/state";
+import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 
 const PersonalInfoScreen: React.FC = () => {
   const router = useRouter();
@@ -30,9 +33,10 @@ const PersonalInfoScreen: React.FC = () => {
   // Step management
   const steps = [
     "occupation",
+    "homeAddress",
+    "dependents",
     "maritalStatus",
     "identification",
-    "homeAddress",
   ];
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -40,7 +44,7 @@ const PersonalInfoScreen: React.FC = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
-      router.push("/previous-page");
+      router.push("/");
     }
   }, [currentStep, router]);
 
@@ -49,7 +53,7 @@ const PersonalInfoScreen: React.FC = () => {
       setCurrentStep(currentStep + 1);
     } else {
       completeSection("personal");
-      router.push("/next-page");
+      router.push("/questionnaire/financial");
     }
   }, [currentStep, steps.length, completeSection, router]);
 
@@ -64,7 +68,6 @@ const PersonalInfoScreen: React.FC = () => {
     setLocalFormData(updatedFormData);
     updateFormData("personal", updatedFormData);
   };
-  
 
   const handleAddressUpdate = (field: keyof Address, value: string) => {
     const updatedAddress = {
@@ -89,6 +92,14 @@ const PersonalInfoScreen: React.FC = () => {
     setLocalFormData(updatedFormData);
     updateFormData("personal", updatedFormData);
   };
+   const handleFormUpdate = (updatedFields: Partial<PersonalInfoFormData>) => {
+     const updatedFormData = {
+       ...localFormData,
+       ...updatedFields,
+     };
+     setLocalFormData(updatedFormData);
+     updateFormData("personal", updatedFormData);
+   };
 
   const renderStep = () => {
     switch (steps[currentStep]) {
@@ -97,6 +108,18 @@ const PersonalInfoScreen: React.FC = () => {
           <OccupationScreen
             value={localFormData.occupation}
             onChange={(value) => handleSimpleUpdate("occupation", value)}
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        );
+
+      case "homeAddress":
+        return (
+          <HomeAddressScreen
+            values={localFormData.address}
+            onChange={(field, value) =>
+              handleAddressUpdate(field as keyof Address, value)
+            }
             onBack={handleBack}
             onContinue={handleContinue}
           />
@@ -110,22 +133,21 @@ const PersonalInfoScreen: React.FC = () => {
             onContinue={handleContinue}
           />
         );
+      case "dependents":
+        return (
+          <DependentsScreen
+            value={localFormData.dependents}
+            onChange={(value) => handleFormUpdate({ dependents: value })}
+            onBack={handleBack}
+            onContinue={handleContinue}
+          />
+        );
+
       case "identification":
         return (
           <IdentificationScreen
             value={localFormData.identification}
             onChange={handleIdentificationUpdate}
-            onBack={handleBack}
-            onContinue={handleContinue}
-          />
-        );
-      case "homeAddress":
-        return (
-          <HomeAddressScreen
-            values={localFormData.address}
-            onChange={(field, value) =>
-              handleAddressUpdate(field as keyof Address, value)
-            }
             onBack={handleBack}
             onContinue={handleContinue}
           />
@@ -136,29 +158,15 @@ const PersonalInfoScreen: React.FC = () => {
   };
 
   return (
-    <div className="font-helvetica max-w-xl mx-auto">
-      <div className="text-center mb-8 flex flex-col gap-4">
-        <h1 className="text-4xl font-cirka">
-          Please provide your personal information
-        </h1>
-        <p className="text-gray-600">
-          Fill the different forms that appear from the pop-ups
-        </p>
+    <OnboardingLayout>
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="font-helvetica max-w-xl mx-auto">
+          
+          <div className="space-y-4 max-w-md mx-auto">{renderStep()}</div>
+        </div>
       </div>
-      <div className="space-y-4 max-w-sm mx-auto">{renderStep()}</div>
-      <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
-        <Button variant="outline" onClick={handleBack} className="flex-1">
-          Back
-        </Button>
-        <Button
-          onClick={handleContinue}
-          className={`flex-1 bg-navy hover:bg-navyLight text-white`}
-        >
-          {currentStep === steps.length - 1 ? "Finish" : "Continue"}
-        </Button>
-      </div>
-    </div>
+    </OnboardingLayout>
   );
 };
 
-export { PersonalInfoScreen };
+export default PersonalInfoScreen;

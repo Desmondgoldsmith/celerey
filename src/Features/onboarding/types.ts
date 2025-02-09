@@ -146,6 +146,11 @@ export interface OccupationScreenProps extends BaseScreenProps {
   onChange: (value: string) => void;
 }
 
+export interface DependentsScreenProps extends BaseScreenProps {
+  value: DependentsData;
+  onChange: (value: DependentsData) => void;
+}
+
 export interface IdentificationDocument {
   type: string;
   file: File | null;
