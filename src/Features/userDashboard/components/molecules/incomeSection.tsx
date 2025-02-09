@@ -10,34 +10,10 @@ interface IncomeItem {
   color: string;
 }
 
-const incomeData: IncomeItem[] = [
-  {
-    category: "Dividends",
-    amount: 18354.23,
-    percentage: 30,
-    color: "#8BA78D",
-  },
-  {
-    category: "Rental",
-    amount: 12493.32,
-    percentage: 28,
-    color: "#1B1856",
-  },
-  {
-    category: "Interest Income",
-    amount: 14245.21,
-    percentage: 18,
-    color: "#E15B2D",
-  },
-  {
-    category: "Other Income",
-    amount: 9234.64,
-    percentage: 24,
-    color: "#383396",
-  },
-];
+
 
 interface IncomeSectionProps {
+  totalIncome: number,
   income: IncomeItem[];
   openIncomeModal: () => void;
   openBudgetModal: () => void;
@@ -47,17 +23,18 @@ interface IncomeSectionProps {
 
 const IncomeSection = ({
   income,
+  totalIncome,
   openIncomeModal,
   openBudgetModal,
   generatedBudget,
   openGenBudgetModal,
 }: IncomeSectionProps) => {
   // Transform income data for the pie chart
-  const pieChartData = incomeData.map((item) => ({
+  const pieChartData = (income || []).map((item) => ({
     name: item.category,
-    value: item.percentage,
-  }));
-  console.log(income);
+    value: Number(item?.percentage || 0),
+  }))
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Budget Visualization Section */}
@@ -180,7 +157,7 @@ const IncomeSection = ({
                 {pieChartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={incomeData[index].color}
+                    fill={income[index].color}
                     stroke="white"
                     strokeWidth={2}
                   />
@@ -195,34 +172,34 @@ const IncomeSection = ({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Total Annual Income</span>
             <span className="text-lg font-bold">
-              ${(54859.26).toLocaleString()}
+              ${(totalIncome).toLocaleString()}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Income Categories</span>
-            <span className="text-sm font-bold">4</span>
+            <span className="text-sm font-bold">{income?.length || 0}</span>
           </div>
         </div>
 
         {/* Income Breakdown */}
-        {incomeData.map((income) => (
-          <div key={income.category} className="mb-4">
+        {income.map((item) => (
+          <div key={item.category} className="mb-4">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-600">{income.category}</span>
-              <span className="text-gray-900">{income.percentage}%</span>
+              <span className="text-gray-600">{item.category}</span>
+              <span className="text-gray-900">{item.percentage}%</span>
             </div>
             <div className="flex justify-between items-center">
               <div className="w-full h-1 bg-gray-100 rounded-full mr-4">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{
-                    width: `${income.percentage}%`,
-                    backgroundColor: income.color,
+                    width: `${item.percentage}%`,
+                    backgroundColor: item.color,
                   }}
                 />
               </div>
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                ${income.amount.toLocaleString()}
+                ${(item?.amount || 0).toLocaleString()}
               </span>
             </div>
           </div>

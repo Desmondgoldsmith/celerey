@@ -159,15 +159,15 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       targetSavings: "",
     },
     emergencyFund: {
-    hasEmergencyFunds: "",
-    emergencyFundAmount: "",
-    targetMonths: "",
+      hasEmergencyFunds: "",
+      emergencyFundAmount: "",
+      targetMonths: "",
     },
-  retirement: {
-    retirementAge: "",
-    targetRetirementIncome: "",
-    pensionFund: "",
-  },
+    retirement: {
+      retirementAge: "",
+      targetRetirementIncome: "",
+      pensionFund: "",
+    },
   },
   goals: {
     primamryFinancialGoal: "",
@@ -177,7 +177,6 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   },
   risk: {
     riskTolerance: "",
-
     riskAttitude: "",
     riskTolerancePercentage: "",
     riskReaction: "",

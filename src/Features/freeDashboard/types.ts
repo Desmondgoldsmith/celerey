@@ -82,6 +82,7 @@ export interface Goal {
   lastUpdated: string;
 }
 
+
 export type SubscriptionInterval = "yearly" | "biennial";
 
 export type SubscriptionTier = {

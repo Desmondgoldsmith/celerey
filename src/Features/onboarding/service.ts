@@ -49,10 +49,11 @@ export const saveFinancialInfoApi = async (
     assets: data.assets,
     liabilities: data.liabilities,
     savings: data.savings,
-    has_emergency_funds: true,
-    emergency_funds: "10000",
-    has_debt: true,
-    debt: "3030",
+    emergency_fund: {
+      hasEmergencyFund: true,
+      currentMonths: "6 Months",
+      targetMonths: "14 Months",
+    },
     retirement: data.retirement,
   };
 

@@ -22,6 +22,7 @@ interface BalanceOverviewProps {
   liabilities: any
   income:any,
   expense: any
+  onAddCategory: () => void
   // annualIncome: {
   //   Rental: number;
   //   Dividends: number;
@@ -42,7 +43,8 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   assets,
   liabilities,
   expense,
-  income
+  income,
+  onAddCategory
 }) => {
   // Dummy data
   const realEstate = {
@@ -160,8 +162,8 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             <Info className="h-3 w-3 text-gray-400" />
           </div>
 
-          <div>
-            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
+          <div onClick={onAddCategory}>
+            <p className="text-[#2117DC] hover:cursor-pointer">Add category</p>
           </div>
         </div>
 
@@ -277,7 +279,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
           </div>
 
           <div>
-            <p className="text-[#2117DC] hover:cursor-pointer">add category</p>
+            <p className="text-[#2117DC] hover:cursor-pointer">Add category</p>
           </div>
         </div>
 

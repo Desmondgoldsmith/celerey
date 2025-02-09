@@ -1,29 +1,38 @@
-"use client";
-import React from "react";
-import { Card } from "@/components/ui/card";
-import { MoreHorizontal } from "lucide-react";
-import dynamic from "next/dynamic";
+'use client'
+import React from 'react'
+import { Card } from '@/components/ui/card'
+import { MoreHorizontal } from 'lucide-react'
+import dynamic from 'next/dynamic'
 
 // Dynamically import VectorMap with SSR disabled
 const VectorMap = dynamic(
-  () => import("@react-jvectormap/core").then((mod) => mod.VectorMap),
-  { ssr: false }
-);
+  () => import('@react-jvectormap/core').then((mod) => mod.VectorMap),
+  { ssr: false },
+)
 
 // Import `worldMill` statically, as it's just data, not a React component
-import { worldMill } from "@react-jvectormap/world";
+import { worldMill } from '@react-jvectormap/world'
+import { countries } from '@/Features/onboarding/countries'
 
-export const GeographicSpread: React.FC<{assetCountries: string[]}> = ({assetCountries}: {assetCountries: string[]}) => {
-  const mapData: { [key: string]: number } = {};
+export const GeographicSpread: React.FC<{ assetCountries: string[] }> = ({
+  assetCountries,
+}: {
+  assetCountries: string[]
+}) => {
+  const mapData: { [key: string]: number } = {}
 
-  assetCountries.map((country, index) => mapData[country]  = index + 1)
+  assetCountries.map((country, index) => (mapData[country] = index + 1))
 
   const colorScale = {
     min: 1,
-    max: 2,
+    max: 4,
     values: mapData,
-    scale: ["#FF1493", "#0f0251"],
-  };
+    scale: ['#FF1493', '#0f0251', '#DB00FF', '#E15B2D'],
+  }
+
+  const findCountry = (code: string) => {
+    return countries.find((country) => country.code === code)
+  }
 
   return (
     <Card className="p-6 bg-white">
@@ -40,13 +49,13 @@ export const GeographicSpread: React.FC<{assetCountries: string[]}> = ({assetCou
           backgroundColor="transparent"
           zoomOnScroll={false}
           containerStyle={{
-            width: "100%",
-            height: "100%",
+            width: '100%',
+            height: '100%',
           }}
           regionStyle={{
             initial: {
-              fill: "#F3F4F6",
-              stroke: "#E5E7EB",
+              fill: '#F3F4F6',
+              stroke: '#E5E7EB',
               strokeWidth: 0.5,
               fillOpacity: 1,
             },
@@ -63,7 +72,7 @@ export const GeographicSpread: React.FC<{assetCountries: string[]}> = ({assetCou
                 // @ts-ignore
                 min: colorScale.min,
                 max: colorScale.max,
-                normalizeFunction: "polynomial",
+                normalizeFunction: 'polynomial',
               },
             ],
           }}
@@ -71,16 +80,16 @@ export const GeographicSpread: React.FC<{assetCountries: string[]}> = ({assetCou
         />
       </div>
 
-      <div className="flex justify-center space-x-8">
-        {/* <div className="flex items-center">
-          <div className="w-2.5 h-2.5 rounded-full bg-navy mr-2" />
-          <span className="text-sm text-gray-600">Ghana</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#FF1493] mr-2" />
-          <span className="text-sm text-gray-600">United Kingdom</span>
-        </div> */}
+      <div className="flex justify-start items-center gap-x-4 flex-wrap">
+        {Object.keys(mapData).map((key: string, index) => (
+          <div key={index} className="flex items-center">
+            <div style={{background: colorScale.scale[index]}} className={`w-2.5 h-2.5 rounded-full  mr-2`} />
+            <span className="text-sm text-gray-600">
+              {findCountry(key)?.name}
+            </span>
+          </div>
+        ))}
       </div>
     </Card>
-  );
-};
+  )
+}

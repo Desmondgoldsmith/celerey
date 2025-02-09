@@ -98,7 +98,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <div>
               <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
-                complete profile
+                Complete profile
               </span>
             </div>
           </div>
@@ -123,7 +123,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <div>
               <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
-                complete profile
+                Complete profile
               </span>
             </div>
           </div>
