@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { Card } from '@/components/ui/card'
-import { Info, MoreHorizontal, ChevronDown } from 'lucide-react'
-import { VectorMap } from '@react-jvectormap/core'
-import { worldMill } from '@react-jvectormap/world'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
-import IncomeSection from './incomeSection'
-import ExpensesSection from './expenseSection'
-import IncomeVsDebtSection from './incomeVsDebtSection'
-import IncomeVsExpenditure from './incomeVsExpenditure'
+import React, { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Info, MoreHorizontal, ChevronDown } from "lucide-react";
+import { worldMill } from "@react-jvectormap/world";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import IncomeSection from "./incomeSection";
+import ExpensesSection from "./expenseSection";
+import IncomeVsDebtSection from "./incomeVsDebtSection";
+import IncomeVsExpenditure from "./incomeVsExpenditure";
 import {
   AssetType,
   CountryType,
@@ -15,28 +14,35 @@ import {
   GeneratedBudget,
   IncomeItem,
   LiabilityItem,
-} from '../../types'
+} from "../../types";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useRouter } from 'next/navigation'
-import { countries as countiesWithCode } from '@/Features/onboarding/countries'
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { countries as countiesWithCode } from "@/Features/onboarding/countries";
+import dynamic from "next/dynamic";
+import { memo } from "react";
+
+const VectorMap = dynamic(
+  () => import("@react-jvectormap/core").then((mod) => mod.VectorMap),
+  { ssr: false }
+);
 
 const tabs = [
-  'Assets',
-  'Liabilities',
-  'Income',
-  'Expenses',
-  'Income Vs Debt',
-  'Income Vs Expenditure',
-]
+  "Assets",
+  "Liabilities",
+  "Income",
+  "Expenses",
+  "Income Vs Debt",
+  "Income Vs Expenditure",
+];
 
 interface LiabilitiesProps {
-  liabilityData: LiabilityItem[]
-  totalDebt: { value: number; percentage: number }
-  openLiabilityModal: () => void
+  liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
+  openLiabilityModal: () => void;
 }
 
 // Component for the Liabilities Content
@@ -48,12 +54,12 @@ const LiabilitiesContent = ({
   const pieChartData = (liabilityData || []).map((item) => ({
     name: item.category,
     value: Number(item?.percentage || 0),
-  }))
+  }));
 
-  const router = useRouter()
+  const router = useRouter();
   const handleAdvisors = () => {
-    router.push('/advisors')
-  }
+    router.push("/advisors");
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
@@ -153,35 +159,35 @@ const LiabilitiesContent = ({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface BalanceOverviewProps {
-  onPortfolioRecommendationClick: () => void
-  onEditAssetClick: () => void
-  assets: AssetType[]
-  totalAssets: any
-  totalIncome: number
-  totalExpense: number
-  countries: { [key: string]: number }
-  incomes: IncomeItem[]
-  openIncomeModal: () => void
-  onEditExpenseClick: () => void
-  expenses: ExpenseItem[]
-  openDebtModal: () => void
-  openDebtServicingModal: () => void
-  openStatementModal: () => void
-  openBudgetModal: () => void
-  openGenBudgetModal: () => void
-  openLiabilityModal: () => void
-  generatedBudget: GeneratedBudget
-  liabilityData: LiabilityItem[]
-  totalDebt: { value: number; percentage: number }
-  income: { value: number; percentage: number }
-  incomeAndDebt: number
-  totalIncomeFromExpense:{ value: number; percentage: number }
-  totalExpenseFromIncome:{ value: number; percentage: number }
-  userLiabilitiesEstimation: any
+  onPortfolioRecommendationClick: () => void;
+  onEditAssetClick: () => void;
+  assets: AssetType[];
+  totalAssets: any;
+  totalIncome: number;
+  totalExpense: number;
+  countries: { [key: string]: number };
+  incomes: IncomeItem[];
+  openIncomeModal: () => void;
+  onEditExpenseClick: () => void;
+  expenses: ExpenseItem[];
+  openDebtModal: () => void;
+  openDebtServicingModal: () => void;
+  openStatementModal: () => void;
+  openBudgetModal: () => void;
+  openGenBudgetModal: () => void;
+  openLiabilityModal: () => void;
+  generatedBudget: GeneratedBudget;
+  liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
+  income: { value: number; percentage: number };
+  incomeAndDebt: number;
+  totalIncomeFromExpense: { value: number; percentage: number };
+  totalExpenseFromIncome: { value: number; percentage: number };
+  userLiabilitiesEstimation: any;
 }
 
 export default function BalanceOverview({
@@ -211,29 +217,29 @@ export default function BalanceOverview({
   totalExpenseFromIncome,
   userLiabilitiesEstimation
 }: BalanceOverviewProps) {
-  const [activeTab, setActiveTab] = useState('Assets')
+  const [activeTab, setActiveTab] = useState("Assets");
 
   const handlePortfolioRecommendationClick = () => {
-    onPortfolioRecommendationClick()
-  }
+    onPortfolioRecommendationClick();
+  };
 
   const colorScale = {
     min: 1,
     max: 4,
     values: countries,
-    scale: ['#FF1493', '#0f0251', '#DB00FF', '#E15B2D'],
-  }
+    scale: ["#FF1493", "#0f0251", "#DB00FF", "#E15B2D"],
+  };
 
   const pieChartData = (assets || []).map((item) => ({
     name: item.category,
     value: Number(item?.percentage || 0),
-  }))
+  }));
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const findCountry = (code: string) => {
-    return countiesWithCode.find((country) => country.code === code)
-  }
+    return countiesWithCode.find((country) => country.code === code);
+  };
 
   const AssetsContent = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -258,13 +264,13 @@ export default function BalanceOverview({
             backgroundColor="transparent"
             zoomOnScroll={false}
             containerStyle={{
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
             }}
             regionStyle={{
               initial: {
-                fill: '#F3F4F6',
-                stroke: '#E5E7EB',
+                fill: "#F3F4F6",
+                stroke: "#E5E7EB",
                 strokeWidth: 0.5,
                 fillOpacity: 1,
               },
@@ -281,7 +287,7 @@ export default function BalanceOverview({
                   // @ts-ignore
                   min: colorScale.min,
                   max: colorScale.max,
-                  normalizeFunction: 'polynomial',
+                  normalizeFunction: "polynomial",
                 },
               ],
             }}
@@ -415,7 +421,7 @@ export default function BalanceOverview({
           ))}
       </div>
     </div>
-  )
+  );
 
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
@@ -438,8 +444,8 @@ export default function BalanceOverview({
               key={tab}
               className={`px-4 py-2 rounded-md text-sm transition-colors ${
                 activeTab === tab
-                  ? 'bg-white shadow-sm text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
               onClick={() => setActiveTab(tab)}
             >
@@ -451,15 +457,15 @@ export default function BalanceOverview({
 
       {/* Content Section */}
       <div className="transition-all duration-300 ease-in-out">
-        {activeTab === 'Assets' && <AssetsContent />}
-        {activeTab === 'Liabilities' && (
+        {activeTab === "Assets" && <AssetsContent />}
+        {activeTab === "Liabilities" && (
           <LiabilitiesContent
             liabilityData={liabilityData}
             openLiabilityModal={openLiabilityModal}
             totalDebt={totalDebt}
           />
         )}
-        {activeTab === 'Income' && (
+        {activeTab === "Income" && (
           <IncomeSection
             income={incomes}
             totalIncome={totalIncome}
@@ -469,14 +475,14 @@ export default function BalanceOverview({
             generatedBudget={generatedBudget}
           />
         )}
-        {activeTab === 'Expenses' && (
+        {activeTab === "Expenses" && (
           <ExpensesSection
             onEditClick={onEditExpenseClick}
             expenses={expenses}
             totalExpense={totalExpense}
           />
         )}
-        {activeTab === 'Income Vs Debt' && (
+        {activeTab === "Income Vs Debt" && (
           <IncomeVsDebtSection
             totalDebt={totalDebt}
             income={income}
@@ -486,10 +492,15 @@ export default function BalanceOverview({
             openDebtServicingModal={openDebtServicingModal}
           />
         )}
-        {activeTab === 'Income Vs Expenditure' && (
-          <IncomeVsExpenditure totalIncome={totalIncome} totalIncomeFromExpense={totalIncomeFromExpense} totalExpenseFromIncome={totalExpenseFromIncome}  openStatementModal={openStatementModal} />
+        {activeTab === "Income Vs Expenditure" && (
+          <IncomeVsExpenditure
+            totalIncome={totalIncome}
+            totalIncomeFromExpense={totalIncomeFromExpense}
+            totalExpenseFromIncome={totalExpenseFromIncome}
+            openStatementModal={openStatementModal}
+          />
         )}
       </div>
     </Card>
-  )
+  );
 }
