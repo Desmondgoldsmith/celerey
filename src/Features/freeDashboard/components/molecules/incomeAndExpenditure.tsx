@@ -97,10 +97,10 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
                   maximumFractionDigits: 2,
                 })}
               </div>
-              <div className="text-sm text-gray-600">income</div>
+              <div className="text-sm text-gray-600">Income</div>
             </div>
             <div className="mt-2 text-green-800 font-medium">
-              {totalIncomeFromExpense.percentage.toFixed(2)}%
+              {totalIncomeFromExpense.percentage.toFixed(0)}%
             </div>
             <div className="h-2 bg-green-800 rounded-full w-full mt-2" />
           </div>
@@ -124,11 +124,11 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
                 })}
               </div>
               <div className="text-sm text-gray-600">
-                expenditure
+                Expenditure
               </div>
             </div>
             <div className="mt-2 text-red-800 font-medium">
-              {totalExpenseFromIncome.percentage.toFixed(2)}%
+              {totalExpenseFromIncome.percentage.toFixed(0)}%
             </div>
             <div className="h-2 bg-red-800 rounded-full w-full sm:w-[69.2%] mt-2" />
           </div>

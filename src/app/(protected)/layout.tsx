@@ -6,10 +6,13 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Cookies from 'js-cookie'
 import { useOnboardingStore } from '@/Features/onboarding/state'
+import { useDashboardStore } from '@/Features/userDashboard/state'
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
   const { setIsAuthenticated, isAuthenticated } = useAuthStore()
   const { getSectionProgress, hasCheckedProgress, setHasCheckedProgress } = useOnboardingStore()
+  const { subscription, populateSubscription } = useDashboardStore()
+
   const [isFetchingData, setIsFetchingData] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
@@ -28,8 +31,16 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     // Only run progress check once
     if (!hasCheckedProgress) {
       handleOnboardingProgress()
+      populateSubscription()
     }
   }, [])
+
+
+  useEffect(() => {
+    if (subscription.status === 'active') {
+      router.replace('/dashboard')
+    }
+  }, [subscription])
 
   const handleOnboardingProgress = async () => {
     setIsFetchingData(true)

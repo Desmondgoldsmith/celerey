@@ -6,15 +6,19 @@ export const getDashboardDataApi = async (): Promise<ApiResponse> => {
   return response.data;
 };
 
+export const getFinancialGoalsApi = async (): Promise<ApiResponse> => {
+  const response = await apiClient.get("/user/financial-goals");
+  return response.data;
+};
 
 export const createSubscriptionApi = async (payload: any): Promise<ApiResponse> => {
-  const response = await apiClient.post("/payment/create-subscription", payload);
+  const response = await apiClient.post("/subscription", payload);
   return response.data;
 };
 
 
-export const getSubscriptionStatusApi = async (subscriptionId: string): Promise<ApiResponse> => {
-  const response = await apiClient.get(`/payment/subscription/status?subscription_id=${subscriptionId}`);
+export const getSubscriptionStatusApi = async (): Promise<ApiResponse> => {
+  const response = await apiClient.get(`/subscription/status`);
   return response.data;
 };
 

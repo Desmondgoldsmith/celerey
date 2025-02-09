@@ -50,7 +50,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   const [showAdditionalField, setShowAdditionalField] = useState(false);
   const [newAssetName, setNewAssetName] = useState("");
   const [selectedCountries, setSelectedCountries] =
-    useState<CountryType[]>(initialCountries);
+    useState<any>([]);
   const [countrySearchValue, setCountrySearchValue] = useState("");
 
   const handleAmountChange = (id: string, value: string) => {
@@ -78,7 +78,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
     if (
       countryToAdd &&
       !selectedCountries.some(
-        (c) => c.name.toLowerCase() === countryToAdd.toLowerCase()
+        (c: any) => c.name.toLowerCase() === countryToAdd.toLowerCase()
       )
     ) {
       const newCountry: CountryType = {
@@ -91,7 +91,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   };
 
   const handleRemoveCountry = (countryId: string) => {
-    setSelectedCountries(selectedCountries.filter((c) => c.id !== countryId));
+    setSelectedCountries(selectedCountries.filter((c: any) => c.id !== countryId));
   };
 
   const handleSave = () => {
@@ -128,7 +128,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                 <Input
                   type="number"
                   value={asset.amount}
-                  onChange={(e) => handleAmountChange(asset.id, e.target.value)}
+                  onChange={(e) => handleAmountChange(asset?.id || '0', e.target.value)}
                   className="w-full md:w-[200px] text-right"
                 />
               </div>
@@ -209,7 +209,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                 )}
 
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {selectedCountries.map((country) => (
+                  {selectedCountries.map((country: any) => (
                     <div
                       key={country.id}
                       className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full"

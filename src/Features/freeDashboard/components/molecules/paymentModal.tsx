@@ -53,6 +53,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               <PaymentForm
                 selectedTier={selectedTier}
                 onPaymentComplete={onPaymentComplete}
+                onClose={onClose}
               />
             </Elements>
           )}

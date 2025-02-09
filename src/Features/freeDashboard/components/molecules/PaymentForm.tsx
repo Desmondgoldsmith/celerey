@@ -11,16 +11,20 @@ import {
   useElements,
 } from '@stripe/react-stripe-js'
 import { getStripe } from '@/lib/stripe'
-import { createSubscriptionApi, getSubscriptionStatusApi } from '../../service'
+import { createSubscriptionApi, getSubscriptionStatusApi } from '../../../userDashboard/service'
+import Spinner from '@/components/ui/spinner'
+import { Button } from '@/components/ui/button'
 
 interface PaymentFormProps {
   selectedTier: SubscriptionTier | null
   onPaymentComplete: () => void
+  onClose: () => void
 }
 
 export const PaymentForm: React.FC<PaymentFormProps> = ({
   selectedTier,
   onPaymentComplete,
+  onClose,
 }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -75,7 +79,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         payment_method_id: paymentMethod.id,
       })
 
-      console.log("response", response)
+      console.log('response', response)
 
       if (!response.success) {
         setErrorMessage(response.message)
@@ -94,16 +98,14 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         return
       }
 
-      const subscriptionResponse = await getSubscriptionStatusApi(
-        response.data.subscription.id,
-      )
+      const subscriptionResponse = await getSubscriptionStatusApi()
 
       console.log('subscriptionResponse', subscriptionResponse)
 
-      if (subscriptionResponse.data.status === 'active') {
+      if (subscriptionResponse.data.status === 'active' || subscriptionResponse.data.status === 'pending') {
         alert('Subscription Successful!')
-        // onPaymentComplete();
-        // onClose();
+        onPaymentComplete()
+        onClose()
       } else {
         alert('Subscription Pending. Please check your email.')
       }
@@ -152,12 +154,15 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
 
       <p>{errorMessage}</p>
 
-      <button
+      <Button
+        disabled={loading}
+        type="submit"
         onClick={handlePayment}
-        className="w-full bg-[#6938EF] text-white py-2.5 md:py-3 text-sm md:text-base rounded-lg hover:bg-[#5b2ed9] transition-colors"
+        className="w-[450px] bg-navy hover:bg-navyLight text-white"
       >
+        {loading && <Spinner className="text-white" />}{' '}
         {loading ? 'Processing...' : `Pay $${selectedTier?.price}`}
-      </button>
+      </Button>
     </div>
   )
 }

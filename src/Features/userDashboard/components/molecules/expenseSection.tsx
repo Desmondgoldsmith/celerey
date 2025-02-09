@@ -6,13 +6,14 @@ import { ExpenseItem } from "../../types";
 interface ExpenseSectionProps {
   onEditClick: () => void;
   expenses: ExpenseItem[];
+  totalExpense: number
 }
 
-const ExpensesSection = ({ onEditClick, expenses }: ExpenseSectionProps) => {
+const ExpensesSection = ({ onEditClick, expenses, totalExpense }: ExpenseSectionProps) => {
   // Transform expenses data for the pie chart visualization
   const pieChartData = expenses.map((item) => ({
     name: item.category,
-    value: item.percentage,
+    value: Number(item.percentage),
     fill: item.color,
   }));
 
@@ -83,12 +84,12 @@ const ExpensesSection = ({ onEditClick, expenses }: ExpenseSectionProps) => {
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Total Annual Expenses</span>
             <span className="text-lg font-bold">
-              ${(84395.25).toLocaleString()}
+              ${(totalExpense).toLocaleString()}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Expenses Categories</span>
-            <span className="text-sm font-bold">6</span>
+            <span className="text-sm font-bold">{expenses?.length || 0}</span>
           </div>
         </div>
 
@@ -111,7 +112,7 @@ const ExpensesSection = ({ onEditClick, expenses }: ExpenseSectionProps) => {
                   />
                 </div>
                 <span className="text-sm text-gray-600 whitespace-nowrap">
-                  ${expense.amount.toLocaleString()}
+                  ${Number(expense?.amount || 0).toLocaleString()}
                 </span>
               </div>
             </div>
