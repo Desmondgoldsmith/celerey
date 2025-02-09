@@ -4,12 +4,12 @@ import { FeaturesList } from "./featureList";
 
 interface PricingCardProps {
   tier: SubscriptionTier;
-  // onSubscribe: () => void;
+  onSubscribe: () => void;
 }
 
 export const PricingCard: React.FC<PricingCardProps> = ({
   tier,
-  // onSubscribe,
+  onSubscribe,
 }) => {
   return (
     <div
@@ -52,11 +52,15 @@ export const PricingCard: React.FC<PricingCardProps> = ({
 
       <div>
         <button
-          // onClick={onSubscribe}
-          className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white`}
+          onClick={onSubscribe}
+          className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors ${
+            tier.isCurrentPlan
+              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+              : "bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white"
+          }`}
           disabled={tier.isCurrentPlan}
         >
-          {tier.buttonText}
+          {tier.isCurrentPlan ? "You are on Standard" : tier.buttonText}
         </button>
       </div>
 
