@@ -8,8 +8,8 @@ import { KnowledgeInfoScreen } from "@/Features/onboarding/components/templates/
 const QuestionnairePage: React.FC = () => {
   return (
     <div>
-      <RiskInfoScreen />
       <PersonalInfoScreen />
+      <RiskInfoScreen />
       <KnowledgeInfoScreen />
     </div>
   );

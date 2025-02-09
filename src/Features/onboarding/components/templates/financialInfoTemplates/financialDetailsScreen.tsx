@@ -21,7 +21,14 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
     formData.financial
   );
-  const [isSectionComplete, setIsSectionComplete] = useState(false);
+
+  // Track completion status for each section
+  const [sectionCompletion, setSectionCompletion] = useState({
+    income: false,
+    annualExpenses: false,
+    assets: false,
+    liabilities: false,
+  });
 
   useEffect(() => {
     setLocalFormData(formData.financial);
@@ -30,12 +37,25 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   useEffect(() => {
     const checkSectionComplete = () => {
       const { income, assets, annualExpenses, liabilities } = localFormData;
-      const isComplete = 
-        Object.values(income || {}).every(value => value !== "") &&
-        Object.values(assets || {}).every(value => value !== "") &&
-        Object.values(annualExpenses || {}).every(value => value !== "") &&
-        Object.values(liabilities || {}).every(value => value !== "");
-      setIsSectionComplete(isComplete);
+      const isIncomeComplete = Object.values(income || {}).every(
+        (value) => value !== ""
+      );
+      const isExpensesComplete = Object.values(annualExpenses || {}).every(
+        (value) => value !== ""
+      );
+      const isAssetsComplete = Object.values(assets || {}).every(
+        (value) => value !== ""
+      );
+      const isLiabilitiesComplete = Object.values(liabilities || {}).every(
+        (value) => value !== ""
+      );
+
+      setSectionCompletion({
+        income: isIncomeComplete,
+        annualExpenses: isExpensesComplete,
+        assets: isAssetsComplete,
+        liabilities: isLiabilitiesComplete,
+      });
     };
 
     checkSectionComplete();
@@ -77,7 +97,11 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     const isLastStep =
       currentStepIndex === sections[currentSection].totalSteps - 1;
 
-    if (!isSectionComplete) {
+    const isAllSectionsComplete = Object.values(sectionCompletion).every(
+      (status) => status
+    );
+
+    if (!isAllSectionsComplete) {
       alert(
         "Please fill in all the information in the section before continuing."
       );
@@ -94,7 +118,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   }, [
     currentSection,
     sections,
-    isSectionComplete,
+    sectionCompletion,
     completeSection,
     router,
     updateSectionProgress,
@@ -119,6 +143,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
               handleFormUpdate("income", field, value)
             }
             onContinue={handleContinue}
+            isComplete={sectionCompletion.income}
           />
         </div>
         <div className="border-b pb-4">
@@ -128,6 +153,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
               handleFormUpdate("annualExpenses", field, value)
             }
             onContinue={handleContinue}
+            isComplete={sectionCompletion.annualExpenses}
           />
         </div>
         <div className="border-b pb-4">
@@ -137,6 +163,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
               handleFormUpdate("assets", field, value)
             }
             onContinue={handleContinue}
+            isComplete={sectionCompletion.assets}
           />
         </div>
 
@@ -147,6 +174,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
               handleFormUpdate("liabilities", field, value)
             }
             onContinue={handleContinue}
+            isComplete={sectionCompletion.liabilities}
           />
         </div>
       </div>
@@ -157,9 +185,11 @@ const FinancialDetailsScreen: React.FC<any> = () => {
         <Button
           onClick={handleContinue}
           className={`flex-1 bg-navy hover:bg-navyLight text-white ${
-            !isSectionComplete ? "opacity-50 cursor-not-allowed" : ""
+            !Object.values(sectionCompletion).every((status) => status)
+              ? "opacity-50 cursor-not-allowed"
+              : ""
           }`}
-          disabled={!isSectionComplete}
+          disabled={!Object.values(sectionCompletion).every((status) => status)}
         >
           Continue
         </Button>
