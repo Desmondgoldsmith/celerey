@@ -139,9 +139,12 @@ export interface PortfolioRecommendationsModalProps {
 }
 
 export type AssetType = {
-  id: string;
-  category: string;
-  amount: number;
+  id?: string;
+  category?: string;
+  amount?: number;
+  key?: string;
+  percentage?: string | number;
+  color?: string;
 };
 
 export type CountryType = {
@@ -150,17 +153,21 @@ export type CountryType = {
 };
 
 export interface IncomeItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
+  id?: string;
+  category?: string;
+  amount?: number;
+  key?: string;
+  percentage?: string | number;
+  color?: string;
 }
 
 export interface ExpenseItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
+  id?: string;
+  category?: string;
+  amount?: number;
+  key?: string;
+  percentage?: string | number;
+  color?: string;
 }
 
 export type SubscriptionInterval = "yearly";
@@ -192,10 +199,12 @@ export interface Advisor {
 }
 
 export interface LiabilityItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
+  id?: string;
+  category?: string;
+  amount?: number;
+  key?: string;
+  percentage?: string | number;
+  color?: string;
 }
 
 export interface BudgetArea {
@@ -215,4 +224,16 @@ export interface BudgetModalProps {
   isOpen: boolean;
   onClose: () => void;
   onGenerateBudget: (budget: GeneratedBudget) => void;
+}
+
+export interface FinancialGoal {
+  name: string;
+  percentage: number;
+  currentValue: string;
+  targetValue: string;
+  startDate?: string;
+  endDate?: string;
+  type?: string;
+  duration?: string;
+  durationLeft?: string;
 }

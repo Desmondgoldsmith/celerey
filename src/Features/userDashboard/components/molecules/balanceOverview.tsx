@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
+import { countries as countiesWithCode } from "@/Features/onboarding/countries";
 import dynamic from "next/dynamic";
 import { memo } from "react";
 
@@ -38,35 +39,9 @@ const tabs = [
   "Income Vs Expenditure",
 ];
 
-const assetData = [
-  {
-    category: "Real Estate",
-    amount: 25353.94,
-    percentage: 42,
-    color: "#1B1856",
-  },
-  {
-    category: "Public Securities",
-    amount: 23532.25,
-    percentage: 24,
-    color: "#E15B2D",
-  },
-  {
-    category: "Private Securities",
-    amount: 21536.32,
-    percentage: 20,
-    color: "#8BA78D",
-  },
-  {
-    category: "Cash",
-    amount: 19245.35,
-    percentage: 14,
-    color: "#383396",
-  },
-];
-
 interface LiabilitiesProps {
   liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
   openLiabilityModal: () => void;
 }
 
@@ -74,10 +49,11 @@ interface LiabilitiesProps {
 const LiabilitiesContent = ({
   liabilityData,
   openLiabilityModal,
+  totalDebt,
 }: LiabilitiesProps) => {
-  const pieChartData = liabilityData.map((item) => ({
+  const pieChartData = (liabilityData || []).map((item) => ({
     name: item.category,
-    value: item.percentage,
+    value: Number(item?.percentage || 0),
   }));
 
   const router = useRouter();
@@ -146,14 +122,16 @@ const LiabilitiesContent = ({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Total Liabilities</span>
             <span className="text-lg font-bold">
-              ${(84395.25).toLocaleString()}
+              ${(totalDebt?.value || 0).toLocaleString()}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">
               Liabilities Categories
             </span>
-            <span className="text-sm font-bold">5</span>
+            <span className="text-sm font-bold">
+              {liabilityData?.length || 0}
+            </span>
           </div>
         </div>
 
@@ -174,7 +152,7 @@ const LiabilitiesContent = ({
                 />
               </div>
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                ${liability.amount.toLocaleString()}
+                ${(liability?.amount || 0).toLocaleString()}
               </span>
             </div>
           </div>
@@ -188,8 +166,11 @@ interface BalanceOverviewProps {
   onPortfolioRecommendationClick: () => void;
   onEditAssetClick: () => void;
   assets: AssetType[];
-  countries: CountryType[];
-  income: IncomeItem[];
+  totalAssets: any;
+  totalIncome: number;
+  totalExpense: number;
+  countries: { [key: string]: number };
+  incomes: IncomeItem[];
   openIncomeModal: () => void;
   onEditExpenseClick: () => void;
   expenses: ExpenseItem[];
@@ -201,6 +182,11 @@ interface BalanceOverviewProps {
   openLiabilityModal: () => void;
   generatedBudget: GeneratedBudget;
   liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
+  income: { value: number; percentage: number };
+  incomeAndDebt: number;
+  totalIncomeFromExpense: { value: number; percentage: number };
+  totalExpenseFromIncome: { value: number; percentage: number };
 }
 
 export default function BalanceOverview({
@@ -218,6 +204,16 @@ export default function BalanceOverview({
   generatedBudget,
   liabilityData,
   openLiabilityModal,
+  assets,
+  countries,
+  totalAssets,
+  totalIncome,
+  totalDebt,
+  totalExpense,
+  incomeAndDebt,
+  incomes,
+  totalIncomeFromExpense,
+  totalExpenseFromIncome,
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
 
@@ -225,187 +221,181 @@ export default function BalanceOverview({
     onPortfolioRecommendationClick();
   };
 
-  const mapData = {
-    GB: 1,
-    GH: 2,
-    ZA: 3,
-  };
-
   const colorScale = {
     min: 1,
-    max: 3,
-    values: mapData,
-    scale: ["#FF1493", "#0f0251", "#E15B2D"],
+    max: 4,
+    values: countries,
+    scale: ["#FF1493", "#0f0251", "#DB00FF", "#E15B2D"],
   };
 
-  const pieChartData = assetData.map((item) => ({
+  const pieChartData = (assets || []).map((item) => ({
     name: item.category,
-    value: item.percentage,
+    value: Number(item?.percentage || 0),
   }));
 
   const [isOpen, setIsOpen] = useState(false);
-  const countries = ["Ghana", "United Kingdom", "South Africa"];
 
-  const AssetsContent = memo(() => {
-    const [isMounted, setIsMounted] = useState(false);
+  const findCountry = (code: string) => {
+    return countiesWithCode.find((country) => country.code === code);
+  };
 
-    useEffect(() => {
-      setIsMounted(true);
-    }, []);
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Geographic Spread Section */}
-        <div>
-          <div className="flex flex-col items-center mb-4">
-            <h3 className="text-sm text-navy">
-              Geographical Spread of Assets
-              <Info className="inline-block ml-1 h-3 w-3 text-gray-400" />
-            </h3>
-            <span
-              className="text-navyLight text-sm hover:cursor-pointer"
-              onClick={handlePortfolioRecommendationClick}
-            >
-              portfolio recommendation
+  const AssetsContent = () => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* Geographic Spread Section */}
+      <div>
+        <div className="flex flex-col items-center mb-4">
+          <h3 className="text-sm text-navy">
+            Geographical Spread of Assets
+            <Info className="inline-block ml-1 h-3 w-3 text-gray-400" />
+          </h3>
+          <span
+            className="text-navyLight text-sm hover:cursor-pointer"
+            onClick={handlePortfolioRecommendationClick}
+          >
+            portfolio recommendation
+          </span>
+        </div>
+
+        <div className="h-[280px] relative mb-4">
+          <VectorMap
+            map={worldMill}
+            backgroundColor="transparent"
+            zoomOnScroll={false}
+            containerStyle={{
+              width: "100%",
+              height: "100%",
+            }}
+            regionStyle={{
+              initial: {
+                fill: "#F3F4F6",
+                stroke: "#E5E7EB",
+                strokeWidth: 0.5,
+                fillOpacity: 1,
+              },
+              hover: {
+                fillOpacity: 0.8,
+              },
+            }}
+            series={{
+              regions: [
+                {
+                  scale: colorScale.scale,
+                  values: colorScale.values,
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  min: colorScale.min,
+                  max: colorScale.max,
+                  normalizeFunction: "polynomial",
+                },
+              ],
+            }}
+            onRegionTipShow={() => false}
+          />
+        </div>
+        <div className="flex justify-start gap-x-4 flex-wrap">
+          {Object.keys(countries).map((key: string, index) => (
+            <div key={index} className="flex items-center">
+              <div
+                style={{ background: colorScale.scale[index] }}
+                className={`w-2.5 h-2.5 rounded-full  mr-2`}
+              />
+              <span className="text-sm text-gray-600">
+                {findCountry(key)?.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Assets Overview Section */}
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-2">
+            <h3 className="text-sm text-gray-600">Assets</h3>
+            <Info className="h-3 w-3 text-gray-400" />
+          </div>
+          <span
+            onClick={onEditAssetClick}
+            className="text-navyLight text-sm hover:cursor-pointer"
+          >
+            Edit info
+          </span>
+        </div>
+
+        <div className="w-full aspect-square max-w-[180px] mx-auto mb-3">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieChartData}
+                cx="50%"
+                cy="50%"
+                innerRadius="70%"
+                outerRadius="100%"
+                paddingAngle={2}
+                dataKey="value"
+              >
+                {pieChartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={assets[index].color}
+                    stroke="white"
+                    strokeWidth={2}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Total Assets</span>
+            <span className="text-lg font-bold">
+              ${(totalAssets || 0).toLocaleString()}
             </span>
           </div>
-
-          <div className="h-[280px] relative mb-4">
-            <VectorMap
-              map={worldMill}
-              backgroundColor="transparent"
-              zoomOnScroll={false}
-              containerStyle={{
-                width: "100%",
-                height: "100%",
-              }}
-              regionStyle={{
-                initial: {
-                  fill: "#F3F4F6",
-                  stroke: "#E5E7EB",
-                  strokeWidth: 0.5,
-                  fillOpacity: 1,
-                },
-                hover: {
-                  fillOpacity: 0.8,
-                },
-              }}
-              series={{
-                regions: [
-                  {
-                    scale: colorScale.scale,
-                    values: colorScale.values,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    min: colorScale.min,
-                    max: colorScale.max,
-                    normalizeFunction: "polynomial",
-                  },
-                ],
-              }}
-              onRegionTipShow={() => false}
-            />
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Asset spread</span>
+            <span className="text-sm font-bold">
+              {Object.keys(countries || {})?.length || 0} countries
+            </span>
           </div>
-
-          <div className="flex justify-center space-x-6">
-            <div className="flex items-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#FF1493] mr-2" />
-              <span className="text-sm text-gray-600">United Kingdom</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#0f0251] mr-2" />
-              <span className="text-sm text-gray-600">Ghana</span>
-            </div>
-            <div className="flex items-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#E15B2D] mr-2" />
-              <span className="text-sm text-gray-600">South Africa</span>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-gray-600">Asset Locations</span>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-600">Ghana, UK</p>
+              <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                <DropdownMenuTrigger asChild>
+                  <button className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors">
+                    more
+                    <ChevronDown className="h-3 w-3" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48 p-2 bg-white rounded-lg shadow-lg"
+                >
+                  <div className="space-y-1">
+                    {Object.keys(countries).map((key: string, index) => (
+                      <div key={index} className="flex items-center">
+                        <div
+                          style={{ background: colorScale.scale[index] }}
+                          className={`w-2.5 h-2.5 rounded-full  mr-2`}
+                        />
+                        <span className="text-sm text-gray-600">
+                          {findCountry(key)?.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
 
-        {/* Assets Overview Section */}
-        <div>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm text-gray-600">Assets</h3>
-              <Info className="h-3 w-3 text-gray-400" />
-            </div>
-            <span
-              onClick={onEditAssetClick}
-              className="text-navyLight text-sm hover:cursor-pointer"
-            >
-              Edit info
-            </span>
-          </div>
-
-          <div className="w-full aspect-square max-w-[180px] mx-auto mb-3">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieChartData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="70%"
-                  outerRadius="100%"
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {pieChartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={assetData[index].color}
-                      stroke="white"
-                      strokeWidth={2}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-600">Total Assets</span>
-              <span className="text-lg font-bold">
-                ${(79363.85).toLocaleString()}
-              </span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-600">Asset spread</span>
-              <span className="text-sm font-bold">3 countries</span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-gray-600">Asset Locations</span>
-              <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-600">Ghana, UK</p>
-                <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <button className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors">
-                      more
-                      <ChevronDown className="h-3 w-3" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="end"
-                    className="w-48 p-2 bg-white rounded-lg shadow-lg"
-                  >
-                    <div className="space-y-1">
-                      {countries.map((country) => (
-                        <div
-                          key={country}
-                          className="flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md cursor-pointer"
-                        >
-                          <div className="w-2 h-2 rounded-full bg-navy mr-2" />
-                          {country}
-                        </div>
-                      ))}
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </div>
-
-          {assetData.map((asset) => (
+        {assets?.length &&
+          assets.map((asset) => (
             <div key={asset.category} className="mb-4">
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">{asset.category}</span>
@@ -422,17 +412,14 @@ export default function BalanceOverview({
                   />
                 </div>
                 <span className="text-sm text-gray-600 whitespace-nowrap">
-                  ${asset.amount.toLocaleString()}
+                  ${(asset?.amount || 0).toLocaleString()}
                 </span>
               </div>
             </div>
           ))}
-        </div>
       </div>
-    );
-  });
-
-  AssetsContent.displayName = "AssetsContent";
+    </div>
+  );
 
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
@@ -473,11 +460,13 @@ export default function BalanceOverview({
           <LiabilitiesContent
             liabilityData={liabilityData}
             openLiabilityModal={openLiabilityModal}
+            totalDebt={totalDebt}
           />
         )}
         {activeTab === "Income" && (
           <IncomeSection
-            income={income}
+            income={incomes}
+            totalIncome={totalIncome}
             openIncomeModal={openIncomeModal}
             openBudgetModal={openBudgetModal}
             openGenBudgetModal={openGenBudgetModal}
@@ -488,16 +477,25 @@ export default function BalanceOverview({
           <ExpensesSection
             onEditClick={onEditExpenseClick}
             expenses={expenses}
+            totalExpense={totalExpense}
           />
         )}
         {activeTab === "Income Vs Debt" && (
           <IncomeVsDebtSection
+            totalDebt={totalDebt}
+            income={income}
+            incomeAndDebt={incomeAndDebt}
             openDebtModal={openDebtModal}
             openDebtServicingModal={openDebtServicingModal}
           />
         )}
         {activeTab === "Income Vs Expenditure" && (
-          <IncomeVsExpenditure openStatementModal={openStatementModal} />
+          <IncomeVsExpenditure
+            totalIncome={totalIncome}
+            totalIncomeFromExpense={totalIncomeFromExpense}
+            totalExpenseFromIncome={totalExpenseFromIncome}
+            openStatementModal={openStatementModal}
+          />
         )}
       </div>
     </Card>

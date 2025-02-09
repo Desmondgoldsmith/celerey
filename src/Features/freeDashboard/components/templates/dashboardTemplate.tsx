@@ -15,8 +15,9 @@ import Link from 'next/link'
 import { CongratulationsModal } from '../molecules/congratulationModal'
 import { SubscriptionModal } from '../molecules/subscriptionModal'
 import { PaymentModal } from '../molecules/paymentModal'
-import { useFreeDashboardStore } from '../../state'
+import { useDashboardStore } from '../../../userDashboard/state'
 import Spinner from '@/components/ui/spinner'
+import { useRouter } from 'next/navigation'
 
 const Chart = (dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -123,22 +124,26 @@ const DashboardTemplate: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
     null,
   )
-  const {
-    userName,
-    netWorth,
-    riskAttitude,
-    investmentExperience,
-    profileCompletion,
-  } = DEFAULT_USER_DATA
+  const { profileCompletion } = DEFAULT_USER_DATA
 
-  const { populateDashboardData, data, loading } = useFreeDashboardStore()
+  const {
+    populateDashboardData,
+    data,
+    loading,
+    populateFinancialGoals,
+    financialGoals,
+  } = useDashboardStore()
+
 
   useEffect(() => {
     fetchDashboardData()
   }, [])
 
+
+
   const fetchDashboardData = async () => {
     await populateDashboardData()
+    await populateFinancialGoals()
   }
 
   // Handle subscription modal opening
@@ -180,7 +185,11 @@ const DashboardTemplate: React.FC = () => {
                   profileCompletion={profileCompletion}
                   onUpgradeClick={handleOpenSubscriptionModal}
                 />
-                <FinancialGoals Chart={Chart} />
+                <FinancialGoals
+                  onModify={handleOpenSubscriptionModal}
+                  Chart={Chart}
+                  financialGoals={financialGoals}
+                />
               </div>
 
               {/* Middle Column */}
@@ -194,6 +203,7 @@ const DashboardTemplate: React.FC = () => {
                     liabilities={data?.liabilities}
                     income={data?.allIncome}
                     expense={data?.expense}
+                    onAddCategory={handleOpenSubscriptionModal}
                   />
                 }
                 <IncomeAndExpenditure
@@ -213,6 +223,7 @@ const DashboardTemplate: React.FC = () => {
                   income={data.income}
                   debt={data.debt}
                   incomeAndDebt={data.incomeAndDebt}
+                  onAddExpense={handleOpenSubscriptionModal}
                 />
                 <FinancialKnowledgeAssessment progress={72} />
               </div>
@@ -230,11 +241,16 @@ const DashboardTemplate: React.FC = () => {
                 liabilities={data?.liabilities}
                 income={data?.allIncome}
                 expense={data?.expense}
+                onAddCategory={handleOpenSubscriptionModal}
               />
               <div className="bg-white rounded-lg overflow-hidden">
                 <MobileActionItems />
               </div>
-              <FinancialGoals Chart={Chart} />
+              <FinancialGoals
+                Chart={Chart}
+                financialGoals={financialGoals}
+                onModify={handleOpenSubscriptionModal}
+              />
               <IncomeAndExpenditure
                 totalIncome={data?.totalIncome}
                 totalExpense={data?.totalExpense}
@@ -246,6 +262,7 @@ const DashboardTemplate: React.FC = () => {
                 income={data.income}
                 debt={data.debt}
                 incomeAndDebt={data.incomeAndDebt}
+                onAddExpense={handleOpenSubscriptionModal}
               />
               <FinancialKnowledgeAssessment progress={72} />
               <GeographicSpread assetCountries={data.assetCountries} />

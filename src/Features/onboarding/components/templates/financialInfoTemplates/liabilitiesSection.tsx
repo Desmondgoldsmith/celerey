@@ -13,6 +13,7 @@ interface LiabilitiesSectionProps {
   };
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
+  isComplete: boolean;
 }
 
 const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({

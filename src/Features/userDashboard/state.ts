@@ -1,11 +1,23 @@
+import {
+  FinancialInfoSchema,
+  GoalsInfoSchema,
+  KnowledgeInfoSchema,
+  RiskInfoSchema,
+} from "@/Features/onboarding/schema";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
-import { getDashboardDataApi } from "./service";
+import {
+  getDashboardDataApi,
+  getFinancialGoalsApi,
+  getSubscriptionStatusApi,
+} from "./service";
+import { FinancialGoal } from "./types";
+import { PersonalInfoSchema } from "../onboarding/schema";
 
-interface FreeDashboardState {
+interface DashboardState {
   data: {
     userName: string;
     assetCountries: string[];
@@ -14,8 +26,18 @@ interface FreeDashboardState {
     totalLiabilities: number;
     totalIncome: number;
     incomeAndDebt: number;
-    expense: { [key: string]: string };
-    allIncome: { [key: string]: string };
+    expense: {
+      [key: string]: {
+        value: number;
+        percentage: number;
+      };
+    };
+    allIncome: {
+      [key: string]: {
+        value: number;
+        percentage: number;
+      };
+    };
     totalExpense: number;
     totalExpenseFromIncome: {
       value: number;
@@ -34,6 +56,10 @@ interface FreeDashboardState {
       percentage: number;
     };
     assets: {
+      [key: string]: {
+        value: number;
+        percentage: number;
+      };
       cash: {
         value: number;
         percentage: number;
@@ -52,6 +78,10 @@ interface FreeDashboardState {
       };
     };
     liabilities: {
+      [key: string]: {
+        value: number;
+        percentage: number;
+      };
       loans: {
         value: number;
         percentage: number;
@@ -76,19 +106,45 @@ interface FreeDashboardState {
     userFinancialKnowledge: string;
     userRiskTolerance: string;
     currency: string;
+    savings: string;
+  };
+  financialGoals: FinancialGoal[];
+  subscription: {
+    isSubscribed: boolean;
+    plan: string;
+    billing_interval: string;
+    status: string;
+    start_date: string;
+    end_date: string;
   };
   error: string;
   loading: boolean;
+
 }
 
 // the various actions we can perform
-interface FreeDashboardStore extends FreeDashboardState {
+interface DashboardStore extends DashboardState {
   populateDashboardData: () => Promise<void>;
+  populateFinancialGoals: () => Promise<void>;
+  populateSubscription: () => Promise<void>;
+  updateProfileInfo?: (personalInfo: Partial<PersonalInfoSchema>) => void;
+  updateFinancialInfo?: (financialInfo: Partial<FinancialInfoSchema>) => void;
+  updateGoalsInfo?: (goalsInfo: Partial<GoalsInfoSchema>) => void;
+  updateRiskInfo?: (riskInfo: Partial<RiskInfoSchema>) => void;
+  updateKnowledgeInfo?: (riskInfo: Partial<KnowledgeInfoSchema>) => void;
 }
 
-export const useFreeDashboardStore = create<FreeDashboardStore>()(
+export const useDashboardStore = create<DashboardStore>()(
   persist(
     immer((set) => ({
+      subscription: {
+        isSubscribed: false,
+        plan: "",
+        billing_interval: "",
+        status: "inactive",
+        start_date: "",
+        end_date: "",
+      },
       data: {
         userName: "",
         assetCountries: [],
@@ -127,7 +183,7 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
           },
         },
         totalExpense: 0,
-        totalExpenseFromIncome:{
+        totalExpenseFromIncome: {
           value: 0,
           percentage: 0,
         },
@@ -159,7 +215,9 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
         },
         userFinancialKnowledge: "",
         userRiskTolerance: "",
+        savings: "",
       },
+      financialGoals: [],
       loading: true,
       error: "",
 
@@ -171,6 +229,7 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
         if (response.data) {
           set((state) => {
             state.data = {
+              savings: response.data.savings,
               expense: response.data.expense,
               userName: response.data.user_name,
               assetCountries: response.data.asset_countries,
@@ -188,8 +247,8 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
               userRiskTolerance: response.data.user_risk_tolerance,
               allIncome: response.data.all_income,
               totalExpense: response.data.total_expense,
-              totalExpenseFromIncome:response.data.total_expense_from_income,
-              totalIncomeFromExpense:response.data.total_income_from_expense,
+              totalExpenseFromIncome: response.data.total_expense_from_income,
+              totalIncomeFromExpense: response.data.total_income_from_expense,
             };
           });
         }
@@ -198,7 +257,36 @@ export const useFreeDashboardStore = create<FreeDashboardStore>()(
           state.loading = false;
         });
       },
+      populateFinancialGoals: async () => {
+        set((state) => {
+          state.loading = true;
+        });
+        const response = await getFinancialGoalsApi();
+        if (response?.data?.data) {
+          set((state) => {
+            state.financialGoals = response.data.data;
+          });
+        }
 
+        set((state) => {
+          state.loading = false;
+        });
+      },
+      populateSubscription: async () => {
+        set((state) => {
+          state.loading = true;
+        });
+        const response = await getSubscriptionStatusApi();
+        if (response?.data) {
+          set((state) => {
+            state.subscription = response.data;
+          });
+        }
+
+        set((state) => {
+          state.loading = false;
+        });
+      },
     })),
     {
       name: "free-dashboard-storage",

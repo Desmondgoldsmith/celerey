@@ -52,9 +52,6 @@ export default function KnowledgeInfo() {
     const currentStepIndex = sections[currentSection]?.currentStep
     const data = formData.knowledge
 
-    console.log('Validating step:', currentStepIndex)
-    console.log('Form data:', data)
-
     if (!data) return false
 
     switch (currentStepIndex) {
@@ -79,9 +76,6 @@ export default function KnowledgeInfo() {
     const isLastStep =
       currentStepIndex === sections[currentSection]?.totalSteps - 1
 
-    console.log('Current step index:', currentStepIndex)
-    console.log('Is last step:', isLastStep)
-
     if (!validateCurrentStep()) {
       console.error('Validation failed on step:', currentStepIndex)
       return
@@ -105,8 +99,6 @@ export default function KnowledgeInfo() {
   const renderStep = () => {
     const currentStepIndex = sections[currentSection]?.currentStep || 0
     const knowledgeData = formData.knowledge || {}
-
-    console.log('Rendering step:', currentStepIndex)
 
     switch (currentStepIndex) {
       case 0:

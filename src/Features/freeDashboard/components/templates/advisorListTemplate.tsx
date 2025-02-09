@@ -23,7 +23,6 @@ export const AdvisorsListTemplate: React.FC<AdvisorsListTemplateProps> = ({
   const handleOpenSubscriptionModal = () => {
     setIsSubscriptionModalOpen(true);
   };
-  console.log(isSubscriptionModalOpen);
   return (
     <div className="min-h-screen">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6">

@@ -17,7 +17,7 @@ interface FinancialData {
 
 // interface IncomeVsDebtProps {}
 
-export const IncomeVsDebt = ({income, debt, incomeAndDebt}: any) => {
+export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) => {
   const financialData: FinancialData = {
     netBalance: incomeAndDebt,
     income: {
@@ -52,7 +52,7 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt}: any) => {
           <span className="text-sm text-gray-600">Net Balance</span>
           <HelpCircle className="h-4 w-4 text-gray-400" />
         </div>
-        <div className="text-[#2117DC] text-sm hover:cursor-pointer">
+        <div onClick={onAddExpense} className="text-[#2117DC] text-sm hover:cursor-pointer">
           Add expense
         </div>
       </div>

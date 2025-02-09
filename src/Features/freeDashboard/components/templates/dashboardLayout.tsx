@@ -24,7 +24,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             />
           </div>
           {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-6 items-center">
+          {/* <div className="hidden md:flex gap-6 items-center">
             <Link href="#" className="text-sm font-helvetica text-gray-600">
               Risk Allocation
             </Link>
@@ -35,7 +35,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               Knowledge Hub
             </Link>
             <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
-          </div>
+          </div> */}
           {/* Mobile Navigation */}
           <div className="md:hidden">
             <UserCircle className="h-8 w-8 text-navy cursor-pointer" />

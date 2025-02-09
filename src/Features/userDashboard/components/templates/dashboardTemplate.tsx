@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DashboardLayout } from "./dashboardLayout";
 import { MetricCard } from "../molecules/metricCard";
 import { FinancialGoalsCard } from "../molecules/financialGoalsCard";
@@ -7,6 +7,7 @@ import BalanceOverviewCard from "../molecules/balanceOverview";
 import AddFinancialGoalModal from "../molecules/addFinancialGoalModal";
 import PortfolioRecommendationsModal from "../molecules/portfolioRecommendationModal";
 import { DUMMY_DASHBOARD_DATA } from "../../constants";
+
 import {
   Wallet,
   PiggyBank,
@@ -30,6 +31,7 @@ import type {
   IncomeItem,
   LiabilityItem,
   SubscriptionTier,
+  FinancialGoal,
 } from "../../types";
 import EditAssetModal from "../molecules/editAssetModal";
 import EditIncomeModal from "../molecules/editIncomeModal";
@@ -46,6 +48,7 @@ import GenerateBudgetModal from "../molecules/generateBudgetModal";
 import EditLiabilitiesModal from "../molecules/editLiabilityModal";
 import EmergencyFundModal from "../molecules/emergencyFundModal";
 import { SubscriptionModal } from "../molecules/subscriptionModal";
+import { useDashboardStore } from "../../state";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false);
@@ -66,14 +69,32 @@ export const Dashboard: React.FC = () => {
       durationLeft: 0,
     }))
   );
-  const [selectedPlan, setSelectedPlan] = useState<FinancialPlan | undefined>();
+  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal>();
   const [selectedEPlan, setSelectedEPlan] = useState<
     EmergencyPlan | undefined
   >();
+
   const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
     null
   );
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
+
+  const {
+    populateDashboardData,
+    data,
+    loading,
+    populateFinancialGoals,
+    financialGoals,
+  } = useDashboardStore();
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    await populateDashboardData();
+    await populateFinancialGoals();
+  };
 
   const handlePortfolioRecommendationClick = () => {
     setIsPortfolioModalOpen(true);
@@ -91,8 +112,8 @@ export const Dashboard: React.FC = () => {
     }
   };
 
-  const handleModifyGoal = (plan: FinancialPlan) => {
-    setSelectedPlan(plan);
+  const handleModifyGoal = (goal: FinancialGoal) => {
+    setSelectedPlan(goal);
     setIsAddGoalModalOpen(true);
   };
 
@@ -130,7 +151,6 @@ export const Dashboard: React.FC = () => {
       color: "#383396",
     },
   ]);
-  console.log(incomeData);
 
   const handleSaveIncome = (updatedIncome: IncomeItem[]) => {
     setIncomeData(updatedIncome);
@@ -207,17 +227,14 @@ export const Dashboard: React.FC = () => {
   const [isViewRiskModal, setisViewRiskModal] = useState(false);
   const [isViewInvestModal, setisViewInvestModal] = useState(false);
   const [isViewFinancialModal, setisViewFinancialModal] = useState(false);
-  const [userAssets, setUserAssets] = useState<AssetType[]>([
-    { id: "1", category: "Real Estate", amount: 13252.13 },
-    { id: "2", category: "Cash", amount: 43693.52 },
-    { id: "3", category: "Public Securities", amount: 73953.05 },
-    { id: "4", category: "Private Securities", amount: 85386.94 },
-  ]);
-  const [userCountries, setUserCountries] = useState<CountryType[]>([
-    { id: "1", name: "South Africa" },
-    { id: "2", name: "Ghana" },
-    { id: "3", name: "United Kingdom" },
-  ]);
+  const [userAssets, setUserAssets] = useState<AssetType[]>([]);
+  const [userLiabilities, setUserLiabilities] = useState<LiabilityItem[]>([]);
+  const [userIncome, setUserIncome] = useState<IncomeItem[]>([]);
+  const [userExpense, setUserExpense] = useState<ExpenseItem[]>([]);
+
+  const [userCountries, setUserCountries] = useState<{ [key: string]: number }>(
+    {}
+  );
 
   const handleEditAssetClick = () => {
     setIsEditAssetModalOpen(true);
@@ -236,8 +253,8 @@ export const Dashboard: React.FC = () => {
   };
 
   const handleSaveAssets = (assets: AssetType[], countries: CountryType[]) => {
-    setUserAssets(assets);
-    setUserCountries(countries);
+    // setUserAssets(assets)
+    // setUserCountries(countries)
   };
 
   const [isGenBudgetModalOpen, setIsGenBudgetModalOpen] = useState(false);
@@ -347,6 +364,81 @@ export const Dashboard: React.FC = () => {
   const handleAdvisors = () => {
     router.push("/advisors");
   };
+
+  useEffect(() => {
+    const assetColors = [
+      "#1B1856",
+      "#E15B2D",
+      "#8BA78D",
+      "#383396",
+      "#6B7280",
+      "#F56767",
+    ];
+
+    const assets = Object.keys(data?.assets || {}).map((key, index) => ({
+      category: key
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+        .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+      key,
+      amount: data.assets[key].value,
+      percentage: data.assets[key].percentage.toFixed(0),
+      color: assetColors[index],
+    }));
+    setUserAssets(assets);
+
+    const userCountries: any = {};
+
+    (data?.assetCountries || []).map(
+      (country: string, index: number) => (userCountries[country] = index + 1)
+    );
+    setUserCountries(userCountries);
+
+    const liabilities = Object.keys(data?.liabilities || {}).map(
+      (key, index) => ({
+        category: key
+          .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+          .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+        key,
+        amount: data.liabilities[key]?.value || 0,
+        percentage: Number(data.liabilities[key]?.percentage || 0).toFixed(0),
+        color: assetColors[index],
+      })
+    );
+    setUserLiabilities(liabilities);
+
+    const income = Object.keys(data?.allIncome || {}).map((key, index) => ({
+      category: key
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+        .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+      key,
+      amount: data.allIncome[key]?.value || 0,
+      percentage: Number(data.allIncome[key]?.percentage || 0).toFixed(0),
+      color: assetColors[index],
+    }));
+    setUserIncome(income);
+
+    const expense = Object.keys(data?.expense || {}).map((key, index) => ({
+      category: key
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+        .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+      key,
+      amount: data?.expense[key]?.value || 0,
+      percentage: Number(data?.expense[key]?.percentage || 0).toFixed(0),
+      color: assetColors[index],
+    }));
+    setUserExpense(expense);
+  }, [data]);
+
+  const getCurrentDate = (): string => {
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return formatter.format(date);
+  };
+
   return (
     <DashboardLayout onUpgradeClick={handleOpenSubscriptionModal}>
       <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
@@ -356,7 +448,7 @@ export const Dashboard: React.FC = () => {
             {/* Left Section */}
             <div className="space-y-2 w-full lg:w-auto">
               <h1 className="text-3xl lg:text-4xl text-center lg:text-start font-cirka tracking-tight">
-                Welcome, Jude!
+                Welcome, {data?.userName || ""}!
               </h1>
               <div className="flex items-center text-center lg:text-start gap-1.5">
                 <span className="text-sm text-center lg:text-start">
@@ -371,7 +463,7 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
+            {/* <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full lg:w-auto">
                 <button className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto">
                   Book Virtual Consultation
@@ -385,20 +477,20 @@ export const Dashboard: React.FC = () => {
               <a href="#" className="text-navy text-sm underline">
                 Upload Financial Documents
               </a>
-            </div>
+            </div> */}
 
             {/* Right Section */}
             <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full lg:w-auto">
                 <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
                   <Calendar className="h-3 w-3" />
-                  <span>January 20, 2025</span>
+                  <span>{getCurrentDate()}</span>
                 </div>
-                <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
+                {/* <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
                   Export
-                </button>
+                </button> */}
               </div>
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start lg:justify-end">
+              {/* <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start lg:justify-end">
                 <button className="p-2 rounded-full border">
                   <Upload className="h-3 w-3 text-gray-600" />
                 </button>
@@ -412,7 +504,7 @@ export const Dashboard: React.FC = () => {
                 <button className="p-2 rounded-full border">
                   <Search className="h-3 w-3 text-gray-600" />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -421,27 +513,36 @@ export const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <MetricCard
             title="Net Worth"
-            metric={DUMMY_DASHBOARD_DATA.netWorth}
+            metric={{ value: data.netWorth, currency: data?.currency || "usd" }}
             icon={<Wallet className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
             title="Balance"
-            metric={DUMMY_DASHBOARD_DATA.balance}
+            metric={{
+              value: data?.totalIncome || 0 + data?.debt?.value || 0,
+              currency: data?.currency || "usd",
+            }}
             icon={<PiggyBank className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
             title="Income"
-            metric={DUMMY_DASHBOARD_DATA.income}
+            metric={{
+              value: data?.income?.value || 0,
+              currency: data?.currency || "usd",
+            }}
             icon={<TrendingUp className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
             title="Expenses"
-            metric={DUMMY_DASHBOARD_DATA.expenses}
+            metric={{
+              value: data.totalExpense,
+              currency: data?.currency || "usd",
+            }}
             icon={<TrendingDown className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
             title="Savings"
-            metric={DUMMY_DASHBOARD_DATA.savings}
+            metric={{ value: +data.savings, currency: data?.currency || "usd" }}
             icon={<Banknote className="h-5 w-5 text-gray-400" />}
           />
         </div>
@@ -449,24 +550,32 @@ export const Dashboard: React.FC = () => {
         {/* Financial Goals and Balance Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FinancialGoalsCard
-            plans={[...emergencyPlans, ...financialPlans]}
+            goals={financialGoals || []}
             onAddGoalClick={() => {
               setSelectedPlan(undefined);
               setIsAddGoalModalOpen(true);
             }}
             onModifyGoal={handleModifyGoal}
-            onModifyEmergency={handleModifyEmergency}
           />
           <BalanceOverviewCard
             onPortfolioRecommendationClick={handlePortfolioRecommendationClick}
             onEditAssetClick={handleEditAssetClick}
             assets={userAssets}
+            totalAssets={data.totalAssets || 0}
             countries={userCountries}
-            income={incomeData}
-            liabilityData={liabilityData}
+            incomes={userIncome}
+            totalIncome={data.totalIncome}
+            expenses={userExpense}
+            totalExpense={data.totalExpense}
+            liabilityData={userLiabilities}
+            totalDebt={data?.debt || {}}
+            income={data.income}
+            debt={data.debt}
+            incomeAndDebt={data.incomeAndDebt}
+            totalIncomeFromExpense={data?.totalIncomeFromExpense}
+            totalExpenseFromIncome={data?.totalExpenseFromIncome}
             openIncomeModal={openIncomeModal}
             openLiabilityModal={openLiabilityModal}
-            expenses={expensesData}
             onEditExpenseClick={() => setIsExpenseModalOpen(true)}
             openDebtModal={openDebtModal}
             openDebtServicingModal={openDebtServicingModal}
@@ -619,7 +728,6 @@ export const Dashboard: React.FC = () => {
         isOpen={isEditDebtModalOpen}
         onClose={() => setIsEditDebtModalOpen(false)}
         onSave={(updatedDebts) => {
-          console.log(updatedDebts);
           setIsEditDebtModalOpen(false);
         }}
       />

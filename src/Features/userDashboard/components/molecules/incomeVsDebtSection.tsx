@@ -25,11 +25,17 @@ const initialMetrics: DebtMetrics = {
 };
 
 interface IncomeVsDebtProps {
+  totalDebt: { value: number; percentage: number }
+  income: { value: number; percentage: number }
+  incomeAndDebt: number
   openDebtModal: () => void;
   openDebtServicingModal: () => void;
 }
 
 const IncomeVsDebtSection = ({
+  totalDebt,
+  income,
+  incomeAndDebt,
   openDebtModal,
   openDebtServicingModal,
 }: IncomeVsDebtProps) => {
@@ -68,7 +74,7 @@ const IncomeVsDebtSection = ({
               </button>
             </div>
             <span className="text-red-500 text-2xl font-bold">
-              {formatCurrency(metrics.totalDebt)}
+              {formatCurrency(Number(totalDebt?.value || 0))}
             </span>
           </div>
 
@@ -133,7 +139,7 @@ const IncomeVsDebtSection = ({
               </div>
             </div>
             <span className="text-2xl font-bold">
-              {formatCurrency(metrics.netBalance)}
+              {formatCurrency(Number(incomeAndDebt || 0))}
             </span>
           </div>
 
@@ -146,13 +152,13 @@ const IncomeVsDebtSection = ({
               {/* Income Progress Bar */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-gray-600">
-                  <span>Income ({metrics.incomePercentage}%)</span>
-                  <span>{formatCurrency(metrics.incomeAmount)}</span>
+                  <span>Income ({Number(income?.percentage || 0).toFixed(0)}%)</span>
+                  <span>{formatCurrency(Number(income?.value || 0))}</span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#8BA78D] rounded-full transition-all duration-500"
-                    style={{ width: `${metrics.incomePercentage}%` }}
+                    style={{ width: `${Number(income?.percentage).toFixed(0)}%` }}
                   />
                 </div>
               </div>
@@ -160,13 +166,13 @@ const IncomeVsDebtSection = ({
               {/* Amortized Debt Progress Bar */}
               <div className="space-y-1">
                 <div className="flex mt-5 justify-between text-xs text-gray-600">
-                  <span>Amortized Debt ({metrics.amortizedDebtPercentage}%)</span>
-                  <span>{formatCurrency(metrics.amortizedDebtAmount)}</span>
+                  <span>Amortized Debt ({Number(totalDebt?.percentage || 0).toFixed(0)}%)</span>
+                  <span>{formatCurrency(Number(totalDebt?.value || 0))}</span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#FFA500] rounded-full transition-all duration-500"
-                    style={{ width: `${metrics.amortizedDebtPercentage}%` }}
+                    style={{ width: `${Number(totalDebt?.percentage || 0).toFixed(0)}%` }}
                   />
                 </div>
               </div>
@@ -181,12 +187,12 @@ const IncomeVsDebtSection = ({
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-600">Income</span>
                     <span className="text-sm text-gray-600">
-                      {metrics.incomePercentage}%
+                      {Number(income?.percentage || 0).toFixed(0)}%
                     </span>
                   </div>
                 </div>
                 <span className="font-bold">
-                  {formatCurrency(metrics.incomeAmount)}
+                  {formatCurrency(Number(income?.value || 0))}
                 </span>
               </div>
 
@@ -199,12 +205,12 @@ const IncomeVsDebtSection = ({
                       Amortized Debt
                     </span>
                     <span className="text-sm text-gray-600">
-                      {metrics.amortizedDebtPercentage}%
+                      {Number(totalDebt?.percentage || 0).toFixed(0)}%
                     </span>
                   </div>
                 </div>
                 <span className="font-bold">
-                  {formatCurrency(metrics.amortizedDebtAmount)}
+                  {formatCurrency(Number(totalDebt?.value || 0))}
                 </span>
               </div>
             </div>

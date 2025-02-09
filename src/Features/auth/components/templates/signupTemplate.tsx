@@ -62,7 +62,7 @@ export const SignUpTemplate = () => {
         </Button>
       </form>
 
-      <div className="relative mb-6">
+      {/* <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t"></div>
         </div>
@@ -74,7 +74,7 @@ export const SignUpTemplate = () => {
       <div className="space-y-3">
         <SocialSignupButton provider="google" onClick={() => {}} />
         <SocialSignupButton provider="linkedin" onClick={() => {}} />
-      </div>
+      </div> */}
 
       <p className="mt-6 text-sm">
         <span className="text-navy">Already have an account ?</span>{' '}

@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
-
-import { SavingsSection } from './savingsSection'
-import { EmergencyFundsSection } from './emergencyFundsSection'
-import { DebtSection } from './debtSection'
-import { RetirementSection } from './retirementSection' // Import the new section
-import { FinancialInfoSchema } from '@/Features/onboarding/schema'
-import { useOnboardingStore } from '@/Features/onboarding/state'
-import Spinner from '@/components/ui/spinner'
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { SavingsSection } from "./savingsSection";
+import { EmergencyFundsSection } from "./emergencyFundsSection";
+import { RetirementSection } from "./retirementSection"; // Import the new section
+import { FinancialInfoSchema } from "@/Features/onboarding/schema";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import Spinner from "@/components/ui/spinner";
 
 interface SavingsDetailsScreenProps {
   values: any
   onChange: (
     section: keyof FinancialInfoSchema,
     field: string,
-    value: string,
-  ) => void
-  onBack: () => void
-  onContinue: () => void
+    value: string
+  ) => void;
+  onBack: () => void;
+  onContinue: () => void;
 }
 
 const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
@@ -50,13 +48,14 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
       setIsSectionComplete(isComplete)
     }
 
-    checkSectionComplete()
-  }, [localFormData])
+    checkSectionComplete();
+  }, [localFormData]);
 
   const handleFormUpdate = (
     section: keyof FinancialInfoSchema,
     field: string,
-    value: string,
+    value: string
+
   ) => {
     if (typeof localFormData[section] === 'object') {
       // Update sections like savings
@@ -66,21 +65,21 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           ...(prev[section] as Record<string, string>),
           [field]: value,
         },
-      }))
+      }));
     } else {
       setLocalFormData((prev:any) => ({
         ...prev,
         [field]: value,
-      }))
+      }));
     }
 
-    onChange(section, field, value)
-  }
+    onChange(section, field, value);
+  };
 
   const handleContinue = async () => {
-      await saveFinancialInfo()
-      onContinue()
-  }
+    await saveFinancialInfo();
+    onContinue();
+  };
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
@@ -98,32 +97,30 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           <SavingsSection
             values={localFormData.savings}
             onChange={(field, value) =>
-              handleFormUpdate('savings', field, value)
+              handleFormUpdate("savings", field, value)
             }
           />
         </div>
         {/* Emergency Funds Section */}
         <div className="border-b pb-4">
           <EmergencyFundsSection
-            value={{
-              hasEmergencyFunds: localFormData.emergencyFund?.hasEmergencyFunds || 0,
-              emergencyFundAmount: localFormData.emergencyFund?.emergencyFundAmount || 0,
-            }}
-            onChange={(updatedValue) => {
-              setLocalFormData((prev:any) => ({
-                ...prev,
-                ...updatedValue,
-              }))
+            onChange={(updatedValue:any) => {
+       
+              setLocalFormData({
+                ...localFormData,
+                emergencyFund: {
+                  ...updatedValue.emergencyFund,
+              }});
 
               // Notify parent of changes
-              if ('hasEmergencyFunds' in updatedValue) {
+              if ("hasEmergencyFunds" in updatedValue.emergencyFund) {
                 onChange(
-                  'emergencyFund',
-                  'hasEmergencyFunds',
-                  updatedValue.hasEmergencyFunds || '',
-                )
+                  "emergencyFund",
+                  "hasEmergencyFunds",
+                  updatedValue.emergencyFund.hasEmergencyFunds ? "yes" : "no"
+                );
               }
-              if ('emergencyFund' in updatedValue) {
+              if ("emergencyFundAmount" in updatedValue.emergencyFund) {
                 onChange(
                   'emergencyFund',
                   'emergencyFund',
@@ -134,35 +131,12 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
           />
         </div>
 
-        {/* Debt Section */}
-        <div className="border-b pb-4">
-          <DebtSection
-            values={{
-              hasDebt: localFormData.debt.hasDebt,
-              debt: localFormData.debt.debtAmount,
-            }}
-            onChange={(updatedValue) => {
-              setLocalFormData((prev: any) => ({
-                ...prev,
-                ...updatedValue,
-              }))
-
-              // Notify parent of changes
-              if ('hasDebt' in updatedValue) {
-                onChange('debt', 'hasDebt', updatedValue.hasDebt || '')
-              }
-              if ('debt' in updatedValue) {
-                onChange('debt', 'debt', updatedValue.debt || '')
-              }
-            }}
-          />
-        </div>
         {/* Retirement Section */}
         <div className="border-b pb-4">
           <RetirementSection
             values={localFormData.retirement}
             onChange={(field, value) =>
-              handleFormUpdate('retirement', field, value)
+              handleFormUpdate("retirement", field, value)
             }
           />
         </div>
@@ -174,7 +148,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <Button
           onClick={handleContinue}
           className={`flex-1 bg-navy hover:bg-navyLight text-white ${
-            !isSectionComplete ? 'opacity-50 cursor-not-allowed' : ''
+            !isSectionComplete ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={!isSectionComplete}
         >
@@ -182,7 +156,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export { SavingsDetailsScreen }
+export { SavingsDetailsScreen };
