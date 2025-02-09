@@ -219,14 +219,19 @@ export const Dashboard: React.FC = () => {
   const [isViewFinancialModal, setisViewFinancialModal] = useState(false)
   const [userAssets, setUserAssets] = useState<AssetType[]>([])
   const [userLiabilities, setUserLiabilities] = useState<LiabilityItem[]>([])
+  const [userLiabilitiesEstimation, setUserLiabilitiesEstimation] = useState<
+    any
+  >({
+    servicingAmount: 0,
+    servicingPeriod: 10,
+  })
+
   const [userIncome, setUserIncome] = useState<IncomeItem[]>([])
   const [userExpense, setUserExpense] = useState<ExpenseItem[]>([])
 
   const [userCountries, setUserCountries] = useState<{ [key: string]: number }>(
     {},
   )
-
-  
 
   const handleEditAssetClick = () => {
     setIsEditAssetModalOpen(true)
@@ -376,8 +381,15 @@ export const Dashboard: React.FC = () => {
     )
     setUserCountries(userCountries)
 
-    const liabilities = Object.keys(data?.liabilities || {}).map(
-      (key, index) => ({
+    if (data?.liabilities?.estimation) {
+      setUserLiabilitiesEstimation(data?.liabilities?.estimation)
+    } else {
+      setUserLiabilitiesEstimation(data.liabilitiesEstimation)
+    }
+
+    const liabilities = Object.keys(data?.liabilities || {})
+      .filter((key) => key !== 'estimation')
+      .map((key, index) => ({
         category: key
           .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
           .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
@@ -385,8 +397,7 @@ export const Dashboard: React.FC = () => {
         amount: data.liabilities[key]?.value || 0,
         percentage: Number(data.liabilities[key]?.percentage || 0).toFixed(0),
         color: assetColors[index],
-      }),
-    )
+      }))
     setUserLiabilities(liabilities)
 
     const income = Object.keys(data?.allIncome || {}).map((key, index) => ({
@@ -412,14 +423,14 @@ export const Dashboard: React.FC = () => {
     setUserExpense(expense)
   }, [data])
 
-  const getCurrentDate = (): string  => {
-    const date = new Date();
-    const formatter = new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    return formatter.format(date);
+  const getCurrentDate = (): string => {
+    const date = new Date()
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    return formatter.format(date)
   }
 
   return (
@@ -551,6 +562,7 @@ export const Dashboard: React.FC = () => {
             expenses={userExpense}
             totalExpense={data.totalExpense}
             liabilityData={userLiabilities}
+            userLiabilitiesEstimation={userLiabilitiesEstimation}
             totalDebt={data?.debt || {}}
             income={data.income}
             debt={data.debt}
@@ -667,19 +679,22 @@ export const Dashboard: React.FC = () => {
         isOpen={isIncomeModalOpen}
         onClose={() => setIsIncomeModalOpen(false)}
         onSave={handleSaveIncome}
+        initialIncome={userIncome}
       />
 
       <EditLiabilitiesModal
         isOpen={isLiabilityModalOpen}
         onClose={() => setIsLiabilityModalOpen(false)}
         onSave={handleSaveLiability}
+        initialLiabilities={userLiabilities}
+        estimation={userLiabilitiesEstimation}
       />
 
       <EditExpenseModal
         isOpen={isExpenseModalOpen}
         onClose={() => setIsExpenseModalOpen(false)}
         onSave={handleSaveExpenses}
-        initialExpenses={expensesData}
+        initialExpenses={userExpense}
       />
 
       <RiskAttitudeModal
@@ -697,6 +712,9 @@ export const Dashboard: React.FC = () => {
         onClose={() => setisViewFinancialModal(false)}
       />
       <DebtServicingModal
+        liabilities={userLiabilities}
+        totalLiabilities={Number(data?.debt?.value) || 0}
+        currentDebtAmount={userLiabilitiesEstimation?.servicingAmount || 0}
         isOpen={isEditDebtServicingModalOpen}
         onClose={() => setIsEditDebtServicingModalOpen(false)}
       />

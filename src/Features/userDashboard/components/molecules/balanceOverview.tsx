@@ -181,6 +181,7 @@ interface BalanceOverviewProps {
   incomeAndDebt: number
   totalIncomeFromExpense:{ value: number; percentage: number }
   totalExpenseFromIncome:{ value: number; percentage: number }
+  userLiabilitiesEstimation: any
 }
 
 export default function BalanceOverview({
@@ -207,7 +208,8 @@ export default function BalanceOverview({
   incomeAndDebt,
   incomes,
   totalIncomeFromExpense,
-  totalExpenseFromIncome
+  totalExpenseFromIncome,
+  userLiabilitiesEstimation
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState('Assets')
 
@@ -246,7 +248,7 @@ export default function BalanceOverview({
             className="text-navyLight text-sm hover:cursor-pointer"
             onClick={handlePortfolioRecommendationClick}
           >
-            portfolio recommendation
+            Portfolio Recommendation
           </span>
         </div>
 
@@ -312,7 +314,7 @@ export default function BalanceOverview({
             onClick={onEditAssetClick}
             className="text-navyLight text-sm hover:cursor-pointer"
           >
-            Edit info
+            Edit Assets
           </span>
         </div>
 
@@ -478,8 +480,9 @@ export default function BalanceOverview({
           <IncomeVsDebtSection
             totalDebt={totalDebt}
             income={income}
+            userLiabilitiesEstimation={userLiabilitiesEstimation}
             incomeAndDebt={incomeAndDebt}
-            openDebtModal={openDebtModal}
+            openDebtModal={openLiabilityModal}
             openDebtServicingModal={openDebtServicingModal}
           />
         )}

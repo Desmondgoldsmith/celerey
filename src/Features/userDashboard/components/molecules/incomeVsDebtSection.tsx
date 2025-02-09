@@ -27,7 +27,8 @@ const initialMetrics: DebtMetrics = {
 interface IncomeVsDebtProps {
   totalDebt: { value: number; percentage: number }
   income: { value: number; percentage: number }
-  incomeAndDebt: number
+  incomeAndDebt: number;
+  userLiabilitiesEstimation: any
   openDebtModal: () => void;
   openDebtServicingModal: () => void;
 }
@@ -38,6 +39,7 @@ const IncomeVsDebtSection = ({
   incomeAndDebt,
   openDebtModal,
   openDebtServicingModal,
+  userLiabilitiesEstimation
 }: IncomeVsDebtProps) => {
   const metrics = initialMetrics;
 
@@ -91,9 +93,12 @@ const IncomeVsDebtSection = ({
                 onClick={openDebtServicingModal}
                 className="text-navyLight text-sm hover:underline"
               >
-                Add Amount
+                Modify
               </button>
             </div>
+            <span className="text-[#1B1856] text-2xl font-bold">
+              {formatCurrency(Number(userLiabilitiesEstimation?.servicingAmount)) || 0}
+            </span>
           </div>
 
           {/* Estimated Debt Servicing Period */}
@@ -105,12 +110,12 @@ const IncomeVsDebtSection = ({
                 </span>
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
-              <button className="text-navyLight text-sm hover:underline">
+              {/* <button className="text-navyLight text-sm hover:underline">
                 Modify
-              </button>
+              </button> */}
             </div>
             <span className="text-[#1B1856] text-2xl font-bold">
-              {metrics.debtServicingPeriod} Years
+              {userLiabilitiesEstimation?.servicingPeriod || 0} Years
             </span>
           </div>
 

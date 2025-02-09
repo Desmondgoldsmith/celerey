@@ -40,7 +40,7 @@ export const savePersonalInfoApi = async (
 };
 
 export const saveFinancialInfoApi = async (
-  data: FinancialInfoSchema
+  data: Partial<FinancialInfoSchema>
 ): Promise<ApiResponse> => {
   const financialInfoToBeSaved = {
     currency: data.currency,

@@ -106,16 +106,16 @@ export enum ProgressStatus {
 }
 
 export interface FinancialGoalsCardProps {
-  plans: FinancialPlan[]
+  plans: FinancialGoal[]
   onAddGoalClick: () => void
-  onModifyGoal: (plan: FinancialPlan) => void
+  onModifyGoal: (plan: FinancialGoal) => void
 }
 
 export interface AddFinancialGoalModalProps {
   isOpen: boolean
   onClose: () => void
-  onAddGoal: (goal: FinancialPlan) => void
-  initialData?: FinancialPlan
+  onAddGoal: (goal: FinancialGoal) => void
+  initialData?: FinancialGoal
   isModifying?: boolean
 }
 
@@ -225,6 +225,7 @@ export interface BudgetModalProps {
 }
 
 export interface FinancialGoal {
+  id?:string
   name: string
   percentage: number
   currentValue: string
