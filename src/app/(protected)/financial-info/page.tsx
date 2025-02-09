@@ -27,7 +27,6 @@ export default function FinancialInfo() {
   const { isAuthenticated } = useAuthStore()
 
   useEffect(() => {
-    console.log("Is", isAuthenticated)
     if (isAuthenticated) {
       populateFinancialInfo()
     }

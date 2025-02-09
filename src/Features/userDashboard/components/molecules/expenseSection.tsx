@@ -32,9 +32,9 @@ const ExpensesSection = ({ onEditClick, expenses, totalExpense }: ExpenseSection
           <button className="bg-[#1B1856] text-white px-6 py-2 rounded-md text-sm hover:bg-opacity-90 transition-colors">
             Create a Budget
           </button>
-          <button className="border border-[#1B1856] text-[#1B1856] px-6 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors">
+          {/* <button className="border border-[#1B1856] text-[#1B1856] px-6 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors">
             Generate my Budget
-          </button>
+          </button> */}
         </div>
       </div>
 

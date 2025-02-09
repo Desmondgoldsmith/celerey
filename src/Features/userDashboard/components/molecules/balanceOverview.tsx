@@ -179,6 +179,8 @@ interface BalanceOverviewProps {
   totalDebt: { value: number; percentage: number }
   income: { value: number; percentage: number }
   incomeAndDebt: number
+  totalIncomeFromExpense:{ value: number; percentage: number }
+  totalExpenseFromIncome:{ value: number; percentage: number }
 }
 
 export default function BalanceOverview({
@@ -202,7 +204,10 @@ export default function BalanceOverview({
   totalIncome,
   totalDebt,
   totalExpense,
-  incomeAndDebt
+  incomeAndDebt,
+  incomes,
+  totalIncomeFromExpense,
+  totalExpenseFromIncome
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState('Assets')
 
@@ -454,7 +459,7 @@ export default function BalanceOverview({
         )}
         {activeTab === 'Income' && (
           <IncomeSection
-            income={income}
+            income={incomes}
             totalIncome={totalIncome}
             openIncomeModal={openIncomeModal}
             openBudgetModal={openBudgetModal}
@@ -479,7 +484,7 @@ export default function BalanceOverview({
           />
         )}
         {activeTab === 'Income Vs Expenditure' && (
-          <IncomeVsExpenditure openStatementModal={openStatementModal} />
+          <IncomeVsExpenditure totalIncome={totalIncome} totalIncomeFromExpense={totalIncomeFromExpense} totalExpenseFromIncome={totalExpenseFromIncome}  openStatementModal={openStatementModal} />
         )}
       </div>
     </Card>

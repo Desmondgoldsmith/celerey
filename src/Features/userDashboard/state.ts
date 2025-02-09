@@ -1,3 +1,9 @@
+import {
+  FinancialInfoSchema,
+  GoalsInfoSchema,
+  KnowledgeInfoSchema,
+  RiskInfoSchema,
+} from "@/Features/onboarding/schema";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
@@ -9,6 +15,7 @@ import {
   getSubscriptionStatusApi,
 } from "./service";
 import { FinancialGoal } from "./types";
+import { PersonalInfoSchema } from "../onboarding/schema";
 
 interface DashboardState {
   data: {
@@ -112,6 +119,7 @@ interface DashboardState {
   };
   error: string;
   loading: boolean;
+
 }
 
 // the various actions we can perform
@@ -119,6 +127,11 @@ interface DashboardStore extends DashboardState {
   populateDashboardData: () => Promise<void>;
   populateFinancialGoals: () => Promise<void>;
   populateSubscription: () => Promise<void>;
+  updateProfileInfo?: (personalInfo: Partial<PersonalInfoSchema>) => void;
+  updateFinancialInfo?: (financialInfo: Partial<FinancialInfoSchema>) => void;
+  updateGoalsInfo?: (goalsInfo: Partial<GoalsInfoSchema>) => void;
+  updateRiskInfo?: (riskInfo: Partial<RiskInfoSchema>) => void;
+  updateKnowledgeInfo?: (riskInfo: Partial<KnowledgeInfoSchema>) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(

@@ -12,7 +12,7 @@ interface FinancialGoalItemProps {
 interface FinancialGoalsCardProps {
   goals: FinancialGoal[]
   onAddGoalClick: () => void
-  onModifyGoal: (plan: FinancialGoal) => void
+  onModifyGoal: (goal: FinancialGoal) => void
 }
 
 const isEmergencyGoal = (goal: FinancialGoal) => {

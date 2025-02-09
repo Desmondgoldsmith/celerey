@@ -60,7 +60,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </button>
 
             <div className="space-y-6 pt-12">
-              <Link
+              {/* <Link
                 href="#"
                 className="block text-lg font-helvetica text-gray-700 py-3 border-b"
                 onClick={() => setIsMobileNavOpen(false)}
@@ -80,7 +80,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 onClick={() => setIsMobileNavOpen(false)}
               >
                 Knowledge Hub
-              </Link>
+              </Link> */}
               {/* Mobile User Dropdown */}
               <div className="relative">
                 <button
@@ -114,7 +114,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           </div>
           {/* Desktop Navigation */}
           <div className="hidden md:flex gap-6 items-center">
-            <Link href="#" className="text-sm font-helvetica text-gray-600">
+            {/* <Link href="#" className="text-sm font-helvetica text-gray-600">
               Risk Allocation
             </Link>
             <Link href="#" className="text-sm font-helvetica text-gray-600">
@@ -122,7 +122,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             </Link>
             <Link href="#" className="text-sm font-helvetica text-gray-600">
               Knowledge Hub
-            </Link>
+            </Link> */}
             {/* Desktop User Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button

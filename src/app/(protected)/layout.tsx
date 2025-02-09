@@ -46,8 +46,6 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     setIsFetchingData(true)
     const activeSection = await getSectionProgress()
 
-    console.log(activeSection)
-
     if (activeSection === 'completed') {
       router.replace('/freebie')
     } else {

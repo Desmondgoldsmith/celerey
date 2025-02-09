@@ -27,7 +27,7 @@ const initialMetrics: DebtMetrics = {
 interface IncomeVsDebtProps {
   totalDebt: { value: number; percentage: number }
   income: { value: number; percentage: number }
-  incomeAndDebt: { value: number; percentage: number }
+  incomeAndDebt: number
   openDebtModal: () => void;
   openDebtServicingModal: () => void;
 }
@@ -139,7 +139,7 @@ const IncomeVsDebtSection = ({
               </div>
             </div>
             <span className="text-2xl font-bold">
-              {formatCurrency(Number(incomeAndDebt?.value || 0))}
+              {formatCurrency(Number(incomeAndDebt || 0))}
             </span>
           </div>
 
@@ -152,13 +152,13 @@ const IncomeVsDebtSection = ({
               {/* Income Progress Bar */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-gray-600">
-                  <span>Income ({Number(income?.percentage || 0)}%)</span>
+                  <span>Income ({Number(income?.percentage || 0).toFixed(0)}%)</span>
                   <span>{formatCurrency(Number(income?.value || 0))}</span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#8BA78D] rounded-full transition-all duration-500"
-                    style={{ width: `${Number(income?.percentage)}%` }}
+                    style={{ width: `${Number(income?.percentage).toFixed(0)}%` }}
                   />
                 </div>
               </div>
@@ -166,13 +166,13 @@ const IncomeVsDebtSection = ({
               {/* Amortized Debt Progress Bar */}
               <div className="space-y-1">
                 <div className="flex mt-5 justify-between text-xs text-gray-600">
-                  <span>Amortized Debt ({Number(totalDebt?.percentage || 0)}%)</span>
+                  <span>Amortized Debt ({Number(totalDebt?.percentage || 0).toFixed(0)}%)</span>
                   <span>{formatCurrency(Number(totalDebt?.value || 0))}</span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#FFA500] rounded-full transition-all duration-500"
-                    style={{ width: `${Number(totalDebt?.percentage || 0)}%` }}
+                    style={{ width: `${Number(totalDebt?.percentage || 0).toFixed(0)}%` }}
                   />
                 </div>
               </div>
@@ -187,7 +187,7 @@ const IncomeVsDebtSection = ({
                   <div className="flex flex-col">
                     <span className="text-sm text-gray-600">Income</span>
                     <span className="text-sm text-gray-600">
-                      {Number(income?.percentage || 0)}%
+                      {Number(income?.percentage || 0).toFixed(0)}%
                     </span>
                   </div>
                 </div>
@@ -205,7 +205,7 @@ const IncomeVsDebtSection = ({
                       Amortized Debt
                     </span>
                     <span className="text-sm text-gray-600">
-                      {Number(totalDebt?.percentage || 0)}%
+                      {Number(totalDebt?.percentage || 0).toFixed(0)}%
                     </span>
                   </div>
                 </div>

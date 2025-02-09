@@ -62,10 +62,8 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         card: cardElement!,
       })
 
-      console.log(paymentMethod)
 
       if (error) {
-        console.log(error)
         setErrorMessage(error?.message || '')
         setLoading(false)
         return
@@ -78,8 +76,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
           selectedTier.interval === 'yearly' ? 'yearly' : 'monthly',
         payment_method_id: paymentMethod.id,
       })
-
-      console.log('response', response)
 
       if (!response.success) {
         setErrorMessage(response.message)
@@ -99,8 +95,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
       }
 
       const subscriptionResponse = await getSubscriptionStatusApi()
-
-      console.log('subscriptionResponse', subscriptionResponse)
 
       if (subscriptionResponse.data.status === 'active' || subscriptionResponse.data.status === 'pending') {
         alert('Subscription Successful!')

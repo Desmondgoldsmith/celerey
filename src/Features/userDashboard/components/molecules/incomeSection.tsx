@@ -1,14 +1,9 @@
 import React from "react";
 import { Info } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { GeneratedBudget } from "../../types";
+import { GeneratedBudget, IncomeItem } from "../../types";
 
-interface IncomeItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
-}
+
 
 
 
@@ -117,12 +112,12 @@ const IncomeSection = ({
           >
             Create a Budget
           </button>
-          <button
+          {/* <button
             onClick={openGenBudgetModal}
             className="border border-[#1B1856] text-[#1B1856] px-6 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors"
           >
             Generate my Budget
-          </button>
+          </button> */}
         </div>
       </div>
 

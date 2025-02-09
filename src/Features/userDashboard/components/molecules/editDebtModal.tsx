@@ -76,7 +76,6 @@ const EditDebtModal: React.FC<EditDebtModalProps> = ({
 
   // Calculate total debt
   const totalDebt = debts.reduce((sum, debt) => sum + debt.amount, 0);
-  console.log(totalDebt);
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md">

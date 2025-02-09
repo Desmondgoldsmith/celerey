@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { DashboardLayout } from './dashboardLayout'
 import { MetricCard } from '../molecules/metricCard'
@@ -29,6 +28,7 @@ import type {
   GeneratedBudget,
   IncomeItem,
   LiabilityItem,
+  FinancialGoal,
 } from '../../types'
 import EditAssetModal from '../molecules/editAssetModal'
 import EditIncomeModal from '../molecules/editIncomeModal'
@@ -65,7 +65,7 @@ export const Dashboard: React.FC = () => {
       durationLeft: 0,
     })),
   )
-  const [selectedPlan, setSelectedPlan] = useState<FinancialPlan | undefined>()
+  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal>()
   const [selectedEPlan, setSelectedEPlan] = useState<
     EmergencyPlan | undefined
   >()
@@ -104,8 +104,8 @@ export const Dashboard: React.FC = () => {
     }
   }
 
-  const handleModifyGoal = (plan: FinancialPlan) => {
-    setSelectedPlan(plan)
+  const handleModifyGoal = (goal: FinancialGoal) => {
+    setSelectedPlan(goal)
     setIsAddGoalModalOpen(true)
   }
 
@@ -143,7 +143,6 @@ export const Dashboard: React.FC = () => {
       color: '#383396',
     },
   ])
-  console.log(incomeData)
 
   const handleSaveIncome = (updatedIncome: IncomeItem[]) => {
     setIncomeData(updatedIncome)
@@ -227,6 +226,8 @@ export const Dashboard: React.FC = () => {
     {},
   )
 
+  
+
   const handleEditAssetClick = () => {
     setIsEditAssetModalOpen(true)
   }
@@ -244,8 +245,8 @@ export const Dashboard: React.FC = () => {
   }
 
   const handleSaveAssets = (assets: AssetType[], countries: CountryType[]) => {
-    setUserAssets(assets)
-    setUserCountries(countries)
+    // setUserAssets(assets)
+    // setUserCountries(countries)
   }
 
   const [isGenBudgetModalOpen, setIsGenBudgetModalOpen] = useState(false)
@@ -348,7 +349,14 @@ export const Dashboard: React.FC = () => {
   }
 
   useEffect(() => {
-    const assetColors = ['#1B1856', '#E15B2D', '#8BA78D', '#383396', '#6B7280','#F56767']
+    const assetColors = [
+      '#1B1856',
+      '#E15B2D',
+      '#8BA78D',
+      '#383396',
+      '#6B7280',
+      '#F56767',
+    ]
 
     const assets = Object.keys(data?.assets || {}).map((key, index) => ({
       category: key
@@ -361,25 +369,25 @@ export const Dashboard: React.FC = () => {
     }))
     setUserAssets(assets)
 
-    const userCountries: any = {};
+    const userCountries: any = {}
 
-    (data?.assetCountries || []).map(
+    ;(data?.assetCountries || []).map(
       (country: string, index: number) => (userCountries[country] = index + 1),
     )
     setUserCountries(userCountries)
 
-
-    const liabilities = Object.keys(data?.liabilities || {}).map((key, index) => ({
-      category: key
-        .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
-        .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
-      key,
-      amount: data.liabilities[key]?.value || 0,
-      percentage: Number(data.liabilities[key]?.percentage || 0).toFixed(0),
-      color: assetColors[index],
-    }))
+    const liabilities = Object.keys(data?.liabilities || {}).map(
+      (key, index) => ({
+        category: key
+          .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+          .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+        key,
+        amount: data.liabilities[key]?.value || 0,
+        percentage: Number(data.liabilities[key]?.percentage || 0).toFixed(0),
+        color: assetColors[index],
+      }),
+    )
     setUserLiabilities(liabilities)
-
 
     const income = Object.keys(data?.allIncome || {}).map((key, index) => ({
       category: key
@@ -402,8 +410,17 @@ export const Dashboard: React.FC = () => {
       color: assetColors[index],
     }))
     setUserExpense(expense)
-
   }, [data])
+
+  const getCurrentDate = (): string  => {
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return formatter.format(date);
+  }
 
   return (
     <DashboardLayout>
@@ -414,7 +431,7 @@ export const Dashboard: React.FC = () => {
             {/* Left Section */}
             <div className="space-y-2 w-full lg:w-auto">
               <h1 className="text-3xl lg:text-4xl text-center lg:text-start font-cirka tracking-tight">
-                Welcome, Jude!
+                Welcome, {data?.userName || ''}!
               </h1>
               <div className="flex items-center text-center lg:text-start gap-1.5">
                 <span className="text-sm text-center lg:text-start">
@@ -429,7 +446,7 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
+            {/* <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full lg:w-auto">
                 <button className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto">
                   Book Virtual Consultation
@@ -443,20 +460,20 @@ export const Dashboard: React.FC = () => {
               <a href="#" className="text-navy text-sm underline">
                 Upload Financial Documents
               </a>
-            </div>
+            </div> */}
 
             {/* Right Section */}
             <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full lg:w-auto">
                 <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
                   <Calendar className="h-3 w-3" />
-                  <span>January 20, 2025</span>
+                  <span>{getCurrentDate()}</span>
                 </div>
-                <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
+                {/* <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
                   Export
-                </button>
+                </button> */}
               </div>
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start lg:justify-end">
+              {/* <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start lg:justify-end">
                 <button className="p-2 rounded-full border">
                   <Upload className="h-3 w-3 text-gray-600" />
                 </button>
@@ -470,7 +487,7 @@ export const Dashboard: React.FC = () => {
                 <button className="p-2 rounded-full border">
                   <Search className="h-3 w-3 text-gray-600" />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -522,13 +539,12 @@ export const Dashboard: React.FC = () => {
               setIsAddGoalModalOpen(true)
             }}
             onModifyGoal={handleModifyGoal}
-            onModifyEmergency={handleModifyEmergency}
           />
           <BalanceOverviewCard
             onPortfolioRecommendationClick={handlePortfolioRecommendationClick}
             onEditAssetClick={handleEditAssetClick}
             assets={userAssets}
-            totalAssets = {data.totalAssets || 0}
+            totalAssets={data.totalAssets || 0}
             countries={userCountries}
             incomes={userIncome}
             totalIncome={data.totalIncome}
@@ -539,6 +555,8 @@ export const Dashboard: React.FC = () => {
             income={data.income}
             debt={data.debt}
             incomeAndDebt={data.incomeAndDebt}
+            totalIncomeFromExpense={data?.totalIncomeFromExpense}
+            totalExpenseFromIncome={data?.totalExpenseFromIncome}
             openIncomeModal={openIncomeModal}
             openLiabilityModal={openLiabilityModal}
             onEditExpenseClick={() => setIsExpenseModalOpen(true)}
@@ -693,7 +711,6 @@ export const Dashboard: React.FC = () => {
         isOpen={isEditDebtModalOpen}
         onClose={() => setIsEditDebtModalOpen(false)}
         onSave={(updatedDebts) => {
-          console.log(updatedDebts)
           setIsEditDebtModalOpen(false)
         }}
       />

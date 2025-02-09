@@ -34,7 +34,6 @@ export const InvestmentScreen: React.FC<InvestmentScreenProps> = ({
   onContinue,
 }) => {
   const handleOptionSelect = (optionId: string) => {
-    console.log("Selected option:", optionId);
     onChange({ ...value, investmentType: optionId });
   };
 

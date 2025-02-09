@@ -1,21 +1,27 @@
-import React from "react";
-import { HelpCircle } from "lucide-react";
+import React from 'react'
+import { HelpCircle } from 'lucide-react'
 
 interface IncomeVsExpenditureProps {
-  openStatementModal: () => void;
+  openStatementModal: () => void
+  totalIncome: number
+  totalExpenseFromIncome: { value: number; percentage: number }
+  totalIncomeFromExpense: { value: number; percentage: number }
 }
 
 const IncomeVsExpenditure = ({
   openStatementModal,
+  totalIncome,
+  totalExpenseFromIncome,
+  totalIncomeFromExpense,
 }: IncomeVsExpenditureProps) => {
   const data = {
     profitability: 72,
-    annualRevenue: 78593.04,
-    annualIncome: 51424.58,
-    incomePercentage: 65,
-    annualExpenditure: 27168.46,
-    expenditurePercentage: 45,
-  };
+    annualRevenue: totalIncome || 0,
+    annualIncome: Number(totalIncomeFromExpense?.value || 0),
+    incomePercentage: Number(totalIncomeFromExpense?.percentage || 0).toFixed(0),
+    annualExpenditure: Number(totalExpenseFromIncome?.value || 0),
+    expenditurePercentage: Number(totalExpenseFromIncome?.percentage || 0).toFixed(0),
+  }
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -142,7 +148,7 @@ const IncomeVsExpenditure = ({
         </button> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default IncomeVsExpenditure;
+export default IncomeVsExpenditure
