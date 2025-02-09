@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircleDollarSign, Shield, Heart } from "lucide-react";
 import { FinancialPlan, EmergencyPlan } from "../../types";
 
@@ -22,6 +22,7 @@ const isEmergencyPlan = (
   return plan.name === "Emergency Fund";
 };
 
+// Helper function to get the appropriate icon based on plan name
 const getIcon = (name: string) => {
   switch (name) {
     case "Savings Plan":
@@ -35,12 +36,23 @@ const getIcon = (name: string) => {
   }
 };
 
+// Helper function to determine progress bar color
 const getProgressBarColor = (progress: number): string => {
   if (progress < 30) return "bg-red-500";
   if (progress < 70) return "bg-yellow-500";
   return "bg-green-500";
 };
 
+// Currency formatter helper
+const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(amount);
+};
+
+// Individual financial plan item component
 const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
   plan,
   className = "",
@@ -55,14 +67,7 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
     }
   };
 
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(amount);
-  };
-
+  // Helper functions for displaying amounts and durations
   const getCurrentAmountLabel = (): string => {
     if (isEmergencyPlan(plan)) {
       return "Duration";
@@ -88,6 +93,7 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
 
   return (
     <div className={`relative w-full ${className}`}>
+      {/* Progress bar section */}
       <div className="mb-3 sm:mb-4">
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
@@ -102,6 +108,7 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
         </p>
       </div>
 
+      {/* Plan details card */}
       <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-100">
         <div className="flex justify-between items-center mb-3 sm:mb-4">
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -118,6 +125,7 @@ const FinancialPlanItem: React.FC<FinancialPlanItemProps> = ({
           </button>
         </div>
 
+        {/* Plan details grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
           <div>
             <p className="text-gray-600">{getCurrentAmountLabel()}</p>
@@ -190,10 +198,30 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   onModifyGoal,
   onModifyEmergency,
 }) => {
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const plansPerPage = window.innerWidth < 640 ? 2 : 4;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [plansPerPage, setPlansPerPage] = useState(4); // Default to desktop view
+
+  // Handle responsive layout after component mounts
+  useEffect(() => {
+    // Function to update plans per page based on window width
+    const handleResize = () => {
+      setPlansPerPage(window.innerWidth < 640 ? 2 : 4);
+    };
+
+    // Set initial value
+    handleResize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Calculate total pages needed
   const totalPages = Math.ceil((plans.length + 1) / plansPerPage);
 
+  // Get plans for current page
   const getCurrentPagePlans = () => {
     const startIdx = currentPage * plansPerPage;
     let endIdx = startIdx + plansPerPage;
@@ -210,6 +238,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
 
   return (
     <div className="bg-white rounded-lg p-3 shadow-sm">
+      {/* Header section */}
       <div className="flex items-center justify-between mb-4 sm:mb-6">
         <div className="flex items-center gap-1.5 sm:gap-2">
           <CircleDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
@@ -224,10 +253,12 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
         {plans.length} plans
       </h3>
 
+      {/* plans */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
         <div className="hidden sm:block absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
         <div className="hidden sm:block absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
 
+        {/* Render current page plans */}
         {getCurrentPagePlans().map((plan) => (
           <FinancialPlanItem
             key={plan.name}
@@ -238,6 +269,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
           />
         ))}
 
+        {/* Add Goal button on first page */}
         {currentPage === 0 && (
           <div className="flex items-center justify-center min-h-[150px] sm:min-h-[200px] border rounded-lg border-dashed border-gray-300">
             <button
@@ -250,6 +282,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
         )}
       </div>
 
+      {/* Pagination dots */}
       {totalPages > 1 && (
         <div className="flex justify-center gap-2 mt-6 sm:mt-4">
           {Array.from({ length: totalPages }).map((_, idx) => (

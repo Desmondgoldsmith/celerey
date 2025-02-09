@@ -76,8 +76,6 @@ export interface DashboardData {
   expensesData: ExpenseItem[];
 }
 
-// types/financialGoals.ts
-
 export interface FinancialPlan {
   name: string;
   currentAmount: number;
@@ -165,17 +163,21 @@ export interface ExpenseItem {
   color: string;
 }
 
-export type SubscriptionInterval = "yearly" | "biennial";
+export type SubscriptionInterval = "yearly";
 
 export type SubscriptionTier = {
   id: string;
   name: string;
   price: number;
+  pricePerMonth: number;
   interval: SubscriptionInterval;
   description: string;
+  idealCustomer: string;
   features: string[];
   intro: string;
-  buttonText?: string;
+  buttonText: string;
+  isPopular?: boolean;
+  isCurrentPlan?: boolean;
 };
 
 export interface Advisor {

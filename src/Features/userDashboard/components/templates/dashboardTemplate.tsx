@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { DashboardLayout } from "./dashboardLayout";
 import { MetricCard } from "../molecules/metricCard";
@@ -28,6 +29,7 @@ import type {
   GeneratedBudget,
   IncomeItem,
   LiabilityItem,
+  SubscriptionTier,
 } from "../../types";
 import EditAssetModal from "../molecules/editAssetModal";
 import EditIncomeModal from "../molecules/editIncomeModal";
@@ -43,6 +45,7 @@ import CreateBudgetModal from "../molecules/createBudgetModal";
 import GenerateBudgetModal from "../molecules/generateBudgetModal";
 import EditLiabilitiesModal from "../molecules/editLiabilityModal";
 import EmergencyFundModal from "../molecules/emergencyFundModal";
+import { SubscriptionModal } from "../molecules/subscriptionModal";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false);
@@ -67,6 +70,9 @@ export const Dashboard: React.FC = () => {
   const [selectedEPlan, setSelectedEPlan] = useState<
     EmergencyPlan | undefined
   >();
+  const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
+    null
+  );
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
   const handlePortfolioRecommendationClick = () => {
@@ -196,6 +202,8 @@ export const Dashboard: React.FC = () => {
   };
 
   const [isEditAssetModalOpen, setIsEditAssetModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isViewRiskModal, setisViewRiskModal] = useState(false);
   const [isViewInvestModal, setisViewInvestModal] = useState(false);
   const [isViewFinancialModal, setisViewFinancialModal] = useState(false);
@@ -324,12 +332,23 @@ export const Dashboard: React.FC = () => {
     setIsBudgetModalOpen(true);
   };
 
+  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
+    setSelectedTier(tier);
+    setIsSubscriptionModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
+
+  const handleOpenSubscriptionModal = () => {
+    console.log("modal opened");
+    setIsSubscriptionModalOpen(true);
+  };
+
   const router = useRouter();
   const handleAdvisors = () => {
     router.push("/advisors");
   };
   return (
-    <DashboardLayout>
+    <DashboardLayout onUpgradeClick={handleOpenSubscriptionModal}>
       <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
         {/* Header */}
         <div className="bg-white rounded-2xl p-3">
@@ -615,6 +634,12 @@ export const Dashboard: React.FC = () => {
         isOpen={isBudgetModalOpen}
         onClose={() => setIsBudgetModalOpen(false)}
         onCreateBudget={handleCreateBudget}
+      />
+
+      <SubscriptionModal
+        isOpen={isSubscriptionModalOpen}
+        onClose={() => setIsSubscriptionModalOpen(false)}
+        onSubscriptionSelect={handleSubscriptionSelect}
       />
     </DashboardLayout>
   );

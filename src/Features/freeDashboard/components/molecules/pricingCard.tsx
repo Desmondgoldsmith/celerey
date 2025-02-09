@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import { SubscriptionTier, SubscriptionInterval } from "../../types";
-import { ToggleButton } from "./toggleButton";
+import React from "react";
+import { SubscriptionTier } from "../../types";
 import { FeaturesList } from "./featureList";
-
-const BIENNIAL_DISCOUNTS = {
-  Standard: 0.1, // 10% discount
-  Pro: 0.12, // 12% discount
-  Elite: 0.15, // 15% discount
-};
 
 interface PricingCardProps {
   tier: SubscriptionTier;
@@ -18,93 +11,54 @@ export const PricingCard: React.FC<PricingCardProps> = ({
   tier,
   onSubscribe,
 }) => {
-  const [interval, setInterval] = useState<SubscriptionInterval>("yearly");
-
-  const calculateYearlyPrice = () => {
-    return tier.price * 12;
-  };
-
-  const calculateBiennialPrice = () => {
-    const twoYearPrice = calculateYearlyPrice() * 2;
-    const discountRate =
-      BIENNIAL_DISCOUNTS[tier.name as keyof typeof BIENNIAL_DISCOUNTS] || 0;
-    const discountAmount = twoYearPrice * discountRate;
-    return twoYearPrice - discountAmount;
-  };
-
-  const getPrice = () => {
-    return interval === "yearly"
-      ? calculateYearlyPrice()
-      : calculateBiennialPrice();
-  };
-
-  const getDiscountAmount = () => {
-    const twoYearPrice = calculateYearlyPrice() * 2;
-    const discountRate =
-      BIENNIAL_DISCOUNTS[tier.name as keyof typeof BIENNIAL_DISCOUNTS] || 0;
-    return twoYearPrice * discountRate;
-  };
-
-  const getDiscountMessage = () => {
-    if (interval === "biennial") {
-      const discountPercent =
-        BIENNIAL_DISCOUNTS[tier.name as keyof typeof BIENNIAL_DISCOUNTS] * 100;
-      const savingsAmount = getDiscountAmount();
-      return (
-        <div className="text-navyLight text-base font-cirka mt-4 font-semibold">
-          Save {discountPercent}% (${savingsAmount.toFixed(2)}) with biennial
-          billing
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <div className="bg-[#F4F5F6] text-[#242424] rounded-lg p-4 md:p-6 flex flex-col h-full">
+    <div
+      className={`bg-[#F4F5F6] ${
+        tier.isPopular ? "border border-navy" : "border-transparent"
+      } text-[#242424] rounded-lg p-4 md:p-6 flex flex-col h-full relative`}
+    >
       <div className="mb-4 md:mb-6">
-        <h3 className="text-lg md:text-xl text-[#242424] font-semibold font-cirka mb-2">
-          {tier.name}
-        </h3>
-        <p className="text-xs md:text-sm text-[#242424] font-circa">
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg md:text-xl text-[#242424] font-semibold font-cirka mb-2">
+            {tier.name}
+          </h3>
+          {/* Popular Badge */}
+          {tier.isPopular && (
+            <div className="bg-navy text-white px-3 py-1 rounded-full text-sm">
+              Most Popular
+            </div>
+          )}
+        </div>
+
+        <p className="text-xs md:text-sm text-[#242424] font-circa mb-2">
           {tier.description}
         </p>
-      </div>
-
-      <div className="mb-4 md:mb-6">
-        <ToggleButton
-          options={[
-            { label: "Yearly", value: "yearly" },
-            { label: "Biennial", value: "biennial" },
-          ]}
-          value={interval}
-          onChange={(value) => setInterval(value)}
-        />
-        {getDiscountMessage()}
+        <p className="text-xs md:text-xs text-navy font-circa italic">
+          {tier.idealCustomer}
+        </p>
       </div>
 
       <div className="mb-4 md:mb-6">
         <div className="flex items-baseline gap-2">
           <div className="text-2xl md:text-3xl font-bold">
-            ${getPrice().toLocaleString()}
+            ${tier.price.toLocaleString()}
           </div>
-          {interval === "biennial" && (
-            <div className="text-xs md:text-sm text-[#242424]">
-              (${(getPrice() / 24).toFixed(2)}/month)
-            </div>
-          )}
+          <div className="text-xs md:text-sm text-[#242424]">
+            (${tier.pricePerMonth}/month)
+          </div>
         </div>
-        <div className="text-xs md:text-sm text-[#242424]">
-          {interval === "yearly" ? "Per year" : "Every two years"}
-        </div>
+        <div className="text-xs md:text-sm text-[#242424]">Per year</div>
       </div>
 
-      <button
-        onClick={onSubscribe}
-        className="bg-[#F4F5F6] w-full border border-navy text-navy rounded-md py-2 px-4 text-sm md:text-base hover:bg-navy hover:text-white transition-colors mb-4 md:mb-6"
-      >
-        Subscribe
-      </button>
+      <div>
+        <button
+          onClick={onSubscribe}
+          className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white`}
+          disabled={tier.isCurrentPlan}
+        >
+          {tier.buttonText}
+        </button>
+      </div>
 
       <div className="border-t">
         <h4 className="font-semibold mt-4 md:mt-5 text-[#242424] mb-3 md:mb-4 text-sm md:text-base">
