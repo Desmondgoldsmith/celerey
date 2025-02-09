@@ -82,8 +82,8 @@ export const Dashboard: React.FC = () => {
   const {
     populateDashboardData,
     data,
-    loading,
     populateFinancialGoals,
+    populateBudget,
     financialGoals,
   } = useDashboardStore();
 
@@ -92,9 +92,12 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   const fetchDashboardData = async () => {
-    await populateDashboardData();
-    await populateFinancialGoals();
+    await populateDashboardData()
+    await populateFinancialGoals()
+    await populateBudget()
+  }
   };
+
 
   const handlePortfolioRecommendationClick = () => {
     setIsPortfolioModalOpen(true);
@@ -434,6 +437,7 @@ export const Dashboard: React.FC = () => {
     }));
     setUserExpense(expense);
   }, [data]);
+
 
   const getCurrentDate = (): string => {
     const date = new Date();

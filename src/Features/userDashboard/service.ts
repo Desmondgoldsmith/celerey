@@ -11,25 +11,39 @@ export const getFinancialGoalsApi = async (): Promise<ApiResponse> => {
   return response.data;
 };
 
-
-export const createFinancialGoalsApi = async (payload: any): Promise<ApiResponse> => {
+export const createFinancialGoalsApi = async (
+  payload: any
+): Promise<ApiResponse> => {
   const response = await apiClient.post("/financial-goal", payload);
   return response.data;
 };
 
-export const updateFinancialGoalsApi = async (payload: any, id: string): Promise<ApiResponse> => {
+export const updateFinancialGoalsApi = async (
+  payload: any,
+  id: string
+): Promise<ApiResponse> => {
   const response = await apiClient.put(`/financial-goal/${id}`, payload);
   return response.data;
 };
 
-export const createSubscriptionApi = async (payload: any): Promise<ApiResponse> => {
+export const createSubscriptionApi = async (
+  payload: any
+): Promise<ApiResponse> => {
   const response = await apiClient.post("/subscription", payload);
   return response.data;
 };
-
 
 export const getSubscriptionStatusApi = async (): Promise<ApiResponse> => {
   const response = await apiClient.get(`/subscription/status`);
   return response.data;
 };
 
+export const saveBudgetApi = async (payload: any): Promise<ApiResponse> => {
+  const response = await apiClient.post("/budget", payload);
+  return response.data;
+};
+
+export const getBudgetApi = async (): Promise<ApiResponse> => {
+  const response = await apiClient.get("/budget");
+  return response.data;
+};
