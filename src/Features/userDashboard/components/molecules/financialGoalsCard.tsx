@@ -1,7 +1,7 @@
 import React from "react";
 import { CircleDollarSign, Shield, Heart } from "lucide-react";
 import { FinancialPlan, EmergencyPlan, FinancialGoal } from "../../types";
-import getMonthsBetweenDates from "@/utils/getMonthsBetweenDates";
+import { differenceInMonths, parseISO, format } from "date-fns";
 
 interface FinancialGoalItemProps {
   goal: FinancialGoal;
@@ -16,7 +16,7 @@ interface FinancialGoalsCardProps {
 }
 
 const isEmergencyGoal = (goal: FinancialGoal) => {
-  return goal.type === "emergency";
+  return goal?.type === "emergency";
 };
 
 // Helper function to get the appropriate icon based on plan name
@@ -40,15 +40,6 @@ const getProgressBarColor = (progress: number): string => {
   return "bg-green-500";
 };
 
-// Currency formatter helper
-const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format(amount);
-};
-
 const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
   goal,
   className = "",
@@ -57,6 +48,14 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
   const handleModifyClick = () => {
     onModifyGoal(goal);
   };
+  const getMonthsBetweenDates = (
+    startDate: string,
+    endDate: string
+  ): number => {
+    console.log(differenceInMonths(parseISO(endDate), parseISO(startDate)));
+    if (!startDate || !endDate) return 0;
+    return differenceInMonths(parseISO(endDate), parseISO(startDate));
+  };
 
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("en-US", {
@@ -64,6 +63,10 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
       currency: "USD",
       minimumFractionDigits: 2,
     }).format(amount);
+  };
+
+  const formatDate = (dateString: string): string => {
+    return format(new Date(dateString), "MMM yyyy");
   };
 
   const getCurrentAmountLabel = (): string => {
@@ -85,6 +88,32 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
       return `${goal?.targetValue || 0} months`;
     }
     return formatCurrency(Number(goal?.targetValue || 0));
+  };
+
+  const getCurrentValueLabel = (type: string) => {
+    switch (type) {
+      case "emergency":
+        return "Emergency Duration";
+      case "retirement":
+        return "Current Pension";
+      case "saving":
+        return "Current Savings";
+      default:
+        return "Current Amount";
+    }
+  };
+
+  const getTargetValueLabel = (type: string) => {
+    switch (type) {
+      case "emergency":
+        return "Target Duration";
+      case "retirement":
+        return "Target Pension";
+      case "saving":
+        return "Target Savings";
+      default:
+        return "Target Amount";
+    }
   };
 
   return (
@@ -124,7 +153,9 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
         {/* Plan details grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
           <div>
-            <p className="text-gray-600">{getCurrentAmountLabel()}</p>
+            <p className="text-gray-600">
+              {getCurrentValueLabel(goal?.type || "")}
+            </p>
             <p className="font-medium text-gray-900">
               {getCurrentAmountDisplay()}
             </p>

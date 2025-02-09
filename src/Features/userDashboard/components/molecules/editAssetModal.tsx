@@ -13,13 +13,14 @@ import { AssetType, CountryType } from '../../types'
 import { countries } from '@/Features/onboarding/countries'
 import { useOnboardingStore } from '@/Features/onboarding/state'
 import Spinner from '@/components/ui/spinner'
+import { useDashboardStore } from '../../state'
 
 interface EditAssetModalProps {
   isOpen: boolean
   onClose: () => void
   onSave: (assets: AssetType[], countries: CountryType[]) => void
   initialAssets?: AssetType[]
-  initialCountries?: CountryType[]
+  initialCountries?: {[key:string]: number}
 }
 
 const availableCountries = [...countries]
@@ -31,8 +32,6 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   initialAssets = [],
   initialCountries = [],
 }) => {
-  console.log('initialAssets', initialAssets)
-  console.log('initialCountries', initialCountries)
 
   const [assets, setAssets] = useState<AssetType[]>(initialAssets)
   const [showAdditionalField, setShowAdditionalField] = useState(false)
@@ -42,7 +41,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   )
   const [countrySearchValue, setCountrySearchValue] = useState('')
   const [userSelectedCountry, setUserSelectedCountry]: any = useState()
-  const {saveFinancialInfo, loading} = useOnboardingStore()
+  const { loading, updateAssets } = useDashboardStore()
 
   useEffect(() => {
     setAssets(initialAssets)
@@ -70,7 +69,6 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   }
 
   const handleAddCountry = () => {
-
     if (!selectedCountries.includes(userSelectedCountry.code)) {
       setSelectedCountries([...selectedCountries, userSelectedCountry.code])
       setUserSelectedCountry(null)
@@ -88,10 +86,12 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   }
 
   const handleSave = async () => {
-    await saveFinancialInfo()
-    console.log(assets, selectedCountries)
-    onSave(assets, selectedCountries)
-    // onClose()
+    try {
+      await updateAssets(assets, selectedCountries)
+      onClose()
+    } catch (error) {
+      console.log('Error', error)
+    }
   }
 
   const filteredCountries = availableCountries.filter((country) =>
@@ -198,7 +198,6 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                         onClick={() => {
                           setUserSelectedCountry(country)
                           setCountrySearchValue(country.name)
-
                         }}
                       >
                         {country.name}
@@ -244,7 +243,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
             onClick={handleSave}
             disabled={loading}
           >
-          {loading && <Spinner/>}  Modify
+            {loading && <Spinner />} Modify
           </Button>
         </div>
       </DialogContent>

@@ -1,22 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { LiabilityItem } from '../../types'
+import { useDashboardStore } from '../../state'
+import Spinner from '@/components/ui/spinner'
 
 interface DebtServicingModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave?: (amount: number) => void;
-  currentDebtAmount?: number;
+  isOpen: boolean
+  onClose: () => void
+  onSave?: (amount: number) => void
+  currentDebtAmount?: number
+  liabilities: LiabilityItem[]
+  totalLiabilities: number
 }
 
 interface FormState {
-  debtServicingAmount: string;
+  debtServicingAmount: string
 }
 
 const DebtServicingModal: React.FC<DebtServicingModalProps> = ({
@@ -24,39 +29,56 @@ const DebtServicingModal: React.FC<DebtServicingModalProps> = ({
   onClose,
   onSave,
   currentDebtAmount,
+  liabilities = [],
+  totalLiabilities = 0,
 }) => {
   const [formState, setFormState] = React.useState<FormState>({
-    debtServicingAmount: currentDebtAmount?.toString() || "",
-  });
+    debtServicingAmount: currentDebtAmount?.toString() || '',
+  })
 
+  useEffect(() => {
+    setFormState({ debtServicingAmount: currentDebtAmount?.toString() || '' })
+  }, [currentDebtAmount])
+
+  const { loading, updateBalance } = useDashboardStore()
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    const { value } = e.target
     if (/^\d*\.?\d*$/.test(value)) {
       setFormState((prev) => ({
         ...prev,
         debtServicingAmount: value,
-      }));
+      }))
     }
-  };
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const amount = parseFloat(formState.debtServicingAmount);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const amount = parseFloat(formState.debtServicingAmount)
     if (!isNaN(amount)) {
-      //   onSave(amount);
+      try {
+        await updateBalance(liabilities, 'liabilities', {
+          estimation: {
+            servicingAmount: amount,
+            servicingPeriod:Number(Number(totalLiabilities / amount).toFixed(0)),
+          },
+        })
+         onClose()
+      } catch (error) {
+        console.log('Error', error)
+      }
     }
-  };
+  }
 
   const formatCurrency = (value: string) => {
-    const number = parseFloat(value);
-    if (isNaN(number)) return "";
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
+    const number = parseFloat(value)
+    if (isNaN(number)) return ''
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(number);
-  };
+    }).format(number)
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -103,16 +125,17 @@ const DebtServicingModal: React.FC<DebtServicingModalProps> = ({
               Back
             </Button>
             <Button
+              disabled={loading}
               type="submit"
               className="flex-1 bg-[#1B1856] hover:bg-[#1B1856]/90"
             >
-              Modify
+              {loading && <Spinner />} Modify
             </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DebtServicingModal;
+export default DebtServicingModal

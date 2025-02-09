@@ -229,6 +229,12 @@ export const Dashboard: React.FC = () => {
   const [isViewFinancialModal, setisViewFinancialModal] = useState(false);
   const [userAssets, setUserAssets] = useState<AssetType[]>([]);
   const [userLiabilities, setUserLiabilities] = useState<LiabilityItem[]>([]);
+  const [userLiabilitiesEstimation, setUserLiabilitiesEstimation] =
+    useState<any>({
+      servicingAmount: 0,
+      servicingPeriod: 10,
+    });
+
   const [userIncome, setUserIncome] = useState<IncomeItem[]>([]);
   const [userExpense, setUserExpense] = useState<ExpenseItem[]>([]);
 
@@ -568,6 +574,7 @@ export const Dashboard: React.FC = () => {
             expenses={userExpense}
             totalExpense={data.totalExpense}
             liabilityData={userLiabilities}
+            userLiabilitiesEstimation={userLiabilitiesEstimation}
             totalDebt={data?.debt || {}}
             income={data.income}
             debt={data.debt}
@@ -684,19 +691,22 @@ export const Dashboard: React.FC = () => {
         isOpen={isIncomeModalOpen}
         onClose={() => setIsIncomeModalOpen(false)}
         onSave={handleSaveIncome}
+        initialIncome={userIncome}
       />
 
       <EditLiabilitiesModal
         isOpen={isLiabilityModalOpen}
         onClose={() => setIsLiabilityModalOpen(false)}
         onSave={handleSaveLiability}
+        initialLiabilities={userLiabilities}
+        estimation={userLiabilitiesEstimation}
       />
 
       <EditExpenseModal
         isOpen={isExpenseModalOpen}
         onClose={() => setIsExpenseModalOpen(false)}
         onSave={handleSaveExpenses}
-        initialExpenses={expensesData}
+        initialExpenses={userExpense}
       />
 
       <RiskAttitudeModal
@@ -714,6 +724,9 @@ export const Dashboard: React.FC = () => {
         onClose={() => setisViewFinancialModal(false)}
       />
       <DebtServicingModal
+        liabilities={userLiabilities}
+        totalLiabilities={Number(data?.debt?.value) || 0}
+        currentDebtAmount={userLiabilitiesEstimation?.servicingAmount || 0}
         isOpen={isEditDebtServicingModalOpen}
         onClose={() => setIsEditDebtServicingModalOpen(false)}
       />

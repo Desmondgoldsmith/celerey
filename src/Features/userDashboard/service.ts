@@ -7,7 +7,18 @@ export const getDashboardDataApi = async (): Promise<ApiResponse> => {
 };
 
 export const getFinancialGoalsApi = async (): Promise<ApiResponse> => {
-  const response = await apiClient.get("/user/financial-goals");
+  const response = await apiClient.get("/financial-goal");
+  return response.data;
+};
+
+
+export const createFinancialGoalsApi = async (payload: any): Promise<ApiResponse> => {
+  const response = await apiClient.post("/financial-goal", payload);
+  return response.data;
+};
+
+export const updateFinancialGoalsApi = async (payload: any, id: string): Promise<ApiResponse> => {
+  const response = await apiClient.put(`/financial-goal/${id}`, payload);
   return response.data;
 };
 

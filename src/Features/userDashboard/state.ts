@@ -10,12 +10,15 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 
 import {
+  createFinancialGoalsApi,
   getDashboardDataApi,
   getFinancialGoalsApi,
   getSubscriptionStatusApi,
+  updateFinancialGoalsApi,
 } from "./service";
-import { FinancialGoal } from "./types";
+import { AssetType, FinancialGoal } from "./types";
 import { PersonalInfoSchema } from "../onboarding/schema";
+import { saveFinancialInfoApi } from "../onboarding/service";
 
 interface DashboardState {
   data: {
@@ -107,6 +110,7 @@ interface DashboardState {
     userRiskTolerance: string;
     currency: string;
     savings: string;
+    liabilitiesEstimation: any;
   };
   financialGoals: FinancialGoal[];
   subscription: {
@@ -119,7 +123,6 @@ interface DashboardState {
   };
   error: string;
   loading: boolean;
-
 }
 
 // the various actions we can perform
@@ -127,16 +130,19 @@ interface DashboardStore extends DashboardState {
   populateDashboardData: () => Promise<void>;
   populateFinancialGoals: () => Promise<void>;
   populateSubscription: () => Promise<void>;
-  updateProfileInfo?: (personalInfo: Partial<PersonalInfoSchema>) => void;
-  updateFinancialInfo?: (financialInfo: Partial<FinancialInfoSchema>) => void;
-  updateGoalsInfo?: (goalsInfo: Partial<GoalsInfoSchema>) => void;
-  updateRiskInfo?: (riskInfo: Partial<RiskInfoSchema>) => void;
-  updateKnowledgeInfo?: (riskInfo: Partial<KnowledgeInfoSchema>) => void;
+  updateAssets: (assets: AssetType[], assetCountries: string[]) => void;
+  updateBalance: (
+    balance: AssetType[],
+    key: string,
+    additionalItems?: any
+  ) => void;
+  updateFinancialGoal: (goal: any, id: string) => void;
+  createFinancialGoal: (goal: any) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>()(
   persist(
-    immer((set) => ({
+    immer((set, get) => ({
       subscription: {
         isSubscribed: false,
         plan: "",
@@ -216,6 +222,10 @@ export const useDashboardStore = create<DashboardStore>()(
         userFinancialKnowledge: "",
         userRiskTolerance: "",
         savings: "",
+        liabilitiesEstimation: {
+          servicingAmount: 0,
+          servicingPeriod: 0,
+        },
       },
       financialGoals: [],
       loading: true,
@@ -249,6 +259,7 @@ export const useDashboardStore = create<DashboardStore>()(
               totalExpense: response.data.total_expense,
               totalExpenseFromIncome: response.data.total_expense_from_income,
               totalIncomeFromExpense: response.data.total_income_from_expense,
+              liabilitiesEstimation: response.data.liabilities_estimation,
             };
           });
         }
@@ -283,6 +294,68 @@ export const useDashboardStore = create<DashboardStore>()(
           });
         }
 
+        set((state) => {
+          state.loading = false;
+        });
+      },
+      updateAssets: async (assets: AssetType[], assetCountries: string[]) => {
+        set((state) => {
+          state.loading = true;
+        });
+        const updatedAssets: any = {};
+        assets.map((asset) => {
+          if (asset?.key) {
+            updatedAssets[asset.key] = asset.amount;
+          }
+        });
+        updatedAssets["assetCountries"] = assetCountries;
+        await saveFinancialInfoApi({ assets: updatedAssets });
+        await get().populateDashboardData();
+        set((state) => {
+          state.loading = false;
+        });
+      },
+      updateBalance: async (
+        balance: AssetType[],
+        key: string,
+        additionalItems: any = {}
+      ) => {
+        set((state) => {
+          state.loading = true;
+        });
+        const updatedAssets: any = {};
+        balance.map((item) => {
+          if (item?.key) {
+            updatedAssets[item.key] = item.amount;
+          }
+        });
+
+        Object.keys(additionalItems).map(
+          (key) => (updatedAssets[key] = additionalItems[key])
+        );
+
+        await saveFinancialInfoApi({ [key]: updatedAssets });
+        await get().populateDashboardData();
+        set((state) => {
+          state.loading = false;
+        });
+      },
+      updateFinancialGoal: async (goal: any, id: string) => {
+        set((state) => {
+          state.loading = true;
+        });
+        await updateFinancialGoalsApi(goal, id);
+        await get().populateFinancialGoals();
+        set((state) => {
+          state.loading = false;
+        });
+      },
+      createFinancialGoal: async (goal: any) => {
+        set((state) => {
+          state.loading = true;
+        });
+        await createFinancialGoalsApi(goal);
+        await get().populateFinancialGoals();
         set((state) => {
           state.loading = false;
         });

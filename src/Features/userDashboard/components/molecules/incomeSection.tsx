@@ -132,7 +132,7 @@ const IncomeSection = ({
             onClick={openIncomeModal}
             className="text-navyLight text-sm hover:cursor-pointer"
           >
-            Add Income
+            Edit Income
           </span>
         </div>
 

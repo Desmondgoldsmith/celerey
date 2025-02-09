@@ -1,26 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { useDashboardStore } from '../../state'
+import Spinner from '@/components/ui/spinner'
 
 export interface ExpenseItem {
-  category: string;
-  amount: number;
-  percentage: number;
-  color: string;
+  id?: string
+  category?: string
+  amount?: number
+  key?: string
+  percentage?: string | number
+  color?: string
 }
 
 interface EditExpenseModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (expenses: ExpenseItem[]) => void;
-  initialExpenses: ExpenseItem[];
+  isOpen: boolean
+  onClose: () => void
+  onSave: (expenses: ExpenseItem[]) => void
+  initialExpenses: ExpenseItem[]
 }
 
 const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
@@ -29,63 +33,69 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
   onSave,
   initialExpenses,
 }) => {
-  const [expenses, setExpenses] = useState<ExpenseItem[]>(initialExpenses);
+  const [expenses, setExpenses] = useState<ExpenseItem[]>(initialExpenses)
   const [additionalExpenses, setAdditionalExpenses] = useState<
     Array<{
-      category: string;
-      amount: string;
+      category: string
+      amount: string
     }>
-  >([]);
+  >([])
 
-  const handleAmountChange = (index: number, value: string) => {
-    const newExpenses = [...expenses];
-    newExpenses[index] = {
-      ...newExpenses[index],
-      amount: parseFloat(value) || 0,
-    };
-    setExpenses(newExpenses);
-  };
+  const { updateBalance, loading } = useDashboardStore()
+
+  useEffect(() => {
+    setExpenses(initialExpenses)
+  }, [initialExpenses])
+
+  const handleAmountChange = (key: string, value: string) => {
+    const updatedExpenses = expenses.map((item) =>
+      item.key === key ? { ...item, amount: parseFloat(value) || 0 } : item,
+    )
+    setExpenses(updatedExpenses)
+  }
 
   const handleAddExpense = () => {
-    setAdditionalExpenses([
-      ...additionalExpenses,
-      { category: "", amount: "" },
-    ]);
-  };
+    setAdditionalExpenses([...additionalExpenses, { category: '', amount: '' }])
+  }
 
   const handleAdditionalExpenseChange = (
     index: number,
-    field: "category" | "amount",
-    value: string
+    field: 'category' | 'amount',
+    value: string,
   ) => {
-    const newAdditionalExpenses = [...additionalExpenses];
+    const newAdditionalExpenses = [...additionalExpenses]
     newAdditionalExpenses[index] = {
       ...newAdditionalExpenses[index],
       [field]: value,
-    };
-    setAdditionalExpenses(newAdditionalExpenses);
-  };
+    }
+    setAdditionalExpenses(newAdditionalExpenses)
+  }
 
-  const handleSubmit = () => {
-    const newExpenses = additionalExpenses
-      .filter((exp) => exp.category && exp.amount)
-      .map((exp) => ({
-        category: exp.category,
-        amount: parseFloat(exp.amount),
-        percentage: 0,
-        color: `#${Math.floor(Math.random() * 16777215).toString(16)}`, // Generate random color
-      }));
+  const handleSubmit = async () => {
+    try {
+      await updateBalance(expenses, 'expense')
+      onClose()
+    } catch (error) {
+      console.log('Error', error)
+    }
+    // const newExpenses = additionalExpenses
+    //   .filter((exp) => exp.category && exp.amount)
+    //   .map((exp) => ({
+    //     category: exp.category,
+    //     amount: parseFloat(exp.amount),
+    //     percentage: 0,
+    //     color: `#${Math.floor(Math.random() * 16777215).toString(16)}`, // Generate random color
+    //   }));
 
-    const updatedExpenses = [...expenses, ...newExpenses];
-    const total = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-    const finalExpenses = updatedExpenses.map((exp) => ({
-      ...exp,
-      percentage: Number(((exp.amount / total) * 100).toFixed(1)),
-    }));
+    // const updatedExpenses = [...expenses, ...newExpenses];
+    // const total = updatedExpenses.reduce((sum, exp) => sum + exp.amount, 0);
+    // const finalExpenses = updatedExpenses.map((exp) => ({
+    //   ...exp,
+    //   percentage: Number(((exp.amount / total) * 100).toFixed(1)),
+    // }));
 
-    onSave(finalExpenses);
-    onClose();
-  };
+    onClose()
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -109,12 +119,16 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
               <Input
                 type="number"
                 value={expense.amount}
-                onChange={(e) => handleAmountChange(index, e.target.value)}
+                onChange={(e) => {
+                  if (expense?.key) {
+                    handleAmountChange(expense.key, e.target.value)
+                  }
+                }}
                 className="w-[140px]"
               />
             </div>
           ))}
-
+          {/* 
           {additionalExpenses.map((expense, index) => (
             <div
               key={index}
@@ -127,8 +141,8 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
                 onChange={(e) =>
                   handleAdditionalExpenseChange(
                     index,
-                    "category",
-                    e.target.value
+                    'category',
+                    e.target.value,
                   )
                 }
                 className="flex-1"
@@ -137,7 +151,7 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
                 type="number"
                 value={expense.amount}
                 onChange={(e) =>
-                  handleAdditionalExpenseChange(index, "amount", e.target.value)
+                  handleAdditionalExpenseChange(index, 'amount', e.target.value)
                 }
                 className="w-[140px]"
               />
@@ -150,7 +164,7 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
           >
             <span>+</span>
             <span>Add Additional Expense(s)</span>
-          </button>
+          </button> */}
         </div>
 
         <div className="flex justify-between mt-6">
@@ -158,15 +172,16 @@ const EditExpenseModal: React.FC<EditExpenseModalProps> = ({
             Back
           </Button>
           <Button
+            disabled={loading}
             onClick={handleSubmit}
             className="w-[120px] bg-[#1B1856] hover:bg-[#1B1856]/90"
           >
-            Modify
+            {loading && <Spinner />} Modify
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default EditExpenseModal;
+export default EditExpenseModal

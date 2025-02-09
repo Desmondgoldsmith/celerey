@@ -1,65 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { IncomeItem } from "../../types";
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import { IncomeItem } from '../../types'
+import { useDashboardStore } from '../../state'
+import Spinner from '@/components/ui/spinner'
 
 interface EditIncomeModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (income: IncomeItem[]) => void;
-  initialIncome?: IncomeItem[];
+  isOpen: boolean
+  onClose: () => void
+  onSave: (income: IncomeItem[]) => void
+  initialIncome?: IncomeItem[]
 }
 
-const defaultIncomeTypes: Omit<IncomeItem, "percentage">[] = [
-  {
-    category: "Rental Income",
-    amount: 13252.13,
-    color: "#1B1856",
-  },
-  {
-    category: "Dividends",
-    amount: 43693.52,
-    color: "#8BA78D",
-  },
-  {
-    category: "Interest Income",
-    amount: 73953.05,
-    color: "#E15B2D",
-  },
-  {
-    category: "Other Income",
-    amount: 85386.94,
-    color: "#383396",
-  },
-];
 
 const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
   isOpen,
   onClose,
   onSave,
-  initialIncome = defaultIncomeTypes,
+  initialIncome = [],
 }) => {
-  const [incomeItems, setIncomeItems] = useState(initialIncome);
-  const [showAdditionalField, setShowAdditionalField] = useState(false);
-  const [newIncomeName, setNewIncomeName] = useState("");
+  const [incomeItems, setIncomeItems] = useState(initialIncome)
+  const [showAdditionalField, setShowAdditionalField] = useState(false)
+  const [newIncomeName, setNewIncomeName] = useState('')
+  const { loading, updateBalance } = useDashboardStore()
+
+  useEffect(() => {
+    setIncomeItems(initialIncome)
+  }, [initialIncome])
 
   // Handle amount changes for existing income items
-  const handleAmountChange = (category: string, value: string) => {
+  const handleAmountChange = (key: string, value: string) => {
     const newIncome = incomeItems.map((item) =>
-      item.category === category
-        ? { ...item, amount: parseFloat(value) || 0 }
-        : item
-    );
-    setIncomeItems(newIncome);
-  };
+      item.key === key ? { ...item, amount: parseFloat(value) || 0 } : item,
+    )
+    setIncomeItems(newIncome)
+  }
 
   // Handle adding a new income source
   const handleAddIncome = () => {
@@ -68,25 +51,23 @@ const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
         category: newIncomeName.trim(),
         amount: 0,
         percentage: 0, // Will be calculated on save
-        color: "#" + Math.floor(Math.random() * 16777215).toString(16), // Generate random color
-      };
-      setIncomeItems([...incomeItems, newIncome]);
-      setNewIncomeName("");
-      setShowAdditionalField(false);
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16), // Generate random color
+      }
+      setIncomeItems([...incomeItems, newIncome])
+      setNewIncomeName('')
+      setShowAdditionalField(false)
     }
-  };
+  }
 
   // Calculate percentages and handle save
-  const handleSave = () => {
-    const totalIncome = incomeItems.reduce((sum, item) => sum + item.amount, 0);
-    const updatedIncome = incomeItems.map((item) => ({
-      ...item,
-      percentage:
-        totalIncome > 0 ? Math.round((item.amount / totalIncome) * 100) : 0,
-    }));
-    onSave(updatedIncome);
-    onClose();
-  };
+  const handleSave = async () => {
+    try {
+      await updateBalance(incomeItems, 'income')
+      onClose()
+    } catch (error) {
+      console.log('Error', error)
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -113,15 +94,18 @@ const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
                 <Input
                   type="number"
                   value={income.amount}
-                  onChange={(e) =>
-                    handleAmountChange(income.category, e.target.value)
-                  }
+                  onChange={(e) => {
+                    if (income?.key) {
+                      handleAmountChange(income.key, e.target.value)
+                    }
+                  }}
                   className="w-[200px] text-right"
                 />
               </div>
             ))}
 
             {/* Add Additional Income Field */}
+            {/*             
             {showAdditionalField ? (
               <div className="flex items-center justify-between gap-8">
                 <Input
@@ -131,8 +115,8 @@ const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
                   onChange={(e) => setNewIncomeName(e.target.value)}
                   className="min-w-[200px]"
                   onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                      handleAddIncome();
+                    if (e.key === 'Enter') {
+                      handleAddIncome()
                     }
                   }}
                 />
@@ -150,7 +134,7 @@ const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
                 <Plus className="h-4 w-4" />
                 Add Additional Income
               </button>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -165,16 +149,17 @@ const EditIncomeModal: React.FC<EditIncomeModalProps> = ({
             Back
           </Button>
           <Button
+            disabled={loading}
             type="button"
             className="flex-1 bg-navy hover:bg-navyLight"
             onClick={handleSave}
           >
-            Modify
+            {loading && <Spinner />} Modify
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default EditIncomeModal;
+export default EditIncomeModal
