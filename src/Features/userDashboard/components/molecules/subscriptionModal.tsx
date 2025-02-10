@@ -1,14 +1,15 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { X } from "lucide-react";
-import { subscriptionTiers } from "../../constants";
-import { PricingCard } from "./pricingCard";
-import { SubscriptionTier } from "../../types";
+import React from 'react'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import { X } from 'lucide-react'
+import { subscriptionTiers } from '../../constants'
+import { PricingCard } from './pricingCard'
+import { SubscriptionTier } from '../../types'
+import { useDashboardStore } from '../../state'
 
 interface SubscriptionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubscriptionSelect: (tier: SubscriptionTier) => void;
+  isOpen: boolean
+  onClose: () => void
+  onSubscriptionSelect: (tier: SubscriptionTier) => void
 }
 
 export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
@@ -16,9 +17,11 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   onClose,
   onSubscriptionSelect,
 }) => {
-  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
-    onSubscriptionSelect(tier);
-  };
+  const { subscription, populateSubscription } = useDashboardStore()
+
+  const handleSubscriptionSelect = async (tier: SubscriptionTier) => {
+    await populateSubscription()
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -53,6 +56,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
             {subscriptionTiers.map((tier) => (
               <PricingCard
+                subscription={subscription}
                 key={tier.name}
                 tier={tier}
                 onSubscribe={() => handleSubscriptionSelect(tier)}
@@ -62,5 +66,5 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}

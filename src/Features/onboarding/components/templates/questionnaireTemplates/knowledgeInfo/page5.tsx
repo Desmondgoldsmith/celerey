@@ -1,57 +1,61 @@
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { OptionCard } from "@/Features/onboarding/components/molecules/knowledgeOptionCard";
-import { KnowledgeInfoSchema } from "@/Features/onboarding/schema";
+import * as React from 'react'
+import { Button } from '@/components/ui/button'
+import { OptionCard } from '@/Features/onboarding/components/molecules/knowledgeOptionCard'
+import { KnowledgeInfoSchema } from '@/Features/onboarding/schema'
+import { useOnboardingStore } from '@/Features/onboarding/state'
+import { useRouter } from 'next/navigation'
+import { useDashboardStore } from '@/Features/userDashboard/state'
+import Spinner from '@/components/ui/spinner'
 
 interface PageProps {
-  value: KnowledgeInfoSchema;
-  onChange: (updates: Partial<KnowledgeInfoSchema>) => void;
-  onBack: () => void;
-  onContinue: () => void;
+  value: KnowledgeInfoSchema
+  onChange: (updates: Partial<KnowledgeInfoSchema>) => void
+  onBack: () => void
+  onContinue: () => void
 }
 
 const QUESTIONS = [
   {
-    id: "altAssetsKnowledge",
+    id: 'altAssetsKnowledge',
     question:
-      "How much knowledge do you have about alternative assets, such as crypto, fine art, etc.?",
+      'How much knowledge do you have about alternative assets, such as crypto, fine art, etc.?',
     options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
+      { id: 'none', value: 'None' },
+      { id: 'basic', value: 'Basic' },
+      { id: 'informed', value: 'Informed' },
     ],
   },
   {
-    id: "leveragedInstrumentsKnowledge",
+    id: 'leveragedInstrumentsKnowledge',
     question:
-      "How much knowledge do you have about leveraged investments (such as Lombard lending, mortgages, etc.)?",
+      'How much knowledge do you have about leveraged investments (such as Lombard lending, mortgages, etc.)?',
     options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
+      { id: 'none', value: 'None' },
+      { id: 'basic', value: 'Basic' },
+      { id: 'informed', value: 'Informed' },
     ],
   },
   {
-    id: "leveragedInstrumentsExperience",
+    id: 'leveragedInstrumentsExperience',
     question:
-      "How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)?",
+      'How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)?',
     options: [
-      { id: "none", value: "None" },
-      { id: "1-3", value: "1 to 3 years" },
-      { id: "over3Years", value: "More Than 3 Years" },
+      { id: 'none', value: 'None' },
+      { id: '1-3', value: '1 to 3 years' },
+      { id: 'over3Years', value: 'More Than 3 Years' },
     ],
   },
   {
-    id: "privateCreditKnowledge",
+    id: 'privateCreditKnowledge',
     question:
-      "How much knowledge do you have about private credit or commercial paper?",
+      'How much knowledge do you have about private credit or commercial paper?',
     options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
+      { id: 'none', value: 'None' },
+      { id: 'basic', value: 'Basic' },
+      { id: 'informed', value: 'Informed' },
     ],
   },
-];
+]
 
 export const Page5: React.FC<PageProps> = ({
   value,
@@ -59,13 +63,27 @@ export const Page5: React.FC<PageProps> = ({
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (questionId: string, optionId: string) => {
-    onChange({ [questionId]: optionId });
-  };
+  const { loading, saveKnowledgeInfo, resetOnboarding } = useOnboardingStore()
+  const { populateDashboardData } = useDashboardStore()
 
-  const allQuestionsAnswered = QUESTIONS.every(
-    (question) => value[question.id]
-  );
+  const router = useRouter()
+
+  const handleOptionSelect = (questionId: string, optionId: string) => {
+    onChange({ [questionId]: optionId })
+  }
+
+  const allQuestionsAnswered = QUESTIONS.every((question) => value[question.id])
+
+  const save = async () => {
+    try {
+      await saveKnowledgeInfo()
+      await populateDashboardData()
+      resetOnboarding()
+      router.push('/dashboard')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -99,13 +117,13 @@ export const Page5: React.FC<PageProps> = ({
           Back
         </Button>
         <Button
-          onClick={onContinue}
+          onClick={save}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
-          disabled={!allQuestionsAnswered}
+          disabled={!allQuestionsAnswered || loading}
         >
-          Continue
+          {loading && <Spinner />} Continue
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}

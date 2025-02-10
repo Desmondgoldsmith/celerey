@@ -35,8 +35,9 @@ const FinancialPage: React.FC = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      completeSection("knowledge");
-      router.push("/questionnaire/");
+      console.log(formData.knowledge)
+      // completeSection("knowledge");
+      // router.push("/questionnaire/");
     }
   }, [currentStep, steps.length, completeSection, router]);
 
@@ -58,6 +59,7 @@ const FinancialPage: React.FC = () => {
             onChange={handleFormUpdate}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={false}
           />
         );
       case "page2":

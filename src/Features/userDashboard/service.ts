@@ -33,6 +33,20 @@ export const createSubscriptionApi = async (
   return response.data;
 };
 
+/***
+ * {
+      subscription_id: subscriptionId,
+      new_price_id: newPriceId,
+      prorate: true, // Apply prorated charges
+    }
+ */
+export const changeSubscriptionApi = async (
+  payload: any
+): Promise<ApiResponse> => {
+  const response = await apiClient.post("/subscription/change", payload);
+  return response.data;
+};
+
 export const getSubscriptionStatusApi = async (): Promise<ApiResponse> => {
   const response = await apiClient.get(`/subscription/status`);
   return response.data;

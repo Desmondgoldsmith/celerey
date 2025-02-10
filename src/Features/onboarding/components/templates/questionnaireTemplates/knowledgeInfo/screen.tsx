@@ -58,8 +58,9 @@ const KnowledgeInfoScreen: React.FC = () => {
     }
 
     if (isLastStep) {
-      completeSection("knowledge");
-      router.push("/next-page");
+      console.log(formData.knowledge)
+      // completeSection("knowledge");
+      // router.push("/next-page");
     } else {
       const newStep = currentStepIndex + 1;
       updateSectionProgress(currentSection, newStep);
@@ -78,6 +79,7 @@ const KnowledgeInfoScreen: React.FC = () => {
             value={localFormData}
             onChange={handleFormUpdate}
             onBack={handleBack}
+            enableBack={false}
             onContinue={handleContinue}
           />
         </div>

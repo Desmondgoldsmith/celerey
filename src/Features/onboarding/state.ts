@@ -176,14 +176,55 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     investmentType: "",
   },
   risk: {
-    riskTolerance: "",
-    riskAttitude: "",
-    riskTolerancePercentage: "",
-    riskReaction: "",
-    riskApproach: "",
-    investmentObjective: "",
-    investmentHorizon: "",
-    illiquidInvestmentPercentage: "",
+    userRiskTolerance:{
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    riskTolerance: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    riskAttitude: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+   
+    riskReaction: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    riskApproach: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    investmentObjective: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    investmentHorizon: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
+    illiquidInvestmentPercentage: {
+      id:0,
+      key:'',
+      title:'',
+      description:''
+    },
   },
   knowledge: {
     knowledgeLevel: "",

@@ -227,6 +227,7 @@ export interface BudgetModalProps {
 }
 
 export interface FinancialGoal {
+  id?:string;
   name: string;
   percentage: number;
   currentValue: string;

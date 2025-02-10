@@ -106,7 +106,8 @@ export interface LastNameScreenProps {
 }
 
 export interface Option {
-  id: string;
+  key: string;
+  id: number;
   title: string;
   description: string;
 }
@@ -172,8 +173,9 @@ export interface GoalsOptionsScreenProps extends BaseScreenProps {
   onChange: (value: string) => void;
 }
 export interface RiskOptionsScreenProps extends BaseScreenProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: Option;
+  enableBack: boolean;
+  onChange: (value: Option) => void;
 }
 
 // FinancialInfo Screen Props
@@ -301,15 +303,14 @@ export interface GoalsInfoFormData {
   investmentType: string;
 }
 export interface RiskInfoFormData {
-  riskTolerance: string;
+  riskTolerance: Option;
 
-  riskAttitude: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
+  riskAttitude: Option;
+  riskReaction: Option;
+  riskApproach: Option;
+  investmentObjective: Option;
+  investmentHorizon: Option;
+  illiquidInvestmentPercentage: Option;
 }
 
 export interface KnowledgeInfoFormData {

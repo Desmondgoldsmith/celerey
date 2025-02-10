@@ -109,6 +109,12 @@ interface DashboardState {
       };
     };
     userFinancialKnowledge: string;
+    calculatedFinancialKnowledge: string;
+    calculatedRiskTolerance: {
+      title: string;
+      score: number;
+      summary: string;
+    };
     userRiskTolerance: string;
     currency: string;
     savings: string;
@@ -143,100 +149,123 @@ interface DashboardStore extends DashboardState {
   updateFinancialGoal: (goal: any, id: string) => void;
   createFinancialGoal: (goal: any) => void;
   saveBudget: (budget: any) => void;
+  reset: () => void
 }
+
+const DEFAULT_SUBSCRIPTION = {
+  isSubscribed: false,
+  plan: "",
+  billing_interval: "",
+  status: "inactive",
+  start_date: "",
+  end_date: "",
+}
+
+const DEFAULT_BUDGET = {}
+const DEFAULT_DATA =  {
+  userName: "",
+  assetCountries: [],
+  netWorth: 0,
+  totalAssets: 0,
+  totalLiabilities: 0,
+  totalIncome: 0,
+  incomeAndDebt: 0,
+  currency: "",
+  expense: {},
+  allIncome: {},
+  income: {
+    value: 0,
+    percentage: 0,
+  },
+  debt: {
+    value: 0,
+    percentage: 0,
+  },
+  assets: {
+    cash: {
+      value: 0,
+      percentage: 0,
+    },
+    realEstate: {
+      value: 0,
+      percentage: 0,
+    },
+    publicSecurities: {
+      value: 0,
+      percentage: 0,
+    },
+    privateSecurities: {
+      value: 0,
+      percentage: 0,
+    },
+  },
+  totalExpense: 0,
+  totalExpenseFromIncome: {
+    value: 0,
+    percentage: 0,
+  },
+  totalIncomeFromExpense: {
+    value: 0,
+    percentage: 0,
+  },
+  liabilities: {
+    loans: {
+      value: 0,
+      percentage: 0,
+    },
+    mortgages: {
+      value: 0,
+      percentage: 0,
+    },
+    creditCards: {
+      value: 0,
+      percentage: 0,
+    },
+    assetFinance: {
+      value: 0,
+      percentage: 0,
+    },
+    otherLiabilities: {
+      value: 0,
+      percentage: 0,
+    },
+  },
+  userFinancialKnowledge: "",
+  calculatedRiskTolerance: {
+    title: "",
+    score: 0,
+    summary: "",
+  },
+  calculatedFinancialKnowledge: "",
+  userRiskTolerance: "",
+  savings: "",
+  liabilitiesEstimation: {
+    servicingAmount: 0,
+    servicingPeriod: 0,
+  },
+}
+const DEFAULT_FINANCIAL_GOALS: any[] = []
+
 
 export const useDashboardStore = create<DashboardStore>()(
   persist(
     immer((set, get) => ({
-      subscription: {
-        isSubscribed: false,
-        plan: "",
-        billing_interval: "",
-        status: "inactive",
-        start_date: "",
-        end_date: "",
-      },
-      budget: {},
-      data: {
-        userName: "",
-        assetCountries: [],
-        netWorth: 0,
-        totalAssets: 0,
-        totalLiabilities: 0,
-        totalIncome: 0,
-        incomeAndDebt: 0,
-        currency: "",
-        expense: {},
-        allIncome: {},
-        income: {
-          value: 0,
-          percentage: 0,
-        },
-        debt: {
-          value: 0,
-          percentage: 0,
-        },
-        assets: {
-          cash: {
-            value: 0,
-            percentage: 0,
-          },
-          realEstate: {
-            value: 0,
-            percentage: 0,
-          },
-          publicSecurities: {
-            value: 0,
-            percentage: 0,
-          },
-          privateSecurities: {
-            value: 0,
-            percentage: 0,
-          },
-        },
-        totalExpense: 0,
-        totalExpenseFromIncome: {
-          value: 0,
-          percentage: 0,
-        },
-        totalIncomeFromExpense: {
-          value: 0,
-          percentage: 0,
-        },
-        liabilities: {
-          loans: {
-            value: 0,
-            percentage: 0,
-          },
-          mortgages: {
-            value: 0,
-            percentage: 0,
-          },
-          creditCards: {
-            value: 0,
-            percentage: 0,
-          },
-          assetFinance: {
-            value: 0,
-            percentage: 0,
-          },
-          otherLiabilities: {
-            value: 0,
-            percentage: 0,
-          },
-        },
-        userFinancialKnowledge: "",
-        userRiskTolerance: "",
-        savings: "",
-        liabilitiesEstimation: {
-          servicingAmount: 0,
-          servicingPeriod: 0,
-        },
-      },
-      financialGoals: [],
+      subscription: DEFAULT_SUBSCRIPTION,
+      budget: DEFAULT_BUDGET,
+      data: DEFAULT_DATA,
+      financialGoals: DEFAULT_FINANCIAL_GOALS,
       loading: true,
       error: "",
 
+      reset: () => {
+        set((state) => {
+          state.loading = false;
+          state.subscription = DEFAULT_SUBSCRIPTION;
+          state.budget = DEFAULT_BUDGET;
+          state.data = DEFAULT_DATA;
+          state.financialGoals =DEFAULT_FINANCIAL_GOALS;
+        });
+      },
       populateDashboardData: async () => {
         set((state) => {
           state.loading = true;
@@ -266,6 +295,9 @@ export const useDashboardStore = create<DashboardStore>()(
               totalExpenseFromIncome: response.data.total_expense_from_income,
               totalIncomeFromExpense: response.data.total_income_from_expense,
               liabilitiesEstimation: response.data.liabilities_estimation,
+              calculatedFinancialKnowledge:
+                response.data.calculated_financial_knowledge,
+              calculatedRiskTolerance: response.data.calculated_risk_tolerance,
             };
           });
         }

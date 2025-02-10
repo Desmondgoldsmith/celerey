@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import {
@@ -11,6 +12,10 @@ import {
   Wallet,
 } from "lucide-react";
 import Link from "next/link";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import { useAuthStore } from "@/Features/auth/state";
+import { useDashboardStore } from "../../state";
+import { useRouter } from "next/navigation";
 
 // Define the props interface for the DashboardLayout
 interface DashboardLayoutProps {
@@ -26,6 +31,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const {logout} = useAuthStore()
+  const {resetOnboarding} = useOnboardingStore()
+  const {reset} = useDashboardStore()
+  const router = useRouter()
 
   // Handle clicks outside the dropdown to close it
   useEffect(() => {
@@ -85,6 +95,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         type="button"
         onClick={() => {
           /*  logout logic  */
+          reset()
+          resetOnboarding()
+          logout()
+          router.replace('/auth/signin')
         }}
         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
       >

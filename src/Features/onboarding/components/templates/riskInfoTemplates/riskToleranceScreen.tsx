@@ -6,17 +6,20 @@ import { OptionCard } from "../../molecules/riskOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "low",
+    id:0,
+    key: "low",
     title: "Low",
     description: "Investers prioritizing capital preservation over high returns",
   },
   {
-    id: "medium",
+    id:2,
+    key: "medium",
     title: "Medium",
     description: "Investers willing to take on more risk for higher returns",
   },
   {
-    id: "high",
+    id:2,
+    key: "high",
     title: "High",
     description: "Investers highest highest tolerance for risk, in for highest possible returns",
   },
@@ -28,8 +31,8 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (optionId: string) => {
-    onChange(optionId);
+  const handleOptionSelect = (option: Option) => {
+    onChange(option);
   };
 
   return (
@@ -39,13 +42,13 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
         describes your risk tolerance?
       </h1>
       <div className="space-y-4 mb-8">
-        {OPTIONS.map((option) => (
+        {OPTIONS.map((option, index) => (
           <OptionCard
-            key={option.id}
+            key={index}
             title={option.title}
             description={option.description}
-            selected={value === option.id}
-            onClick={() => handleOptionSelect(option.id)}
+            selected={value?.key === option?.key}
+            onClick={() => handleOptionSelect(option)}
           />
         ))}
       </div>

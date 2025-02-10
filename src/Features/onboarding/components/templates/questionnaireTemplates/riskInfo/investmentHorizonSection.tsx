@@ -5,22 +5,26 @@ import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptio
 
 const OPTIONS: Option[] = [
   {
-    id: "10years-upwards",
+    id:0,
+    key: "10years-upwards",
     title: "",
     description: "More than 10 years",
   },
   {
-    id: "5-10years",
+    id:1,
+    key: "5-10years",
     title: "",
     description: "5 to 10 years",
   },
   {
-    id: "3-5years",
+    id:2,
+    key: "3-5years",
     title: "",
     description: "3 to 5 years",
   },
   {
-    id: "less-than-3years",
+    id:3,
+    key: "less-than-3years",
     title: "",
     description: "Less than 3 years",
   },
@@ -32,8 +36,8 @@ export const InvestmentHorizonScreen: React.FC<RiskOptionsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (optionId: string) => {
-    onChange(optionId);
+  const handleOptionSelect = (option: Option) => {
+    onChange(option);
   };
 
   return (
@@ -47,8 +51,8 @@ export const InvestmentHorizonScreen: React.FC<RiskOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value === option.id}
-            onClick={() => handleOptionSelect(option.id)}
+            selected={value.key === option.key}
+            onClick={() => handleOptionSelect(option)}
           />
         ))}
       </div>

@@ -1,20 +1,77 @@
-import React from "react";
-import { SubscriptionTier } from "../../types";
-import { FeaturesList } from "./featureList";
+import React, { useState } from 'react'
+import { SubscriptionTier } from '../../types'
+import { FeaturesList } from './featureList'
+import { getStripe } from '@/lib/stripe'
+import { changeSubscriptionApi, getSubscriptionStatusApi } from '../../service'
+import Spinner from '@/components/ui/spinner'
 
 interface PricingCardProps {
-  tier: SubscriptionTier;
-  onSubscribe: () => void;
+  tier: SubscriptionTier
+  subscription: any
+  onSubscribe: () => void
 }
 
 export const PricingCard: React.FC<PricingCardProps> = ({
   tier,
   onSubscribe,
+  subscription,
 }) => {
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(false)
+
+  function confirmSubscriptionChange() {
+    const userConfirmed = window.confirm(
+      'Are you sure you want to change your subscription?',
+    )
+
+    if (userConfirmed) {
+      console.log('User confirmed. Proceed with subscription change.')
+      // Call your function to update the subscription
+      upgradePlan()
+    } else {
+      console.log('User canceled. No changes made.')
+    }
+  }
+
+  const upgradePlan = async () => {
+    const stripe = await getStripe()
+console.log(subscription)
+    if (!stripe || !subscription?.stripe_subscription_id) return
+
+    setLoading(true)
+
+    try {
+      // 2️⃣ Send Payment Method to Backend
+      await changeSubscriptionApi({
+        plan: tier.id.toLowerCase(),
+        billing_interval: 'yearly',
+        stripe_subscription_id: subscription.stripe_subscription_id,
+      })
+
+      const subscriptionResponse = await getSubscriptionStatusApi()
+
+      if (
+        subscriptionResponse.data.status === 'active' ||
+        subscriptionResponse.data.status === 'pending'
+      ) {
+        alert('Subscription Change Successful!')
+        onSubscribe()
+      } else {
+        alert('Subscription Pending. Please check your email.')
+      }
+
+      setLoading(false)
+    } catch (error) {
+      alert('Subscription failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div
       className={`bg-[#F4F5F6] ${
-        tier.isPopular ? "border border-navy" : "border-transparent"
+        tier.isPopular ? 'border border-navy' : 'border-transparent'
       } text-[#242424] rounded-lg p-4 md:p-6 flex flex-col h-full relative`}
     >
       <div className="mb-4 md:mb-6">
@@ -52,15 +109,18 @@ export const PricingCard: React.FC<PricingCardProps> = ({
 
       <div>
         <button
-          onClick={onSubscribe}
-          className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors ${
-            tier.isCurrentPlan
-              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
-              : "bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white"
+          onClick={confirmSubscriptionChange}
+          className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors flex gap-x-3 items-center justify-center ${
+            tier.id === (subscription?.plan || '')
+              ? 'bg-gray-300 text-gray-700 cursor-not-allowed'
+              : 'bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white'
           }`}
-          disabled={tier.isCurrentPlan}
+          disabled={tier.id === (subscription?.plan || '')}
         >
-          {tier.isCurrentPlan ? "You are on Standard" : tier.buttonText}
+          {loading && <Spinner className="text-navy" />}{' '}
+          {tier.id === (subscription?.plan || '')
+            ? `You are on ${tier.name}`
+            : tier.buttonText}
         </button>
       </div>
 
@@ -74,5 +134,5 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <FeaturesList features={tier.features} />
       </div>
     </div>
-  );
-};
+  )
+}

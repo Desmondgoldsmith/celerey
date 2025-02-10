@@ -1,3 +1,5 @@
+import { Option } from "./types";
+
 export interface PersonalInfoSchema {
   prefix: string;
   firstName: string;
@@ -92,15 +94,14 @@ export interface GoalsInfoSchema {
 }
 
 export interface RiskInfoSchema {
-  riskTolerance: string;
-
-  riskAttitude: string;
-  riskTolerancePercentage: string;
-  riskReaction: string;
-  riskApproach: string;
-  investmentObjective: string;
-  investmentHorizon: string;
-  illiquidInvestmentPercentage: string;
+  userRiskTolerance: Option,
+  riskTolerance: Option;
+  riskAttitude: Option;
+  riskReaction: Option;
+  riskApproach: Option;
+  investmentObjective: Option;
+  investmentHorizon: Option;
+  illiquidInvestmentPercentage: Option;
 }
 
 export interface KnowledgeInfoSchema {

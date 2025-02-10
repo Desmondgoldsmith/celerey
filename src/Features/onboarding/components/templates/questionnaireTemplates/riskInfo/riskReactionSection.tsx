@@ -5,22 +5,26 @@ import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptio
 
 const OPTIONS: Option[] = [
   {
-    id: "increase",
+    id: 0,
+    key:'increase',
     title: "",
     description: "Increase some positions",
   },
   {
-    id: "maintain",
+    key:'maintain',
+    id: 1,
     title: "",
     description: "Maintain my positions",
   },
   {
-    id: "decrease",
+    key:'decrease',
+    id: 2,
     title: "",
     description: "Decrease my positions",
   },
   {
-    id: "sell",
+    key:'sell',
+    id: 3,
     title: "",
     description: "sell everything",
   },
@@ -32,8 +36,8 @@ export const RiskReactionScreen: React.FC<RiskOptionsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (optionId: string) => {
-    onChange(optionId);
+  const handleOptionSelect = (option: any) => {
+    onChange(option);
   };
 
   return (
@@ -48,8 +52,8 @@ export const RiskReactionScreen: React.FC<RiskOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value === option.id}
-            onClick={() => handleOptionSelect(option.id)}
+            selected={value.key === option.key}
+            onClick={() => handleOptionSelect(option)}
           />
         ))}
       </div>

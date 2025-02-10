@@ -8,6 +8,8 @@ interface PageProps {
   onChange: (updates: Partial<KnowledgeInfoSchema>) => void;
   onBack: () => void;
   onContinue: () => void;
+  enableBack:boolean
+
 }
 
 const QUESTIONS = [
@@ -63,6 +65,7 @@ export const Page1: React.FC<PageProps> = ({
   onChange,
   onBack,
   onContinue,
+  enableBack
 }) => {
   const handleOptionSelect = (questionId: string, optionId: string) => {
     console.log(`Selected option for ${questionId}: ${optionId}`);
@@ -101,9 +104,9 @@ export const Page1: React.FC<PageProps> = ({
       ))}
 
       <div className="flex gap-4 max-w-md mx-auto">
-        <Button variant="outline" onClick={onBack} className="flex-1">
+        {enableBack && <Button variant="outline" onClick={onBack} className="flex-1">
           Back
-        </Button>
+        </Button>}
         <Button
           onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"

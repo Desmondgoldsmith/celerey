@@ -81,6 +81,7 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ riskTolerance: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={false}
           />
         </div>
         <div className="border-b pb-4">
@@ -89,6 +90,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ riskReaction: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
         <div className="border-b pb-4">
@@ -97,6 +100,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ riskAttitude: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
         <div className="border-b pb-4">
@@ -105,6 +110,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ riskApproach: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
         <div className="border-b pb-4">
@@ -113,6 +120,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ investmentObjective: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
         <div className="border-b pb-4">
@@ -121,6 +130,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ investmentHorizon: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
         <div className="border-b pb-4">
@@ -129,6 +140,8 @@ const RiskInfoScreen: React.FC = () => {
             onChange={(value) => handleFormUpdate({ illiquidInvestmentPercentage: value })}
             onBack={handleBack}
             onContinue={handleContinue}
+            enableBack={true}
+
           />
         </div>
       </div>

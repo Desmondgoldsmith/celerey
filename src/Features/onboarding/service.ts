@@ -7,6 +7,7 @@ import {
   PersonalInfoSchema,
   RiskInfoSchema,
 } from "./schema";
+import camelToSnake from "@/utils/convertCamelCaseToSnakeCase";
 
 export const savePersonalInfoApi = async (
   data: PersonalInfoSchema
@@ -84,10 +85,22 @@ export const saveGoalsInfoApi = async (
 export const saveRiskInfoApi = async (
   data: RiskInfoSchema
 ): Promise<ApiResponse> => {
-  const riskInfoToBeSaved = {
-    user_risk_tolerance: data.riskTolerance,
-  };
-
+  let riskInfoToBeSaved = {};
+  if (data.userRiskTolerance?.title) {
+    riskInfoToBeSaved = {
+      user_risk_tolerance: data.userRiskTolerance?.title,
+    };
+  } else {
+    riskInfoToBeSaved = {
+      risk_reaction: data.riskReaction,
+      risk_approach: data.riskApproach,
+      investment_objective: data.investmentObjective,
+      investment_horizon: data.investmentHorizon,
+      illiquid_investment_percentage: data.illiquidInvestmentPercentage,
+      risk_attitude: data.riskAttitude,
+      risk_tolerance: data.riskTolerance,
+    };
+  }
   const response = await apiClient.post(
     "/create/risk-profile",
     riskInfoToBeSaved
@@ -99,9 +112,18 @@ export const saveRiskInfoApi = async (
 export const saveKnowledgeInfoApi = async (
   data: KnowledgeInfoSchema
 ): Promise<ApiResponse> => {
-  const knowledgeInfoToBeSaved = {
-    user_financial_knowledge: data.knowledgeLevel || "",
-  };
+  let knowledgeInfoToBeSaved: any = {};
+  if (data.knowledgeLevel) {
+    knowledgeInfoToBeSaved = {
+      user_financial_knowledge: data.knowledgeLevel || "",
+    };
+  } else {
+    Object.keys(data).map((key) => {
+      if (key !== "knowledgeLevel") {
+        knowledgeInfoToBeSaved[camelToSnake(key)] = data[key];
+      }
+    });
+  }
 
   const response = await apiClient.post(
     "/create/financial-knowledge",

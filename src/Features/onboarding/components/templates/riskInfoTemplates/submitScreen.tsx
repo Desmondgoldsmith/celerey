@@ -39,7 +39,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
         assessment based on the answers, &nbsp;
         <span className="text-navyLight">
           your attitube to risk is: <br />
-          <span className="capitalize">{formData.risk.riskTolerance}</span>
+          <span className="capitalize">{formData.risk?.userRiskTolerance?.title || ''}</span>
         </span>
       </h1>
       <p className=" mb-12 font-helvetica text-sm">

@@ -112,6 +112,7 @@ export const useAuthStore = create<AuthState>()(
         set((state) => {
           state.isAuthenticated = false;
           state.user = null;
+          Cookies.remove("accessToken");
         });
       },
     })),

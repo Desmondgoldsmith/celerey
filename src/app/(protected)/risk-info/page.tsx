@@ -10,6 +10,7 @@ import { SubmitScreen } from '@/Features/onboarding/components/templates/riskInf
 import { OnboardingLayout } from '@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout'
 import { SectionProgressBars } from '@/Features/onboarding/components/molecules/progressBar'
 import { useAuthStore } from '@/Features/auth/state'
+import { Option } from '@/Features/onboarding/types'
 
 export default function RiskInfo() {
   const router = useRouter()
@@ -55,7 +56,7 @@ export default function RiskInfo() {
 
     switch (currentStepIndex) {
       case 1:
-        return !!data.riskTolerance.trim()
+        return !!data.userRiskTolerance?.title?.trim()
       default:
         return true
     }
@@ -129,10 +130,11 @@ export default function RiskInfo() {
       case 1:
         return (
           <RiskToleranceScreen
-            value={riskData.riskTolerance}
-            onChange={(value: string) =>
-              handleFormUpdate({ riskTolerance: value })
+            value={riskData.userRiskTolerance}
+            onChange={(value: Option) =>
+              handleFormUpdate({ userRiskTolerance: value })
             }
+            enableBack={true}
             onBack={handleBack}
             onContinue={handleContinue}
           />
