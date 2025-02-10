@@ -343,7 +343,7 @@ export const useDashboardStore = create<DashboardStore>()(
         const response = await getBudgetApi();
         if (response?.data) {
           set((state) => {
-            if (response?.data) {
+            if (response?.data?.categories) {
               const categories = response.data.categories.map(
                 (category: any) => ({
                   ...category,
@@ -356,6 +356,8 @@ export const useDashboardStore = create<DashboardStore>()(
                 categories,
                 duration: response.data?.duration || "0",
               };
+            }else {
+              state.budget = null
             }
           });
         }

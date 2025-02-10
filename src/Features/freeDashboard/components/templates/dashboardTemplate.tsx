@@ -134,12 +134,9 @@ const DashboardTemplate: React.FC = () => {
     financialGoals,
   } = useDashboardStore()
 
-
   useEffect(() => {
     fetchDashboardData()
   }, [])
-
-
 
   const fetchDashboardData = async () => {
     await populateDashboardData()
@@ -194,22 +191,25 @@ const DashboardTemplate: React.FC = () => {
 
               {/* Middle Column */}
               <div className="col-span-5 space-y-6">
-                { data?.assets && data?.liabilities && data?.allIncome && data?.expense &&
-                  <BalanceOverview
-                    Chart={Chart}
-                    timeframe={timeframe}
-                    onTimeframeChange={setTimeframe}
-                    assets={data?.assets}
-                    liabilities={data?.liabilities}
-                    income={data?.allIncome}
-                    expense={data?.expense}
-                    onAddCategory={handleOpenSubscriptionModal}
-                  />
-                }
+                {data?.assets &&
+                  data?.liabilities &&
+                  data?.allIncome &&
+                  data?.expense && (
+                    <BalanceOverview
+                      Chart={Chart}
+                      timeframe={timeframe}
+                      onTimeframeChange={setTimeframe}
+                      assets={data?.assets}
+                      liabilities={data?.liabilities}
+                      income={data?.allIncome}
+                      expense={data?.expense}
+                      onAddCategory={handleOpenSubscriptionModal}
+                    />
+                  )}
                 <IncomeAndExpenditure
                   totalIncome={data?.totalIncome || 0}
                   totalExpense={data?.totalExpense || 0}
-                  totalExpenseFromIncome={data?.totalExpenseFromIncome }
+                  totalExpenseFromIncome={data?.totalExpenseFromIncome}
                   totalIncomeFromExpense={data?.totalIncomeFromExpense}
                   Chart={Chart}
                 />
@@ -225,7 +225,11 @@ const DashboardTemplate: React.FC = () => {
                   incomeAndDebt={data?.incomeAndDebt}
                   onAddExpense={handleOpenSubscriptionModal}
                 />
-                <FinancialKnowledgeAssessment progress={72} />
+                <FinancialKnowledgeAssessment
+                  progress={72}
+                  onUpgradeClick={handleOpenSubscriptionModal}
+
+                />
               </div>
             </div>
 
@@ -233,16 +237,21 @@ const DashboardTemplate: React.FC = () => {
             <div className="lg:hidden space-y-6">
               <MobileGreeting userName={data?.userName || ''} />
               <MobileNetWorth netWorth={data?.netWorth || 0} />
-              {data?.assets && data?.liabilities && data?.allIncome && data?.expense &&  <BalanceOverview
-                Chart={Chart}
-                timeframe={timeframe}
-                onTimeframeChange={setTimeframe}
-                assets={data?.assets}
-                liabilities={data?.liabilities}
-                income={data?.allIncome}
-                expense={data?.expense}
-                onAddCategory={handleOpenSubscriptionModal}
-              />}
+              {data?.assets &&
+                data?.liabilities &&
+                data?.allIncome &&
+                data?.expense && (
+                  <BalanceOverview
+                    Chart={Chart}
+                    timeframe={timeframe}
+                    onTimeframeChange={setTimeframe}
+                    assets={data?.assets}
+                    liabilities={data?.liabilities}
+                    income={data?.allIncome}
+                    expense={data?.expense}
+                    onAddCategory={handleOpenSubscriptionModal}
+                  />
+                )}
               <div className="bg-white rounded-lg overflow-hidden">
                 <MobileActionItems />
               </div>
@@ -264,7 +273,7 @@ const DashboardTemplate: React.FC = () => {
                 incomeAndDebt={data?.incomeAndDebt}
                 onAddExpense={handleOpenSubscriptionModal}
               />
-              <FinancialKnowledgeAssessment progress={72} />
+              <FinancialKnowledgeAssessment progress={72} onUpgradeClick={handleOpenSubscriptionModal} />
               <GeographicSpread assetCountries={data?.assetCountries || []} />
             </div>
           </div>

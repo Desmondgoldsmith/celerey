@@ -54,7 +54,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <button
           onClick={onSubscribe}
           className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white`}
-          disabled={tier.isCurrentPlan}
         >
           {tier.buttonText}
         </button>
