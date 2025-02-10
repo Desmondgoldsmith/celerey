@@ -18,18 +18,7 @@ interface IncomeAndExpenditureProps {
 }
 
 export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({totalIncome, totalExpense, totalExpenseFromIncome, totalIncomeFromExpense}) => {
-  const data = {
-    monthlyIncome: 24256.12,
-    monthlyExpediture: 10002.1,
-    income: {
-      amount: 51424.58,
-      percentage: 65,
-    },
-    expenditure: {
-      amount: 27168.46,
-      percentage: 45,
-    },
-  };
+
 
   return (
     <Card className="p-4 sm:p-6 bg-white">
@@ -63,14 +52,14 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
         <div className="flex justify-between items-center mb-8">
           <div className="text-2xl sm:text-3xl font-bold text-green-800">
             $
-            {totalIncome.toLocaleString(undefined, {
+            {totalIncome?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-red-800">
             $
-            {totalExpense.toLocaleString(undefined, {
+            {totalExpense?.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -92,7 +81,7 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
             <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
-                {totalIncomeFromExpense.value.toLocaleString(undefined, {
+                {totalIncomeFromExpense?.value?.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -100,7 +89,7 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
               <div className="text-sm text-gray-600">Income</div>
             </div>
             <div className="mt-2 text-green-800 font-medium">
-              {totalIncomeFromExpense.percentage.toFixed(0)}%
+              {totalIncomeFromExpense?.percentage?.toFixed(0)}%
             </div>
             <div className="h-2 bg-green-800 rounded-full w-full mt-2" />
           </div>
@@ -118,7 +107,7 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
             <div className="sm:ml-2">
               <div className="text-xl sm:text-2xl font-normal">
                 $
-                {totalExpenseFromIncome.value.toLocaleString(undefined, {
+                {totalExpenseFromIncome?.value?.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -128,7 +117,7 @@ export const IncomeAndExpenditure: React.FC<IncomeAndExpenditureProps> = ({total
               </div>
             </div>
             <div className="mt-2 text-red-800 font-medium">
-              {totalExpenseFromIncome.percentage.toFixed(0)}%
+              {totalExpenseFromIncome?.percentage?.toFixed(0)}%
             </div>
             <div className="h-2 bg-red-800 rounded-full w-full sm:w-[69.2%] mt-2" />
           </div>

@@ -29,6 +29,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
   };
 
   const isComplete =
+  values &&
     values?.mortgages !== "" &&
     values?.loans !== "" &&
     values?.creditCards !== "" &&

@@ -25,6 +25,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
   };
 
   const isComplete =
+  values &&
     values.retirementAge !== "" &&
     values.targetRetirementIncome !== "" &&
     values.pensionFund !== "";

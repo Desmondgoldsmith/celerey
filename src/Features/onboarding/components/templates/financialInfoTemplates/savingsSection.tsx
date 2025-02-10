@@ -21,6 +21,7 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
   };
 
   const isComplete =
+  values &&
     values?.currentSavings !== "" &&
     values?.targetSavings !== "";
 

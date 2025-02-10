@@ -56,7 +56,7 @@ const MobileNetWorth: React.FC<{ netWorth: number }> = ({ netWorth }) => (
         Your current networth is
       </div>
       <div className="text-[28px] text-navyLight font-cirka mt-1">
-        {netWorth.toLocaleString()}
+        {netWorth?.toLocaleString()}
       </div>
     </div>
   </div>
@@ -178,10 +178,10 @@ const DashboardTemplate: React.FC = () => {
               {/* Left Column */}
               <div className="col-span-4 space-y-6">
                 <UserProfile
-                  userName={data.userName}
-                  netWorth={data.netWorth}
-                  riskAttitude={data.userRiskTolerance}
-                  investmentExperience={data.userFinancialKnowledge}
+                  userName={data?.userName || ''}
+                  netWorth={data?.netWorth || 0}
+                  riskAttitude={data?.userRiskTolerance || ''}
+                  investmentExperience={data?.userFinancialKnowledge || ''}
                   profileCompletion={profileCompletion}
                   onUpgradeClick={handleOpenSubscriptionModal}
                 />
@@ -194,7 +194,7 @@ const DashboardTemplate: React.FC = () => {
 
               {/* Middle Column */}
               <div className="col-span-5 space-y-6">
-                {
+                { data?.assets && data?.liabilities && data?.allIncome && data?.expense &&
                   <BalanceOverview
                     Chart={Chart}
                     timeframe={timeframe}
@@ -207,10 +207,10 @@ const DashboardTemplate: React.FC = () => {
                   />
                 }
                 <IncomeAndExpenditure
-                  totalIncome={data?.totalIncome}
-                  totalExpense={data?.totalExpense}
-                  totalExpenseFromIncome={data.totalExpenseFromIncome}
-                  totalIncomeFromExpense={data.totalIncomeFromExpense}
+                  totalIncome={data?.totalIncome || 0}
+                  totalExpense={data?.totalExpense || 0}
+                  totalExpenseFromIncome={data?.totalExpenseFromIncome }
+                  totalIncomeFromExpense={data?.totalIncomeFromExpense}
                   Chart={Chart}
                 />
               </div>
@@ -218,11 +218,11 @@ const DashboardTemplate: React.FC = () => {
               {/* Right Column */}
               <div className="col-span-3 space-y-6">
                 {/* <RiskAllocation Chart={Chart} /> */}
-                <GeographicSpread assetCountries={data.assetCountries} />
+                <GeographicSpread assetCountries={data?.assetCountries || []} />
                 <IncomeVsDebt
-                  income={data.income}
-                  debt={data.debt}
-                  incomeAndDebt={data.incomeAndDebt}
+                  income={data?.income || 0}
+                  debt={data?.debt}
+                  incomeAndDebt={data?.incomeAndDebt}
                   onAddExpense={handleOpenSubscriptionModal}
                 />
                 <FinancialKnowledgeAssessment progress={72} />
@@ -231,9 +231,9 @@ const DashboardTemplate: React.FC = () => {
 
             {/* Mobile Layout */}
             <div className="lg:hidden space-y-6">
-              <MobileGreeting userName={data.userName} />
-              <MobileNetWorth netWorth={data.netWorth} />
-              <BalanceOverview
+              <MobileGreeting userName={data?.userName || ''} />
+              <MobileNetWorth netWorth={data?.netWorth || 0} />
+              {data?.assets && data?.liabilities && data?.allIncome && data?.expense &&  <BalanceOverview
                 Chart={Chart}
                 timeframe={timeframe}
                 onTimeframeChange={setTimeframe}
@@ -242,7 +242,7 @@ const DashboardTemplate: React.FC = () => {
                 income={data?.allIncome}
                 expense={data?.expense}
                 onAddCategory={handleOpenSubscriptionModal}
-              />
+              />}
               <div className="bg-white rounded-lg overflow-hidden">
                 <MobileActionItems />
               </div>
@@ -252,20 +252,20 @@ const DashboardTemplate: React.FC = () => {
                 onModify={handleOpenSubscriptionModal}
               />
               <IncomeAndExpenditure
-                totalIncome={data?.totalIncome}
-                totalExpense={data?.totalExpense}
-                totalExpenseFromIncome={data.totalExpenseFromIncome}
-                totalIncomeFromExpense={data.totalIncomeFromExpense}
+                totalIncome={data?.totalIncome || 0}
+                totalExpense={data?.totalExpense || 0}
+                totalExpenseFromIncome={data?.totalExpenseFromIncome}
+                totalIncomeFromExpense={data?.totalIncomeFromExpense}
                 Chart={Chart}
               />
               <IncomeVsDebt
-                income={data.income}
-                debt={data.debt}
-                incomeAndDebt={data.incomeAndDebt}
+                income={data?.income || 0}
+                debt={data?.debt}
+                incomeAndDebt={data?.incomeAndDebt}
                 onAddExpense={handleOpenSubscriptionModal}
               />
               <FinancialKnowledgeAssessment progress={72} />
-              <GeographicSpread assetCountries={data.assetCountries} />
+              <GeographicSpread assetCountries={data?.assetCountries || []} />
             </div>
           </div>
         )}

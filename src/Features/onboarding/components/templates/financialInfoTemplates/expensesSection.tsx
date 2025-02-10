@@ -30,6 +30,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   };
 
   const isComplete =
+    values &&
     values?.home !== "" &&
     values?.childcare !== "" &&
     values?.education !== "" &&

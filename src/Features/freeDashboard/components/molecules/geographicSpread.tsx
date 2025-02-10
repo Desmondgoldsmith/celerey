@@ -21,7 +21,7 @@ export const GeographicSpread: React.FC<{ assetCountries: string[] }> = ({
 }) => {
   const mapData: { [key: string]: number } = {}
 
-  assetCountries.map((country, index) => (mapData[country] = index + 1))
+  assetCountries?.map((country, index) => (mapData[country] = index + 1))
 
   const colorScale = {
     min: 1,

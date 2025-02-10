@@ -112,28 +112,29 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   ]
 
   const dummyAnnualIncome = {
-    Rental: +income.rentalIncome,
-    Dividends: +income.dividends,
-    'Interest Income': +income.interestIncome,
-    'Other Income': +income.otherIncome,
+    Rental: income.rentalIncome,
+    Dividends: income.dividends,
+    'Interest Income': income.interestIncome,
+    'Other Income': income.otherIncome,
   }
 
   const dummyAnnualExpenditure = {
-    Home: +expense.home,
-    Childcare: +expense.childcare,
-    Education: +expense.education,
-    Healthcare:  +expense.healthcare,
-    Travel:  +expense.travel,
-    Giving:  +expense.giving,
+    Home: expense.home,
+    Childcare: expense.childcare,
+    Education: expense.education,
+    Healthcare:  expense.healthcare,
+    Travel:  expense.travel,
+    Giving:  expense.giving,
   }
 
   const incomeData = Object.entries(dummyAnnualIncome).map(([name, value]) => ({
     name,
-    value,
+    value: value?.value || 0,
   }))
+  console.log(incomeData)
   const expenditureData = Object.entries(
     dummyAnnualExpenditure,
-  ).map(([name, value]) => ({ name, value }))
+  ).map(([name, value]) => ({ name, value: value?.value || 0, }))
 
   const incomeColors = ['#FF6B6B', '#6B4EFF', '#4CAF50', '#2196F3']
   const expenditureColors = [
