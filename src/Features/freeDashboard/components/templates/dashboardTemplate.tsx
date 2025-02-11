@@ -124,6 +124,7 @@ const DashboardTemplate: React.FC = () => {
   const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
     null,
   )
+  const router = useRouter()
   const { profileCompletion } = DEFAULT_USER_DATA
 
   const {
@@ -159,6 +160,10 @@ const DashboardTemplate: React.FC = () => {
   const handlePaymentComplete = () => {
     setIsPaymentModalOpen(false)
     setIsCongratsModalOpen(true)
+
+    setTimeout(()=>{
+      router.replace('/dashboard')
+    },5000)
   }
 
   return (
@@ -295,7 +300,10 @@ const DashboardTemplate: React.FC = () => {
 
       <CongratulationsModal
         isOpen={isCongratsModalOpen}
-        onClose={() => setIsCongratsModalOpen(false)}
+        onClose={() => {
+          setIsCongratsModalOpen(false)
+          router.replace('/dashboard')
+        }}
         subscriptionTier={selectedTier?.name || ''}
       />
     </>
