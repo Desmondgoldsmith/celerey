@@ -16,6 +16,11 @@ export const useAuthStore = create<AuthState>()(
       loading: false,
       error: "",
 
+      setError : (error: string) => {
+        set((state) => {
+          state.error = error;
+        });
+      },
       setUser: async () => {
         const accessToken = Cookies.get("accessToken");
         if (accessToken) {
@@ -69,7 +74,8 @@ export const useAuthStore = create<AuthState>()(
       validateOTP: async (otp: string, type = "SIGN_IN") => {
         try {
           set((state) => {
-            state.loading = true;
+            state.loading = true
+            state.error = ''
           });
           const email = get().user?.email;
           if (!email) {
@@ -80,14 +86,21 @@ export const useAuthStore = create<AuthState>()(
             return false;
           } else {
             const { data } = await validateOtpApi(email, otp, type);
-            if (data) {
-              Cookies.set("accessToken", data.token, {
-                expires: 1,
-                secure: false,
-                sameSite: "Strict",
+
+            if (!data) {
+              set((state) => {
+                state.loading = false;
+                state.error = "Invalid OTP or Account doesn't exist"
               });
-              await get().setUser();
             }
+
+            Cookies.set("accessToken", data.token, {
+              expires: 1,
+              secure: false,
+              sameSite: "Strict",
+            });
+            await get().setUser();
+
             set((state) => {
               state.isAuthenticated = true;
               state.loading = false;

@@ -25,6 +25,7 @@ export interface AuthState {
   sendOTP: (email: string) => Promise<boolean>;
   validateOTP: (otp: string, type: string) => Promise<boolean>;
   logout: () => void;
+  setError: (error: string) => void
 }
 
 export interface User {

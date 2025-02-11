@@ -13,7 +13,7 @@ import { OTP_LENGTH } from '../../constants'
 export const OTPTemplate = () => {
   const [otpValues, setOTPValues] = useState(Array(6).fill(''))
 
-  const { validateOTP, loading, user } = useAuthStore()
+  const { validateOTP, loading, user, error, setError } = useAuthStore()
   // const { getSubscriptionStatus } = useAssetAllocationStore()
   const router = useRouter()
 
@@ -52,7 +52,15 @@ export const OTPTemplate = () => {
         </p>
       </div>
 
-      <OTPInput length={6} value={otpValues} onChange={setOTPValues} />
+      <OTPInput length={6} value={otpValues} onChange={(value)=>
+        {
+          if(error) {
+            setError('')
+          }
+          setOTPValues(value)
+        }
+        } />
+      {error && <p className=' text-sm mt-1 mb-2 text-red-500'>{error}</p>}
 
       <Button
         disabled={otpValues.join('').length !== OTP_LENGTH || loading}
