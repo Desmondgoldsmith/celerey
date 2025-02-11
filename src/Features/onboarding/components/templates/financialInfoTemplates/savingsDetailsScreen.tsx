@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { SavingsSection } from "./savingsSection";
 import { EmergencyFundsSection } from "./emergencyFundsSection";
-import { RetirementSection } from "./retirementSection"; // Import the new section
+import { RetirementSection } from "./retirementSection";
 import { FinancialInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 import Spinner from "@/components/ui/spinner";
 
 interface SavingsDetailsScreenProps {
-  values: any
+  values: any;
   onChange: (
     section: keyof FinancialInfoSchema,
     field: string,
@@ -24,29 +24,41 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   onBack,
   onContinue,
 }) => {
-  const [localFormData, setLocalFormData]: any = useState<FinancialInfoSchema>(
-    values,
-  )
-  const [isSectionComplete, setIsSectionComplete] = useState(false)
-  const { saveFinancialInfo, loading } = useOnboardingStore()
+  const [localFormData, setLocalFormData] =
+    useState<FinancialInfoSchema>(values);
+  const { saveFinancialInfo, loading } = useOnboardingStore();
+
+  // Track completion status for each section
+  const [sectionCompletion, setSectionCompletion] = useState({
+    savings: false,
+    emergencyFund: false,
+    retirement: false,
+  });
 
   useEffect(() => {
-    setLocalFormData(values)
-  }, [values])
+    setLocalFormData(values);
+  }, [values]);
 
   useEffect(() => {
+    // Check if each section is complete
     const checkSectionComplete = () => {
-      const { savings, retirement } = localFormData
-      const isComplete =
-        Object.values(savings || {}).every((value) => value !== '') &&
-        // hasEmergencyFunds !== "" &&
-        // emergencyFund !== "" &&
-        // hasDebt !== "" &&
-        // debt !== "" &&
-        retirement?.retirementAge !== '' &&
-        retirement?.targetRetirementIncome !== ''
-      setIsSectionComplete(isComplete)
-    }
+      const { savings, emergencyFund, retirement } = localFormData;
+
+      const isSavingsComplete = Object.values(savings || {}).every(
+        (value) => value !== ""
+      );
+      const isEmergencyFundComplete =
+        emergencyFund?.hasEmergencyFunds !== undefined;
+      const isRetirementComplete =
+        retirement?.retirementAge !== "" &&
+        retirement?.targetRetirementIncome !== "";
+
+      setSectionCompletion({
+        savings: isSavingsComplete,
+        emergencyFund: isEmergencyFundComplete,
+        retirement: isRetirementComplete,
+      });
+    };
 
     checkSectionComplete();
   }, [localFormData]);
@@ -55,11 +67,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
     section: keyof FinancialInfoSchema,
     field: string,
     value: string
-
   ) => {
-    if (typeof localFormData[section] === 'object') {
+    if (typeof localFormData[section] === "object") {
       // Update sections like savings
-      setLocalFormData((prev:any) => ({
+      setLocalFormData((prev: any) => ({
         ...prev,
         [section]: {
           ...(prev[section] as Record<string, string>),
@@ -67,7 +78,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         },
       }));
     } else {
-      setLocalFormData((prev:any) => ({
+      setLocalFormData((prev: any) => ({
         ...prev,
         [field]: value,
       }));
@@ -80,6 +91,11 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
     await saveFinancialInfo();
     onContinue();
   };
+
+  // Check if all sections are complete
+  const isAllSectionsComplete = Object.values(sectionCompletion).every(
+    (status) => status
+  );
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
@@ -99,18 +115,21 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
             onChange={(field, value) =>
               handleFormUpdate("savings", field, value)
             }
+            isComplete={sectionCompletion.savings}
+            isNextSectionComplete={sectionCompletion.emergencyFund}
           />
         </div>
+
         {/* Emergency Funds Section */}
         <div className="border-b pb-4">
           <EmergencyFundsSection
-            onChange={(updatedValue:any) => {
-       
+            onChange={(updatedValue: any) => {
               setLocalFormData({
                 ...localFormData,
                 emergencyFund: {
                   ...updatedValue.emergencyFund,
-              }});
+                },
+              });
 
               // Notify parent of changes
               if ("hasEmergencyFunds" in updatedValue.emergencyFund) {
@@ -122,12 +141,14 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
               }
               if ("emergencyFundAmount" in updatedValue.emergencyFund) {
                 onChange(
-                  'emergencyFund',
-                  'emergencyFund',
-                  updatedValue.emergencyFundAmount || '',
-                )
+                  "emergencyFund",
+                  "emergencyFundAmount",
+                  updatedValue.emergencyFundAmount || ""
+                );
               }
             }}
+            isComplete={sectionCompletion.emergencyFund}
+            isNextSectionComplete={sectionCompletion.retirement}
           />
         </div>
 
@@ -138,6 +159,8 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
             onChange={(field, value) =>
               handleFormUpdate("retirement", field, value)
             }
+            isComplete={sectionCompletion.retirement}
+            isNextSectionComplete={true}
           />
         </div>
       </div>
@@ -148,9 +171,9 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <Button
           onClick={handleContinue}
           className={`flex-1 bg-navy hover:bg-navyLight text-white ${
-            !isSectionComplete ? "opacity-50 cursor-not-allowed" : ""
+            !isAllSectionsComplete ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!isSectionComplete}
+          disabled={!isAllSectionsComplete}
         >
           {loading && <Spinner className="text-white" />} Continue
         </Button>

@@ -9,9 +9,11 @@ interface SavingsSectionProps {
     targetSavings: string;
   };
   onChange: (field: string, value: string) => void;
+  isComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
-const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) => {
+const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNextSectionComplete }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
@@ -38,9 +40,12 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
           >
             1
           </div>
-        <h3 className="font-medium">Savings</h3>
+          <h3 className="font-medium">Savings</h3>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="text-blue-800 text-sm font-semibold">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-blue-800 text-sm font-semibold"
+        >
           {isComplete ? "Edit" : "Fill Details"}
         </button>
       </div>
@@ -49,6 +54,11 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
         onClose={() => setIsModalOpen(false)}
         title="Savings Details"
         description="Please fill in your savings details below."
+        sectionNumber={1}
+        sectionTitle="Savings"
+        nextSectionTitle="Emergency Fund"
+        isSectionComplete={isComplete}
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -59,7 +69,9 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={values?.currentSavings || ""}
-              onChange={(e) => handleInputChange("currentSavings", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("currentSavings", e.target.value)
+              }
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -70,26 +82,32 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, }) =>
               pattern="[0-9]*"
               className="flex-1 appearance-none"
               value={values?.targetSavings || ""}
-              onChange={(e) => handleInputChange("targetSavings", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("targetSavings", e.target.value)
+              }
             />
           </div>
         </div>
-         <div className="flex gap-4 mt-4">
-               <Button variant="outline"   onClick={() => {
-                   setIsModalOpen(false);
-                 }} className="flex-1">
-                 Back
-               </Button>
-               <Button
-                 onClick={() => {
-                   setIsModalOpen(false);
-                 }}
-                 className="flex-1 bg-navy hover:bg-navyLight text-white"
-                 disabled={!isComplete}
-               >
-                 Continue
-               </Button>
-             </div>
+        <div className="flex gap-4 mt-4">
+          <Button
+            variant="outline"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+            className="flex-1"
+          >
+            Back
+          </Button>
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+            className="flex-1 bg-navy hover:bg-navyLight text-white"
+            disabled={!isComplete}
+          >
+            Continue
+          </Button>
+        </div>
       </Modal>
     </div>
   );

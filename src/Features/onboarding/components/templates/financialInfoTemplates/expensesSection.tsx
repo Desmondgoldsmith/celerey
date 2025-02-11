@@ -15,11 +15,13 @@ interface ExpensesSectionProps {
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean;
+    isNextSectionComplete: boolean;
 }
 
 const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   values,
   onChange,
+  isNextSectionComplete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -69,6 +71,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
         sectionTitle="Expenses"
         nextSectionTitle="Assets"
         isSectionComplete={isComplete}
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
