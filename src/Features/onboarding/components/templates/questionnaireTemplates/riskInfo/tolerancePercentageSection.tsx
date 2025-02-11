@@ -5,34 +5,35 @@ import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptio
 
 const OPTIONS: Option[] = [
   {
-    id: "20-up",
+    id:0,
+    key: "20-up",
     title: "",
     description: "-20% or more",
   },
-  {
-    id: "10-20",
+  {id:1,
+    key: "10-20",
     title: "",
     description: "-10% to -20%",
   },
-  {
-    id: "5-10",
+  {id:2,
+    key: "5-10",
     title: "",
     description: "-5% to -10%",
   },
-  {
-    id: "0-5",
+  {id:3,
+    key: "0-5",
     title: "",
     description: "0% to -5%",
   },
 ];
 
-export const TolerancePercentageScreen: React.FC<RiskOptionsScreenProps> = ({
+export const TolerancePercentageScreen: React.FC<any> = ({
   value,
   onChange,
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (optionId: string) => {
+  const handleOptionSelect: any = (optionId: string) => {
     onChange(optionId);
   };
 

@@ -4,29 +4,32 @@ import { OptionCard } from "../../molecules/riskOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "beginner",
+    id:0,
+    key: "beginner",
     title: "Beginner,",
     description: "I have a fair idea oh how finances work",
   },
   {
-    id: "intermediate",
+    id:1,
+    key: "intermediate",
     title: "Intermediate,",
     description: "I have a fair idea about asset management",
   },
   {
-    id: "advanced",
+    id:2,
+    key: "advanced",
     title: "Advanced,",
     description: "i understand how to manage passice and active incomes",
   },
 ];
 
-export const KnowledgeLevelScreen: React.FC<RiskOptionsScreenProps> = ({
+export const KnowledgeLevelScreen: React.FC<any> = ({
   value,
   onChange,
   onBack,
   onContinue,
 }) => {
-  const handleOptionSelect = (optionId: string) => {
+  const handleOptionSelect:any = (optionId: string) => {
     onChange(optionId);
   };
 
@@ -44,8 +47,8 @@ export const KnowledgeLevelScreen: React.FC<RiskOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value === option.id}
-            onClick={() => handleOptionSelect(option.id)}
+            selected={value === option.key}
+            onClick={() => handleOptionSelect(option.key)}
           />
         ))}
       </div>

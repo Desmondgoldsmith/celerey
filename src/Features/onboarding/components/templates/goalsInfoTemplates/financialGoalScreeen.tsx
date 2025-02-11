@@ -5,27 +5,32 @@ import { OptionCard } from "../../molecules/goalsOptionCard";
 
 const OPTIONS: Option[] = [
   {
-    id: "retirement",
+    id:0,
+    key: "retirement",
     title: "Retirement,",
     description: "Savings for retirement",
   },
   {
-    id: "debt",
+    id:1,
+    key: "debt",
     title: "Debt,",
     description: "Paying off debt",
   },
   {
-    id: "mortgage",
+    id:2,
+    key: "mortgage",
     title: "Mortgage,",
     description: "Buying a home",
   },
   {
-    id: "emergency Fund",
+    id:3,
+    key: "emergency Fund",
     title: "Emergency Fund,",
     description: "Creating an emergency fund",
   },
   {
-    id: "other",
+    id:4,
+    key: "other",
     title: "Other",
     description: "",
   },
@@ -56,8 +61,8 @@ export const FinancialGoalScreen: React.FC<GoalsOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value === option.id}
-            onClick={() => handleOptionSelect(option.id)}
+            selected={value === option.key}
+            onClick={() => handleOptionSelect(option.key)}
           />
         ))}
       </div>

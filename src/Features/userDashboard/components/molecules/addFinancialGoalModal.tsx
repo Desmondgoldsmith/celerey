@@ -52,7 +52,6 @@ const CustomDatePicker: React.FC<{
 const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
   isOpen,
   onClose,
-  onAddGoal,
   initialData,
   isModifying = false,
 }) => {

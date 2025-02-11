@@ -112,8 +112,7 @@ export interface FinancialGoalsCardProps {
 export interface AddFinancialGoalModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddGoal: (goal: FinancialPlan) => void;
-  initialData?: FinancialPlan;
+  initialData?: FinancialGoal;
   isModifying?: boolean;
 }
 

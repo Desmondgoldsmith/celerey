@@ -82,12 +82,7 @@ export interface Goal {
   lastUpdated: string;
 }
 
-<<<<<<< HEAD
 export type SubscriptionInterval = "yearly";
-=======
-
-export type SubscriptionInterval = "yearly" | "biennial";
->>>>>>> b68c6d8cb80f6ff06f14ce7991848536c878c088
 
 export type SubscriptionTier = {
   id: string;

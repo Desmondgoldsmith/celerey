@@ -180,7 +180,7 @@ interface BalanceOverviewProps {
   openBudgetModal: () => void;
   openGenBudgetModal: () => void;
   openLiabilityModal: () => void;
-  generatedBudget: GeneratedBudget;
+  generatedBudget?: GeneratedBudget;
   liabilityData: LiabilityItem[];
   totalDebt: { value: number; percentage: number };
   income: { value: number; percentage: number };
@@ -216,6 +216,7 @@ export default function BalanceOverview({
   totalIncomeFromExpense,
   totalExpenseFromIncome,
   userLiabilitiesEstimation
+  
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
 

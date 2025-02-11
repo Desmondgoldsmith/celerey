@@ -583,7 +583,6 @@ export const Dashboard: React.FC = () => {
             userLiabilitiesEstimation={userLiabilitiesEstimation}
             totalDebt={data?.debt || {}}
             income={data.income}
-            debt={data.debt}
             incomeAndDebt={data.incomeAndDebt}
             totalIncomeFromExpense={data?.totalIncomeFromExpense}
             totalExpenseFromIncome={data?.totalExpenseFromIncome}
@@ -594,7 +593,6 @@ export const Dashboard: React.FC = () => {
             openDebtServicingModal={openDebtServicingModal}
             openStatementModal={openStatementModal}
             openBudgetModal={openBudgetModal}
-            handleGenerateBudget={handleGenerateBudget}
             openGenBudgetModal={() => setIsGenBudgetModalOpen(true)}
             generatedBudget={generatedBudget ?? undefined}
           />
@@ -712,7 +710,6 @@ export const Dashboard: React.FC = () => {
           setIsAddGoalModalOpen(false)
           setSelectedPlan(undefined)
         }}
-        onAddGoal={selectedPlan ? handleSaveModifiedGoal : handleAddGoal}
         isModifying={!!selectedPlan}
       />
 

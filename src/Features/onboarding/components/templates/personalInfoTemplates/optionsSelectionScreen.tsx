@@ -12,37 +12,41 @@ export interface OptionsSelectionScreenProps extends BaseScreenProps {
 
 const OPTIONS: Option[] = [
   {
-    id: "financial-planning",
+    id:0,
+    key: "financial-planning",
     title: "Financial Planning",
     description: "Improve my finances",
   },
   {
-    id: "investing",
+    id:1,
+    key: "investing",
     title: "Investing",
     description: "Expert guidance on how to invest my money",
   },
   {
-    id: "real-estate",
+    id:2,
+    key: "real-estate",
     title: "Real Estate",
     description: "Guidance on acquiring real estate",
   },
   {
-    id: "mortgage",
+    id:3,
+    key: "mortgage",
     title: "Mortgage",
     description: "Getting a mortgage that suits my circumstances",
   },
-  {
-    id: "debt",
+  { id:4,
+    key: "debt",
     title: "Debt",
     description: "Restructure my debt",
   },
-  {
-    id: "retirement",
+  { id:5,
+    key: "retirement",
     title: "Retirement",
     description: "Help me plan for my retirement",
   },
-  {
-    id: "tax-planning",
+  { id:6,
+    key: "tax-planning",
     title: "Tax Planning",
     description: "Strategize and optimize my taxes",
   },
@@ -92,8 +96,8 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value.includes(option.id)}
-            onClick={() => handleOptionToggle(option.id)}
+            selected={value.includes(option.key)}
+            onClick={() => handleOptionToggle(option.key)}
           />
         ))}
       </div>
