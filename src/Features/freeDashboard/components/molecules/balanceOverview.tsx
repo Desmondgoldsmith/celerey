@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Info, MoreHorizontal } from 'lucide-react'
@@ -164,7 +163,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
           </div>
 
           <div onClick={onAddCategory}>
-            <p className="text-[#2117DC] hover:cursor-pointer">Add category</p>
+            <p className="text-[#2117DC] hover:cursor-pointer">Edit category</p>
           </div>
         </div>
 
@@ -279,8 +278,8 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             <Info className="h-3 w-3 text-gray-400" />
           </div>
 
-          <div>
-            <p className="text-[#2117DC] hover:cursor-pointer">Add category</p>
+          <div onClick={onAddCategory}>
+            <p className="text-[#2117DC] hover:cursor-pointer">Edit category</p>
           </div>
         </div>
 
