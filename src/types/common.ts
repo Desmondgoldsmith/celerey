@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface BaseProps {
   className?: string;
   children?: React.ReactNode;

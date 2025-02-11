@@ -1,10 +1,4 @@
-import {
-  FinancialInfoSchema,
-  GoalsInfoSchema,
-  KnowledgeInfoSchema,
-  RiskInfoSchema,
-} from "@/Features/onboarding/schema";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";

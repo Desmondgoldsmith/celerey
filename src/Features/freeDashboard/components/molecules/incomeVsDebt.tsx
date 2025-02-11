@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal, HelpCircle } from "lucide-react";
