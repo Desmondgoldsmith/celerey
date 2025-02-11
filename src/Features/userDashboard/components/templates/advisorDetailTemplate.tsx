@@ -7,6 +7,10 @@ import { Advisor } from "../../types";
 
 interface AdvisorDetailsTemplateProps {
   advisor: Advisor;
+  userName?: string
+  netWorth?:number
+  riskAttitude?:string
+  investmentExperience?:string
 }
 
 export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
