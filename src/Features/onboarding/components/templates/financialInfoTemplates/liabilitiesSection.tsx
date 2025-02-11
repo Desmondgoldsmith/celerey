@@ -14,6 +14,7 @@ interface LiabilitiesSectionProps {
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean;
+  isAssetsComplete: boolean;
 }
 
 const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
@@ -64,9 +65,8 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What are your liabilities?"
         description="Enter your liabilities"
-        sectionNumber={3}
-        sectionTitle="Assets"
-        nextSectionTitle="Liabilities"
+        sectionNumber={4}
+        sectionTitle="Liabilities"
         isSectionComplete={isComplete}
       >
         <div className="space-y-2">

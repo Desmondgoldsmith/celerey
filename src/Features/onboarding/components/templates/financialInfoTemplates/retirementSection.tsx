@@ -10,11 +10,14 @@ interface RetirementSectionProps {
     pensionFund: string;
   };
   onChange: (field: string, value: string) => void;
+  isComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
 const RetirementSection: React.FC<RetirementSectionProps> = ({
   values,
   onChange,
+  isNextSectionComplete
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -57,6 +60,11 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="Retirement Details"
         description="Please fill in your retirement details below."
+        sectionNumber={3}
+        sectionTitle="Retirement"
+        nextSectionTitle=""
+        isSectionComplete={isComplete}
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">

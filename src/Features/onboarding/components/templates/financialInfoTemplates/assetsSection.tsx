@@ -10,8 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X } from "lucide-react"; // Import an icon for the remove button
-
+import { X } from "lucide-react";
 interface AssetsSectionProps {
   values: {
     realEstate: string;
@@ -23,6 +22,7 @@ interface AssetsSectionProps {
   onChange: (field: string, value: string | string[]) => void;
   onContinue: () => void;
   isComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
 const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
@@ -30,13 +30,12 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [bgIndex, setBgIndex] = useState(0);
 
-  // Define the background colors with 5% opacity
   const backgroundColors = [
-    "rgba(56, 51, 150, 0.05)", // #383396 with 5% opacity
-    "rgba(225, 91, 45, 0.05)", // #E15B2D with 5% opacity
-    "rgba(27, 24, 86, 0.05)", // #1B1856 with 5% opacity
-    "rgba(139, 167, 141, 0.05)", // #8BA78D with 5% opacity
-    "rgba(170, 170, 170, 0.05)", // #AAAAAA with 5% opacity
+    "rgba(56, 51, 150, 0.05)", 
+    "rgba(225, 91, 45, 0.05)", 
+    "rgba(27, 24, 86, 0.05)", 
+    "rgba(139, 167, 141, 0.05)", 
+    "rgba(170, 170, 170, 0.05)", 
   ];
 
   const handleInputChange = (field: string, value: string) => {
@@ -99,6 +98,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
         sectionTitle="Assets"
         nextSectionTitle="Liabilities"
         isSectionComplete={isComplete}
+        isNextSectionComplete={isComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -180,7 +180,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
           </div>
           <div className="flex flex-wrap gap-2">
             {values?.assetCountries?.map((country, index) => {
-              const bgColor = backgroundColors[index % backgroundColors.length]; // Rotate colors
+              const bgColor = backgroundColors[index % backgroundColors.length]; 
               return (
                 <div
                   key={index}

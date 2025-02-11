@@ -22,7 +22,6 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     formData.financial
   );
 
-  // Track completion status for each section
   const [sectionCompletion, setSectionCompletion] = useState({
     income: false,
     annualExpenses: false,
@@ -144,6 +143,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.income}
+            isNextSectionComplete={sectionCompletion.annualExpenses} 
           />
         </div>
         <div className="border-b pb-4">
@@ -154,6 +154,8 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.annualExpenses}
+            isNextSectionComplete={sectionCompletion.assets} 
+            
           />
         </div>
         <div className="border-b pb-4">
@@ -164,6 +166,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.assets}
+            isNextSectionComplete={sectionCompletion.liabilities} 
           />
         </div>
 
@@ -175,6 +178,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.liabilities}
+            isAssetsComplete={sectionCompletion.assets} 
           />
         </div>
       </div>

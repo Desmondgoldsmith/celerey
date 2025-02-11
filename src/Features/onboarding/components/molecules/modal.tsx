@@ -15,9 +15,9 @@ interface ModalProps {
   children: React.ReactNode;
   sectionNumber?: number;
   sectionTitle?: string;
-  nextSectionTitle?: string;
+  nextSectionTitle?: string; // Optional, as the last section won't have a next section
   isSectionComplete?: boolean; // Current section completion status
-  isNextSectionComplete?: boolean; // Next section completion status
+  isNextSectionComplete?: boolean; // Optional, only if next section exists
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -68,32 +68,36 @@ const Modal: React.FC<ModalProps> = ({
               </h3>
             </div>
 
-            {/* Line between sections */}
-            <div
-              className={`w-32 h-[2px] my-auto mx-1 ${
-                isSectionComplete ? "bg-blue-900" : "bg-gray-300"
-              }`}
-            ></div>
-
-            {/* Next Section Indicator */}
-            <div className="flex items-center">
+            {/* Line between sections (only if there is a next section) */}
+            {nextSectionTitle && (
               <div
-                className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                  isNextSectionComplete
-                    ? "bg-blue-900 text-white"
-                    : "bg-white border-blue-900 border text-blue-900"
+                className={`w-32 h-[2px] my-auto mx-1 ${
+                  isSectionComplete ? "bg-blue-900" : "bg-gray-300"
                 }`}
-              >
-                {sectionNumber + 1}
+              ></div>
+            )}
+
+            {/* Next Section Indicator (only if there is a next section) */}
+            {nextSectionTitle && (
+              <div className="flex items-center">
+                <div
+                  className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                    isNextSectionComplete
+                      ? "bg-blue-900 text-white"
+                      : "bg-white border-blue-900 border text-blue-900"
+                  }`}
+                >
+                  {sectionNumber + 1}
+                </div>
+                <h3
+                  className={`font-light text-sm ${
+                    isNextSectionComplete ? "text-blue-900" : "text-gray-500"
+                  }`}
+                >
+                  {nextSectionTitle}
+                </h3>
               </div>
-              <h3
-                className={`font-light text-sm ${
-                  isNextSectionComplete ? "text-blue-900" : "text-gray-500"
-                }`}
-              >
-                {nextSectionTitle}
-              </h3>
-            </div>
+            )}
           </div>
         )}
 

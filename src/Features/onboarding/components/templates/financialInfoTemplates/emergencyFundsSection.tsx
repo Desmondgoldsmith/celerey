@@ -3,10 +3,6 @@ import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-
-
-
-
 type EmergencyFundsDataType = {
   emergencyFund: {
     hasEmergencyFunds?: string;
@@ -14,23 +10,25 @@ type EmergencyFundsDataType = {
     targetMonths?: string;
   };
 };
+
 interface EmergencyFundsSectionProps {
- 
   onChange: (value: EmergencyFundsDataType) => void;
+  isComplete?: boolean;
+  isNextSectionComplete?: boolean;
 }
 
 const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   onChange,
+  isNextSectionComplete,
 }) => {
-  const [inputValue, setInputValue] = useState
-  <EmergencyFundsDataType>
-  ({
+  const [inputValue, setInputValue] = useState<EmergencyFundsDataType>({
     emergencyFund: {
       hasEmergencyFunds: "",
       emergencyFundAmount: "",
       targetMonths: "",
     },
   });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [emergencyFundAmountValid, setEmergencyFundAmountValid] =
     useState(true);
@@ -55,32 +53,47 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   ) => {
     const emergencyFundAmountValue = e.target.value;
     if (/^\d*$/.test(emergencyFundAmountValue)) {
-      handleChanges({
+      const updatedValue = {
         ...inputValue,
         emergencyFund: {
           ...inputValue.emergencyFund,
           emergencyFundAmount: emergencyFundAmountValue,
         },
-      });
+      };
+      setInputValue(updatedValue);
+      onChange(updatedValue); // Notify parent of changes
     }
   };
 
   const handleTargetMonthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetMonthsValue = e.target.value;
     if (/^\d*$/.test(targetMonthsValue)) {
-      handleChanges({
+      const updatedValue = {
         ...inputValue,
         emergencyFund: {
           ...inputValue.emergencyFund,
           targetMonths: targetMonthsValue,
         },
-      });
+      };
+      setInputValue(updatedValue);
+      onChange(updatedValue); // Notify parent of changes
     }
   };
 
-  const handleChanges = (value: any) => {
-    setInputValue(value);
-    onChange(value);
+  const handleHasEmergencyFundsChange = (value: "yes" | "no") => {
+    const updatedValue = {
+      ...inputValue,
+      emergencyFund: {
+        ...inputValue.emergencyFund,
+        hasEmergencyFunds: value,
+        emergencyFundAmount:
+          value === "no" ? "" : inputValue.emergencyFund.emergencyFundAmount,
+        targetMonths:
+          value === "no" ? "" : inputValue.emergencyFund.targetMonths,
+      },
+    };
+    setInputValue(updatedValue);
+    onChange(updatedValue); // Notify parent of changes
   };
 
   const isComplete =
@@ -119,6 +132,11 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What are your emergency fund details?"
         description="Enter your emergency fund details below."
+        sectionNumber={2}
+        sectionTitle="Emergency Funds"
+        nextSectionTitle="Retirement"
+        isSectionComplete={isComplete}
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-4">
           <div className="flex flex-col border-gray-300 pb-4 items-center">
@@ -133,16 +151,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
-                onClick={() => {
-                  handleChanges({
-                    ...inputValue,
-                    emergencyFund: {
-                      hasEmergencyFunds: "no",
-                      emergencyFundAmount: "",
-                      targetMonths: "",
-                    },
-                  });
-                }}
+                onClick={() => handleHasEmergencyFundsChange("no")}
               >
                 No
               </Button>
@@ -153,70 +162,51 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
-                onClick={() => {
-                  handleChanges({
-                    ...inputValue,
-                    emergencyFund: {
-                      ...inputValue.emergencyFund,
-                      hasEmergencyFunds: "yes",
-                      emergencyFundAmount:
-                        inputValue.emergencyFund?.emergencyFundAmount || "",
-                      targetMonths:
-                        inputValue.emergencyFund?.targetMonths || "",
-                    },
-                  });
-                }}
+                onClick={() => handleHasEmergencyFundsChange("yes")}
               >
                 Yes
               </Button>
             </div>
           </div>
 
-          { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
-            <div className="flex border-b border-gray-300 pb-4 items-center">
-              <label className="flex-1">Emergency Fund Amount</label>
-              <Input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="flex-1 appearance-none"
-                value= {inputValue.emergencyFund?.emergencyFundAmount || ""}
-                onChange={handleEmergencyFundAmountChange}
-              />
-            </div>
-          )}
-
-          {/* Target Months */}
-          { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
-            <div className="flex border-b border-gray-300 pb-4 items-center">
-              <label className="flex-1">Target Duration (Months)</label>
-              <Input
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="flex-1 appearance-none"
-                value={inputValue.emergencyFund?.targetMonths || ""}
-                onChange={handleTargetMonthsChange}
-              />
-            </div>
+          {inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
+            <>
+              <div className="flex border-b border-gray-300 pb-4 items-center">
+                <label className="flex-1">Emergency Fund Amount</label>
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="flex-1 appearance-none"
+                  value={inputValue.emergencyFund?.emergencyFundAmount || ""}
+                  onChange={handleEmergencyFundAmountChange}
+                />
+              </div>
+              <div className="flex border-b border-gray-300 pb-4 items-center">
+                <label className="flex-1">Target Duration (Months)</label>
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="flex-1 appearance-none"
+                  value={inputValue.emergencyFund?.targetMonths || ""}
+                  onChange={handleTargetMonthsChange}
+                />
+              </div>
+            </>
           )}
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1"
           >
             Back
           </Button>
           <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

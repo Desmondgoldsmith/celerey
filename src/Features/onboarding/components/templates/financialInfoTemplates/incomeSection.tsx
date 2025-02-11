@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,15 @@ interface IncomeSectionProps {
   };
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
-  isComplete: boolean; 
+  isComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
 const IncomeSection: React.FC<IncomeSectionProps> = ({
   values,
   onChange,
   isComplete,
+  isNextSectionComplete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -27,6 +29,11 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
       onChange(field, value);
     }
   };
+
+  useEffect(() => {
+    if (isComplete && isNextSectionComplete) {
+    }
+  }, [isComplete, isNextSectionComplete]);
 
   return (
     <div>
@@ -60,6 +67,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
         sectionTitle="Income"
         nextSectionTitle="Expenses"
         isSectionComplete={isComplete}
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
