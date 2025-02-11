@@ -16,10 +16,8 @@ interface ModalProps {
   sectionNumber?: number;
   sectionTitle?: string;
   nextSectionTitle?: string;
-  isSectionComplete?: boolean;
-  isNextSectionComplete?: boolean;
-  isLastSection?: boolean;
-  isPreviousSectionComplete?: boolean;
+  isSectionComplete?: boolean; // Current section completion status
+  isNextSectionComplete?: boolean; // Next section completion status
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -33,8 +31,6 @@ const Modal: React.FC<ModalProps> = ({
   nextSectionTitle,
   isSectionComplete,
   isNextSectionComplete,
-  isLastSection,
-  isPreviousSectionComplete,
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -52,107 +48,52 @@ const Modal: React.FC<ModalProps> = ({
 
         {sectionNumber !== undefined && sectionTitle && (
           <div className="max-w-lg mx-auto flex items-center justify-center p-5">
-            {isLastSection ? (
-              <>
-                {/* Previous Section Indicator */}
-                <div className="flex items-center">
-                  <div
-                    className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                      isPreviousSectionComplete
-                        ? "bg-blue-900 text-white"
-                        : "bg-white border-blue-900 border text-blue-900"
-                    }`}
-                  >
-                    {sectionNumber - 1}
-                  </div>
-                  <h3
-                    className={`font-light text-sm ${
-                      isPreviousSectionComplete
-                        ? "text-blue-900"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    Previous Section
-                  </h3>
-                </div>
+            {/* Current Section Indicator */}
+            <div className="flex items-center">
+              <div
+                className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                  isSectionComplete
+                    ? "bg-blue-900 text-white"
+                    : "bg-white border-blue-900 border text-blue-900"
+                }`}
+              >
+                {sectionNumber}
+              </div>
+              <h3
+                className={`font-light text-sm ${
+                  isSectionComplete ? "text-blue-900" : "text-gray-500"
+                }`}
+              >
+                {sectionTitle}
+              </h3>
+            </div>
 
-                {/* Line between sections */}
-                <div
-                  className={`w-32 h-[2px] my-auto mx-1 ${
-                    isSectionComplete ? "bg-blue-900" : "bg-gray-300"
-                  }`}
-                ></div>
+            {/* Line between sections */}
+            <div
+              className={`w-32 h-[2px] my-auto mx-1 ${
+                isSectionComplete ? "bg-blue-900" : "bg-gray-300"
+              }`}
+            ></div>
 
-                {/* Current Section Indicator */}
-                <div className="flex items-center">
-                  <div
-                    className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                      isSectionComplete
-                        ? "bg-blue-900 text-white"
-                        : "bg-white border-blue-900 border text-blue-900"
-                    }`}
-                  >
-                    {sectionNumber}
-                  </div>
-                  <h3
-                    className={`font-light text-sm ${
-                      isSectionComplete ? "text-blue-900" : "text-gray-500"
-                    }`}
-                  >
-                    {sectionTitle}
-                  </h3>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Current Section Indicator */}
-                <div className="flex items-center">
-                  <div
-                    className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                      isSectionComplete
-                        ? "bg-blue-900 text-white"
-                        : "bg-white border-blue-900 border text-blue-900"
-                    }`}
-                  >
-                    {sectionNumber}
-                  </div>
-                  <h3
-                    className={`font-light text-sm ${
-                      isSectionComplete ? "text-blue-900" : "text-gray-500"
-                    }`}
-                  >
-                    {sectionTitle}
-                  </h3>
-                </div>
-
-                {/* Line between sections */}
-                <div
-                  className={`w-32 h-[2px] my-auto mx-1 ${
-                    isSectionComplete ? "bg-blue-900" : "bg-gray-300"
-                  }`}
-                ></div>
-
-                {/* Next Section Indicator */}
-                <div className="flex items-center">
-                  <div
-                    className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
-                      isNextSectionComplete
-                        ? "bg-blue-900 text-white"
-                        : "bg-white border-blue-900 border text-blue-900"
-                    }`}
-                  >
-                    {sectionNumber + 1}
-                  </div>
-                  <h3
-                    className={`font-light text-sm ${
-                      isNextSectionComplete ? "text-blue-900" : "text-gray-500"
-                    }`}
-                  >
-                    {nextSectionTitle}
-                  </h3>
-                </div>
-              </>
-            )}
+            {/* Next Section Indicator */}
+            <div className="flex items-center">
+              <div
+                className={`text-xs mr-1 font-light flex items-center justify-center w-6 h-6 rounded-full ${
+                  isNextSectionComplete
+                    ? "bg-blue-900 text-white"
+                    : "bg-white border-blue-900 border text-blue-900"
+                }`}
+              >
+                {sectionNumber + 1}
+              </div>
+              <h3
+                className={`font-light text-sm ${
+                  isNextSectionComplete ? "text-blue-900" : "text-gray-500"
+                }`}
+              >
+                {nextSectionTitle}
+              </h3>
+            </div>
           </div>
         )}
 

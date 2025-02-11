@@ -23,7 +23,6 @@ interface AssetsSectionProps {
   onChange: (field: string, value: string | string[]) => void;
   onContinue: () => void;
   isComplete: boolean;
-  isNextSectionComplete: boolean;
 }
 
 const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {

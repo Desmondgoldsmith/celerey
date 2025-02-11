@@ -127,6 +127,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
+        {" "}
         <h1 className="text-4xl font-cirka">
           Help us with these key financial details
         </h1>
@@ -143,7 +144,6 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.income}
-            isNextSectionComplete={sectionCompletion.annualExpenses}
           />
         </div>
         <div className="border-b pb-4">
@@ -154,7 +154,6 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.annualExpenses}
-            isNextSectionComplete={sectionCompletion.assets}
           />
         </div>
         <div className="border-b pb-4">
@@ -165,17 +164,19 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.assets}
-            isNextSectionComplete={sectionCompletion.liabilities}
           />
         </div>
-        <LiabilitiesSection
-          values={localFormData.liabilities}
-          onChange={(field, value) =>
-            handleFormUpdate("liabilities", field, value)
-          }
-          onContinue={handleContinue}
-          isComplete={sectionCompletion.liabilities}
-        />
+
+        <div className="border-b pb-4">
+          <LiabilitiesSection
+            values={localFormData.liabilities}
+            onChange={(field, value) =>
+              handleFormUpdate("liabilities", field, value)
+            }
+            onContinue={handleContinue}
+            isComplete={sectionCompletion.liabilities}
+          />
+        </div>
       </div>
       <div className="flex gap-4 mt-8 w-full max-w-md mx-auto">
         <Button variant="outline" onClick={handleBack} className="flex-1">
