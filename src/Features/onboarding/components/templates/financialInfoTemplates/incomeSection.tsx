@@ -13,12 +13,15 @@ interface IncomeSectionProps {
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean; 
+  isNextSectionComplete: boolean; 
 }
 
 const IncomeSection: React.FC<IncomeSectionProps> = ({
   values,
   onChange,
+  onContinue,
   isComplete,
+  isNextSectionComplete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,7 +44,6 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
           >
             1
           </div>
-
           <h3 className="font-medium">Income</h3>
         </div>
         <button
@@ -59,7 +61,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
         sectionNumber={1}
         sectionTitle="Income"
         nextSectionTitle="Expenses"
-        isSectionComplete={isComplete}
+        isSectionComplete={isComplete} 
+        isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
@@ -120,7 +123,9 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
             Back
           </Button>
           <Button
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >

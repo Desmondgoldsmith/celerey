@@ -15,6 +15,7 @@ interface ExpensesSectionProps {
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
 const ExpensesSection: React.FC<ExpensesSectionProps> = ({

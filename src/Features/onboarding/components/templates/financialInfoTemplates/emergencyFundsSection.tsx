@@ -175,7 +175,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
           {/* Emergency Fund Amount */}
           { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
-              <label className="flex-1">Emergency Fund Amount</label>
+              <label className="flex-1">Months of living expenses saved</label>
               <Input
                 type="text"
                 inputMode="numeric"
@@ -190,7 +190,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
           {/* Target Months */}
           { inputValue.emergencyFund.hasEmergencyFunds === "yes" && (
             <div className="flex border-b border-gray-300 pb-4 items-center">
-              <label className="flex-1">Target Duration (Months)</label>
+              <label className="flex-1">Target duration of funds (Months)</label>
               <Input
                 type="text"
                 inputMode="numeric"
