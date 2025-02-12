@@ -85,12 +85,11 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Thanks for submitting your personal details. Let&apos;s get you started on your journey
-        to make more informed decisions about your wealth
+        Thanks for submitting your personal details. What are your areas of interest?
       </h1>
 
       <p className="text-gray-600 mb-8">
-        How can we help you choose an option (s)
+        How can we help you, choose an option(s)
       </p>
 
       <div className="space-y-4 mb-8">

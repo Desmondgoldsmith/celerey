@@ -101,9 +101,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
-        <h1 className="text-4xl font-cirka">
-          Help us with these key Financial details
-        </h1>
+        <h1 className="text-4xl font-cirka">Contingent Financial details</h1>
         <p className="text-gray-600">
           Fill the different forms that appear from the pop-ups
         </p>
@@ -120,14 +118,12 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
             isNextSectionComplete={sectionCompletion.emergencyFund}
           />
         </div>
-
-        {/* Emergency Funds Section */}
         <div className="border-b pb-4">
+          {/* Emergency Funds Section */}
           <EmergencyFundsSection
-            values={localFormData.emergencyFund}
-            onChange={(field, value) => {
-              handleFormUpdate('emergencyFund', field, value)            
-            }}
+            onChange={(field, value) =>
+              handleFormUpdate("emergencyFund", field, value)
+            }
             isComplete={sectionCompletion.emergencyFund}
             isNextSectionComplete={sectionCompletion.retirement}
           />

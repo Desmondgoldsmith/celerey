@@ -52,9 +52,9 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNex
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Savings Details"
-        description="Please fill in your savings details below."
-        sectionNumber={1}
+        title="What is your annual savings"
+        description="Please enter your savings details below."
+        // sectionNumber={1}
         sectionTitle="Savings"
         nextSectionTitle="Emergency Fund"
         isSectionComplete={isComplete}
@@ -88,7 +88,7 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNex
             />
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -107,7 +107,7 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNex
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

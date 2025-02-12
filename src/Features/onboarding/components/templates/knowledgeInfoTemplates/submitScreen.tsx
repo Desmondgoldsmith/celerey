@@ -34,12 +34,11 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
     <div  className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-6">
         Congratulations
-        <span className="text-navyLight"> {(user?.firstName + ' ' + user?.lastName) || 'User'}</span>, you have
-        completed the onboarding would you like to know your ideal asset
-        allocation?
+        <span className="text-navyLight"> {(user?.firstName) || 'User'}</span>, you have
+        completed the onboarding.
       </h1>
 
-      <div className="flex gap-4 max-w-[200px] mx-auto mb-14">
+      {/* <div className="flex gap-4 max-w-[200px] mx-auto mb-14">
         <Button
           variant="outline"
           className={`flex-1 ${
@@ -62,12 +61,10 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
         >
           No
         </Button>
-      </div>
+      </div> */}
 
       <div className="flex gap-4 max-w-md mx-auto">
-        <Button variant="outline" onClick={onBack} className="flex-1">
-          Back
-        </Button>
+
         <Button
           onClick={handleSubmit}
           className={`flex-1 w-full text-white ${
@@ -75,7 +72,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
           }`}
           disabled={!selection || loading}
         >
-          {loading && <Spinner />} Submit
+          {loading && <Spinner />} View my Dashboard
         </Button>
       </div>
     </div>

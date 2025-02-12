@@ -38,7 +38,7 @@ export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        Let&apos;s test that theory, shall we? <br /> Which of the following statement best
+       Which of the following statement best
         describes your risk tolerance?
       </h1>
       <div className="space-y-4 mb-8">

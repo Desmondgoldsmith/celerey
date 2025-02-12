@@ -94,7 +94,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
         onClose={() => setIsModalOpen(false)}
         title="What assets do you have?"
         description="Enter your asset details below."
-        sectionNumber={3}
+        // sectionNumber={3}
         sectionTitle="Assets"
         nextSectionTitle="Liabilities"
         isSectionComplete={isComplete}
@@ -199,7 +199,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             })}
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -218,7 +218,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );
