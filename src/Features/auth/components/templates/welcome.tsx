@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Welcome = () => {
   return (
-    <div className="max-w-4xl mx-auto text-center ">
+    <div className="min-h-[75vh] flex flex-col justify-center items-center text-center">
       <div className="flex justify-center mb-6">
         <Image
           src="/assets/logo1.svg"
@@ -18,8 +18,7 @@ const Welcome = () => {
           Welcome to Celerey
         </h1>
         <p className="text-gray-600 font-helvetica">
-          Celerey is the easiest way to make informed decisions about your
-          wealth.
+          Your pathway to financial freedom
         </p>
       </div>
 
@@ -34,7 +33,7 @@ const Welcome = () => {
         </div>
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <h2 className="text-xl mb-2 font-helvetica font-normal">
           Your path to financial concierge
         </h2>
@@ -42,7 +41,7 @@ const Welcome = () => {
           Celerey is the easiest way to make informed decisions about your
           wealth
         </p>
-      </div>
+      </div> */}
 
       <div className="flex justify-center gap-4">
         <Link href="/auth/signin" passHref>

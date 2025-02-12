@@ -32,14 +32,17 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
             </div>
           </div>
           <div className="hidden md:flex gap-4">
-            <a href="#" className="text-sm font-helvetica text-gray-600">
-              Tax Calculator
+            <a
+              href="https://www.celerey.co/"
+              className="text-sm font-helvetica text-gray-600"
+            >
+              About Us
             </a>
-            <a href="#" className="text-sm font-helvetica text-gray-600">
-              Goals & Planning
-            </a>
-            <a href="#" className="text-sm font-helvetica text-gray-600">
-              Knowledge Hub
+            <a
+              href="https://www.celerey.co/resources"
+              className="text-sm font-helvetica text-gray-600"
+            >
+              Resources
             </a>
           </div>
           <button
@@ -53,22 +56,16 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
         {isMenuOpen && (
           <div className="md:hidden mt-4 text-right rounded-lg p-4">
             <a
-              href="#"
+              href="https://www.celerey.co/"
               className="block text-sm font-helvetica text-gray-700 mb-2 border-b pb-2 hover:text-navy hover:border-navy transition-colors"
             >
-              Tax Calculator
+              About Us
             </a>
             <a
-              href="#"
+              href="https://www.celerey.co/resources"
               className="block text-sm font-helvetica text-gray-700 mb-2 border-b pb-2 hover:text-navy hover:border-navy transition-colors"
             >
-              Goals & Planning
-            </a>
-            <a
-              href="#"
-              className="block text-sm font-helvetica text-gray-700 hover:text-navy transition-colors"
-            >
-              Knowledge Hub
+              Resources
             </a>
           </div>
         )}
@@ -84,5 +81,5 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
         </div>
       </footer>
     </div>
-  )
+  );
 }

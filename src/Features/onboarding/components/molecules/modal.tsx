@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,9 +16,9 @@ interface ModalProps {
   children: React.ReactNode;
   sectionNumber?: number;
   sectionTitle?: string;
-  nextSectionTitle?: string; // Optional, as the last section won't have a next section
-  isSectionComplete?: boolean; // Current section completion status
-  isNextSectionComplete?: boolean; // Optional, only if next section exists
+  nextSectionTitle?: string;
+  isSectionComplete?: boolean;
+  isNextSectionComplete?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -101,7 +102,22 @@ const Modal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        <div className="max-w-sm w-full mx-auto px-4 sm:px-0">{children}</div>
+        <div className="max-w-md w-full mx-auto px-4 mt-6 sm:px-0">
+          {children}
+
+          <div className="flex gap-4 mt-10">
+            <Button variant="outline" onClick={onClose} className="flex-1">
+              Back
+            </Button>
+            <Button
+              onClick={onClose}
+              className="flex-1 bg-navy hover:bg-navyLight text-white"
+              disabled={!isSectionComplete}
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

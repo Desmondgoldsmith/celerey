@@ -29,9 +29,9 @@ export const NetWorthScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
             formData.financial?.currency?.split('(')[1].split(')')[0] || 'usd',
           )}</span>
       </h1>
-      <p className=" mb-12 font-helvetica text-sm">
+      {/* <p className=" mb-12 font-helvetica text-sm">
         Does this look right? If not, please go back and make some adjustments.
-      </p>
+      </p> */}
       <div className="flex gap-4 max-w-md mx-auto">
         <Button variant="outline" onClick={onBack} className="flex-1">
           Back

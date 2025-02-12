@@ -17,7 +17,7 @@ interface RetirementSectionProps {
 const RetirementSection: React.FC<RetirementSectionProps> = ({
   values,
   onChange,
-  isNextSectionComplete
+  isNextSectionComplete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,7 +28,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
   };
 
   const isComplete =
-  values &&
+    values &&
     values.retirementAge !== "" &&
     values.targetRetirementIncome !== "" &&
     values.pensionFund !== "";
@@ -58,9 +58,9 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Retirement Details"
+        title="What are your goals for retirement"
         description="Please fill in your retirement details below."
-        sectionNumber={3}
+        // sectionNumber={3}
         sectionTitle="Retirement"
         nextSectionTitle=""
         isSectionComplete={isComplete}
@@ -68,7 +68,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">When would you like to retire?</label>
+            <label className="flex-1">What age would you like to retire?</label>
             <Input
               type="text"
               inputMode="numeric"
@@ -110,7 +110,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
             />
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-10">
           <Button
             variant="outline"
             onClick={() => {
@@ -129,7 +129,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

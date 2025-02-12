@@ -40,15 +40,14 @@ export const SignUpTemplate = () => {
           Create your Celerey Account
         </h1>
         <p className="text-sm text-gray-600 font-helvetica">
-          Signup with a Google or Linkedin account, or enter your email address
-          and we will send you a code to get started
+          Enter your email address and we will send you a code to get started
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 mb-6">
         <input
           type="text"
-          placeholder="Enter Email address or Mobile No."
+          placeholder="Enter Email address"
           className="w-full p-3 border mb-2 rounded-md focus:border-navy focus:ring-1 focus:ring-navy"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -77,7 +76,7 @@ export const SignUpTemplate = () => {
       </div> */}
 
       <p className="mt-6 text-sm">
-        <span className="text-navy">Already have an account ?</span>{' '}
+        <span className="text-navy">Already have an account ?</span>{" "}
         <span
           onClick={handleSignup}
           className="text-navyLight hover:cursor-pointer hover:underline "
@@ -86,5 +85,5 @@ export const SignUpTemplate = () => {
         </span>
       </p>
     </div>
-  )
+  );
 }
