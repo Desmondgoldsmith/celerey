@@ -294,7 +294,10 @@ export const useDashboardStore = create<DashboardStore>()(
             liabilitiesEstimation: response.data.liabilities_estimation,
             calculatedFinancialKnowledge:
               response.data.calculated_financial_knowledge,
-            calculatedRiskTolerance: response.data.calculated_risk_tolerance,
+            calculatedRiskTolerance:
+              typeof response.data.calculated_risk_tolerance === "string"
+                ? JSON.parse(response?.data?.calculated_risk_tolerance || "{}")
+                : response?.data?.calculated_risk_tolerance,
           };
         });
       }
