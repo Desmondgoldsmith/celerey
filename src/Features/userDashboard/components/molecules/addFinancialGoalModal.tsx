@@ -55,8 +55,8 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
   const [goalId, setGoalId] = useState(initialData?.id || '')
   const [formData, setFormData] = useState<GoalFormData>(() => ({
     name: initialData?.name || '',
-    targetAmount: initialData?.targetValue.toString() || '',
-    currentAmount: initialData?.currentValue.toString() || '',
+    targetAmount: (initialData?.type === 'emergency' ?initialData?.targetValue.split(' ')[0] : initialData?.targetValue.toString()) || '',
+    currentAmount: (initialData?.type === 'emergency' ?initialData?.currentValue.split(' ')[0] : initialData?.currentValue.toString()) || '',
     durationStart: initialData?.startDate || '',
     durationEnd: initialData?.endDate || '',
     goalDuration: initialData?.duration?.toString() || '',
@@ -93,8 +93,8 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
     if (isOpen) {
       const updatedFormData = {
         name: initialData?.name || '',
-        targetAmount: initialData?.targetValue?.toString() || '',
-        currentAmount: initialData?.currentValue.toString() || '',
+        targetAmount: (initialData?.type === 'emergency' ?initialData?.targetValue.split(' ')[0] : initialData?.targetValue.toString()) || '',
+        currentAmount: (initialData?.type === 'emergency' ?initialData?.currentValue.split(' ')[0] : initialData?.currentValue.toString()) || '',
         durationStart: initialData?.startDate || '',
         durationEnd: initialData?.endDate || '',
         goalDuration: initialData?.duration?.toString() || '',
