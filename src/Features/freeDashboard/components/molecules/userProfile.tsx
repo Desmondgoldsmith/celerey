@@ -1,17 +1,18 @@
-import React from "react";
-import Image from "next/image";
-import { Card } from "@/components/ui/card";
-import { ChevronRight, Info } from "lucide-react";
-import Link from "next/link";
+import React from 'react'
+import Image from 'next/image'
+import { Card } from '@/components/ui/card'
+import { ChevronRight, Info } from 'lucide-react'
+import Link from 'next/link'
+import formatCurrency from '@/utils/formatCurrency'
 // import { useRouter } from "next/navigation";
 
 interface UserProfileProps {
-  userName: string;
-  netWorth: number;
-  riskAttitude: string;
-  investmentExperience: string;
-  profileCompletion?: number;
-  onUpgradeClick?: () => void;
+  userName: string
+  netWorth: number
+  riskAttitude: string
+  investmentExperience: string
+  profileCompletion?: number
+  onUpgradeClick?: () => void
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
@@ -23,12 +24,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   onUpgradeClick,
 }) => {
   // const router = useRouter();
-  const currentDate = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const currentDate = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
 
   return (
     <Card className="hidden lg:block bg-white rounded-3xl">
@@ -79,7 +80,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             />
           </div>
           <div className="flex items-center gap-2">
-            <button className="bg-[#E15B2D] text-white px-4 py-2 rounded-md text-sm hover:bg-[#E63D04] transition-colors">
+            <button
+              onClick={onUpgradeClick}
+              className="bg-[#E15B2D] text-white px-4 py-2 rounded-md text-sm hover:bg-[#E63D04] transition-colors"
+            >
               Complete Profile
             </button>
           </div>
@@ -97,7 +101,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
               {riskAttitude}
             </div>
             <div>
-              <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
+              <span
+                onClick={onUpgradeClick}
+                className="text-[#E15B2D] font-semibold text-sm hover:underline cursor-pointer"
+              >
                 Complete profile
               </span>
             </div>
@@ -109,7 +116,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             Your Current Net Worth
           </div>
           <div className="text-xl text-navyLight font-cirka pl-5 font-medium">
-            ${netWorth?.toLocaleString()}
+            {formatCurrency(netWorth.toString(), 'usd')}
           </div>
         </div>
 
@@ -122,7 +129,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
               {investmentExperience}
             </div>
             <div>
-              <span className="text-[#E15B2D] font-semibold text-sm hover:underline hover:cursor-pointer">
+              <span
+                onClick={onUpgradeClick}
+                className="text-[#E15B2D] font-semibold text-sm hover:underline cursor-pointer"
+              >
                 Complete profile
               </span>
             </div>
@@ -145,17 +155,16 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <span className="font-medium">Book 15 Minutes Consultation</span>
           </div>
-          <Link href="/freebie-account/advisors" passHref>
-            <button className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
+            <button   onClick={onUpgradeClick} className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
               <ChevronRight className="h-5 w-5 text-white" />
             </button>
-          </Link>
+        
         </div>
         {/* Bottom Border */}
         <div className="border-b bg-gray-50 border-gray-200 p-4 " />
       </div>
     </Card>
-  );
-};
+  )
+}
 
-export default UserProfile;
+export default UserProfile

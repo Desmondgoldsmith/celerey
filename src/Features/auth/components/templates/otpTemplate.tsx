@@ -8,28 +8,56 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '../../state'
 import Spinner from '@/components/ui/spinner'
 import { OTP_LENGTH } from '../../constants'
+import { useDashboardStore } from '@/Features/userDashboard/state'
+import { useOnboardingStore } from '@/Features/onboarding/state'
 // import { useAssetAllocationStore } from '@/Features/assetAllocation/state'
 
 export const OTPTemplate = () => {
   const [otpValues, setOTPValues] = useState(Array(6).fill(''))
 
-  const { validateOTP, loading, user, error, setError } = useAuthStore()
-  // const { getSubscriptionStatus } = useAssetAllocationStore()
+  const {
+    validateOTP,
+    loading,
+    user,
+    error,
+    setError,
+    setLoading,
+  } = useAuthStore()
+  const { getSectionProgress } = useOnboardingStore()
+
+  const { subscription } = useDashboardStore()
   const router = useRouter()
 
   const handleSignIn = async () => {
-   const success = await validateOTP(otpValues.join(''), 'SIGN_IN')
-   if(success) {
-    router.push('/personal-info')
-   }
+    const success = await validateOTP(otpValues.join(''), 'SIGN_IN')
+    if (success) {
+      setLoading(true)
 
-    // const subscription = await getSubscriptionStatus()
+      if (subscription.status === 'active') {
+        router.replace('/dashboard')
+        setLoading(true)
+        return
+      }
 
-    // if (subscription.status === 'active') {
-    //   router.push('/dashboard')
-    // } else {
-    //   router.push('/asset-allocation')
-    // }
+      const activeSection = await getSectionProgress()
+
+      if (activeSection === 'completed') {
+        router.replace('/freebie')
+        setLoading(false)
+        return
+      }
+
+      const sectionToRouteMap: { [key: string]: string } = {
+        personal: '/personal-info',
+        financial: '/financial-info',
+        goals: '/goals-info',
+        risk: '/risk-info',
+        knowledge: '/knowledge-info',
+      }
+
+      const activeRoute = sectionToRouteMap[activeSection || 'personal']
+      router.replace(activeRoute)
+    }
   }
 
   const handleOpenEmail = () => {
@@ -52,15 +80,17 @@ export const OTPTemplate = () => {
         </p>
       </div>
 
-      <OTPInput length={6} value={otpValues} onChange={(value)=>
-        {
-          if(error) {
+      <OTPInput
+        length={6}
+        value={otpValues}
+        onChange={(value) => {
+          if (error) {
             setError('')
           }
           setOTPValues(value)
-        }
-        } />
-      {error && <p className=' text-sm mt-1 mb-2 text-red-500'>{error}</p>}
+        }}
+      />
+      {error && <p className=" text-sm mt-1 mb-2 text-red-500">{error}</p>}
 
       <Button
         disabled={otpValues.join('').length !== OTP_LENGTH || loading}

@@ -3,6 +3,7 @@
 import { ReactNode, useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -19,7 +20,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
     <div className="min-h-screen flex flex-col">
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="w-32">
+          <Link href='/' className="w-32 cursor-pointer" >
             <Image
               src="/assets/logo2.svg"
               alt="Celerey"
@@ -27,7 +28,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
               height={30}
               priority
             />
-          </div>
+          </Link>
           <div className="hidden md:flex gap-4">
             <a href="#" className="text-sm font-helvetica text-gray-600">
               Tax Calculator

@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Info, MoreHorizontal } from 'lucide-react'
 import { ChartType } from '../../types'
 import { FinancialGoal } from '@/Features/userDashboard/types'
+import formatCurrency from '@/utils/formatCurrency'
 
 interface Goal {
   name: string
@@ -16,13 +17,15 @@ interface FinancialGoalsProps {
   Chart: ChartType
   financialGoals: FinancialGoal[]
   onModify?: () => void;
+  currency: string
 
 }
 
 export const FinancialGoals: React.FC<FinancialGoalsProps> = ({
   Chart,
   financialGoals,
-  onModify
+  onModify,
+  currency
 }) => {
   const goalColors = ['#0b026aFF', '#8A4FFF', '#FF6B6B', '#4ECB71']
 
@@ -139,10 +142,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({
             </p>
             <div className="text-xl sm:text-2xl font-medium text-[#4F028F]">
             {goal?.type !== 'emergency'
-                ? '$' + Number(goal.currentValue).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
+                ? formatCurrency(goal.currentValue, currency)
                 : goal.currentValue}
             </div>
             <div className="text-gray-500 mt-1 text-xs sm:text-sm">out of</div>
@@ -151,10 +151,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({
             </div>
             <div className="text-gray-500 text-helvatica text-base sm:text-xl mt-1">
               {goal?.type !== 'emergency'
-                ? '$' + Number(goal.targetValue).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
+                ? formatCurrency(goal.targetValue, currency)
                 : goal.targetValue}
             </div>
           </div>

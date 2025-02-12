@@ -16,6 +16,11 @@ export const useAuthStore = create<AuthState>()(
       loading: false,
       error: "",
 
+      setLoading : (status: boolean) => {
+        set((state) => {
+          state.loading = status;
+        });
+      },
       setError : (error: string) => {
         set((state) => {
           state.error = error;
@@ -25,7 +30,7 @@ export const useAuthStore = create<AuthState>()(
         const accessToken = Cookies.get("accessToken");
         if (accessToken) {
           try {
-            const response = await getUserApi(accessToken);
+            const response = await getUserApi();
             set((state) => {
               state.user = {
                 email: response.data.email,

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import Spinner from '@/components/ui/spinner'
+import { useAuthStore } from '@/Features/auth/state'
 import { useOnboardingStore } from '@/Features/onboarding/state'
 import React, { useEffect, useState } from 'react'
 
@@ -11,6 +12,7 @@ interface NetWorthScreenProps {
 export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
   const [firstName, setFirstName] = useState<string | null>(null)
   const { formData, saveRiskInfo, loading } = useOnboardingStore()
+  const { user } = useAuthStore()
 
   useEffect(() => {
     // Fetch the state from local storage
@@ -35,7 +37,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
       <h1 className="text-3xl font-cirka mb-6">
         Thanks
-        <span className="text-navyLight"> {firstName || 'User'}</span>, from the
+        <span className="text-navyLight"> {(user?.firstName + ' ' + user?.lastName) || 'User'}</span>, from the
         assessment based on the answers, &nbsp;
         <span className="text-navyLight">
           your attitube to risk is: <br />

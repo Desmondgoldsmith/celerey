@@ -9,8 +9,12 @@ import { useOnboardingStore } from '@/Features/onboarding/state'
 import { useDashboardStore } from '@/Features/userDashboard/state'
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { setIsAuthenticated, isAuthenticated } = useAuthStore()
-  const { getSectionProgress, hasCheckedProgress, setHasCheckedProgress } = useOnboardingStore()
+  const { setIsAuthenticated, isAuthenticated, setUser, loading } = useAuthStore()
+  const {
+    getSectionProgress,
+    hasCheckedProgress,
+    setHasCheckedProgress,
+  } = useOnboardingStore()
   const { subscription, populateSubscription } = useDashboardStore()
 
   const [isFetchingData, setIsFetchingData] = useState(false)
@@ -24,31 +28,35 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       router.replace('/auth/signin')
       return
     }
-    
-    setTimeout(()=>{
-      setIsAuthenticated(true)
-    },1000)
-    // Only run progress check once
-    if (!hasCheckedProgress) {
-      handleOnboardingProgress()
-      populateSubscription()
-    }
+    handleApplicationInit()
   }, [])
 
-
   useEffect(() => {
-    if (subscription.status === 'active') {
+    if (pathname !== '/dashboard' && subscription.status === 'active') {
       router.replace('/dashboard')
     }
   }, [subscription])
 
-  const handleOnboardingProgress = async () => {
+  const handleApplicationInit = async () => {
+    setIsAuthenticated(true)
     setIsFetchingData(true)
-    const activeSection = await getSectionProgress()
+    await setUser()
+    const subscription = await populateSubscription()
 
-    if (activeSection === 'completed') {
-      router.replace('/freebie')
-    } else {
+    if (subscription.status === 'active') {
+      router.replace('/dashboard')
+      setIsFetchingData(false)
+      return
+    }
+    if (!hasCheckedProgress) {
+      const activeSection = await getSectionProgress()
+
+      if (activeSection === 'completed') {
+        router.replace('/freebie')
+        setIsFetchingData(false)
+        return
+      }
+
       const sectionToRouteMap: { [key: string]: string } = {
         personal: '/personal-info',
         financial: '/financial-info',
@@ -63,10 +71,9 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     }
     setIsFetchingData(false)
     setHasCheckedProgress(true)
-  
   }
 
-  if (!isAuthenticated || isFetchingData) {
+  if (!isAuthenticated || isFetchingData || loading) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Spinner />
