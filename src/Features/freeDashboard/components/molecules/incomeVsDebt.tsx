@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { MoreHorizontal, HelpCircle } from "lucide-react";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface FinancialData {
   netBalance: number;
@@ -12,11 +13,12 @@ interface FinancialData {
     amount: number;
     percentage: number;
   };
+  currency: string
 }
 
 // interface IncomeVsDebtProps {}
 
-export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) => {
+export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense, currency}: any) => {
   const financialData: FinancialData = {
     netBalance: incomeAndDebt,
     income: {
@@ -27,16 +29,9 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) =
       amount: debt?.value || 0,
       percentage: debt?.percentage?.toFixed(2) || 0,
     },
+    currency
   };
 
-  const formatCurrency = (amount = 0): string => {
-    return amount.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  };
 
   return (
     <Card className="p-6 w-full max-w-md bg-white">
@@ -59,7 +54,7 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) =
       {/* Net Balance Amount */}
       <div className="mb-4">
         <div className="text-3xl font-normal mb-4">
-          {formatCurrency(financialData.netBalance)}
+          {formatCurrency(financialData?.netBalance?.toString() || '0', currency)}
         </div>
 
         <div className="text-xs text-gray-500 mb-4">Distribution</div>
@@ -73,7 +68,7 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) =
             <span className="text-sm font-medium">Income</span>
           </div>
           <span className="text-sm font-medium">
-            {formatCurrency(financialData.income.amount)}
+          {formatCurrency(financialData?.income?.amount?.toString() || '0', currency)}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -97,7 +92,7 @@ export const IncomeVsDebt = ({income, debt, incomeAndDebt, onAddExpense}: any) =
             <span className="text-sm font-medium">Debt</span>
           </div>
           <span className="text-sm font-medium">
-            {formatCurrency(financialData.debt.amount)}
+          {formatCurrency(financialData?.debt?.amount?.toString() || '0', currency)}
           </span>
         </div>
         <div className="flex items-center gap-2">

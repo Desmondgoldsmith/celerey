@@ -9,7 +9,7 @@ import { useOnboardingStore } from '@/Features/onboarding/state'
 import { useDashboardStore } from '@/Features/userDashboard/state'
 
 const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
-  const { setIsAuthenticated, isAuthenticated, setUser } = useAuthStore()
+  const { setIsAuthenticated, isAuthenticated, setUser, loading } = useAuthStore()
   const {
     getSectionProgress,
     hasCheckedProgress,
@@ -73,7 +73,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     setHasCheckedProgress(true)
   }
 
-  if (!isAuthenticated || isFetchingData) {
+  if (!isAuthenticated || isFetchingData || loading) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Spinner />

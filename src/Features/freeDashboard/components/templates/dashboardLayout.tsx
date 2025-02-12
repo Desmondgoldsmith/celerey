@@ -82,7 +82,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     <div className="min-h-screen flex flex-col">
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="w-32">
+          <Link href='/freebie' passHref className="w-32">
             <Image
               src="/assets/logo2.svg"
               alt="Celerey"
@@ -90,7 +90,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               height={30}
               priority
             />
-          </div>
+          </Link>
           {/* Desktop Navigation */}
           {/* <div className="hidden md:flex gap-6 items-center">
             <Link href="#" className="text-sm font-helvetica text-gray-600">

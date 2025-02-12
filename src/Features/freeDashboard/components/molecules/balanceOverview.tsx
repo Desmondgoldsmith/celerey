@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'recharts'
+import formatCurrency from '@/utils/formatCurrency'
 
 interface BalanceOverviewProps {
   Chart: ChartType
@@ -21,6 +22,7 @@ interface BalanceOverviewProps {
   liabilities: any
   income:any,
   expense: any
+  currency: string,
   onAddCategory: () => void
   // annualIncome: {
   //   Rental: number;
@@ -43,7 +45,8 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   liabilities,
   expense,
   income,
-  onAddCategory
+  onAddCategory,
+  currency = 'usd'
 }) => {
   // Dummy data
   const realEstate = {
@@ -208,7 +211,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${realEstate.value.toLocaleString()}
+                  {formatCurrency(realEstate.value, currency)}
                 </div>
               </div>
 
@@ -225,7 +228,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${privateSecurities.value.toLocaleString()}
+                  {formatCurrency(privateSecurities.value, currency)}
                 </div>
               </div>
             </div>
@@ -262,7 +265,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${publicSecurities.value.toLocaleString()}
+                {formatCurrency(publicSecurities.value, currency)}
                 </div>
               </div>
             </div>
@@ -325,7 +328,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${mortgages.value.toLocaleString()}
+                {formatCurrency(mortgages.value, currency)}
                 </div>
               </div>
 
@@ -342,7 +345,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${creditCards.value.toLocaleString()}
+                {formatCurrency(creditCards.value, currency)}
                 </div>
               </div>
             </div>
@@ -362,7 +365,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${assetFinance.value.toLocaleString()}
+                {formatCurrency(assetFinance.value, currency)}
                 </div>
               </div>
 
@@ -379,7 +382,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${loans.value.toLocaleString()}
+                {formatCurrency(loans.value, currency)}
                 </div>
               </div>
 
@@ -396,7 +399,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                   ></div>
                 </div>
                 <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${otherLiability.value.toLocaleString()}
+                {formatCurrency(otherLiability.value, currency)}
                 </div>
               </div>
             </div>
@@ -473,7 +476,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             Get Financial advice on maximizing the returns on your money.
           </div>
         </div>
-        <div className="font-bold text-sm text-[#E15B2D] text-center sm:text-right">
+        <div onClick={onAddCategory} className="font-bold text-sm text-[#E15B2D] text-center sm:text-right hover:underline cursor-pointer">
           Request Advisory Service
         </div>
       </div>

@@ -161,19 +161,19 @@ const DashboardTemplate: React.FC = () => {
     setIsPaymentModalOpen(false)
     setIsCongratsModalOpen(true)
 
-    setTimeout(()=>{
+    setTimeout(() => {
       router.replace('/dashboard')
-    },5000)
+    }, 5000)
   }
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 p-6">
-        {loading ? (
-          <div className="h-screen w-screen flex justify-center items-center">
-            <Spinner />
-          </div>
-        ) : (
+      {loading ? (
+        <div className="h-screen w-screen flex justify-center items-center">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gray-50 p-6">
           <div className="max-w-[1440px] mx-auto">
             {/* Desktop Layout */}
             <div className="hidden lg:grid lg:grid-cols-12 lg:gap-6">
@@ -188,6 +188,7 @@ const DashboardTemplate: React.FC = () => {
                   onUpgradeClick={handleOpenSubscriptionModal}
                 />
                 <FinancialGoals
+                  currency={data?.currency || 'usd'}
                   onModify={handleOpenSubscriptionModal}
                   Chart={Chart}
                   financialGoals={financialGoals}
@@ -201,6 +202,7 @@ const DashboardTemplate: React.FC = () => {
                   data?.allIncome &&
                   data?.expense && (
                     <BalanceOverview
+                      currency={data?.currency || 'usd'}
                       Chart={Chart}
                       timeframe={timeframe}
                       onTimeframeChange={setTimeframe}
@@ -212,6 +214,7 @@ const DashboardTemplate: React.FC = () => {
                     />
                   )}
                 <IncomeAndExpenditure
+                  currency={data?.currency || 'usd'}
                   totalIncome={data?.totalIncome || 0}
                   totalExpense={data?.totalExpense || 0}
                   totalExpenseFromIncome={data?.totalExpenseFromIncome}
@@ -225,6 +228,7 @@ const DashboardTemplate: React.FC = () => {
                 {/* <RiskAllocation Chart={Chart} /> */}
                 <GeographicSpread assetCountries={data?.assetCountries || []} />
                 <IncomeVsDebt
+                  currency={data?.currency || 'usd'}
                   income={data?.income || 0}
                   debt={data?.debt}
                   incomeAndDebt={data?.incomeAndDebt}
@@ -233,7 +237,6 @@ const DashboardTemplate: React.FC = () => {
                 <FinancialKnowledgeAssessment
                   progress={72}
                   onUpgradeClick={handleOpenSubscriptionModal}
-
                 />
               </div>
             </div>
@@ -247,6 +250,7 @@ const DashboardTemplate: React.FC = () => {
                 data?.allIncome &&
                 data?.expense && (
                   <BalanceOverview
+                    currency={data?.currency || 'usd'}
                     Chart={Chart}
                     timeframe={timeframe}
                     onTimeframeChange={setTimeframe}
@@ -261,11 +265,13 @@ const DashboardTemplate: React.FC = () => {
                 <MobileActionItems />
               </div>
               <FinancialGoals
+                currency={data?.currency || 'usd'}
                 Chart={Chart}
                 financialGoals={financialGoals}
                 onModify={handleOpenSubscriptionModal}
               />
               <IncomeAndExpenditure
+                currency={data?.currency || 'usd'}
                 totalIncome={data?.totalIncome || 0}
                 totalExpense={data?.totalExpense || 0}
                 totalExpenseFromIncome={data?.totalExpenseFromIncome}
@@ -273,17 +279,21 @@ const DashboardTemplate: React.FC = () => {
                 Chart={Chart}
               />
               <IncomeVsDebt
+                currency={data?.currency || 'usd'}
                 income={data?.income || 0}
                 debt={data?.debt}
                 incomeAndDebt={data?.incomeAndDebt}
                 onAddExpense={handleOpenSubscriptionModal}
               />
-              <FinancialKnowledgeAssessment progress={72} onUpgradeClick={handleOpenSubscriptionModal} />
+              <FinancialKnowledgeAssessment
+                progress={72}
+                onUpgradeClick={handleOpenSubscriptionModal}
+              />
               <GeographicSpread assetCountries={data?.assetCountries || []} />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {/* Subscription Modal */}
       <SubscriptionModal
         isOpen={isSubscriptionModalOpen}
