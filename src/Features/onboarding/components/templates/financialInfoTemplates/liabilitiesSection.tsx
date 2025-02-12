@@ -65,7 +65,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What are your liabilities?"
         description="Enter your liabilities"
-        sectionNumber={4}
+        // sectionNumber={4}
         sectionTitle="Liabilities"
         isSectionComplete={isComplete}
       >
@@ -130,7 +130,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             />
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -149,7 +149,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

@@ -67,7 +67,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="Whats your annual expenses?"
         description="Enter your annual expenses below."
-        sectionNumber={2}
+        // sectionNumber={2}
         sectionTitle="Expenses"
         nextSectionTitle="Assets"
         isSectionComplete={isComplete}
@@ -141,7 +141,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             />
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
             onClick={() => {
@@ -160,7 +160,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

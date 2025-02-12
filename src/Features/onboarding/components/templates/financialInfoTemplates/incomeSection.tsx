@@ -63,7 +63,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What is your annual passive income?"
         description="Enter your annual passive income details below."
-        sectionNumber={1}
+        // sectionNumber={1}
         sectionTitle="Income"
         nextSectionTitle="Expenses"
         isSectionComplete={isComplete}
@@ -119,7 +119,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
             />
           </div>
         </div>
-        <div className="flex gap-4 mt-4">
+        {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
             onClick={() => setIsModalOpen(false)}
@@ -134,7 +134,7 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
           >
             Continue
           </Button>
-        </div>
+        </div> */}
       </Modal>
     </div>
   );

@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button";
 import { FormInput } from "../../molecules/formInput";
 import { BioDataScreenProps } from "@/Features/onboarding/types";
 import { useForm } from "@/hooks/useForm";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { countries } from "@/Features/onboarding/countries";
+import clsx from "clsx";
 import {
   Select,
   SelectTrigger,
@@ -21,10 +22,28 @@ export const BioDataScreen = ({
   onContinue,
 }: BioDataScreenProps) => {
   const { form, setForm } = useForm();
+  const [query, setQuery] = useState("");
+  const [isFocused, setIsFocused] = useState(false); // Track focus state
 
   useEffect(() => {
     console.log("Form state updated:", form);
   }, [form]);
+
+  useEffect(() => {
+    const selectedCountry = countries.find(
+      (country) => country.code === value.citizenship
+    );
+
+    if (selectedCountry) {
+      setQuery(selectedCountry.name);
+    }
+  }, [value.citizenship]);
+
+  const filteredCountries = query
+    ? countries.filter((country) =>
+        country.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : countries;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,8 +54,7 @@ export const BioDataScreen = ({
       value.dob.day &&
       value.dob.month &&
       value.dob.year &&
-      value.citizenship &&
-      value.residentCountry
+      value.citizenship
     ) {
       setForm((form) => ({
         ...form,
@@ -50,189 +68,208 @@ export const BioDataScreen = ({
     }
   };
 
+  const handleCountrySelect = (countryCode: string, countryName: string) => {
+    setQuery(countryName);
+    onChange({ ...value, citizenship: countryCode });
+    setIsFocused(false); // Hide the dropdown after selection
+  };
+
   return (
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
-      <h1 className="text-4xl font-cirka mb-2">
-        Tell us a bit about yourself,
-        <br />
-        what&apos;s your first name
+      <h1 className="text-4xl font-cirka mb-6">
+        Tell us a bit about yourself
       </h1>
-      <p className="text-gray-600 mb-8">
-        We need your first name as it&apos;s written on your passport or any
-        other forms of identification.
-      </p>
+      {/* <p className="text-gray-600 mb-8">
+        We need your first information as it&apos;s written on your passport or
+        any other forms of identification.
+      </p> */}
 
-      <div className="flex flex-col gap-4">
+      <div className="grid gap-4">
         {/* Prefix Dropdown */}
-        <Select
-          value={value.prefix}
-          onValueChange={(val) => onChange({ ...value, prefix: val })}
-          required
-        >
-          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Prefix" />
-          </SelectTrigger>
-          <SelectContent>
-            {prefixOptions.map((prefix) => (
-              <SelectItem key={prefix} value={prefix}>
-                {prefix}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* First Name Input */}
-        <FormInput
-          name="firstName"
-          id="firstName"
-          placeholder="First Name"
-          value={value.firstName}
-          onChange={(e) => {
-            onChange({ ...value, firstName: e.target.value });
-          }}
-          required
-          type="text"
-        />
-
-        {/* Last Name Input */}
-        <FormInput
-          placeholder="Last Name"
-          name="lastName"
-          id="lastName"
-          value={value.lastName}
-          onChange={(e) => onChange({ ...value, lastName: e.target.value })}
-          required
-          type="text"
-        />
-
-        {/* Date of Birth Dropdowns */}
-        <div className="flex gap-4 justify-center items-center text-sm">
-          {/* Day Dropdown */}
+        <div className="grid grid-cols-3 items-center">
+          <label className="text-left text-gray-600 font-medium whitespace-nowrap text-sm">
+            Prefix
+          </label>
           <Select
-            value={value.dob.day}
-            onValueChange={(val) =>
-              onChange({ ...value, dob: { ...value.dob, day: val } })
-            }
+            value={value.prefix}
+            onValueChange={(val) => onChange({ ...value, prefix: val })}
             required
           >
-            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-              <SelectValue placeholder="Day" />
+            <SelectTrigger className="col-span-2 flex-1 px-4 py-4 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+              <SelectValue placeholder="Prefix" />
             </SelectTrigger>
             <SelectContent>
-              {[...Array(31).keys()].map((day) => (
-                <SelectItem key={day + 1} value={(day + 1).toString()}>
-                  {day + 1}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Month Dropdown */}
-          <Select
-            value={value.dob.month}
-            onValueChange={(val) =>
-              onChange({ ...value, dob: { ...value.dob, month: val } })
-            }
-            required
-          >
-            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
-              <SelectValue placeholder="Month" />
-            </SelectTrigger>
-            <SelectContent>
-              {[
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-              ].map((month, index) => (
-                <SelectItem key={index + 1} value={(index + 1).toString()}>
-                  {month}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Year Dropdown */}
-          <Select
-            value={value.dob.year}
-            onValueChange={(val) =>
-              onChange({ ...value, dob: { ...value.dob, year: val } })
-            }
-            required
-          >
-            <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
-              <SelectValue placeholder="Year" />
-            </SelectTrigger>
-            <SelectContent>
-              {[...Array(100).keys()].map((year) => (
-                <SelectItem key={2019 - year} value={(2019 - year).toString()}>
-                  {2019 - year}
+              {prefixOptions.map((prefix) => (
+                <SelectItem key={prefix} value={prefix}>
+                  {prefix}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
+        {/* First Name Input */}
+        <div className="grid grid-cols-3 text-left items-center">
+          <label className=" text-gray-600 font-medium whitespace-nowrap text-sm">
+            First Name
+          </label>
+          <div className="col-span-2">
+            <FormInput
+              name="firstName"
+              id="firstName"
+              placeholder="First Name"
+              value={value.firstName}
+              onChange={(e) => {
+                onChange({ ...value, firstName: e.target.value });
+              }}
+              required
+              type="text"
+            />
+          </div>
+        </div>
+        {/* Last Name Input */}
+        <div className="grid grid-cols-3 text-left items-center">
+          <label className=" text-gray-600 font-medium whitespace-nowrap text-sm">
+            Last Name
+          </label>
+          <div className="col-span-2">
+            <FormInput
+              placeholder="Last Name"
+              name="lastName"
+              id="lastName"
+              value={value.lastName}
+              onChange={(e) => onChange({ ...value, lastName: e.target.value })}
+              required
+              type="text"
+            />
+          </div>
+        </div>
 
-        {/* Citizenship Dropdown */}
-        <Select
-          value={value.citizenship}
-          onValueChange={(val) => onChange({ ...value, citizenship: val })}
-          required
-        >
-          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Select Country of Citizenship" />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country.code} value={country.code}>
-                {country.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Date of Birth Label and Dropdowns */}
+        <div className="grid grid-cols-3 items-center gap-2 text-sm">
+          <label className="text-gray-600 text-left text-sm font-helvetica">
+            Date of Birth
+          </label>
+          <div className="col-span-2 flex gap-1">
+            {/* Day Dropdown */}
+            <Select
+              value={value.dob.day}
+              onValueChange={(val) =>
+                onChange({ ...value, dob: { ...value.dob, day: val } })
+              }
+              required
+            >
+              <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
+                <SelectValue placeholder="Day" />
+              </SelectTrigger>
+              <SelectContent>
+                {[...Array(31).keys()].map((day) => (
+                  <SelectItem key={day + 1} value={(day + 1).toString()}>
+                    {day + 1}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-        {/* Dual Citizenship Dropdown (Optional) */}
-        <Select
-          value={value.dualCitizenship}
-          onValueChange={(val) => onChange({ ...value, dualCitizenship: val })}
-        >
-          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Do you hold dual citizenship? (Optional)" />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country.code} value={country.code}>
-                {country.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            {/* Month Dropdown */}
+            <Select
+              value={value.dob.month}
+              onValueChange={(val) =>
+                onChange({ ...value, dob: { ...value.dob, month: val } })
+              }
+              required
+            >
+              <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
+                <SelectValue placeholder="Month" />
+              </SelectTrigger>
+              <SelectContent>
+                {[
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec",
+                ].map((month, index) => (
+                  <SelectItem key={index + 1} value={(index + 1).toString()}>
+                    {month}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-        {/* Resident Country Dropdown */}
-        <Select
-          value={value.residentCountry}
-          onValueChange={(val) => onChange({ ...value, residentCountry: val })}
-          required
-        >
-          <SelectTrigger className="px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy placeholder-gray-500">
-            <SelectValue placeholder="Select Country of Residence" />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country.code} value={country.code}>
-                {country.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            {/* Year Dropdown */}
+            <Select
+              value={value.dob.year}
+              onValueChange={(val) =>
+                onChange({ ...value, dob: { ...value.dob, year: val } })
+              }
+              required
+            >
+              <SelectTrigger className="flex-1 px-4 py-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {[...Array(100).keys()].reverse().map((year) => (
+                  <SelectItem
+                    key={2019 - year}
+                    value={(2019 - year).toString()}
+                  >
+                    {2019 - year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Citizenship Dropdown with Searchable Combobox */}
+        <div className="grid grid-cols-3 text-left items-center">
+          <label className="text-gray-600 text-sm font-helvetica font-medium whitespace-nowrap">
+            Country of Citizenship
+          </label>
+          <div className="relative col-span-2">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => {
+                const newValue = e.target.value;
+                setQuery(newValue);
+
+                if (newValue === "") {
+                  onChange({ ...value, citizenship: "" });
+                }
+              }}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+              placeholder="Type to search..."
+              className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy w-full"
+            />
+            {isFocused && filteredCountries.length > 0 && (
+              <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
+                {filteredCountries.map((country) => (
+                  <div
+                    key={country.code}
+                    className={clsx(
+                      "p-2 hover:bg-gray-100 cursor-pointer",
+                      value.citizenship === country.code && "bg-gray-200"
+                    )}
+                    onMouseDown={() =>
+                      handleCountrySelect(country.code, country.name)
+                    }
+                  >
+                    {country.name}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Action Buttons */}
@@ -254,8 +291,7 @@ export const BioDataScreen = ({
             !value.dob.day ||
             !value.dob.month ||
             !value.dob.year ||
-            !value.citizenship ||
-            !value.residentCountry
+            !value.citizenship
           }
           type="submit"
         >

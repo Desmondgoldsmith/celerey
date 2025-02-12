@@ -53,7 +53,7 @@ export const FinancialGoalScreen: React.FC<GoalsOptionsScreenProps> = ({
         <h1 className="text-4xl font-cirka mb-4">
           What is your primary financial goal right now?
         </h1>
-        <p>Select primary financial goal</p>
+        {/* <p>Select primary financial goal</p> */}
       </div>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (
