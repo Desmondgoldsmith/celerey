@@ -29,7 +29,7 @@ export const WelcomeScreen = ({ onContinue, onBack }: WelcomeScreenProps) => {
     <form onSubmit={handleSubmit} className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-6">
         Thank You
-        <span className="text-navyLight"> {(user?.firstName + ' ' + user?.lastName) || "User"}</span>, to identify the best way for you to reach your goals, we
+        <span className="text-navyLight"> {(user?.firstName) || "User"}</span>, to identify the best way for you to reach your goals, we
         need to understand your attitude to risk shall we begin?
       </h1>
       <div className="flex gap-4 max-w-md mx-auto">
