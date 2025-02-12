@@ -35,7 +35,6 @@ const FinancialPage: React.FC = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      console.log(formData.knowledge)
       // completeSection("knowledge");
       // router.push("/questionnaire/");
     }

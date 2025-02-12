@@ -356,7 +356,6 @@ export const useOnboardingStore = create<OnboardingStore>()(
           state.formData.financial.assets = response.data.assets;
           state.formData.financial.liabilities = response.data.liabilities;
           state.formData.financial.currency = response.data.currency;
-          console.log(response.data)
           state.formData.financial.emergencyFund = {
             hasEmergencyFunds:
               response.data.emergency_fund?.hasEmergencyFund,
@@ -535,6 +534,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
     updateFormData: (section, updates) =>
       set((state) => {
+        console.log(updates, section);
         state.formData[section] = { ...state.formData[section], ...updates };
       }),
 

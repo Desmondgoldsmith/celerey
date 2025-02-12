@@ -133,7 +133,6 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
     name,
     value: value?.value || 0,
   }))
-  console.log(incomeData)
   const expenditureData = Object.entries(
     dummyAnnualExpenditure,
   ).map(([name, value]) => ({ name, value: value?.value || 0, }))

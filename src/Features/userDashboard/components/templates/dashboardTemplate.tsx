@@ -7,7 +7,7 @@ import BalanceOverviewCard from '../molecules/balanceOverview'
 import AddFinancialGoalModal from '../molecules/addFinancialGoalModal'
 import PortfolioRecommendationsModal from '../molecules/portfolioRecommendationModal'
 import { DUMMY_DASHBOARD_DATA } from '../../constants'
-
+import Link from 'next/link'
 import {
   Wallet,
   PiggyBank,
@@ -69,7 +69,7 @@ export const Dashboard: React.FC = () => {
       durationLeft: 0,
     })),
   )
-  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal>()
+  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal | null>()
   const [selectedEPlan, setSelectedEPlan] = useState<
     EmergencyPlan | undefined
   >()
@@ -85,7 +85,8 @@ export const Dashboard: React.FC = () => {
     populateFinancialGoals,
     populateBudget,
     financialGoals,
-    populateSubscription
+    populateSubscription,
+    subscription
   } = useDashboardStore()
 
   useEffect(() => {
@@ -368,7 +369,6 @@ export const Dashboard: React.FC = () => {
   }
 
   const handleOpenSubscriptionModal = () => {
-    console.log('modal opened')
     setIsSubscriptionModalOpen(true)
   }
 
@@ -469,6 +469,7 @@ export const Dashboard: React.FC = () => {
                 <span className="text-gray-400 text-sm hover:cursor-pointer">
                   ⓘ
                 </span>
+                <span className='bg-[#ECF4FF] text-[#0840D0] capitalize px-2 ml-1 rounded-sm'>{subscription?.plan || ''} User</span>
               </div>
               <p className="text-gray-400 text-center lg:text-start text-medium">
                 Manage your money easily with Celerey.
@@ -494,9 +495,19 @@ export const Dashboard: React.FC = () => {
             {/* Right Section */}
             <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full lg:w-auto">
-                <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
-                  <Calendar className="h-3 w-3" />
-                  <span>{getCurrentDate()}</span>
+                <div className='flex flex-col gap-y-2'>
+                  <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
+                    <Calendar className="h-3 w-3" />
+                    <span>{getCurrentDate()}</span>
+                  </div>
+                  <Link
+                    href="/advisors"
+                    passHref
+                    className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto"
+                  >
+                    Book Virtual Consultation
+                    <span className="text-sm">›</span>
+                  </Link>
                 </div>
                 {/* <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
                   Export
@@ -524,11 +535,13 @@ export const Dashboard: React.FC = () => {
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <MetricCard
+            currency="usd"
             title="Net Worth"
             metric={{ value: data.netWorth, currency: data?.currency || 'usd' }}
             icon={<Wallet className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
+            currency={data?.currency || 'usd'}
             title="Balance"
             metric={{
               value: data?.totalIncome || 0 + data?.debt?.value || 0,
@@ -537,6 +550,7 @@ export const Dashboard: React.FC = () => {
             icon={<PiggyBank className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
+            currency={data?.currency || 'usd'}
             title="Income"
             metric={{
               value: data?.income?.value || 0,
@@ -545,6 +559,7 @@ export const Dashboard: React.FC = () => {
             icon={<TrendingUp className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
+            currency={data?.currency || 'usd'}
             title="Expenses"
             metric={{
               value: data.totalExpense,
@@ -553,6 +568,7 @@ export const Dashboard: React.FC = () => {
             icon={<TrendingDown className="h-5 w-5 text-gray-400" />}
           />
           <MetricCard
+            currency={data?.currency || 'usd'}
             title="Savings"
             metric={{ value: +data.savings, currency: data?.currency || 'usd' }}
             icon={<Banknote className="h-5 w-5 text-gray-400" />}
@@ -562,14 +578,16 @@ export const Dashboard: React.FC = () => {
         {/* Financial Goals and Balance Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FinancialGoalsCard
+            currency={data?.currency || 'usd'}
             goals={financialGoals || []}
             onAddGoalClick={() => {
-              setSelectedPlan(undefined)
+              setSelectedPlan(null)
               setIsAddGoalModalOpen(true)
             }}
             onModifyGoal={handleModifyGoal}
           />
           <BalanceOverviewCard
+            currency={data?.currency || 'usd'}
             onPortfolioRecommendationClick={handlePortfolioRecommendationClick}
             onEditAssetClick={handleEditAssetClick}
             assets={userAssets}
@@ -623,7 +641,9 @@ export const Dashboard: React.FC = () => {
             </button>
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
-            {data?.userRiskTolerance || ''}
+            {data?.calculatedRiskTolerance?.title ||
+              data?.userRiskTolerance ||
+              ''}
           </p>
         </div>
 
@@ -677,32 +697,37 @@ export const Dashboard: React.FC = () => {
         )}
       </div>
 
-      {data?.calculatedRiskTolerance?.title && data?.calculatedFinancialKnowledge && (
-        <div className="bg-gray-50 p-4 rounded-lg mt-6 flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-6">
-          <p className="text-gray-600 flex-grow text-sm lg:text-base leading-relaxed">
-            You are a{' '}
-            <span className="font-medium text-navy">{data?.calculatedRiskTolerance?.title}</span>{' '}
-            risk taker with an{' '}
-            <span className="font-medium text-navy">
-              {data?.userFinancialKnowledge || ''}
-            </span>{' '}
-            investment experience. Notwithstanding this, your financial
-            knowledge is{' '}
-            <span className="font-medium text-navy">{data?.calculatedFinancialKnowledge}</span>. This
-            means you have a fair grasp of finance. Although you are not an
-            expert, you understand how macroeconomics works in relation to
-            financial instruments. We can offer investment advice and assist you
-            with proven risk management techniques to potentially improve your
-            outcomes.
-          </p>
-          <button
-            onClick={handleAdvisors}
-            className="text-navyLight whitespace-nowrap hover:text-navy w-full lg:w-auto text-center lg:text-left py-3 lg:py-0 bg-gray-50 lg:bg-transparent rounded-lg lg:rounded-none transition-colors"
-          >
-            Speak to an Advisor
-          </button>
-        </div>
-      )}
+      {data?.calculatedRiskTolerance?.title &&
+        data?.calculatedFinancialKnowledge && (
+          <div className="bg-gray-50 p-4 rounded-lg mt-6 flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-6">
+            <p className="text-gray-600 flex-grow text-sm lg:text-base leading-relaxed">
+              You are a{' '}
+              <span className="font-medium text-navy capitalize">
+                {data?.calculatedRiskTolerance?.title}
+              </span>{' '}
+              risk taker with an{' '}
+              <span className="font-medium text-navy capitalize">
+                {data?.userFinancialKnowledge || ''}
+              </span>{' '}
+              investment experience. Notwithstanding this, your financial
+              knowledge is{' '}
+              <span className="font-medium text-navy capitalize">
+                {data?.calculatedFinancialKnowledge}
+              </span>
+              . This means you have a fair grasp of finance. Although you are
+              not an expert, you understand how macroeconomics works in relation
+              to financial instruments. We can offer investment advice and
+              assist you with proven risk management techniques to potentially
+              improve your outcomes.
+            </p>
+            <button
+              onClick={handleAdvisors}
+              className="text-navyLight whitespace-nowrap hover:text-navy w-full lg:w-auto text-center lg:text-left py-3 lg:py-0 bg-gray-50 lg:bg-transparent rounded-lg lg:rounded-none transition-colors"
+            >
+              Speak to an Advisor
+            </button>
+          </div>
+        )}
 
       <AddFinancialGoalModal
         isOpen={isAddGoalModalOpen}
@@ -710,6 +735,7 @@ export const Dashboard: React.FC = () => {
           setIsAddGoalModalOpen(false)
           setSelectedPlan(undefined)
         }}
+        initialData={selectedPlan}
         isModifying={!!selectedPlan}
       />
 

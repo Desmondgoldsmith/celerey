@@ -73,7 +73,7 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
     setHasCheckedProgress(true)
   }
 
-  if (!isAuthenticated || isFetchingData || loading) {
+  if (!isAuthenticated || isFetchingData) {
     return (
       <div className="h-screen w-screen flex justify-center items-center">
         <Spinner />

@@ -51,9 +51,14 @@ const CreateBudgetModal: React.FC<CreateBudgetModalProps> = ({
   const [categories, setCategories] = React.useState<BudgetCategory[]>([])
   const [mode, setMode] = React.useState<string>('add')
 
-  const { loading, saveBudget, budget } = useDashboardStore()
+  const { loading, saveBudget, budget, setLoading } = useDashboardStore()
 
   useEffect(() => {
+
+    if(isOpen) {
+      setLoading(false)
+    }
+
     if (budget?.categories?.length) {
       setBudgetName(budget?.name || '')
       setDuration(budget?.duration || '')

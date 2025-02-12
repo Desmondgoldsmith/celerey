@@ -1,11 +1,13 @@
 import React from 'react'
 import { HelpCircle } from 'lucide-react'
+import formatCurrency from '@/utils/formatCurrency'
 
 interface IncomeVsExpenditureProps {
   openStatementModal: () => void
   totalIncome: number
   totalExpenseFromIncome: { value: number; percentage: number }
   totalIncomeFromExpense: { value: number; percentage: number }
+  currency: string
 }
 
 const IncomeVsExpenditure = ({
@@ -13,14 +15,19 @@ const IncomeVsExpenditure = ({
   totalIncome,
   totalExpenseFromIncome,
   totalIncomeFromExpense,
+  currency,
 }: IncomeVsExpenditureProps) => {
   const data = {
     profitability: 72,
     annualRevenue: totalIncome || 0,
     annualIncome: Number(totalIncomeFromExpense?.value || 0),
-    incomePercentage: Number(totalIncomeFromExpense?.percentage || 0).toFixed(0),
+    incomePercentage: Number(totalIncomeFromExpense?.percentage || 0).toFixed(
+      0,
+    ),
     annualExpenditure: Number(totalExpenseFromIncome?.value || 0),
-    expenditurePercentage: Number(totalExpenseFromIncome?.percentage || 0).toFixed(0),
+    expenditurePercentage: Number(
+      totalExpenseFromIncome?.percentage || 0,
+    ).toFixed(0),
   }
 
   return (
@@ -72,19 +79,13 @@ const IncomeVsExpenditure = ({
             <HelpCircle className="w-4 h-4 text-gray-400" />
           </div>
           <div className="text-4xl font-bold text-green-500 mb-4">
-            $
-            {data.annualRevenue.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-            })}
+            {formatCurrency(String(data?.annualRevenue || 0), currency)}
           </div>
           <div className="mb-2">
             <div className="text-xl">
-              $
-              {data.annualIncome.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
+            {formatCurrency(String(data?.annualIncome || 0), currency)}
             </div>
-            <div className="text-gray-600">annual income</div>
+            <div className="text-gray-600">Annual income</div>
           </div>
           <div className="relative pt-2">
             <div className="text-green-500 font-medium">
@@ -106,19 +107,13 @@ const IncomeVsExpenditure = ({
             <HelpCircle className="w-4 h-4 text-gray-400" />
           </div>
           <div className="text-4xl font-bold text-red-500 mb-4">
-            $
-            {data.annualExpenditure.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-            })}
+          {formatCurrency(String(data?.annualExpenditure || 0), currency)}
           </div>
           <div className="mb-2">
             <div className="text-xl">
-              $
-              {data.annualExpenditure.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
+            {formatCurrency(String(data?.annualExpenditure || 0), currency)}
             </div>
-            <div className="text-gray-600">annual expenditure</div>
+            <div className="text-gray-600">Annual expenditure</div>
           </div>
           <div className="relative pt-2">
             <div className="text-red-500 font-medium">

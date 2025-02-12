@@ -35,7 +35,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({
 
   const upgradePlan = async () => {
     const stripe = await getStripe()
-console.log(subscription)
     if (!stripe || !subscription?.stripe_subscription_id) return
 
     setLoading(true)

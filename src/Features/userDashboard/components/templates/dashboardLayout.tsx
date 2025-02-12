@@ -76,13 +76,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       className="bg-white rounded-md shadow-lg py-2 w-48"
       onClick={(e) => e.stopPropagation()}
     >
-      <Link
+      {/* <Link
         href="/profile"
         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
       >
         <User className="h-4 w-4 mr-2" />
         Edit Profile
-      </Link>
+      </Link> */}
       <button
         type="button"
         onClick={handlePlansClick}
@@ -172,7 +172,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           {/* Logo */}
-          <div className="w-32">
+          <Link href='/dashboard' passHref className="w-32">
             <Image
               src="/assets/logo2.svg"
               alt="Celerey"
@@ -180,7 +180,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               height={30}
               priority
             />
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex gap-6 items-center">
@@ -241,7 +241,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <footer className="border-t bg-white">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="text-sm font-helvetica text-gray-500">
-            © Celerey 2025
+            © Celerey {new Date().getFullYear()}
           </span>
           <div className="flex gap-4">
             <Link href="#" className="text-sm font-helvetica text-gray-500">

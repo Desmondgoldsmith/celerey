@@ -133,6 +133,8 @@ const DashboardTemplate: React.FC = () => {
     loading,
     populateFinancialGoals,
     financialGoals,
+    subscription,
+    populateSubscription,
   } = useDashboardStore()
 
   useEffect(() => {
@@ -157,13 +159,13 @@ const DashboardTemplate: React.FC = () => {
   }
 
   // Handle payment completion
-  const handlePaymentComplete = () => {
+  const handlePaymentComplete = async () => {
     setIsPaymentModalOpen(false)
     setIsCongratsModalOpen(true)
-
+    await populateSubscription()
     setTimeout(() => {
       router.replace('/dashboard')
-    }, 5000)
+    }, 3000)
   }
 
   return (
@@ -311,8 +313,10 @@ const DashboardTemplate: React.FC = () => {
       <CongratulationsModal
         isOpen={isCongratsModalOpen}
         onClose={() => {
+          if (subscription.status === 'active') {
+            router.replace('/dashboard')
+          }
           setIsCongratsModalOpen(false)
-          router.replace('/dashboard')
         }}
         subscriptionTier={selectedTier?.name || ''}
       />

@@ -1,16 +1,17 @@
-import React from "react";
-import { Info } from "lucide-react";
-import Link from "next/link";
+import React from 'react'
+import { Info } from 'lucide-react'
+import Link from 'next/link'
+import formatCurrency from '@/utils/formatCurrency'
 
 interface DebtMetrics {
-  totalDebt: number;
-  estimatedDebtServicing: number | null;
-  debtServicingPeriod: number;
-  netBalance: number;
-  incomePercentage: number;
-  amortizedDebtPercentage: number;
-  incomeAmount: number;
-  amortizedDebtAmount: number;
+  totalDebt: number
+  estimatedDebtServicing: number | null
+  debtServicingPeriod: number
+  netBalance: number
+  incomePercentage: number
+  amortizedDebtPercentage: number
+  incomeAmount: number
+  amortizedDebtAmount: number
 }
 
 const initialMetrics: DebtMetrics = {
@@ -22,15 +23,16 @@ const initialMetrics: DebtMetrics = {
   amortizedDebtPercentage: 35,
   incomeAmount: 33880.76,
   amortizedDebtAmount: 18243.48,
-};
+}
 
 interface IncomeVsDebtProps {
   totalDebt: { value: number; percentage: number }
   income: { value: number; percentage: number }
-  incomeAndDebt: number;
+  incomeAndDebt: number
   userLiabilitiesEstimation: any
-  openDebtModal: () => void;
-  openDebtServicingModal: () => void;
+  openDebtModal: () => void
+  openDebtServicingModal: () => void
+  currency: string
 }
 
 const IncomeVsDebtSection = ({
@@ -39,22 +41,9 @@ const IncomeVsDebtSection = ({
   incomeAndDebt,
   openDebtModal,
   openDebtServicingModal,
-  userLiabilitiesEstimation
+  userLiabilitiesEstimation,
+  currency,
 }: IncomeVsDebtProps) => {
-  const metrics = initialMetrics;
-
-  // Helper function to format currency values
-  const formatCurrency = (amount: number): string => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })
-      .format(amount)
-      .replace("$-", "-$");
-  };
-
   return (
     <div className="grid grid-cols-1 gap-8">
       {/* Main Metrics */}
@@ -76,7 +65,7 @@ const IncomeVsDebtSection = ({
               </button>
             </div>
             <span className="text-red-500 text-2xl font-bold">
-              {formatCurrency(Number(totalDebt?.value || 0))}
+              {formatCurrency(String(totalDebt?.value || 0), currency)}
             </span>
           </div>
 
@@ -97,7 +86,10 @@ const IncomeVsDebtSection = ({
               </button>
             </div>
             <span className="text-[#1B1856] text-2xl font-bold">
-              {formatCurrency(Number(userLiabilitiesEstimation?.servicingAmount)) || 0}
+              {formatCurrency(
+                String(userLiabilitiesEstimation?.servicingAmount || 0),
+                currency,
+              )}
             </span>
           </div>
 
@@ -139,12 +131,10 @@ const IncomeVsDebtSection = ({
                 <span className="text-sm text-gray-600">Net Balance</span>
                 <Info className="h-3 w-3 text-gray-400" />
               </div>
-              <div className="text-navyLight text-sm hover:underline">
-                
-              </div>
+              <div className="text-navyLight text-sm hover:underline"></div>
             </div>
             <span className="text-2xl font-bold">
-              {formatCurrency(Number(incomeAndDebt || 0))}
+              {formatCurrency(String(incomeAndDebt || 0), currency)}
             </span>
           </div>
 
@@ -157,13 +147,19 @@ const IncomeVsDebtSection = ({
               {/* Income Progress Bar */}
               <div className="space-y-1">
                 <div className="flex justify-between text-xs text-gray-600">
-                  <span>Income ({Number(income?.percentage || 0).toFixed(0)}%)</span>
-                  <span>{formatCurrency(Number(income?.value || 0))}</span>
+                  <span>
+                    Income ({Number(income?.percentage || 0).toFixed(0)}%)
+                  </span>
+                  <span>
+                    {formatCurrency(String(income?.value || 0), currency)}
+                  </span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#8BA78D] rounded-full transition-all duration-500"
-                    style={{ width: `${Number(income?.percentage).toFixed(0)}%` }}
+                    style={{
+                      width: `${Number(income?.percentage).toFixed(0)}%`,
+                    }}
                   />
                 </div>
               </div>
@@ -171,13 +167,22 @@ const IncomeVsDebtSection = ({
               {/* Amortized Debt Progress Bar */}
               <div className="space-y-1">
                 <div className="flex mt-5 justify-between text-xs text-gray-600">
-                  <span>Amortized Debt ({Number(totalDebt?.percentage || 0).toFixed(0)}%)</span>
-                  <span>{formatCurrency(Number(totalDebt?.value || 0))}</span>
+                  <span>
+                    Amortized Debt (
+                    {Number(totalDebt?.percentage || 0).toFixed(0)}%)
+                  </span>
+                  <span>
+                    {formatCurrency(String(totalDebt?.value || 0), currency)}
+                  </span>
                 </div>
                 <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#FFA500] rounded-full transition-all duration-500"
-                    style={{ width: `${Number(totalDebt?.percentage || 0).toFixed(0)}%` }}
+                    style={{
+                      width: `${Number(totalDebt?.percentage || 0).toFixed(
+                        0,
+                      )}%`,
+                    }}
                   />
                 </div>
               </div>
@@ -197,7 +202,7 @@ const IncomeVsDebtSection = ({
                   </div>
                 </div>
                 <span className="font-bold">
-                  {formatCurrency(Number(income?.value || 0))}
+                  {formatCurrency(String(income?.value || 0), currency)}
                 </span>
               </div>
 
@@ -215,7 +220,7 @@ const IncomeVsDebtSection = ({
                   </div>
                 </div>
                 <span className="font-bold">
-                  {formatCurrency(Number(totalDebt?.value || 0))}
+                  {formatCurrency(String(totalDebt?.value || 0), currency)}
                 </span>
               </div>
             </div>
@@ -223,7 +228,7 @@ const IncomeVsDebtSection = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default IncomeVsDebtSection;
+export default IncomeVsDebtSection
