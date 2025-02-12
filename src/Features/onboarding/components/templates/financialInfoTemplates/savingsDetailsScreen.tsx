@@ -49,6 +49,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
       );
       const isEmergencyFundComplete =
         emergencyFund?.hasEmergencyFunds !== undefined;
+
       const isRetirementComplete =
         retirement?.retirementAge !== "" &&
         retirement?.targetRetirementIncome !== "";
@@ -124,29 +125,8 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           <EmergencyFundsSection
             values={localFormData.emergencyFund}
-            onChange={(updatedValue: any) => {
-              setLocalFormData({
-                ...localFormData,
-                emergencyFund: {
-                  ...updatedValue.emergencyFund,
-                },
-              });
-
-              // Notify parent of changes
-              if ("hasEmergencyFunds" in updatedValue.emergencyFund) {
-                onChange(
-                  "emergencyFund",
-                  "hasEmergencyFunds",
-                  updatedValue.emergencyFund.hasEmergencyFunds ? "yes" : "no"
-                );
-              }
-              if ("emergencyFundAmount" in updatedValue.emergencyFund) {
-                onChange(
-                  "emergencyFund",
-                  "emergencyFundAmount",
-                  updatedValue.emergencyFundAmount || ""
-                );
-              }
+            onChange={(field, value) => {
+              handleFormUpdate('emergencyFund', field, value)            
             }}
             isComplete={sectionCompletion.emergencyFund}
             isNextSectionComplete={sectionCompletion.retirement}

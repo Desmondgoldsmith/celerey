@@ -3,6 +3,7 @@ import { Info } from 'lucide-react'
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { GeneratedBudget, IncomeItem } from '../../types'
 import { useDashboardStore } from '../../state'
+import formatCurrency from '@/utils/formatCurrency'
 
 interface IncomeSectionProps {
   totalIncome: number
@@ -11,6 +12,7 @@ interface IncomeSectionProps {
   openBudgetModal: () => void
   generatedBudget?: GeneratedBudget
   openGenBudgetModal: () => void
+  currency: string
 }
 const colors = [
   '#1B1856',
@@ -27,6 +29,7 @@ const IncomeSection = ({
   openBudgetModal,
   generatedBudget,
   openGenBudgetModal,
+  currency,
 }: IncomeSectionProps) => {
   const { budget } = useDashboardStore()
   // Transform income data for the pie chart
@@ -41,7 +44,7 @@ const IncomeSection = ({
       {budget && (
         <div className="col-span-full bg-gray-50 p-6 rounded-lg mb-4 border">
           <div className="flex justify-between items-center mb-4">
-            <div className='flex items-baseline gap-3'>
+            <div className="flex items-baseline gap-3">
               <h3 className="text-lg font-bold">Created Budget</h3>
               <span
                 onClick={openBudgetModal}
@@ -108,7 +111,10 @@ const IncomeSection = ({
                       />
                     </div>
                     <span className="text-sm text-gray-600 whitespace-nowrap">
-                      ${Number(category?.amount || 0)?.toLocaleString()}
+                      {formatCurrency(
+                        (category?.amount || 0).toString(),
+                        currency,
+                      )}
                     </span>
                   </div>
                 </div>
@@ -188,7 +194,7 @@ const IncomeSection = ({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Total Annual Income</span>
             <span className="text-lg font-bold">
-              ${totalIncome.toLocaleString()}
+              {formatCurrency((totalIncome || 0).toString(), currency)}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
@@ -215,7 +221,7 @@ const IncomeSection = ({
                 />
               </div>
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                ${(item?.amount || 0).toLocaleString()}
+                {formatCurrency((item?.amount || 0).toString(), currency)}
               </span>
             </div>
           </div>

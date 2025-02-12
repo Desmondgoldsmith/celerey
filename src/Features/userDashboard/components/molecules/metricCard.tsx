@@ -1,25 +1,21 @@
 import React from "react";
 import { FinancialMetric } from "../../types";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface MetricCardProps {
   title: string;
   metric: FinancialMetric;
   icon: React.ReactNode;
+  currency: string
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
   title,
   metric,
   icon,
+  currency
 }) => {
-  const formatCurrency = (value: number): string => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: metric.currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    }).format(value);
-  };
+
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-sm">
@@ -28,7 +24,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         <h3 className="text-sm font-cirka text-navy font-medium">{title}</h3>
       </div>
       <p className="text-xl font-bold text-gray-900">
-        {formatCurrency(metric.value)}
+        {formatCurrency(metric?.value?.toString() || '0', currency)}
       </p>
     </div>
   );

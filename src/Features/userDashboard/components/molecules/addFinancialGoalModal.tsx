@@ -10,12 +10,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import {
-  FinancialPlan,
   AddFinancialGoalModalProps,
   GoalFormData,
-  FinancialGoal,
 } from '../../types'
-import getMonthsBetweenDates from '@/utils/getMonthsBetweenDates'
 import { useDashboardStore } from '../../state'
 import Spinner from '@/components/ui/spinner'
 
@@ -64,12 +61,14 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
     durationEnd: initialData?.endDate || '',
     goalDuration: initialData?.duration?.toString() || '',
     durationLeft: initialData?.durationLeft?.toString() || '',
+    type: initialData?.type || 'custom'
   }))
 
   const {
     loading,
     createFinancialGoal,
     updateFinancialGoal,
+    setLoading
   } = useDashboardStore()
 
   // Calculate goal duration and duration left
@@ -100,9 +99,8 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
         durationEnd: initialData?.endDate || '',
         goalDuration: initialData?.duration?.toString() || '',
         durationLeft: initialData?.durationLeft?.toString() || '',
+        type: initialData?.type || 'custom'
       }
-
-      console.log(updatedFormData)
 
       if (updatedFormData.durationStart && updatedFormData.durationEnd) {
         const { goalDuration, durationLeft } = calculateDurations(
@@ -115,6 +113,7 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
 
       setFormData(updatedFormData)
       setGoalId(initialData?.id || '')
+      setLoading(false)
     }
   }, [isOpen, initialData])
 
@@ -133,6 +132,32 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
       }))
     }
   }, [formData.durationStart, formData.durationEnd])
+
+  const getCurrentValueLabel = (type: string) => {
+    switch (type) {
+      case 'emergency':
+        return 'Current Duration'
+      case 'retirement':
+        return 'Current Pension'
+      case 'saving':
+        return 'Current Savings'
+      default:
+        return 'Current Amount'
+    }
+  }
+
+  const getTargetValueLabel = (type: string) => {
+    switch (type) {
+      case 'emergency':
+        return 'Target Duration'
+      case 'retirement':
+        return 'Target Pension'
+      case 'saving':
+        return 'Target Savings'
+      default:
+        return 'Target Amount'
+    }
+  }
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -212,7 +237,7 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
           </DialogTitle>
           <DialogDescription className="text-center text-gray-600">
             {isModifying
-              ? `Update the details for your ${initialData?.name.toLowerCase()} goal`
+              ? `Update the details for your ${initialData?.name.toLowerCase()}`
               : 'Enter the details of your new financial goal'}
           </DialogDescription>
         </DialogHeader>
@@ -240,10 +265,10 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
 
           {/* Target Amount Input */}
           <div className="flex items-center justify-between space-x-4">
-            <label className="text-gray-900 w-1/3">Goal target</label>
+            <label className="text-gray-900 w-1/3">{getTargetValueLabel(initialData?.type || 'custom')}</label>
             <Input
               type="number"
-              placeholder="e.g., 140000"
+              placeholder={ initialData?.type !== 'emergency' ? "e.g., 140000" : "e.g., 14"}
               value={formData.targetAmount}
               onChange={(e) =>
                 setFormData({ ...formData, targetAmount: e.target.value })
@@ -257,10 +282,10 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
 
           {/* Current Amount Input */}
           <div className="flex items-center justify-between space-x-4">
-            <label className="text-gray-900 w-1/3">Current Savings</label>
+            <label className="text-gray-900 w-1/3">{getCurrentValueLabel(initialData?.type || 'custom')}</label>
             <Input
               type="number"
-              placeholder="e.g., 20000"
+              placeholder={ initialData?.type !== 'emergency' ? "e.g., 2000" : "e.g., 4"}
               value={formData.currentAmount}
               onChange={(e) =>
                 setFormData({ ...formData, currentAmount: e.target.value })

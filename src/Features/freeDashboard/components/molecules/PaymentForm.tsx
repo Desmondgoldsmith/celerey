@@ -10,8 +10,10 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
-import { getStripe } from '@/lib/stripe'
-import { createSubscriptionApi, getSubscriptionStatusApi } from '../../../userDashboard/service'
+import {
+  createSubscriptionApi,
+  getSubscriptionStatusApi,
+} from '../../../userDashboard/service'
 import Spinner from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 
@@ -41,14 +43,42 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
       invalid: { color: '#E53E3E' },
     },
   }
-  const [loading, setLoading] = useState(false)
 
+  const [loading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [stripePromise, setStripePromise]: any = useState(null)
+  
+  // ✅ Track element completion in state
+  const [isCardNumberComplete, setIsCardNumberComplete] = useState(false)
+  const [isCardExpiryComplete, setIsCardExpiryComplete] = useState(false)
+  const [isCardCvcComplete, setIsCardCvcComplete] = useState(false)
+
+  const isButtonDisabled = !isCardNumberComplete || !isCardExpiryComplete || !isCardCvcComplete
 
   useEffect(() => {
-    getStripe().then(setStripePromise)
-  }, [])
+    const cardNumberElement = elements?.getElement(CardNumberElement)
+    const cardExpiryElement = elements?.getElement(CardExpiryElement)
+    const cardCvcElement = elements?.getElement(CardCvcElement)
+
+    if (!cardNumberElement || !cardExpiryElement || !cardCvcElement) return
+
+    // ✅ Event handler function
+    const handleChange = (event: any, type: string) => {
+      setErrorMessage('')
+      if (type === 'cardNumber') setIsCardNumberComplete(event.complete)
+      if (type === 'cardExpiry') setIsCardExpiryComplete(event.complete)
+      if (type === 'cardCvc') setIsCardCvcComplete(event.complete)
+    }
+
+    cardNumberElement.on('change', (event) => handleChange(event, 'cardNumber'))
+    cardExpiryElement.on('change', (event) => handleChange(event, 'cardExpiry'))
+    cardCvcElement.on('change', (event) => handleChange(event, 'cardCvc'))
+
+    return () => {
+      cardNumberElement.off('change', (event) => handleChange(event, 'cardNumber'))
+      cardExpiryElement.off('change', (event) => handleChange(event, 'cardExpiry'))
+      cardCvcElement.off('change', (event) => handleChange(event, 'cardCvc'))
+    }
+  }, [elements])
 
   const handlePayment = async () => {
     if (!stripe || !elements || !selectedTier) return
@@ -61,7 +91,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         type: 'card',
         card: cardElement!,
       })
-
 
       if (error) {
         setErrorMessage(error?.message || '')
@@ -96,7 +125,10 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
 
       const subscriptionResponse = await getSubscriptionStatusApi()
 
-      if (subscriptionResponse.data.status === 'active' || subscriptionResponse.data.status === 'pending') {
+      if (
+        subscriptionResponse.data.status === 'active' ||
+        subscriptionResponse.data.status === 'pending'
+      ) {
         alert('Subscription Successful!')
         onPaymentComplete()
         onClose()
@@ -146,10 +178,10 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
         </div>
       </div>
 
-      <p>{errorMessage}</p>
+      {errorMessage && <p className='text-sm text-[#E53E3E] mb-2'>{errorMessage}</p>}
 
       <Button
-        disabled={loading}
+        disabled={loading || isButtonDisabled}
         type="submit"
         onClick={handlePayment}
         className="w-[450px] bg-navy hover:bg-navyLight text-white"

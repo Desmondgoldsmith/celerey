@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
@@ -143,7 +142,8 @@ interface DashboardStore extends DashboardState {
   updateFinancialGoal: (goal: any, id: string) => void;
   createFinancialGoal: (goal: any) => void;
   saveBudget: (budget: any) => void;
-  reset: () => void
+  reset: () => void;
+  setLoading: (status: boolean) => void;
 }
 
 const DEFAULT_SUBSCRIPTION = {
@@ -153,10 +153,10 @@ const DEFAULT_SUBSCRIPTION = {
   status: "inactive",
   start_date: "",
   end_date: "",
-}
+};
 
-const DEFAULT_BUDGET = {}
-const DEFAULT_DATA =  {
+const DEFAULT_BUDGET = {};
+const DEFAULT_DATA = {
   userName: "",
   assetCountries: [],
   netWorth: 0,
@@ -237,129 +237,133 @@ const DEFAULT_DATA =  {
     servicingAmount: 0,
     servicingPeriod: 0,
   },
-}
-const DEFAULT_FINANCIAL_GOALS: any[] = []
-
+};
+const DEFAULT_FINANCIAL_GOALS: any[] = [];
 
 export const useDashboardStore = create<DashboardStore>()(
-  persist(
-    immer((set, get) => ({
-      subscription: DEFAULT_SUBSCRIPTION,
-      budget: DEFAULT_BUDGET,
-      data: DEFAULT_DATA,
-      financialGoals: DEFAULT_FINANCIAL_GOALS,
-      loading: true,
-      error: "",
+  immer((set, get) => ({
+    subscription: DEFAULT_SUBSCRIPTION,
+    budget: DEFAULT_BUDGET,
+    data: DEFAULT_DATA,
+    financialGoals: DEFAULT_FINANCIAL_GOALS,
+    loading: true,
+    error: "",
 
-      reset: () => {
+    setLoading: (status: boolean) => {
+      set((state) => {
+        state.loading = status;
+      });
+    },
+    reset: () => {
+      set((state) => {
+        state.loading = false;
+        state.subscription = DEFAULT_SUBSCRIPTION;
+        state.budget = DEFAULT_BUDGET;
+        state.data = DEFAULT_DATA;
+        state.financialGoals = DEFAULT_FINANCIAL_GOALS;
+      });
+    },
+    populateDashboardData: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      const response = await getDashboardDataApi();
+      if (response.data) {
         set((state) => {
-          state.loading = false;
-          state.subscription = DEFAULT_SUBSCRIPTION;
-          state.budget = DEFAULT_BUDGET;
-          state.data = DEFAULT_DATA;
-          state.financialGoals =DEFAULT_FINANCIAL_GOALS;
+          state.data = {
+            savings: response.data.savings,
+            expense: response.data.expense,
+            userName: response.data.user_name,
+            assetCountries: response.data.asset_countries,
+            netWorth: response.data.net_worth,
+            totalAssets: response.data.total_assets,
+            totalLiabilities: response.data.total_liabilities,
+            totalIncome: response.data.total_income,
+            incomeAndDebt: response.data.income_and_debt,
+            income: response.data.income,
+            debt: response.data.debt,
+            assets: response.data.assets,
+            liabilities: response.data.liabilities,
+            currency: response.data.currency,
+            userFinancialKnowledge: response.data.user_financial_knowledge,
+            userRiskTolerance: response.data.user_risk_tolerance,
+            allIncome: response.data.all_income,
+            totalExpense: response.data.total_expense,
+            totalExpenseFromIncome: response.data.total_expense_from_income,
+            totalIncomeFromExpense: response.data.total_income_from_expense,
+            liabilitiesEstimation: response.data.liabilities_estimation,
+            calculatedFinancialKnowledge:
+              response.data.calculated_financial_knowledge,
+            calculatedRiskTolerance: response.data.calculated_risk_tolerance,
+          };
         });
-      },
-      populateDashboardData: async () => {
+      }
+
+      set((state) => {
+        state.loading = false;
+      });
+    },
+    populateFinancialGoals: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      const response = await getFinancialGoalsApi();
+      if (response?.data?.data) {
         set((state) => {
-          state.loading = true;
+          state.financialGoals = response.data.data;
         });
-        const response = await getDashboardDataApi();
-        if (response.data) {
-          set((state) => {
-            state.data = {
-              savings: response.data.savings,
-              expense: response.data.expense,
-              userName: response.data.user_name,
-              assetCountries: response.data.asset_countries,
-              netWorth: response.data.net_worth,
-              totalAssets: response.data.total_assets,
-              totalLiabilities: response.data.total_liabilities,
-              totalIncome: response.data.total_income,
-              incomeAndDebt: response.data.income_and_debt,
-              income: response.data.income,
-              debt: response.data.debt,
-              assets: response.data.assets,
-              liabilities: response.data.liabilities,
-              currency: response.data.currency,
-              userFinancialKnowledge: response.data.user_financial_knowledge,
-              userRiskTolerance: response.data.user_risk_tolerance,
-              allIncome: response.data.all_income,
-              totalExpense: response.data.total_expense,
-              totalExpenseFromIncome: response.data.total_expense_from_income,
-              totalIncomeFromExpense: response.data.total_income_from_expense,
-              liabilitiesEstimation: response.data.liabilities_estimation,
-              calculatedFinancialKnowledge:
-                response.data.calculated_financial_knowledge,
-              calculatedRiskTolerance: response.data.calculated_risk_tolerance,
+      }
+
+      set((state) => {
+        state.loading = false;
+      });
+    },
+    populateSubscription: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      const response = await getSubscriptionStatusApi();
+      if (response?.data) {
+        set((state) => {
+          state.subscription = response.data;
+        });
+      }
+      set((state) => {
+        state.loading = false;
+      });
+      return response.data;
+    },
+    populateBudget: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      const response = await getBudgetApi();
+      if (response?.data) {
+        set((state) => {
+          if (response?.data?.categories) {
+            const categories = response.data.categories.map(
+              (category: any) => ({
+                ...category,
+                percentage:
+                  (category.amount / response.data.total_amount) * 100,
+              })
+            );
+            state.budget = {
+              name: response.data?.name || "",
+              categories,
+              duration: response.data?.duration || "0",
             };
-          });
-        }
-
-        set((state) => {
-          state.loading = false;
+          } else {
+            state.budget = null;
+          }
         });
-      },
-      populateFinancialGoals: async () => {
-        set((state) => {
-          state.loading = true;
-        });
-        const response = await getFinancialGoalsApi();
-        if (response?.data?.data) {
-          set((state) => {
-            state.financialGoals = response.data.data;
-          });
-        }
-
-        set((state) => {
-          state.loading = false;
-        });
-      },
-      populateSubscription: async () => {
-        set((state) => {
-          state.loading = true;
-        });
-        const response = await getSubscriptionStatusApi();
-        if (response?.data) {
-          set((state) => {
-            state.subscription = response.data;
-          });
-        }
-        set((state) => {
-          state.loading = false;
-        });
-        return response.data
-      },
-      populateBudget: async () => {
-        set((state) => {
-          state.loading = true;
-        });
-        const response = await getBudgetApi();
-        if (response?.data) {
-          set((state) => {
-            if (response?.data?.categories) {
-              const categories = response.data.categories.map(
-                (category: any) => ({
-                  ...category,
-                  percentage:
-                    (category.amount / response.data.total_amount) * 100,
-                })
-              );
-              state.budget = {
-                name: response.data?.name || "",
-                categories,
-                duration: response.data?.duration || "0",
-              };
-            }else {
-              state.budget = null
-            }
-          });
-        }
-        set((state) => {
-          state.loading = false;
-        });
-      },
-      updateAssets: async (assets: AssetType[], assetCountries: string[]) => {
+      }
+      set((state) => {
+        state.loading = false;
+      });
+    },
+    updateAssets: async (assets: AssetType[], assetCountries: string[]) => {
+      try {
         set((state) => {
           state.loading = true;
         });
@@ -375,12 +379,18 @@ export const useDashboardStore = create<DashboardStore>()(
         set((state) => {
           state.loading = false;
         });
-      },
-      updateBalance: async (
-        balance: AssetType[],
-        key: string,
-        additionalItems: any = {}
-      ) => {
+      } catch (error) {
+        set((state) => {
+          state.loading = false;
+        });
+      }
+    },
+    updateBalance: async (
+      balance: AssetType[],
+      key: string,
+      additionalItems: any = {}
+    ) => {
+      try {
         set((state) => {
           state.loading = true;
         });
@@ -400,8 +410,14 @@ export const useDashboardStore = create<DashboardStore>()(
         set((state) => {
           state.loading = false;
         });
-      },
-      updateFinancialGoal: async (goal: any, id: string) => {
+      } catch (error) {
+        set((state) => {
+          state.loading = false;
+        });
+      }
+    },
+    updateFinancialGoal: async (goal: any, id: string) => {
+      try {
         set((state) => {
           state.loading = true;
         });
@@ -410,8 +426,14 @@ export const useDashboardStore = create<DashboardStore>()(
         set((state) => {
           state.loading = false;
         });
-      },
-      createFinancialGoal: async (goal: any) => {
+      } catch (error) {
+        set((state) => {
+          state.loading = false;
+        });
+      }
+    },
+    createFinancialGoal: async (goal: any) => {
+      try {
         set((state) => {
           state.loading = true;
         });
@@ -420,8 +442,14 @@ export const useDashboardStore = create<DashboardStore>()(
         set((state) => {
           state.loading = false;
         });
-      },
-      saveBudget: async (budget: any) => {
+      } catch (error) {
+        set((state) => {
+          state.loading = false;
+        });
+      }
+    },
+    saveBudget: async (budget: any) => {
+      try {
         set((state) => {
           state.loading = true;
         });
@@ -430,13 +458,11 @@ export const useDashboardStore = create<DashboardStore>()(
         set((state) => {
           state.loading = false;
         });
-      },
-    })),
-    {
-      name: "free-dashboard-storage",
-      partialize: (state) => ({
-        data: state.data,
-      }),
-    }
-  )
+      } catch (error) {
+        set((state) => {
+          state.loading = false;
+        });
+      }
+    },
+  }))
 );

@@ -58,7 +58,6 @@ const KnowledgeInfoScreen: React.FC = () => {
     }
 
     if (isLastStep) {
-      console.log(formData.knowledge)
       // completeSection("knowledge");
       // router.push("/next-page");
     } else {
