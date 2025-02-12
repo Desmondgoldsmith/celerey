@@ -121,9 +121,10 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         <div className="border-b pb-4">
           {/* Emergency Funds Section */}
           <EmergencyFundsSection
-            onChange={(field, value) =>
-              handleFormUpdate("emergencyFund", field, value)
-            }
+             values={localFormData.emergencyFund}
+             onChange={(field, value) => {
+               handleFormUpdate('emergencyFund', field, value)            
+             }}
             isComplete={sectionCompletion.emergencyFund}
             isNextSectionComplete={sectionCompletion.retirement}
           />
