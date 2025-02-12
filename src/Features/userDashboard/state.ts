@@ -132,7 +132,7 @@ interface DashboardState {
 interface DashboardStore extends DashboardState {
   populateDashboardData: () => Promise<void>;
   populateFinancialGoals: () => Promise<void>;
-  populateSubscription: () => Promise<void>;
+  populateSubscription: () => Promise<any>;
   populateBudget: () => Promise<void>;
   updateAssets: (assets: AssetType[], assetCountries: string[]) => void;
   updateBalance: (
@@ -325,10 +325,10 @@ export const useDashboardStore = create<DashboardStore>()(
             state.subscription = response.data;
           });
         }
-
         set((state) => {
           state.loading = false;
         });
+        return response.data
       },
       populateBudget: async () => {
         set((state) => {

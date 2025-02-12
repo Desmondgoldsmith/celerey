@@ -1,32 +1,35 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import React, { useState } from 'react'
+import Image from 'next/image'
+import { Menu, X } from 'lucide-react'
+import Link from 'next/link'
 
 interface OnboardingLayoutProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
   children,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="w-32">
-            <Image
-              src="/assets/logo2.svg"
-              alt="Celerey"
-              width={80}
-              height={30}
-              priority
-            />
+            <div className="w-32 cursor-pointer">
+              <Image
+                src="/assets/logo2.svg"
+                alt="Celerey"
+                width={80}
+                height={30}
+                priority
+              />
+            </div>
           </div>
           <div className="hidden md:flex gap-4">
             <a href="#" className="text-sm font-helvetica text-gray-600">
@@ -81,5 +84,5 @@ export const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { useOnboardingStore } from '@/Features/onboarding/state'
 import Spinner from '@/components/ui/spinner'
+import { useAuthStore } from '@/Features/auth/state'
 
 interface NetWorthScreenProps {
   onContinue: () => void
@@ -11,29 +12,21 @@ interface NetWorthScreenProps {
 }
 
 export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
-  const [firstName, setFirstName] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
   const [selection, setSelection] = useState<string | null>(null)
-  const router = useRouter()
 
-  const { loading, saveKnowledgeInfo } = useOnboardingStore()
+  const { loading, saveKnowledgeInfo, setLoading } = useOnboardingStore()
+  const { user } = useAuthStore()
 
 
   const handleSelection = (choice: string) => {
     setSelection(choice)
   }
 
-  useEffect(() => {
-    const storedState = localStorage.getItem('onboarding-storage')
-    if (storedState) {
-      const parsedState = JSON.parse(storedState)
-      setFirstName(parsedState.state?.formData?.personal?.firstName || null)
-    }
-  }, [])
-
   const handleSubmit = async (e: React.FormEvent) => {
+    setLoading(true)
     e.preventDefault()
-    await saveKnowledgeInfo()
+    await saveKnowledgeInfo()    
+    setLoading(false)
     onContinue()
   }
 
@@ -41,7 +34,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
     <div  className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-6">
         Congratulations
-        <span className="text-navyLight"> {firstName || 'User'}</span>, you have
+        <span className="text-navyLight"> {(user?.firstName + ' ' + user?.lastName) || 'User'}</span>, you have
         completed the onboarding would you like to know your ideal asset
         allocation?
       </h1>
@@ -80,10 +73,9 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
           className={`flex-1 w-full text-white ${
             selection ? 'bg-navy hover:bg-navyLight' : 'bg-gray-300'
           }`}
-          disabled={isLoading || !selection || loading}
+          disabled={!selection || loading}
         >
           {loading && <Spinner />} Submit
-          {isLoading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
         </Button>
       </div>
     </div>

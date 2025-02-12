@@ -123,6 +123,7 @@ const SavingsDetailsScreen: React.FC<SavingsDetailsScreenProps> = ({
         {/* Emergency Funds Section */}
         <div className="border-b pb-4">
           <EmergencyFundsSection
+            values={localFormData.emergencyFund}
             onChange={(updatedValue: any) => {
               setLocalFormData({
                 ...localFormData,

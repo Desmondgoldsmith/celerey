@@ -176,54 +176,54 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     investmentType: "",
   },
   risk: {
-    userRiskTolerance:{
-      id:0,
-      key:'',
-      title:'',
-      description:''
+    userRiskTolerance: {
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     riskTolerance: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     riskAttitude: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
-   
+
     riskReaction: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     riskApproach: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     investmentObjective: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     investmentHorizon: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
     illiquidInvestmentPercentage: {
-      id:0,
-      key:'',
-      title:'',
-      description:''
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
     },
   },
   knowledge: {
@@ -287,278 +287,280 @@ interface OnboardingStore extends OnboardingState {
   populateGoalInfo: () => Promise<void>;
   populateRiskInfo: () => Promise<void>;
   populateKnowledgeInfo: () => Promise<void>;
+  setLoading: (status: boolean) => void;
 }
 
 export const useOnboardingStore = create<OnboardingStore>()(
-  persist(
-    immer((set, get) => ({
-      currentSection: "personal",
-      sections: DEFAULT_SECTIONS,
-      formData: DEFAULT_FORM_DATA,
-      loading: false,
-      error: "",
-      hasCheckedProgress: false,
+  immer((set, get) => ({
+    currentSection: "personal",
+    sections: DEFAULT_SECTIONS,
+    formData: DEFAULT_FORM_DATA,
+    loading: false,
+    error: "",
+    hasCheckedProgress: false,
 
-      saveProfileInfo: async (personalInfo: PersonalInfoSchema) => {
+    setLoading: (status: boolean) => {
+      set((state) => {
+        state.loading = status;
+      });
+    },
+
+    saveProfileInfo: async (personalInfo: PersonalInfoSchema) => {
+      set((state) => {
+        state.loading = true;
+      });
+      try {
+        await savePersonalInfoApi(personalInfo);
         set((state) => {
-          state.loading = true;
+          state.loading = false;
         });
-        try {
-          await savePersonalInfoApi(personalInfo);
+      } catch (error) {
+        if (error instanceof AxiosError) {
           set((state) => {
             state.loading = false;
-          });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.loading = false;
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-          }
-        }
-      },
-
-      populatePersonalInfo: async () => {
-        const response = await getPersonalInfoApi();
-        const birthDate = new Date(response.data.birthdate);
-        if (response.data) {
-          set((state) => {
-            state.formData.personal.dob = {
-              day: birthDate.getDate().toString(),
-              month: birthDate.getMonth().toString(),
-              year: birthDate.getFullYear().toString(),
-            };
-            state.formData.personal.firstName = response.data.first_name;
-            state.formData.personal.lastName = response.data.last_name;
-            state.formData.personal.prefix = response.data.prefix;
-            state.formData.personal.residentCountry =
-              response.data.residing_country;
-            state.formData.personal.options = response.data.decisions_on_wealth;
-            state.formData.personal.dualCitizenship =
-              response.data.dual_citizenship;
-            state.formData.personal.citizenship = response.data.citizenship;
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
         }
-      },
+      }
+    },
 
-      populateFinancialInfo: async () => {
-        const response = await getFinancialInfoApi();
-        if (response.data) {
-          set((state) => {
-            state.formData.financial.annualExpenses = response.data.expense;
-            state.formData.financial.assets = response.data.assets;
-            state.formData.financial.liabilities = response.data.liabilities;
-            state.formData.financial.currency = response.data.currency;
-            state.formData.financial.emergencyFund = {
-              hasEmergencyFunds:
-                response.data.hasEmergencyFunds === 1 ? "yes" : "no",
-              emergencyFundAmount:
-                response.data.emergency_funds?.emergencyFundAmount || "",
-              targetMonths: response.data.emergency_funds?.targetMonths || "",
-            };
-            state.formData.financial.savings = response.data.savings;
-            state.formData.financial.netWorth = response.data.net_worth;
-            state.formData.financial.retirement = response.data.retirement;
-            state.formData.financial.income = response.data.income;
-          });
-        }
-      },
-
-      populateGoalInfo: async () => {
-        const response = await getGoalsApi();
-        if (response.data) {
-          set((state) => {
-            state.formData.goals.targetAmount = response.data.target_amount;
-            state.formData.goals.primamryFinancialGoal =
-              response.data.financial_goal;
-          });
-        }
-      },
-
-      populateRiskInfo: async () => {
-        const response = await getRiskProfileApi();
-        if (response.data) {
-          set((state) => {
-            state.formData.risk.riskTolerance = response.data.risk_tolerance;
-          });
-        }
-      },
-
-      populateKnowledgeInfo: async () => {
-        const response = await getFinancialKnowledgeApi();
-        if (response.data) {
-          set((state) => {
-            state.formData.knowledge.knowledgeLevel =
-              response.data.user_financial_knowledge;
-          });
-        }
-      },
-
-      saveFinancialInfo: async () => {
-        const financialData = get().formData.financial;
+    populatePersonalInfo: async () => {
+      const response = await getPersonalInfoApi();
+      const birthDate = new Date(response.data.birthdate);
+      if (response.data) {
         set((state) => {
-          state.loading = true;
+          state.formData.personal.dob = {
+            day: birthDate.getDate().toString(),
+            month: birthDate.getMonth().toString(),
+            year: birthDate.getFullYear().toString(),
+          };
+          state.formData.personal.firstName = response.data.first_name;
+          state.formData.personal.lastName = response.data.last_name;
+          state.formData.personal.prefix = response.data.prefix;
+          state.formData.personal.residentCountry =
+            response.data.residing_country;
+          state.formData.personal.options = response.data.decisions_on_wealth;
+          state.formData.personal.dualCitizenship =
+            response.data.dual_citizenship;
+          state.formData.personal.citizenship = response.data.citizenship;
         });
-        try {
-          const response = await saveFinancialInfoApi(financialData);
+      }
+    },
+
+    populateFinancialInfo: async () => {
+      const response = await getFinancialInfoApi();
+      if (response.data) {
+        set((state) => {
+          state.formData.financial.annualExpenses = response.data.expense;
+          state.formData.financial.assets = response.data.assets;
+          state.formData.financial.liabilities = response.data.liabilities;
+          state.formData.financial.currency = response.data.currency;
+          console.log(response.data)
+          state.formData.financial.emergencyFund = {
+            hasEmergencyFunds:
+              response.data.emergency_fund?.hasEmergencyFund,
+            emergencyFundAmount:
+              response.data.emergency_fund?.currentMonths || "",
+            targetMonths: response.data.emergency_fund?.targetMonths || "",
+          };
+          state.formData.financial.savings = response.data.savings;
+          state.formData.financial.netWorth = response.data.net_worth;
+          state.formData.financial.retirement = response.data.retirement;
+          state.formData.financial.income = response.data.income;
+        });
+      }
+    },
+
+    populateGoalInfo: async () => {
+      const response = await getGoalsApi();
+      if (response.data) {
+        set((state) => {
+          state.formData.goals.targetAmount = response.data.target_amount;
+          state.formData.goals.primamryFinancialGoal =
+            response.data.financial_goal;
+        });
+      }
+    },
+
+    populateRiskInfo: async () => {
+      const response = await getRiskProfileApi();
+      if (response.data) {
+        set((state) => {
+          state.formData.risk.riskTolerance = response.data.risk_tolerance;
+        });
+      }
+    },
+
+    populateKnowledgeInfo: async () => {
+      const response = await getFinancialKnowledgeApi();
+      if (response.data) {
+        set((state) => {
+          state.formData.knowledge.knowledgeLevel =
+            response.data.user_financial_knowledge;
+        });
+      }
+    },
+
+    saveFinancialInfo: async () => {
+      const financialData = get().formData.financial;
+      set((state) => {
+        state.loading = true;
+      });
+      try {
+        const response = await saveFinancialInfoApi(financialData);
+        set((state) => {
+          state.loading = false;
+          state.formData.financial.netWorth = response.data.net_worth;
+        });
+      } catch (error) {
+        if (error instanceof AxiosError) {
           set((state) => {
             state.loading = false;
-            state.formData.financial.netWorth = response.data.net_worth;
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.loading = false;
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-            throw error;
-          }
+          throw error;
         }
-      },
+      }
+    },
 
-      saveGoalsInfo: async () => {
+    saveGoalsInfo: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      try {
+        await saveGoalsInfoApi(get().formData.goals);
         set((state) => {
-          state.loading = true;
+          state.loading = false;
         });
-        try {
-          await saveGoalsInfoApi(get().formData.goals);
+      } catch (error) {
+        if (error instanceof AxiosError) {
           set((state) => {
             state.loading = false;
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.loading = false;
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-            throw error;
-          }
+          throw error;
         }
-      },
+      }
+    },
 
-      saveRiskInfo: async () => {
+    saveRiskInfo: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      try {
+        await saveRiskInfoApi(get().formData.risk);
         set((state) => {
-          state.loading = true;
+          state.loading = false;
         });
-        try {
-          await saveRiskInfoApi(get().formData.risk);
+      } catch (error) {
+        if (error instanceof AxiosError) {
           set((state) => {
             state.loading = false;
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.loading = false;
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-            throw error;
-          }
+          throw error;
         }
-      },
+      }
+    },
 
-      saveKnowledgeInfo: async () => {
+    saveKnowledgeInfo: async () => {
+      set((state) => {
+        state.loading = true;
+      });
+      try {
+        await saveKnowledgeInfoApi(get().formData.knowledge);
         set((state) => {
-          state.loading = true;
+          state.loading = false;
         });
-        try {
-          await saveKnowledgeInfoApi(get().formData.knowledge);
+      } catch (error) {
+        if (error instanceof AxiosError) {
           set((state) => {
             state.loading = false;
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.loading = false;
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
 
-            throw error;
-          }
+          throw error;
         }
-      },
+      }
+    },
 
-      setSectionProgress: async () => {
-        try {
-          const response = await getOnboardingProgressApi();
-          if (response.data.active_section !== "completed") {
-            set((state) => {
-              state.currentSection = response.data.active_section;
-              state.sections[
-                response.data.active_section as SectionId
-              ].currentStep = 0;
-            });
-          } else {
-            return response.data.active_section;
-          }
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-            throw error;
-          }
-        }
-      },
-
-      getSectionProgress: async () => {
-        try {
-          const response = await getOnboardingProgressApi();
+    setSectionProgress: async () => {
+      try {
+        const response = await getOnboardingProgressApi();
+        if (response.data.active_section !== "completed") {
+          set((state) => {
+            state.currentSection = response.data.active_section;
+            state.sections[
+              response.data.active_section as SectionId
+            ].currentStep = 0;
+          });
+        } else {
           return response.data.active_section;
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set((state) => {
-              state.error =
-                error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
-            });
-          }
         }
-      },
-
-      setHasCheckedProgress: (checked: boolean) => {
-        set((state) => {
-          state.hasCheckedProgress = checked;
-        });
-      },
-
-      updateFormData: (section, updates) =>
-        set((state) => {
-          state.formData[section] = { ...state.formData[section], ...updates };
-        }),
-
-      updateSectionProgress: (sectionId, step) =>
-        set((state) => {
-          state.sections[sectionId].currentStep = step;
-        }),
-
-      completeSection: (sectionId) =>
-        set((state) => {
-          state.sections[sectionId].isCompleted = true;
-        }),
-
-      setActiveSection: (sectionId) =>
-        set((state) => {
-          Object.keys(state.sections).forEach((key) => {
-            state.sections[key as SectionId].isActive = key === sectionId;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          set((state) => {
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
           });
-          state.currentSection = sectionId;
-        }),
+          throw error;
+        }
+      }
+    },
 
-      resetOnboarding: () =>
-        set(() => ({
-          currentSection: "personal",
-          sections: DEFAULT_SECTIONS,
-          formData: DEFAULT_FORM_DATA,
-        })),
-    })),
-    {
-      name: "onboarding-storage",
-      partialize: (state) => ({}),
-    }
-  )
+    getSectionProgress: async () => {
+      try {
+        const response = await getOnboardingProgressApi();
+        return response.data.active_section;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          set((state) => {
+            state.error =
+              error.response?.data.message || DEFAULT_AUTH_ERROR_MESSAGE;
+          });
+        }
+      }
+    },
+
+    setHasCheckedProgress: (checked: boolean) => {
+      set((state) => {
+        state.hasCheckedProgress = checked;
+      });
+    },
+
+    updateFormData: (section, updates) =>
+      set((state) => {
+        state.formData[section] = { ...state.formData[section], ...updates };
+      }),
+
+    updateSectionProgress: (sectionId, step) =>
+      set((state) => {
+        state.sections[sectionId].currentStep = step;
+      }),
+
+    completeSection: (sectionId) =>
+      set((state) => {
+        state.sections[sectionId].isCompleted = true;
+      }),
+
+    setActiveSection: (sectionId) =>
+      set((state) => {
+        Object.keys(state.sections).forEach((key) => {
+          state.sections[key as SectionId].isActive = key === sectionId;
+        });
+        state.currentSection = sectionId;
+      }),
+
+    resetOnboarding: () =>
+      set(() => ({
+        currentSection: "personal",
+        sections: DEFAULT_SECTIONS,
+        formData: DEFAULT_FORM_DATA,
+      })),
+  }))
 );

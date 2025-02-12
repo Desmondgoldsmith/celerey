@@ -15,17 +15,19 @@ interface EmergencyFundsSectionProps {
   onChange: (value: EmergencyFundsDataType) => void;
   isComplete?: boolean;
   isNextSectionComplete?: boolean;
+  values: any
 }
 
 const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   onChange,
   isNextSectionComplete,
+  values
 }) => {
   const [inputValue, setInputValue] = useState<EmergencyFundsDataType>({
     emergencyFund: {
-      hasEmergencyFunds: "",
-      emergencyFundAmount: "",
-      targetMonths: "",
+      hasEmergencyFunds: values.hasEmergencyFunds ? 'yes' : 'no',
+      emergencyFundAmount: values.emergencyFundAmount?.split(' ')[0],
+      targetMonths: values.targetMonths?.split(' ')[0],
     },
   });
 
@@ -147,7 +149,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  inputValue.emergencyFund.hasEmergencyFunds === "no"
+                  inputValue.emergencyFund.hasEmergencyFunds === 'no'
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}
@@ -158,7 +160,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               <Button
                 variant={"outline"}
                 className={`flex-1 px-4 py-2 rounded-md font-medium ${
-                  inputValue.emergencyFund.hasEmergencyFunds === "yes"
+                  inputValue.emergencyFund.hasEmergencyFunds === 'yes'
                     ? "bg-navy text-white"
                     : "border border-gray-300"
                 }`}

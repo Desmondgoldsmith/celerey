@@ -1,10 +1,8 @@
 import { ApiResponse } from "@/types/common";
 import apiClient from "../../lib/axios"; // Reuse Axios instance
 
-export const getUserApi = async (accessToken: string): Promise<ApiResponse> => {
-  const response = await apiClient.get("/user", {
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+export const getUserApi = async (): Promise<ApiResponse> => {
+  const response = await apiClient.get("/user");
   return response.data;
 };
 

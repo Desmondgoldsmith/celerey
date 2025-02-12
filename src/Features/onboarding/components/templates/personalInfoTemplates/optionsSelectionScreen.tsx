@@ -60,16 +60,19 @@ export const OptionsSelectionScreen: React.FC<OptionsSelectionScreenProps> = ({
 }) => {
 
 
-  const { loading, saveProfileInfo, formData } = useOnboardingStore()
-  const { user } = useAuthStore()
+  const { loading, saveProfileInfo, formData, setLoading } = useOnboardingStore()
+  const { user, setUser } = useAuthStore()
 
 
 
   const handleContinue = async () => {
+    setLoading(true)
     if (user?.userId) {
       await saveProfileInfo(formData.personal)
+      await setUser()
       onContinue()
     }
+    setLoading(false)
   }
 
   const handleOptionToggle = (optionId: string) => {

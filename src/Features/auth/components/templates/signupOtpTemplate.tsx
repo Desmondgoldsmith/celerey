@@ -8,10 +8,15 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '../../state'
 import Spinner from '@/components/ui/spinner'
 import { OTP_LENGTH } from '../../constants'
+import { useDashboardStore } from '@/Features/userDashboard/state'
+import { useOnboardingStore } from '@/Features/onboarding/state'
 
 export const SignupOTPTemplate = () => {
   const [otpValues, setOTPValues] = useState(Array(6).fill(''))
-  const { validateOTP, loading } = useAuthStore()
+  const { validateOTP, loading, setLoading } = useAuthStore()
+  const { subscription } = useDashboardStore()
+  const { getSectionProgress } = useOnboardingStore()
+
   const router = useRouter()
 
   const handleOpenEmail = () => {
@@ -21,7 +26,32 @@ export const SignupOTPTemplate = () => {
   const handleAccountCreation = async () => {
     const success = await validateOTP(otpValues.join(''), 'SIGN_UP')
     if (success) {
-      router.push('/personal-info')
+      setLoading(true)
+
+      if (subscription.status === 'active') {
+        router.replace('/dashboard')
+        setLoading(true)
+        return
+      }
+
+      const activeSection = await getSectionProgress()
+
+      if (activeSection === 'completed') {
+        router.replace('/freebie')
+        setLoading(false)
+        return
+      }
+
+      const sectionToRouteMap: { [key: string]: string } = {
+        personal: '/personal-info',
+        financial: '/financial-info',
+        goals: '/goals-info',
+        risk: '/risk-info',
+        knowledge: '/knowledge-info',
+      }
+
+      const activeRoute = sectionToRouteMap[activeSection || 'personal']
+      router.replace(activeRoute)
     }
   }
 
