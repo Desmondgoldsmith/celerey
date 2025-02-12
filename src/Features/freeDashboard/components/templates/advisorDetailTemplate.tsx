@@ -130,7 +130,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                   </div>
 
                   {/* Strengths Section */}
-                  <div>
+                  {/* <div>
                     <h2 className="text-base sm:text-lg font-cirka text-navy mb-4">
                       {advisor.name}&apos;s Strengths:
                     </h2>
@@ -144,7 +144,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Appointment Booking Button */}

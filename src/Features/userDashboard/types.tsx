@@ -193,7 +193,6 @@ export interface Advisor {
   bio: string;
   imageUrl: string;
   specialties: string[];
-  strengths: string[];
   googleCalendarUrl: string;
 }
 
@@ -226,7 +225,7 @@ export interface BudgetModalProps {
 }
 
 export interface FinancialGoal {
-  id?:string;
+  id?: string;
   name: string;
   percentage: number;
   currentValue: string;

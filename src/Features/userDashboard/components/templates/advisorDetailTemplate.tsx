@@ -7,10 +7,10 @@ import { Advisor } from "../../types";
 
 interface AdvisorDetailsTemplateProps {
   advisor: Advisor;
-  userName?: string
-  netWorth?:number
-  riskAttitude?:string
-  investmentExperience?:string
+  userName?: string;
+  netWorth?: number;
+  riskAttitude?: string;
+  investmentExperience?: string;
 }
 
 export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
@@ -105,7 +105,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                 </div>
 
                 {/* Strengths Section */}
-                <div>
+                {/* <div>
                   <h2 className="text-lg sm:text-xl font-cirka text-navy mb-4">
                     {advisor.name}&apos;s Strengths:
                   </h2>
@@ -116,7 +116,7 @@ export const AdvisorDetailsTemplate: React.FC<AdvisorDetailsTemplateProps> = ({
                       </li>
                     ))}
                   </ul>
-                </div>
+                </div> */}
 
                 {/* Appointment Booking Button */}
                 <button
