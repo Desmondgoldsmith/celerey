@@ -68,8 +68,7 @@ export default function PersonalInfo() {
           data.dob.day &&
           data.dob.month &&
           data.dob.year &&
-          data.citizenship &&
-          data.residentCountry
+          data.citizenship
         )
       case 2:
         return data.options.length > 0
@@ -101,7 +100,7 @@ export default function PersonalInfo() {
     const currentStepIndex = sections[currentSection].currentStep
     const isLastStep =
       currentStepIndex === sections[currentSection].totalSteps - 1
-
+console.log(validateCurrentStep())
     if (!validateCurrentStep()) {
       return
     }
