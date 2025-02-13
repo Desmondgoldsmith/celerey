@@ -156,10 +156,10 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   const incomeData = Object.entries(dummyAnnualIncome).map(([name, value]) => ({
     name,
     value: value?.value || 0,
-  }))
-  const expenditureData = Object.entries(
-    dummyAnnualExpenditure,
-  ).map(([name, value]) => ({ name, value: value?.value || 0, }))
+  }));
+  const expenditureData = Object.entries(dummyAnnualExpenditure).map(
+    ([name, value]) => ({ name, value: value?.value || 0 })
+  );
 
   const incomeColors: Record<IncomeCategory, string> = {
     Dividends: "#4A1D96",
@@ -510,7 +510,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                       ),
                       top: `${incomeWithHeights
                         .slice(0, index)
-                        .reduce((sum, i) => sum + i.percentage, 0)}%`,
+                        .reduce((sum, i) => sum + (i.percentage || 0), 0)}%`,
                     }}
                   />
                 ))}
@@ -566,7 +566,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                       ),
                       top: `${expenditureWithHeights
                         .slice(0, index)
-                        .reduce((sum, i) => sum + i.percentage, 0)}%`,
+                        .reduce((sum, i) => sum + (i.percentage || 0), 0)}%`,
                     }}
                   />
                 ))}
