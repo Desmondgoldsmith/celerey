@@ -4,6 +4,22 @@ import { SubscriptionTier } from "./types";
 
 export const DUMMY_ADVISORS: Advisor[] = [
   {
+    id: "jude-addo",
+    name: "Jude Addo",
+    title: "Investment Advisor",
+    bio: "Jude Addo is harnessing over a decade of transformative leadership in global finance to redefine wealth management for clients. As the co-founder and CEO of Celerey, he has pioneered the delivery of innovative financial solutions, empowering clients to achieve remarkable success. Jude’s distinguished career includes senior positions at Standard Chartered and J.P. Morgan, where he was celebrated for his groundbreaking credit and asset management strategies that significantly enhanced client portfolios. His remarkable tenure at Standard Chartered culminated in him becoming one of the youngest directors in the bank's history, highlighting his exceptional talent. At JA Group, he drives strategic initiatives across diverse sectors and co-founded Cornerstone Partners to uplift underrepresented founders. His commitment to social impact shines through his contributions to World Vision and his directorships in insurtech and health tech. With his extensive expertise and steadfast dedication to innovation, Jude stands as an invaluable asset for Celerey users, providing the insights and strategies essential for navigating complex financial landscapes and unlocking their full growth potential.",
+    imageUrl: "/assets/advisors/jude.png",
+    specialties: [
+      "Innovative Wealth & Asset Management",
+      "Entrepreneurship",
+      "Social Impact",
+      "Diversity Advocacy",
+      "Strategic Leadership",
+    ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ1NSb0LgqhxnM3-5z3um2QjRERvxzhBDUQxNJQpxoditZ5cKP8PFu6b06HlllhIYa6M1iHb8FFB?gv=true",
+  },
+  {
     id: "anna-agyekum",
     name: "Anna Agyekum",
     title: "International Property Consultant",
@@ -17,7 +33,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Tailored Property Solutions",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3OGJ0mxiGQbTj8Xn_TxlPUGW-EUQrF6IUY8VvvSCPrp8pKFJ1j9QeRLoTuzvRsWxJfQTX2XVrQ?gv=true",
   },
   {
     id: "christian-hamberger",
@@ -33,7 +49,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Global Experience Across Major Financial Hubs",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2v9lCl7pADeFvv_KNsVjAiAap2AS5pZtgnGlYSL9i77J3rPgvRTwewizpohdaGHifuTvdOW-f7?gv=true",
   },
   {
     id: "francis-gill",
@@ -49,7 +65,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Client-Centric & Detail-Oriented Approach",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2pLTROXYZVJ97v_hFME9FOTeBU7Ly1yiA4pk-T0JEYatthGRGVSX845sXuPRCgoijNvgr-zxGn?gv=true",
   },
   {
     id: "jerran-whyte",
@@ -65,7 +81,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Global Wealth Management Experience",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2DaRiuCixhpBA6CvB5UZscDmuV4PqqevU4i2OlStZ3lXoZX3Nzz1Xd0KpOYrPhh0eGTEGL6DD2?gv=true",
   },
   {
     id: "chris-curtis",
@@ -81,7 +97,7 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "International Experience in Jersey, Gibraltar, and Spain",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ1cCBHGlK53J4evIpQBHyWn6YYfDuBU8_XwcaEY2PgBg5WDOxQsVrt_ub7yoeakzW-Te30_RD2W?gv=true",
   },
   {
     id: "william-takyi",
@@ -97,7 +113,23 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "Strategic Portfolio Optimization",
     ],
     googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3qL1AKAiTz1_OHBFYgn2Ijx0waFxyT9NI3wgl37xPlsTnog7wddYY-Bxg7cTjV7IWlZVoJB0AK?gv=true",
+  },
+  {
+    id: "dele-adesani",
+    name: "Dele Adesani",
+    title: "Investment Strategist",
+    bio: "Dele Adesina has spent over 20 years guiding High Net Worth Individuals (HNWIs) to financial success. As a Chartered Wealth Manager accredited by the UK’s Chartered Institute for Securities & Investment (CISI), he has held leadership roles at prestigious institutions like Coutts & Co, Royal Bank of Canada, and Standard Chartered Private Bank London.As the founder of Hekima International Private Office and co-founder of Carrick Wealth Nigeria, Dele specializes in investment strategy, estate planning, and corporate advisory, empowering African HNWIs with tailored financial solutions. A graduate of the London School of Economics (LSE) and an Old Alleynian, Dele combines deep expertise with a visionary approach to help clients achieve lasting financial security and freedom.",
+    imageUrl: "/assets/advisors/dele.png",
+    specialties: [
+      "Wealth Management & Investment Strategy",
+      "Estate Planning & Legacy Preservation",
+      "Corporate Advisory & Financial Structuring",
+      "Leadership in Global Financial Institutions",
+      "African Market Expertise & Financial Empowerment",
+    ],
+    googleCalendarUrl:
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3RKampOqYj57m0ZP0FWSMT32Gwci01PAgI8rA_ofE3UsAjHtAu27LyWK8ZuboUp3cVM6Cn7JmK?gv=true",
   },
 ];
 

@@ -12,6 +12,7 @@ interface UserProfileProps {
   riskAttitude: string
   investmentExperience: string
   profileCompletion?: number
+  bookCall?: () => void
   onUpgradeClick?: () => void
 }
 
@@ -22,6 +23,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   investmentExperience,
   profileCompletion,
   onUpgradeClick,
+  bookCall
 }) => {
   // const router = useRouter();
   const currentDate = new Date().toLocaleDateString('en-US', {
@@ -116,7 +118,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             Your Current Net Worth
           </div>
           <div className="text-xl text-navyLight font-cirka pl-5 font-medium">
-            {formatCurrency(netWorth.toString(), 'usd')}
+            {formatCurrency(netWorth.toString(), "usd")}
           </div>
         </div>
 
@@ -155,16 +157,18 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             </div>
             <span className="font-medium">Book 15 Minutes Consultation</span>
           </div>
-            <button   onClick={onUpgradeClick} className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors">
-              <ChevronRight className="h-5 w-5 text-white" />
-            </button>
-        
+          <button
+            onClick={bookCall}
+            className="p-2 rounded-full bg-[#1E1B4B] hover:bg-[#2D2A5C] transition-colors"
+          >
+            <ChevronRight className="h-5 w-5 text-white" />
+          </button>
         </div>
         {/* Bottom Border */}
         <div className="border-b bg-gray-50 border-gray-200 p-4 " />
       </div>
     </Card>
-  )
+  );
 }
 
 export default UserProfile

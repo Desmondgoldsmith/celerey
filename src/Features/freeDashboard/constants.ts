@@ -89,11 +89,11 @@ export const DUMMY_ADVISORS: Advisor[] = [
     bio: "William Takyi is a seasoned financial strategist with extensive experience in wealth management, financial planning, and investment analysis. He has held key roles at prestigious institutions, including NatWest and Coutts in the United Kingdom, where he specialized in portfolio management, tax-efficient investments, and comprehensive financial planning for high-net-worth clients. With deep expertise in investments, risk management, and strategic financial planning, William helps clients navigate complex financial landscapes to achieve their goals. At Celerey, he leverages his strategic insights and commitment to client success to provide tailored, actionable solutions. His dedication to safeguarding and growing wealth makes him an invaluable resource, ensuring Celerey users thrive in today’s dynamic financial environment.",
     imageUrl: "/assets/advisors/william.png",
     specialties: [
-      "Wealth Management Expertise",
-      "Investment & Risk Strategy",
-      "High-Net-Worth Client Advisory",
-      "Tax-Efficient Financial Plannings",
-      "Strategic Portfolio Optimization",
+      "Wealth Management & Investment Strategy",
+      "Estate Planning & Legacy Preservation",
+      "Corporate Advisory & Financial Structuring",
+      "Leadership in Global Financial Institutions",
+      "African Market Expertise & Financial Empowerment",
     ],
     googleCalendarUrl:
       "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2E115m22eq7KUe2jqI0kHzqhmMH0anRW5DBjOAnz6xQ7CRQr7VoAKYFr4bDZ-X4E-G5wxCba1U?gv=true",

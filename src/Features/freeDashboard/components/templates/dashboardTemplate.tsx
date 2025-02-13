@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { ChartType, SubscriptionTier } from '../../types'
 import Image from 'next/image'
-import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { ChevronRight, MoreHorizontal, X } from 'lucide-react'
 import BalanceOverview from '../molecules/balanceOverview'
 import { GeographicSpread } from '../molecules/geographicSpread'
 import { IncomeVsDebt } from '../molecules/incomeVsDebt'
@@ -18,6 +18,7 @@ import { PaymentModal } from '../molecules/paymentModal'
 import { useDashboardStore } from '../../../userDashboard/state'
 import Spinner from '@/components/ui/spinner'
 import { useRouter } from 'next/navigation'
+
 
 const Chart = (dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -168,6 +169,44 @@ const DashboardTemplate: React.FC = () => {
     }, 3000)
   }
 
+   const [showCalendarModal, setShowCalendarModal] = useState(false);
+
+   const CalendarModal = () => {
+     return (
+       <div
+         className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+         onClick={() => setShowCalendarModal(false)}
+       >
+         <div
+           className="relative w-full max-w-[1200px] max-h-[90vh] bg-white rounded-xl shadow-2xl overflow-hidden"
+           onClick={(e) => e.stopPropagation()}
+         >
+           {/* Close Button */}
+           <button
+             onClick={() => setShowCalendarModal(false)}
+             className="absolute top-4 right-4 z-60 bg-white/90 rounded-full p-2 hover:bg-gray-100 transition-colors"
+           >
+             <X className="h-6 w-6 text-gray-700" />
+           </button>
+
+           {/* Calendar Iframe */}
+           <div className="w-full h-[80vh]">
+             <iframe
+               src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ07MqAIpdxG4-Ocb3GyglJAGLLs-0UPtz-c0JewAqW29kr4NC-_Lh7xkKejcdpLB7oCkhINsGiW?gv=true"
+               width="100%"
+               height="100%"
+               frameBorder="0"
+               title={`Book Appointment`}
+             />
+           </div>
+         </div>
+       </div>
+     );
+   };
+
+   const bookCall = () => {
+      setShowCalendarModal(true);
+   }
   return (
     <>
       {loading ? (
@@ -182,15 +221,16 @@ const DashboardTemplate: React.FC = () => {
               {/* Left Column */}
               <div className="col-span-4 space-y-6">
                 <UserProfile
-                  userName={data?.userName || ''}
+                  userName={data?.userName || ""}
                   netWorth={data?.netWorth || 0}
-                  riskAttitude={data?.userRiskTolerance || ''}
-                  investmentExperience={data?.userFinancialKnowledge || ''}
+                  riskAttitude={data?.userRiskTolerance || ""}
+                  investmentExperience={data?.userFinancialKnowledge || ""}
                   profileCompletion={profileCompletion}
                   onUpgradeClick={handleOpenSubscriptionModal}
+                  bookCall={bookCall}
                 />
                 <FinancialGoals
-                  currency={data?.currency || 'usd'}
+                  currency={data?.currency || "usd"}
                   onModify={handleOpenSubscriptionModal}
                   Chart={Chart}
                   financialGoals={financialGoals}
@@ -204,7 +244,7 @@ const DashboardTemplate: React.FC = () => {
                   data?.allIncome &&
                   data?.expense && (
                     <BalanceOverview
-                      currency={data?.currency || 'usd'}
+                      currency={data?.currency || "usd"}
                       Chart={Chart}
                       timeframe={timeframe}
                       onTimeframeChange={setTimeframe}
@@ -216,7 +256,7 @@ const DashboardTemplate: React.FC = () => {
                     />
                   )}
                 <IncomeAndExpenditure
-                  currency={data?.currency || 'usd'}
+                  currency={data?.currency || "usd"}
                   totalIncome={data?.totalIncome || 0}
                   totalExpense={data?.totalExpense || 0}
                   totalExpenseFromIncome={data?.totalExpenseFromIncome}
@@ -230,7 +270,7 @@ const DashboardTemplate: React.FC = () => {
                 {/* <RiskAllocation Chart={Chart} /> */}
                 <GeographicSpread assetCountries={data?.assetCountries || []} />
                 <IncomeVsDebt
-                  currency={data?.currency || 'usd'}
+                  currency={data?.currency || "usd"}
                   income={data?.income || 0}
                   debt={data?.debt}
                   incomeAndDebt={data?.incomeAndDebt}
@@ -245,14 +285,14 @@ const DashboardTemplate: React.FC = () => {
 
             {/* Mobile Layout */}
             <div className="lg:hidden space-y-6">
-              <MobileGreeting userName={data?.userName || ''} />
+              <MobileGreeting userName={data?.userName || ""} />
               <MobileNetWorth netWorth={data?.netWorth || 0} />
               {data?.assets &&
                 data?.liabilities &&
                 data?.allIncome &&
                 data?.expense && (
                   <BalanceOverview
-                    currency={data?.currency || 'usd'}
+                    currency={data?.currency || "usd"}
                     Chart={Chart}
                     timeframe={timeframe}
                     onTimeframeChange={setTimeframe}
@@ -267,13 +307,13 @@ const DashboardTemplate: React.FC = () => {
                 <MobileActionItems />
               </div>
               <FinancialGoals
-                currency={data?.currency || 'usd'}
+                currency={data?.currency || "usd"}
                 Chart={Chart}
                 financialGoals={financialGoals}
                 onModify={handleOpenSubscriptionModal}
               />
               <IncomeAndExpenditure
-                currency={data?.currency || 'usd'}
+                currency={data?.currency || "usd"}
                 totalIncome={data?.totalIncome || 0}
                 totalExpense={data?.totalExpense || 0}
                 totalExpenseFromIncome={data?.totalExpenseFromIncome}
@@ -281,7 +321,7 @@ const DashboardTemplate: React.FC = () => {
                 Chart={Chart}
               />
               <IncomeVsDebt
-                currency={data?.currency || 'usd'}
+                currency={data?.currency || "usd"}
                 income={data?.income || 0}
                 debt={data?.debt}
                 incomeAndDebt={data?.incomeAndDebt}
@@ -309,19 +349,20 @@ const DashboardTemplate: React.FC = () => {
         selectedTier={selectedTier}
         onPaymentComplete={handlePaymentComplete}
       />
+      {showCalendarModal && <CalendarModal/>}
 
       <CongratulationsModal
         isOpen={isCongratsModalOpen}
         onClose={() => {
-          if (subscription.status === 'active') {
-            router.replace('/dashboard')
+          if (subscription.status === "active") {
+            router.replace("/dashboard");
           }
-          setIsCongratsModalOpen(false)
+          setIsCongratsModalOpen(false);
         }}
-        subscriptionTier={selectedTier?.name || ''}
+        subscriptionTier={selectedTier?.name || ""}
       />
     </>
-  )
+  );
 }
 
 export default DashboardTemplate

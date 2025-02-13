@@ -45,7 +45,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           </h2>
           <p className="text-sm md:text-base text-gray-600 mb-6">
             You are subscribing to {selectedTier?.name} plan at $
-            {selectedTier?.price}/month
+            {selectedTier?.price}/year
           </p>
 
           {stripePromise && (

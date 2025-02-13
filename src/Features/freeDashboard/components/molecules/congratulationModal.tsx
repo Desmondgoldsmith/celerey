@@ -45,7 +45,7 @@ export const CongratulationsModal: React.FC<CongratulationsModalProps> = ({
           <div className="flex justify-center mb-6 md:mb-0">
             <div className="relative w-32 h-32 md:w-48 md:h-48 bg-[#E6FBF8] rounded-full flex items-center justify-center">
               <Image
-                src="/api/placeholder/192/192"
+                src="/assets/trophy.png"
                 alt="Trophy"
                 width={120}
                 height={120}

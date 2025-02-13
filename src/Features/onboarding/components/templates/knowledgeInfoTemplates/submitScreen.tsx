@@ -67,9 +67,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
 
         <Button
           onClick={handleSubmit}
-          className={`flex-1 w-full text-white ${
-            selection ? 'bg-navy hover:bg-navyLight' : 'bg-gray-300'
-          }`}
+          className={`flex-1 w-full text-white bg-navy hover:bg-navyLight`}
           disabled={loading}
         >
           {loading && <Spinner />} View my Dashboard

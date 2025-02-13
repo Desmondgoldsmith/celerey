@@ -56,7 +56,7 @@ type ExpenditureCategory =
 interface DataItem {
   name: IncomeCategory | ExpenditureCategory;
   value: number;
-  percentage: number;
+  percentage?: number;
   height: string;
 }
 
@@ -93,24 +93,24 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   // =====
 
   const mortgages = {
-    percentage: liabilities.mortgages.percentage,
-    value: liabilities.mortgages.value,
+    percentage: liabilities.mortgages?.percentage,
+    value: liabilities.mortgages?.value,
   };
   const creditCards = {
-    percentage: liabilities.creditCards.percentage,
-    value: liabilities.creditCards.value,
+    percentage: liabilities.creditCards?.percentage,
+    value: liabilities.creditCards?.value,
   };
   const loans = {
-    percentage: liabilities.loans.percentage,
-    value: liabilities.loans.value,
+    percentage: liabilities.loans?.percentage,
+    value: liabilities.loans?.value,
   };
   const assetFinance = {
-    percentage: liabilities.assetFinance.percentage,
-    value: liabilities.assetFinance.value,
+    percentage: liabilities.assetFinance?.percentage,
+    value: liabilities.assetFinance?.value,
   };
   const otherLiability = {
-    percentage: liabilities.otherLiabilities.percentage,
-    value: liabilities.otherLiabilities.value,
+    percentage: liabilities.otherLiabilities?.percentage,
+    value: liabilities.otherLiabilities?.value,
   };
 
   const liabilityData = [
@@ -397,7 +397,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               <div className="mb-2">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Mortgages</span>
-                  <span>{mortgages.percentage.toFixed(0)}%</span>
+                  <span>{mortgages.percentage?.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -414,7 +414,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Credit Cards</span>
-                  <span>{creditCards.percentage.toFixed(0)}%</span>
+                  <span>{creditCards.percentage?.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -434,7 +434,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               <div>
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Asset Finance</span>
-                  <span>{assetFinance.percentage.toFixed(0)}%</span>
+                  <span>{assetFinance.percentage?.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -451,7 +451,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               <div className="mb-6">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Loans</span>
-                  <span>{loans.percentage.toFixed(0)}%</span>
+                  <span>{loans.percentage?.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
@@ -468,7 +468,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               <div className="mb-6">
                 <div className="flex justify-between text-gray-700 font-medium mb-2">
                   <span>Other Liabilities</span>
-                  <span>{otherLiability.percentage.toFixed(0)}%</span>
+                  <span>{otherLiability.percentage?.toFixed(0)}%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full">
                   <div
