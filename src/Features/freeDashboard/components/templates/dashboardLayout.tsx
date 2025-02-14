@@ -1,30 +1,29 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
-import { ChevronDown, LogOut, Menu, UserCircle } from 'lucide-react'
-import Link from 'next/link'
-import { useAuthStore } from '@/Features/auth/state'
-import { useOnboardingStore } from '@/Features/onboarding/state'
-import { useDashboardStore } from '@/Features/userDashboard/state'
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { ChevronDown, LogOut, Menu, UserCircle } from "lucide-react";
+import Link from "next/link";
+import { useAuthStore } from "@/Features/auth/state";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import { useDashboardStore } from "@/Features/userDashboard/state";
+import { useRouter } from "next/navigation";
 
 interface DashboardLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   children,
 }) => {
-  // State management for navigation and dropdowns
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
-  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { logout } = useAuthStore()
-  const { resetOnboarding } = useOnboardingStore()
-  const { reset } = useDashboardStore()
-  const router = useRouter()
+  const { logout } = useAuthStore();
+  const { resetOnboarding } = useOnboardingStore();
+  const { reset } = useDashboardStore();
+  const router = useRouter();
 
   // Handle clicks outside the dropdown to close it
   useEffect(() => {
@@ -33,13 +32,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsUserDropdownOpen(false)
+        setIsUserDropdownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   // User dropdown menu component
   const UserDropdownMenu = () => (
     <div
@@ -50,10 +49,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         type="button"
         onClick={() => {
           /*  logout logic  */
-          reset()
-          resetOnboarding()
-          logout()
-          router.replace('/auth/signin')
+          reset();
+          resetOnboarding();
+          logout();
+          router.replace("/auth/signin");
         }}
         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
       >
@@ -61,7 +60,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         Logout
       </button>
     </div>
-  )
+  );
 
   // Handle clicks outside the dropdown to close it
   useEffect(() => {
@@ -70,19 +69,19 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsUserDropdownOpen(false)
+        setIsUserDropdownOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link href='/freebie' passHref className="w-32">
+          <Link href="/freebie" passHref className="w-32">
             <Image
               src="/assets/logo2.svg"
               alt="Celerey"
@@ -105,8 +104,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <UserCircle className="h-8 w-8 text-navy cursor-pointer" />
           </div> */}
           {/* Mobile Navigation */}
-             {/* Desktop Navigation */}
-             <div className="hidden md:flex gap-6 items-center">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-6 items-center">
             {/* <Link href="#" className="text-sm font-helvetica text-gray-600">
               Risk Allocation
             </Link>
@@ -116,15 +115,14 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             <Link href="#" className="text-sm font-helvetica text-gray-600">
               Knowledge Hub
             </Link> */}
-         
           </div>
-
           {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center gap-2">
             <button onClick={() => setIsMobileNavOpen(true)}>
               <Menu className="h-6 w-6 text-navy" />
             </button>
-          </div>   {/* Desktop Navigation */}
+          </div>{" "}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex gap-6 items-center">
             {/* <Link href="#" className="text-sm font-helvetica text-gray-600">
               Risk Allocation
@@ -162,14 +160,12 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               )}
             </div>
           </div>
-
           {/* Mobile Navigation Toggle */}
-          <div className="md:hidden flex items-center gap-2">
+          {/* <div className="md:hidden flex items-center gap-2">
             <button onClick={() => setIsMobileNavOpen(true)}>
               <Menu className="h-6 w-6 text-navy" />
             </button>
-          </div>
-       
+          </div> */}
         </div>
       </nav>
       <div className="flex-grow bg-gray-50">
@@ -193,5 +189,5 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
