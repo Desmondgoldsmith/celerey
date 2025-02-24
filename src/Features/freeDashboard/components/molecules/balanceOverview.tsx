@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Info, MoreHorizontal } from "lucide-react";
+import { Info, MoreHorizontal, Plus } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { ChartType, TimeframeKey } from "../../types";
 import {
@@ -226,397 +226,406 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
     expenditureColors[category];
 
   return (
-    <Card className="bg-white p-4 w-full">
+    <Card className="bg-white p-2 w-full">
       {/* Header */}
-      <div className="flex justify-between p-2 items-center mb-6 border-b border-[#AAAAAA] pb-2">
+      <div className="flex justify-between p-2 items-center mb-3 border-b border-[#AAAAAA] pb-2">
         <h2 className="text-xl font-cirka text-navy md:text-2xl">
-          Balance Overview
+          Wealth Overview
         </h2>
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
       </div>
-
-      <CardContent>
-        {/* Assets Section */}
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-2">
-            <h3 className="text-gray-700 font-cirka text-xl">Assets</h3>
-            <Info className="h-3 w-3 text-gray-400" />
-          </div>
-
-          <div onClick={onAddCategory}>
-            <p className="text-[#2117DC] hover:cursor-pointer">Edit category</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Pie Chart  */}
-          <div className="flex justify-center md:block">
-            <ResponsiveContainer width="100%" height={130}>
-              <PieChart>
-                <Pie
-                  data={assetData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {assetData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={assetCOLORS[index % assetCOLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Asset Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
-            {/* Real Estate */}
-            <div>
-              <div className="mb-2">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Real Estate</span>
-                  <span>{realEstate.percentage.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#1B1856] rounded-full"
-                    style={{ width: `${realEstate.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(realEstate.value, currency)}
-                </div>
-              </div>
-
-              {/* Private Securities */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Private Securities</span>
-                  <span>{privateSecurities.percentage.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#8BA78D] rounded-full"
-                    style={{ width: `${privateSecurities.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(privateSecurities.value, currency)}
-                </div>
-              </div>
-            </div>
-
-            {/* Cash and Public Securities */}
-            <div>
-              {/* Cash */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Cash</span>
-                  <span>{cash.percentage.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#383396] rounded-full"
-                    style={{ width: `${cash.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  ${cash.value.toLocaleString()}
-                </div>
-              </div>
-
-              {/* Public Securities */}
-              <div className="mb-6">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Public Securities</span>
-                  <span>{publicSecurities.percentage.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#E15B2D] rounded-full"
-                    style={{ width: `${publicSecurities.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(publicSecurities.value, currency)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-
-      {/* Liabilities Section */}
-      <CardContent>
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center space-x-2">
-            <h3 className="text-gray-700 font-cirka text-xl">Liabilities</h3>
-            <Info className="h-3 w-3 text-gray-400" />
-          </div>
-
-          <div onClick={onAddCategory}>
-            <p className="text-[#2117DC] hover:cursor-pointer">Edit category</p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-b border-[#AAAAAA]">
-          {/* Pie Chart */}
-          <div className="flex justify-center md:block">
-            <ResponsiveContainer width="100%" height={130}>
-              <PieChart>
-                <Pie
-                  data={liabilityData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {liabilityData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={liabilityCOLORS[index % liabilityCOLORS.length]}
-                    />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* Liability Details */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
-            {/* Mortgages and Credit Cards */}
-            <div>
-              {/* Mortgages */}
-              <div className="mb-2">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Mortgages</span>
-                  <span>{mortgages.percentage?.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#1B1856] rounded-full"
-                    style={{ width: `${mortgages.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(mortgages.value, currency)}
-                </div>
-              </div>
-
-              {/* Credit Cards */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Credit Cards</span>
-                  <span>{creditCards.percentage?.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#8BA78D] rounded-full"
-                    style={{ width: `${creditCards.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(creditCards.value, currency)}
-                </div>
-              </div>
-            </div>
-
-            {/* Asset Finance and Loans */}
-            <div>
-              {/* Asset Finance */}
-              <div>
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Asset Finance</span>
-                  <span>{assetFinance.percentage?.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#383396] rounded-full"
-                    style={{ width: `${assetFinance.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(assetFinance.value, currency)}
-                </div>
-              </div>
-
-              {/* Loans */}
-              <div className="mb-6">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Loans</span>
-                  <span>{loans.percentage?.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#E15B2D] rounded-full"
-                    style={{ width: `${loans.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(loans.value, currency)}
-                </div>
-              </div>
-
-              {/* Loans */}
-              <div className="mb-6">
-                <div className="flex justify-between text-gray-700 font-medium mb-2">
-                  <span>Other Liabilities</span>
-                  <span>{otherLiability.percentage?.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div
-                    className="h-full bg-[#AAAAAA] rounded-full"
-                    style={{ width: `${otherLiability.percentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-left text-gray-700 mb-3 mt-2">
-                  {formatCurrency(otherLiability.value, currency)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
 
       {/* Income and Expenditure Section */}
       <CardContent className="border-b border-[#AAAAAA]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Annual Income */}
           <div>
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center space-x-2">
               <h3 className="text-gray-700 font-cirka text-xl">
                 Annual Income
               </h3>
-              <Info className="h-3 w-3 text-gray-400" />
+              <Info className="h-4 w-4 text-gray-400" />
             </div>
-            <div className="flex space-x-8">
-              {/* Stacked Bar */}
-              <div className="w-16 h-64 bg-gray-100 relative">
-                {incomeWithHeights.map((item, index) => (
-                  <div
-                    key={item.name}
-                    className="absolute bottom-0 w-full"
-                    style={{
-                      height: item.height,
-                      backgroundColor: getIncomeColor(
-                        item.name as IncomeCategory
-                      ),
-                      top: `${incomeWithHeights
-                        .slice(0, index)
-                        .reduce((sum, i) => sum + (i.percentage || 0), 0)}%`,
-                    }}
-                  />
-                ))}
-              </div>
-              {/* Legend */}
-              <div className="flex flex-col justify-center space-y-2">
-                {incomeWithHeights.map((item) => (
-                  <div key={item.name} className="flex items-center space-x-2">
+
+            <div className="mb-2 mt-1">
+              <span className="text-green-500 text-4xl font-semibold">
+                {formatCurrency(
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  totalIncome,
+                  currency
+                )}
+              </span>
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                onClick={onAddCategory}
+                className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Income</span>
+              </button>
+            </div>
+
+            <div className="space-y-4 mt-3">
+              {incomeData.map((item) => (
+                <div key={item.name} className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">{item.name}</span>
+                    <span className="text-sm">
+                      {formatCurrency(item.value, currency)}
+                    </span>
+                  </div>
+                  <div className="w-full h-4 bg-gray-100 rounded-sm overflow-hidden">
                     <div
-                      className="w-3 h-3"
+                      className="h-full"
                       style={{
+                        width: `${(item.value / totalIncome) * 100}%`,
                         backgroundColor: getIncomeColor(
                           item.name as IncomeCategory
                         ),
                       }}
                     />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{item.name}</span>
-                      <span className="text-sm text-gray-600">
-                        {formatCurrency(
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore
-                          item.value,
-                          currency
-                        )}
-                      </span>
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Annual Expenditure */}
           <div>
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center space-x-2 ">
               <h3 className="text-gray-700 font-cirka text-xl">
                 Annual Expenditure
               </h3>
-              <Info className="h-3 w-3 text-gray-400" />
+              <Info className="h-4 w-4 text-gray-400" />
             </div>
-            <div className="flex space-x-8">
-              {/* Stacked Bar */}
-              <div className="w-16 h-64 bg-gray-100 relative">
-                {expenditureWithHeights.map((item, index) => (
-                  <div
-                    key={item.name}
-                    className="absolute bottom-0 w-full"
-                    style={{
-                      height: item.height,
-                      backgroundColor: getExpenditureColor(
-                        item.name as ExpenditureCategory
-                      ),
-                      top: `${expenditureWithHeights
-                        .slice(0, index)
-                        .reduce((sum, i) => sum + (i.percentage || 0), 0)}%`,
-                    }}
-                  />
-                ))}
-              </div>
-              {/* Legend */}
-              <div className="flex flex-col justify-center space-y-2">
-                {expenditureWithHeights.map((item) => (
-                  <div key={item.name} className="flex items-center space-x-2">
+
+            <div className="mb-2 mt-1">
+              <span className="text-red-500 text-4xl font-semibold">
+                {formatCurrency(
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  totalExpenditure,
+                  currency
+                )}
+              </span>
+            </div>
+
+            <div className="mt-3 flex justify-end">
+              <button
+                onClick={onAddCategory}
+                className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Expense</span>
+              </button>
+            </div>
+
+            <div className="space-y-4 mt-6">
+              {expenditureData.map((item) => (
+                <div key={item.name} className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">{item.name}</span>
+                    <span className="text-sm">
+                      {formatCurrency(item.value, currency)}
+                    </span>
+                  </div>
+                  <div className="w-full h-4 bg-gray-100 rounded-sm overflow-hidden">
                     <div
-                      className="w-3 h-3"
+                      className="h-full"
                       style={{
+                        width: `${(item.value / totalExpenditure) * 100}%`,
                         backgroundColor: getExpenditureColor(
                           item.name as ExpenditureCategory
                         ),
                       }}
                     />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium">{item.name}</span>
-                      <span className="text-sm text-gray-600">
-                        {formatCurrency(
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore
-                          item.value,
-                          currency
-                        )}
-                      </span>
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </CardContent>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-2 pb-2 border-b border-[#AAAAAA]">
+        {/* Assets Section */}
+        <CardContent className="p-2 md:pr-2 md:border-r border-[#AAAAAA]">
+          <div className="flex justify-between mb-5 items-center mt-3">
+            <div className="flex items-center space-x-1">
+              <h3 className="text-gray-700 font-cirka text-lg">Assets</h3>
+              <Info className="h-3 w-3 text-gray-400" />
+            </div>
+
+            <button
+              onClick={onAddCategory}
+              className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Category</span>
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:ml-[-28px]">
+            {/* Pie Chart Column */}
+            <div className="w-full md:w-1/3 flex justify-center md:justify-start mb-4 md:mb-0 md:pr-1 md:pl-[-4px]">
+              <div className="w-40 h-40 md:w-full">
+                <ResponsiveContainer width="100%" height={150}>
+                  <PieChart>
+                    <Pie
+                      data={assetData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={55}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {assetData.map((_, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={assetCOLORS[index % assetCOLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Asset Details Column */}
+            <div className="w-full md:w-2/3 md:pl-[-8px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4 sm:gap-y-2">
+                {/* Real Estate */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span className="truncate">Real Estate</span>
+                    <span>{realEstate.percentage.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#1B1856] rounded-full"
+                      style={{ width: `${realEstate.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${realEstate.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Public Securities */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span className="truncate pr-1">Public Securities</span>
+                    <span>{publicSecurities.percentage.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-navy rounded-full"
+                      style={{ width: `${publicSecurities.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${publicSecurities.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Private Securities */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span className="truncate pr-1">Private Securities</span>
+                    <span>{privateSecurities.percentage.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#8BA78D] rounded-full"
+                      style={{ width: `${privateSecurities.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${privateSecurities.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Cash */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span>Cash</span>
+                    <span>{cash.percentage.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#383396] rounded-full"
+                      style={{ width: `${cash.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${cash.value.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+
+        {/* Liabilities Section */}
+        <CardContent className="p-2 mt-3 md:mt-0 md:pl-1">
+          <div className="flex justify-between items-center mb-3">
+            <div className="flex items-center space-x-1">
+              <h3 className="text-gray-700 font-cirka text-lg">Liabilities</h3>
+              <Info className="h-3 w-3 text-gray-400" />
+            </div>
+
+            <button
+              onClick={onAddCategory}
+              className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Category</span>
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row md:ml-[-28px]">
+            {/* Pie Chart Column */}
+            <div className="w-full md:w-1/3 flex justify-center md:justify-start mb-4 md:mb-0 md:pr-1">
+              <div className="w-40 h-40 md:w-full">
+                <ResponsiveContainer width="100%" height={150}>
+                  <PieChart>
+                    <Pie
+                      data={liabilityData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={55}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {liabilityData.map((_, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={liabilityCOLORS[index % liabilityCOLORS.length]}
+                        />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Liability Details Column */}
+            <div className="w-full md:w-2/3 md:ml-[-10px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-4 sm:gap-y-2">
+                {/* Mortgages */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span>Mortgages</span>
+                    <span>{mortgages.percentage?.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#1B1856] rounded-full"
+                      style={{ width: `${mortgages.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${mortgages.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Loans */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span>Loans</span>
+                    <span>{loans.percentage?.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-navy rounded-full"
+                      style={{ width: `${loans.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${loans.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Credit Cards */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span>Credit Cards</span>
+                    <span>{creditCards.percentage?.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#8BA78D] rounded-full"
+                      style={{ width: `${creditCards.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${creditCards.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Asset Finance */}
+                <div className="flex flex-col">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span className="truncate pr-1">Asset Finance</span>
+                    <span>{assetFinance.percentage?.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#383396] rounded-full"
+                      style={{ width: `${assetFinance.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${assetFinance.value.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Other Liabilities */}
+                <div className="flex flex-col sm:col-span-2">
+                  <div className="flex justify-between text-gray-700 text-sm font-medium">
+                    <span>Other Liabilities</span>
+                    <span>{otherLiability.percentage?.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-full bg-[#AAAAAA] rounded-full"
+                      style={{ width: `${otherLiability.percentage}%` }}
+                    ></div>
+                  </div>
+                  <div className="text-left text-gray-700 text-sm">
+                    ${otherLiability.value.toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </div>
+
       {/* Footer */}
-      <div className="flex flex-col sm:flex-row items-center justify-between p-2">
-        <div className="flex flex-col sm:flex-row items-center mb-2 sm:mb-0">
-          <div className="font-helvetica text-medium pr-2 text-center sm:text-left">
-            Need Help?
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 my-4">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div className="flex flex-col space-y-2">
+            <h3 className="font-helvetica text-base font-semibold text-gray-800">
+              Need Financial Assistance?
+            </h3>
+            <p className="font-helvetica text-sm text-gray-600 max-w-md">
+              Get personalized financial advice from our experts on maximizing
+              returns and optimizing your investment portfolio.
+            </p>
           </div>
-          <div className="text-xs font-helvetica text-gray-300 text-center sm:text-left sm:w-[140px]">
-            Get Financial advice on maximizing the returns on your money.
-          </div>
-        </div>
-        <div
-          onClick={onAddCategory}
-          className="font-bold text-sm text-[#E15B2D] text-center sm:text-right hover:underline cursor-pointer"
-        >
-          Request Advisory Service
+
+          <button
+            onClick={onAddCategory}
+            className="bg-white hover:bg-gray-50 text-navy font-medium px-4 py-2 rounded-md border border-navy transition-colors duration-200 whitespace-nowrap self-end sm:self-center"
+          >
+            Request Advisory Service
+          </button>
         </div>
       </div>
     </Card>

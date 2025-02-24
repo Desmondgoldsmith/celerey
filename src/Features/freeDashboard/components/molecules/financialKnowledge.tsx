@@ -4,7 +4,7 @@ import { MoreHorizontal } from "lucide-react";
 
 interface FinancialKnowledgeAssessmentProps {
   progress: number;
-  onUpgradeClick: () => void
+  onUpgradeClick: () => void;
 }
 
 export const FinancialKnowledgeAssessment: React.FC<
@@ -22,7 +22,10 @@ export const FinancialKnowledgeAssessment: React.FC<
         <p className="font-helvatica font-bold">
           Financial Knowledge Assessment
         </p>
-        <button onClick={onUpgradeClick} className="bg-[#E15B2D] text-white rounded-md p-1 ml-auto mr-auto">
+        <button
+          onClick={onUpgradeClick}
+          className="bg-navy border border-navy text-white rounded-md p-1 ml-auto mr-auto"
+        >
           Upgrade
         </button>
         <div className="font-helvatica font bold text-2xl">Incomplete</div>
@@ -31,11 +34,11 @@ export const FinancialKnowledgeAssessment: React.FC<
       <div className="flex items-center">
         <div className="w-full bg-gray-200 rounded-full h-3.5 mr-4">
           <div
-            className="bg-[#281FBB] h-3.5 rounded-full"
+            className="bg-navy h-5 rounded-full"
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        <span className="text-[#281FBB] font-medium">{progress}%</span>
+        <span className="text-navy font-medium">{progress}%</span>
       </div>
       <p className="text-gray-500 mt-5 font-helvatica text-sm">
         Take the full financial assessment with a{" "}
