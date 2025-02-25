@@ -221,11 +221,9 @@ const DashboardTemplate: React.FC = () => {
                   onUpgradeClick={handleOpenSubscriptionModal}
                   bookCall={bookCall}
                 />
-                <FinancialGoals
-                  currency={data?.currency || "usd"}
-                  onModify={handleOpenSubscriptionModal}
-                  Chart={Chart}
-                  financialGoals={financialGoals}
+                <FinancialKnowledgeAssessment
+                  progress={72}
+                  onUpgradeClick={handleOpenSubscriptionModal}
                 />
               </div>
 
@@ -251,9 +249,11 @@ const DashboardTemplate: React.FC = () => {
                   <GeographicSpread
                     assetCountries={data?.assetCountries || []}
                   />
-                  <FinancialKnowledgeAssessment
-                    progress={72}
-                    onUpgradeClick={handleOpenSubscriptionModal}
+                  <FinancialGoals
+                    currency={data?.currency || "usd"}
+                    onModify={handleOpenSubscriptionModal}
+                    Chart={Chart}
+                    financialGoals={financialGoals}
                   />
                 </div>
               </div>

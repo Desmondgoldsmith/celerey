@@ -182,6 +182,25 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   currency,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if the screen is mobile sized
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px breakpoint for mobile
+    };
+
+    // Initial check
+    checkIsMobile();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkIsMobile);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", checkIsMobile);
+    };
+  }, []);
 
   const emergencyGoal = goals.find((goal) => goal.type === "emergency");
   const retirementGoal = goals.find((goal) => goal.type === "retirement");
@@ -198,41 +217,93 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
     );
   });
 
+  // For mobile view, combine all goals into a single array for carousel
+  const mobileGoals = [
+    emergencyGoal,
+    retirementGoal,
+    savingsGoal,
+    ...additionalGoals,
+  ].filter(Boolean); // Filter out any undefined goals
+
   // Calculate total pages needed
   const totalAdditionalPages = Math.ceil(additionalGoals.length / 4);
-  const totalPages = 1 + totalAdditionalPages;
+  const totalPages = isMobile
+    ? Math.ceil(mobileGoals.length / 1) // 1 goal per page on mobile
+    : 1 + totalAdditionalPages;
 
   // Get goals for the current page
   const getCurrentPageGoals = () => {
-    if (currentPage === 0) {
-      // First page shows standard goals
-      return [];
+    if (isMobile) {
+      // For mobile, show one goal per page
+      const startIdx = currentPage;
+      return [mobileGoals[startIdx]];
     } else {
-      // Get additional goals for this page (4 per page)
-      const startIdx = (currentPage - 1) * 4;
-      const endIdx = startIdx + 4;
-      return additionalGoals.slice(startIdx, endIdx);
+      if (currentPage === 0) {
+        // First page shows standard goals on desktop
+        return [];
+      } else {
+        // Get additional goals for this page (4 per page) on desktop
+        const startIdx = (currentPage - 1) * 4;
+        const endIdx = startIdx + 4;
+        return additionalGoals.slice(startIdx, endIdx);
+      }
     }
   };
 
   // Determine if pagination should be shown
-  const shouldShowPagination = additionalGoals.length > 0;
+  const shouldShowPagination = isMobile
+    ? mobileGoals.length > 0
+    : additionalGoals.length > 0;
 
   return (
     <div className="bg-white rounded-lg p-6">
       {/* Header section */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <CircleDollarSign className="w-5 h-5 text-navy" />
-          <h2 className="text-xl font-medium text-navy">Financial Goals</h2>
-          <span className="text-sm text-gray-500 hover:cursor-pointer">ⓘ</span>
+          <h2 className="text-xl font-medium text-navy flex items-center gap-1">
+            Financial Goals{" "}
+            <span className="text-sm text-gray-500 hover:cursor-pointer">
+              ⓘ
+            </span>
+          </h2>
         </div>
         <h3 className="text-xl font-medium">{goals.length} Financial plans</h3>
       </div>
 
-      {/* Plans grid layout (2x2) */}
-      <div className="grid grid-cols-2 gap-4">
-        {currentPage === 0 ? (
+      <div
+        className={`${
+          isMobile ? "grid grid-cols-1 gap-4" : "grid grid-cols-2 gap-4"
+        }`}
+      >
+        {isMobile ? (
+          // Mobile view with carousel
+          <>
+            {mobileGoals.length > 0 && currentPage < mobileGoals.length && (
+              <div className="border rounded-lg p-4">
+                <FinancialPlanItem
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  goal={mobileGoals[currentPage]}
+                  onModifyGoal={onModifyGoal}
+                  className="relative"
+                  currency={currency}
+                />
+              </div>
+            )}
+
+            {/* Financial Goal button - always visible on mobile */}
+            <div className="flex items-center justify-center border rounded-lg border-dashed border-gray-300 p-4">
+              <button
+                onClick={onAddGoalClick}
+                className="flex items-center border border-navy rounded-sm p-1 justify-center text-navy hover:text-navyLight font-medium"
+              >
+                Add Financial Goal
+              </button>
+            </div>
+          </>
+        ) : // Desktop view
+        currentPage === 0 ? (
           // First page with standard goals
           <>
             {/* Top-left: Emergency Fund */}
@@ -316,6 +387,8 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
           getCurrentPageGoals().map((goal, idx) => (
             <div key={goal?.id || idx} className="border rounded-lg p-4">
               <FinancialPlanItem
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 goal={goal}
                 onModifyGoal={onModifyGoal}
                 className="relative"
@@ -326,7 +399,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
         )}
       </div>
 
-      {/* Pagination dots */}
+      {/* Pagination dots - adjust for mobile */}
       {shouldShowPagination && (
         <div className="flex justify-center gap-2 mt-6">
           {Array.from({ length: totalPages }).map((_, idx) => (
@@ -339,6 +412,40 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
               aria-label={`Go to page ${idx + 1}`}
             />
           ))}
+        </div>
+      )}
+
+      {/* Mobile navigation arrows - only on mobile */}
+      {isMobile && mobileGoals.length > 1 && (
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => (prev > 0 ? prev - 1 : prev))
+            }
+            disabled={currentPage === 0}
+            className={`p-2 rounded-full ${
+              currentPage === 0 ? "text-gray-300" : "text-navy"
+            }`}
+            aria-label="Previous goal"
+          >
+            ←
+          </button>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) =>
+                prev < mobileGoals.length - 1 ? prev + 1 : prev
+              )
+            }
+            disabled={currentPage === mobileGoals.length - 1}
+            className={`p-2 rounded-full ${
+              currentPage === mobileGoals.length - 1
+                ? "text-gray-300"
+                : "text-navy"
+            }`}
+            aria-label="Next goal"
+          >
+            →
+          </button>
         </div>
       )}
     </div>
