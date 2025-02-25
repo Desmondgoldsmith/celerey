@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Card } from '@/components/ui/card'
-import { Info, MoreHorizontal, ChevronDown } from 'lucide-react'
-import { worldMill } from '@react-jvectormap/world'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
-import IncomeSection from './incomeSection'
-import ExpensesSection from './expenseSection'
-import IncomeVsDebtSection from './incomeVsDebtSection'
-import IncomeVsExpenditure from './incomeVsExpenditure'
+import React, { useState, useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Info, MoreHorizontal, ChevronDown } from "lucide-react";
+import { worldMill } from "@react-jvectormap/world";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import IncomeSection from "./incomeSection";
+import ExpensesSection from "./expenseSection";
+import IncomeVsDebtSection from "./incomeVsDebtSection";
+import IncomeVsExpenditure from "./incomeVsExpenditure";
+import InvestmentRiskPage from "./riskAllocation";
 import {
   AssetType,
   CountryType,
@@ -14,37 +15,38 @@ import {
   GeneratedBudget,
   IncomeItem,
   LiabilityItem,
-} from '../../types'
+} from "../../types";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { useRouter } from 'next/navigation'
-import { countries as countiesWithCode } from '@/Features/onboarding/countries'
-import dynamic from 'next/dynamic'
-import { memo } from 'react'
-import formatCurrency from '@/utils/formatCurrency'
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { countries as countiesWithCode } from "@/Features/onboarding/countries";
+import dynamic from "next/dynamic";
+import { memo } from "react";
+import formatCurrency from "@/utils/formatCurrency";
 
 const VectorMap = dynamic(
-  () => import('@react-jvectormap/core').then((mod) => mod.VectorMap),
-  { ssr: false },
-)
+  () => import("@react-jvectormap/core").then((mod) => mod.VectorMap),
+  { ssr: false }
+);
 
 const tabs = [
-  'Assets',
-  'Liabilities',
-  'Income',
-  'Expenses',
-  'Income Vs Debt',
-  'Income Vs Expenditure',
-]
+  "Assets",
+  "Liabilities",
+  "Income",
+  "Expenses",
+  "Income Vs Debt",
+  "Income Vs Expenditure",
+  "Risk Allocation",
+];
 
 interface LiabilitiesProps {
-  liabilityData: LiabilityItem[]
-  totalDebt: { value: number; percentage: number }
-  openLiabilityModal: () => void
-  currency: string
+  liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
+  openLiabilityModal: () => void;
+  currency: string;
 }
 
 // Component for the Liabilities Content
@@ -52,17 +54,17 @@ const LiabilitiesContent = ({
   liabilityData,
   openLiabilityModal,
   totalDebt,
-  currency
+  currency,
 }: LiabilitiesProps) => {
   const pieChartData = (liabilityData || []).map((item) => ({
     name: item.category,
     value: Number(item?.percentage || 0),
-  }))
+  }));
 
-  const router = useRouter()
+  const router = useRouter();
   const handleAdvisors = () => {
-    router.push('/advisors')
-  }
+    router.push("/advisors");
+  };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
@@ -90,7 +92,7 @@ const LiabilitiesContent = ({
           </div>
           <span
             onClick={openLiabilityModal}
-            className="text-navyLight text-sm hover:cursor-pointer"
+            className="text-navy border p-1 rounded-sm border-navy hover:border-navyLight hover:text-navyLight text-sm hover:cursor-pointer"
           >
             Edit Category
           </span>
@@ -125,7 +127,7 @@ const LiabilitiesContent = ({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Total Liabilities</span>
             <span className="text-lg font-bold">
-            {formatCurrency((totalDebt?.value || 0).toString(), currency)}
+              {formatCurrency((totalDebt?.value || 0).toString(), currency)}
             </span>
           </div>
           <div className="flex justify-between items-center mb-2">
@@ -162,36 +164,36 @@ const LiabilitiesContent = ({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface BalanceOverviewProps {
-  onPortfolioRecommendationClick: () => void
-  onEditAssetClick: () => void
-  assets: AssetType[]
-  totalAssets: any
-  totalIncome: number
-  totalExpense: number
-  countries: { [key: string]: number }
-  incomes: IncomeItem[]
-  openIncomeModal: () => void
-  onEditExpenseClick: () => void
-  expenses: ExpenseItem[]
-  openDebtModal: () => void
-  openDebtServicingModal: () => void
-  openStatementModal: () => void
-  openBudgetModal: () => void
-  openGenBudgetModal: () => void
-  openLiabilityModal: () => void
-  generatedBudget?: GeneratedBudget
-  liabilityData: LiabilityItem[]
-  totalDebt: { value: number; percentage: number }
-  income: { value: number; percentage: number }
-  incomeAndDebt: number
-  totalIncomeFromExpense: { value: number; percentage: number }
-  totalExpenseFromIncome: { value: number; percentage: number }
-  userLiabilitiesEstimation: any
-  currency: string
+  onPortfolioRecommendationClick: () => void;
+  onEditAssetClick: () => void;
+  assets: AssetType[];
+  totalAssets: any;
+  totalIncome: number;
+  totalExpense: number;
+  countries: { [key: string]: number };
+  incomes: IncomeItem[];
+  openIncomeModal: () => void;
+  onEditExpenseClick: () => void;
+  expenses: ExpenseItem[];
+  openDebtModal: () => void;
+  openDebtServicingModal: () => void;
+  openStatementModal: () => void;
+  openBudgetModal: () => void;
+  openGenBudgetModal: () => void;
+  openLiabilityModal: () => void;
+  generatedBudget?: GeneratedBudget;
+  liabilityData: LiabilityItem[];
+  totalDebt: { value: number; percentage: number };
+  income: { value: number; percentage: number };
+  incomeAndDebt: number;
+  totalIncomeFromExpense: { value: number; percentage: number };
+  totalExpenseFromIncome: { value: number; percentage: number };
+  userLiabilitiesEstimation: any;
+  currency: string;
 }
 
 export default function BalanceOverview({
@@ -222,29 +224,29 @@ export default function BalanceOverview({
   userLiabilitiesEstimation,
   currency,
 }: BalanceOverviewProps) {
-  const [activeTab, setActiveTab] = useState('Assets')
+  const [activeTab, setActiveTab] = useState("Assets");
 
   const handlePortfolioRecommendationClick = () => {
-    onPortfolioRecommendationClick()
-  }
+    onPortfolioRecommendationClick();
+  };
 
   const colorScale = {
     min: 1,
     max: 4,
     values: countries,
-    scale: ['#FF1493', '#0f0251', '#DB00FF', '#E15B2D'],
-  }
+    scale: ["#FF1493", "#0f0251", "#DB00FF", "#E15B2D"],
+  };
 
   const pieChartData = (assets || []).map((item) => ({
     name: item.category,
     value: Number(item?.percentage || 0),
-  }))
+  }));
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const findCountry = (code: string) => {
-    return countiesWithCode.find((country) => country.code === code)
-  }
+    return countiesWithCode.find((country) => country.code === code);
+  };
 
   const AssetsContent = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -256,7 +258,7 @@ export default function BalanceOverview({
             <Info className="inline-block ml-1 h-3 w-3 text-gray-400" />
           </h3>
           <span
-            className="text-navyLight text-sm hover:cursor-pointer"
+            className="text-navy rounded-sm border mt-2 border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
             onClick={handlePortfolioRecommendationClick}
           >
             Portfolio Recommendation
@@ -269,13 +271,13 @@ export default function BalanceOverview({
             backgroundColor="transparent"
             zoomOnScroll={false}
             containerStyle={{
-              width: '100%',
-              height: '100%',
+              width: "100%",
+              height: "100%",
             }}
             regionStyle={{
               initial: {
-                fill: '#F3F4F6',
-                stroke: '#E5E7EB',
+                fill: "#F3F4F6",
+                stroke: "#E5E7EB",
                 strokeWidth: 0.5,
                 fillOpacity: 1,
               },
@@ -292,7 +294,7 @@ export default function BalanceOverview({
                   // @ts-ignore
                   min: colorScale.min,
                   max: colorScale.max,
-                  normalizeFunction: 'polynomial',
+                  normalizeFunction: "polynomial",
                 },
               ],
             }}
@@ -323,7 +325,7 @@ export default function BalanceOverview({
           </div>
           <span
             onClick={onEditAssetClick}
-            className="text-navyLight text-sm hover:cursor-pointer"
+            className="text-navy border border-navy p-1 rounded-sm hover:border-navyLight hover:text-navyLight text-sm hover:cursor-pointer"
           >
             Edit Assets
           </span>
@@ -426,7 +428,7 @@ export default function BalanceOverview({
           ))}
       </div>
     </div>
-  )
+  );
 
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
@@ -449,8 +451,8 @@ export default function BalanceOverview({
               key={tab}
               className={`px-4 py-2 rounded-md text-sm transition-colors ${
                 activeTab === tab
-                  ? 'bg-white shadow-sm text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-600 hover:bg-gray-100"
               }`}
               onClick={() => setActiveTab(tab)}
             >
@@ -462,8 +464,8 @@ export default function BalanceOverview({
 
       {/* Content Section */}
       <div className="transition-all duration-300 ease-in-out">
-        {activeTab === 'Assets' && <AssetsContent />}
-        {activeTab === 'Liabilities' && (
+        {activeTab === "Assets" && <AssetsContent />}
+        {activeTab === "Liabilities" && (
           <LiabilitiesContent
             currency={currency}
             liabilityData={liabilityData}
@@ -471,7 +473,7 @@ export default function BalanceOverview({
             totalDebt={totalDebt}
           />
         )}
-        {activeTab === 'Income' && (
+        {activeTab === "Income" && (
           <IncomeSection
             currency={currency}
             income={incomes}
@@ -482,7 +484,7 @@ export default function BalanceOverview({
             generatedBudget={generatedBudget}
           />
         )}
-        {activeTab === 'Expenses' && (
+        {activeTab === "Expenses" && (
           <ExpensesSection
             currency={currency}
             onEditClick={onEditExpenseClick}
@@ -491,7 +493,7 @@ export default function BalanceOverview({
             totalExpense={totalExpense}
           />
         )}
-        {activeTab === 'Income Vs Debt' && (
+        {activeTab === "Income Vs Debt" && (
           <IncomeVsDebtSection
             currency={currency}
             totalDebt={totalDebt}
@@ -502,7 +504,7 @@ export default function BalanceOverview({
             openDebtServicingModal={openDebtServicingModal}
           />
         )}
-        {activeTab === 'Income Vs Expenditure' && (
+        {activeTab === "Income Vs Expenditure" && (
           <IncomeVsExpenditure
             currency={currency}
             totalIncome={totalIncome}
@@ -511,7 +513,9 @@ export default function BalanceOverview({
             openStatementModal={openStatementModal}
           />
         )}
+
+        {activeTab === "Risk Allocation" && <InvestmentRiskPage />}
       </div>
     </Card>
-  )
+  );
 }

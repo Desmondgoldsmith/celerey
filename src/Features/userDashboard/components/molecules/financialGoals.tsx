@@ -16,7 +16,7 @@ interface FinancialGoalsProps {
 }
 
 export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
-  const goalColors = ["#0b026aFF", "#8A4FFF", "#FF6B6B", "#4ECB71"];
+  const goalColors = ["#0b026aFF"];
 
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -61,7 +61,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
             </span>
             <Info className="h-3 w-3 ml-2 text-gray-400" />
           </div>
-          <p className="text-[#2117DC] font-bold hover:cursor-pointer text-sm sm:text-base">
+          <p className="text-navy border-navy bg-white font-bold hover:cursor-pointer text-sm sm:text-base">
             modify
           </p>
         </div>
@@ -103,7 +103,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
             <p className="font-helvatica font-bold text-sm sm:text-base">
               Current Savings
             </p>
-            <div className="text-xl sm:text-2xl font-medium text-[#4F028F]">
+            <div className="text-xl sm:text-2xl font-medium text-navy">
               ${goal.amount.toLocaleString()}
             </div>
             <div className="text-gray-500 mt-1 text-xs sm:text-sm">out of</div>

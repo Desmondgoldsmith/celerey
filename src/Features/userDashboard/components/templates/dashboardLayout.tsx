@@ -17,7 +17,6 @@ import { useAuthStore } from "@/Features/auth/state";
 import { useDashboardStore } from "../../state";
 import { useRouter } from "next/navigation";
 
-// Define the props interface for the DashboardLayout
 interface DashboardLayoutProps {
   children: React.ReactNode;
   onUpgradeClick?: () => void;
@@ -32,10 +31,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const {logout} = useAuthStore()
-  const {resetOnboarding} = useOnboardingStore()
-  const {reset} = useDashboardStore()
-  const router = useRouter()
+  const { logout } = useAuthStore();
+  const { resetOnboarding } = useOnboardingStore();
+  const { reset } = useDashboardStore();
+  const router = useRouter();
 
   // Handle clicks outside the dropdown to close it
   useEffect(() => {
@@ -52,7 +51,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle the plans button click with proper event management
   const handlePlansClick = (e: React.MouseEvent) => {
     console.log("Plans button clicked"); // Debug log
     e.preventDefault();
@@ -61,10 +59,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     // Close dropdown first
     setIsUserDropdownOpen(false);
 
-    // Trigger modal after a short delay to ensure dropdown is closed
     setTimeout(() => {
       if (onUpgradeClick) {
-        console.log("Triggering modal open"); // Debug log
         onUpgradeClick();
       }
     }, 100);
@@ -95,10 +91,10 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         type="button"
         onClick={() => {
           /*  logout logic  */
-          reset()
-          resetOnboarding()
-          logout()
-          router.replace('/auth/signin')
+          reset();
+          resetOnboarding();
+          logout();
+          router.replace("/auth/signin");
         }}
         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
       >
@@ -172,7 +168,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       <nav className="px-6 py-4 border-b bg-white">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           {/* Logo */}
-          <Link href='/dashboard' passHref className="w-32">
+          <Link href="/dashboard" passHref className="w-32">
             <Image
               src="/assets/logo2.svg"
               alt="Celerey"
@@ -232,7 +228,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
       {/* Main Content */}
       <div className="flex-grow bg-gray-100">
-        <main className="max-w-7xl mx-auto px-4 py-6 md:px-6 md:py-8">
+        <main className="max-w-screen-2xl mx-auto px-4 py-6 md:px-6 md:py-8">
           {children}
         </main>
       </div>

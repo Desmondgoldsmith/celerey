@@ -1,27 +1,27 @@
-import React from 'react'
-import { Info } from 'lucide-react'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
-import { GeneratedBudget, IncomeItem } from '../../types'
-import { useDashboardStore } from '../../state'
-import formatCurrency from '@/utils/formatCurrency'
+import React from "react";
+import { Info } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { GeneratedBudget, IncomeItem } from "../../types";
+import { useDashboardStore } from "../../state";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface IncomeSectionProps {
-  totalIncome: number
-  income: IncomeItem[]
-  openIncomeModal: () => void
-  openBudgetModal: () => void
-  generatedBudget?: GeneratedBudget
-  openGenBudgetModal: () => void
-  currency: string
+  totalIncome: number;
+  income: IncomeItem[];
+  openIncomeModal: () => void;
+  openBudgetModal: () => void;
+  generatedBudget?: GeneratedBudget;
+  openGenBudgetModal: () => void;
+  currency: string;
 }
 const colors = [
-  '#1B1856',
-  '#E15B2D',
-  '#8BA78D',
-  '#383396',
-  '#6B7280',
-  '#F56767',
-]
+  "#1B1856",
+  "#E15B2D",
+  "#8BA78D",
+  "#383396",
+  "#6B7280",
+  "#F56767",
+];
 const IncomeSection = ({
   income,
   totalIncome,
@@ -31,12 +31,12 @@ const IncomeSection = ({
   openGenBudgetModal,
   currency,
 }: IncomeSectionProps) => {
-  const { budget } = useDashboardStore()
+  const { budget } = useDashboardStore();
   // Transform income data for the pie chart
   const pieChartData = (income || []).map((item) => ({
     name: item.category,
     value: Number(item?.percentage || 0),
-  }))
+  }));
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -48,7 +48,7 @@ const IncomeSection = ({
               <h3 className="text-lg font-bold">Created Budget</h3>
               <span
                 onClick={openBudgetModal}
-                className="text-navyLight text-sm hover:cursor-pointer"
+                className="text-navy rounded-sm border border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
               >
                 Modify
               </span>
@@ -94,7 +94,7 @@ const IncomeSection = ({
                 <div key={category.id}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-600">
-                      {category?.name || ''}
+                      {category?.name || ""}
                     </span>
                     <span className="text-gray-900">
                       {Number(category?.percentage).toFixed(0)}%
@@ -106,14 +106,14 @@ const IncomeSection = ({
                         className="h-full rounded-full transition-all duration-500"
                         style={{
                           width: `${Number(category?.percentage).toFixed(0)}%`,
-                          backgroundColor: colors[index] || '',
+                          backgroundColor: colors[index] || "",
                         }}
                       />
                     </div>
                     <span className="text-sm text-gray-600 whitespace-nowrap">
                       {formatCurrency(
                         (category?.amount || 0).toString(),
-                        currency,
+                        currency
                       )}
                     </span>
                   </div>
@@ -157,7 +157,7 @@ const IncomeSection = ({
           </div>
           <span
             onClick={openIncomeModal}
-            className="text-navyLight text-sm hover:cursor-pointer"
+            className="text-navy rounded-sm border border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
           >
             Edit Income
           </span>
@@ -228,7 +228,7 @@ const IncomeSection = ({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default IncomeSection
+export default IncomeSection;

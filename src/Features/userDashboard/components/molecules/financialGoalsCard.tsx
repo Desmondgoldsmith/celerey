@@ -1,126 +1,130 @@
-import React, { useEffect, useState } from 'react'
-import { CircleDollarSign, Shield, Heart } from 'lucide-react'
-import { FinancialPlan, EmergencyPlan, FinancialGoal } from '../../types'
-import { differenceInMonths, parseISO, format } from 'date-fns'
-import formatCurrency from '@/utils/formatCurrency'
+import React, { useEffect, useState } from "react";
+import { CircleDollarSign, Shield, Heart } from "lucide-react";
+import { FinancialPlan, EmergencyPlan, FinancialGoal } from "../../types";
+import { differenceInMonths, parseISO, format } from "date-fns";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface FinancialGoalItemProps {
-  goal: FinancialGoal
-  className?: string
-  onModifyGoal: (goal: FinancialGoal) => void
-  currency: string
+  goal: FinancialGoal;
+  className?: string;
+  onModifyGoal: (goal: FinancialGoal) => void;
+  currency: string;
 }
 
 interface FinancialGoalsCardProps {
-  goals: FinancialGoal[]
-  onAddGoalClick: () => void
-  onModifyGoal: (goal: FinancialGoal) => void
-  currency: string
+  goals: FinancialGoal[];
+  onAddGoalClick: () => void;
+  onModifyGoal: (goal: FinancialGoal) => void;
+  currency: string;
 }
 
 const isEmergencyGoal = (goal: FinancialGoal) => {
-  return goal?.type === 'emergency'
-}
+  return goal?.type === "emergency";
+};
 
 // Helper function to get the appropriate icon based on plan name
 const getIcon = (name: string) => {
   switch (name) {
-    case 'savings':
-      return <CircleDollarSign className="w-5 h-5" />
-    case 'emergency':
-      return <Shield className="w-5 h-5" />
-    case 'retirement':
-      return <Heart className="w-5 h-5" />
+    case "savings":
+      return <CircleDollarSign className="w-5 h-5" />;
+    case "emergency":
+      return <Shield className="w-5 h-5" />;
+    case "retirement":
+      return <Heart className="w-5 h-5" />;
     default:
-      return <CircleDollarSign className="w-5 h-5" />
+      return <CircleDollarSign className="w-5 h-5" />;
   }
-}
+};
 
 // Helper function to determine progress bar color
 const getProgressBarColor = (progress: number): string => {
-  if (progress < 30) return 'bg-red-500'
-  if (progress < 70) return 'bg-yellow-500'
-  return 'bg-green-500'
-}
+  if (progress < 30) return "bg-red-500";
+  if (progress < 70) return "bg-yellow-500";
+  return "bg-green-500";
+};
 
 const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
   goal,
-  className = '',
+  className = "",
   onModifyGoal,
-  currency
+  currency,
 }) => {
   const handleModifyClick = () => {
-    onModifyGoal(goal)
-  }
+    onModifyGoal(goal);
+  };
   const getMonthsBetweenDates = (
     startDate: string,
-    endDate: string,
+    endDate: string
   ): number => {
-    if (!startDate || !endDate) return 0
-    return differenceInMonths(parseISO(endDate), parseISO(startDate))
-  }
-
-
+    if (!startDate || !endDate) return 0;
+    return differenceInMonths(parseISO(endDate), parseISO(startDate));
+  };
 
   const formatDate = (dateString: string): string => {
-    return format(new Date(dateString), 'MMM yyyy')
-  }
+    return format(new Date(dateString), "MMM yyyy");
+  };
 
   const getCurrentAmountLabel = (): string => {
     if (isEmergencyGoal(goal)) {
-      return 'Duration'
+      return "Duration";
     }
-    return goal.type === 'retirement' ? 'Current Amount' : 'Current Savings'
-  }
+    return goal.type === "retirement" ? "Current Amount" : "Current Savings";
+  };
 
   const getCurrentAmountDisplay = (): string => {
     if (isEmergencyGoal(goal)) {
-      return `${goal?.currentValue || 0}`
+      return `${goal?.currentValue || 0}`;
     }
-    return formatCurrency(String(goal?.currentValue || '0'), currency).toString()
-  }
+    return formatCurrency(
+      String(goal?.currentValue || "0"),
+      currency
+    ).toString();
+  };
 
   const getTargetAmountDisplay = (): string => {
     if (isEmergencyGoal(goal)) {
-      return `${goal?.targetValue || 0}`
+      return `${goal?.targetValue || 0}`;
     }
-    return formatCurrency(String(goal?.targetValue || '0'),currency).toString()
-  }
+    return formatCurrency(
+      String(goal?.targetValue || "0"),
+      currency
+    ).toString();
+  };
 
   const getCurrentValueLabel = (type: string) => {
     switch (type) {
-      case 'emergency':
-        return 'Emergency Duration'
-      case 'retirement':
-        return 'Current Pension'
-      case 'saving':
-        return 'Current Savings'
+      case "emergency":
+        return "Emergency Duration";
+      case "retirement":
+        return "Current Pension";
+      case "saving":
+        return "Current Savings";
       default:
-        return 'Current Amount'
+        return "Current Amount";
     }
-  }
+  };
 
   const getTargetValueLabel = (type: string) => {
     switch (type) {
-      case 'emergency':
-        return 'Target Duration'
-      case 'retirement':
-        return 'Target Pension'
-      case 'saving':
-        return 'Target Savings'
+      case "emergency":
+        return "Target Duration";
+      case "retirement":
+        return "Target Pension";
+      case "saving":
+        return "Target Savings";
       default:
-        return 'Target Amount'
+        return "Target Amount";
     }
-  }
+  };
 
   return (
     <div className={`relative w-full ${className}`}>
       {/* Progress bar section */}
       <div className="mb-3 sm:mb-4">
-        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
           <div
             className={`h-full ${getProgressBarColor(
-              goal?.percentage || 0,
+              goal?.percentage || 0
             )} transition-all duration-300`}
             style={{ width: `${goal?.percentage || 0}%` }}
           />
@@ -134,14 +138,14 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
       <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-100">
         <div className="flex justify-between items-center mb-3 sm:mb-4">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {getIcon(goal?.type || '')}
+            {getIcon(goal?.type || "")}
             <span className="font-medium text-gray-900 text-sm sm:text-base">
               {goal.name}
             </span>
           </div>
           <button
             onClick={handleModifyClick}
-            className="text-navy text-sm hover:text-navy transition-colors px-2 py-1 sm:p-0"
+            className="text-navy rounded-md p-2 bg-white border  border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
           >
             Modify
           </button>
@@ -151,7 +155,7 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
           <div>
             <p className="text-gray-600">
-              {getCurrentValueLabel(goal?.type || '')}
+              {getCurrentValueLabel(goal?.type || "")}
             </p>
             <p className="font-medium text-gray-900">
               {getCurrentAmountDisplay()}
@@ -162,12 +166,12 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
             <p className="text-gray-600">Duration Start</p>
             <div className="flex items-center justify-between">
               <p className="text-green-600 font-medium">
-                {goal?.startDate ? formatDate(goal.startDate) : 'Not Set'}
+                {goal?.startDate ? formatDate(goal.startDate) : "Not Set"}
               </p>
               {!goal?.startDate && (
                 <button
                   onClick={handleModifyClick}
-                  className="text-navy text-xs font-bold hover:text-navyLight"
+                  className="text-white rounded-md p-1 bg-navy border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
                 >
                   Add
                 </button>
@@ -177,7 +181,7 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
 
           <div>
             <p className="text-gray-600">
-              {getTargetValueLabel(goal?.type || '')}
+              {getTargetValueLabel(goal?.type || "")}
             </p>
             <p className="text-gray-400">{getTargetAmountDisplay()}</p>
           </div>
@@ -186,13 +190,13 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
             <p className="text-gray-600">Duration End</p>
             <div className="flex items-center justify-between">
               <p className="text-gray-400">
-                {' '}
-                {goal?.endDate ? formatDate(goal.endDate) : 'Not Set'}
+                {" "}
+                {goal?.endDate ? formatDate(goal.endDate) : "Not Set"}
               </p>
               {!goal?.endDate && (
                 <button
                   onClick={handleModifyClick}
-                  className="text-navy text-xs font-bold hover:text-navyLight"
+                  className="text-white rounded-md p-1 bg-navy border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
                 >
                   Add
                 </button>
@@ -204,9 +208,9 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
             <p className="text-gray-600">Goal Duration</p>
             <p className="font-medium text-gray-900">
               {getMonthsBetweenDates(
-                goal?.startDate || '',
-                goal?.endDate || '',
-              )}{' '}
+                goal?.startDate || "",
+                goal?.endDate || ""
+              )}{" "}
               Months
             </p>
           </div>
@@ -216,48 +220,48 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
             <p className="text-red-500 font-medium">
               {getMonthsBetweenDates(
                 new Date().toISOString(),
-                goal?.endDate || '',
-              )}{' '}
+                goal?.endDate || ""
+              )}{" "}
               Months
             </p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   goals,
   onAddGoalClick,
   onModifyGoal,
-  currency
+  currency,
 }) => {
-  const [currentPage, setCurrentPage] = React.useState(0)
-  const [plansPerPage, setPlansPerPage] = useState(4)
-  const totalPages = Math.ceil((goals.length + 1) / plansPerPage)
-  
+  const [currentPage, setCurrentPage] = React.useState(0);
+  const [plansPerPage, setPlansPerPage] = useState(4);
+  const totalPages = Math.ceil((goals.length + 1) / plansPerPage);
+
   useEffect(() => {
     // Check if window is available (client-side)
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setPlansPerPage(window.innerWidth < 640 ? 2 : 4);
     }
   }, []); // Empty dependency array ensures this runs only once on mount
 
   // Get plans for current page
   const getCurrentPagePlans = () => {
-    const startIdx = currentPage * plansPerPage
-    let endIdx = startIdx + plansPerPage
+    const startIdx = currentPage * plansPerPage;
+    let endIdx = startIdx + plansPerPage;
 
     // Show all types of plans on the first page
     if (currentPage === 0) {
-      endIdx = plansPerPage - 1
-      return goals.slice(startIdx, endIdx)
+      endIdx = plansPerPage - 1;
+      return goals.slice(startIdx, endIdx);
     }
 
     // Show remaining plans on subsequent pages
-    return goals.slice(startIdx - 1, endIdx - 1)
-  }
+    return goals.slice(startIdx - 1, endIdx - 1);
+  };
 
   return (
     <div className="bg-white rounded-lg p-3 shadow-sm">
@@ -296,7 +300,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
           <div className="flex items-center justify-center min-h-[150px] sm:min-h-[200px] border rounded-lg border-dashed border-gray-300">
             <button
               onClick={onAddGoalClick}
-              className="text-navy text-sm hover:text-navyLight font-medium transition-colors px-4 py-2 sm:p-0"
+              className="text-navy  text-sm hover:text-navyLight font-medium hover:border-navyLight transition-colors sm:p-0"
             >
               Add Goal
             </button>
@@ -312,14 +316,14 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
               key={idx}
               onClick={() => setCurrentPage(idx)}
               className={`w-2 h-2 rounded-full transition-colors ${
-                currentPage === idx ? 'bg-navy' : 'bg-gray-300'
+                currentPage === idx ? "bg-navy" : "bg-gray-300"
               }`}
             />
           ))}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default FinancialGoalsCard
+export default FinancialGoalsCard;
