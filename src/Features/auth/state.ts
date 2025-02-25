@@ -38,6 +38,7 @@ export const useAuthStore = create<AuthState>()(
                 lastName: response.data.last_name,
                 role: response.data.role,
                 userId: response.data.id,
+                advisorRecommendation: response.data.advisor_recommendation,
               };
             });
           } catch (error) {

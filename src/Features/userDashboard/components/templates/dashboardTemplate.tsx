@@ -50,6 +50,7 @@ import EditLiabilitiesModal from "../molecules/editLiabilityModal";
 import EmergencyFundModal from "../molecules/emergencyFundModal";
 import { SubscriptionModal } from "../molecules/subscriptionModal";
 import { useDashboardStore } from "../../state";
+import { useAuthStore } from "@/Features/auth/state";
 
 export const Dashboard: React.FC = () => {
   const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false);
@@ -89,6 +90,8 @@ export const Dashboard: React.FC = () => {
     populateSubscription,
     subscription,
   } = useDashboardStore();
+
+  const { user } = useAuthStore();
 
   useEffect(() => {
     fetchDashboardData();
@@ -480,21 +483,31 @@ export const Dashboard: React.FC = () => {
               </p>
             </div>
 
-            {/* <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
+            <div className="flex flex-col items-start lg:items-center w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row gap-4 mb-4 w-full lg:w-auto">
-                <button className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto">
+                <Link
+                  href="/advisors"
+                  passHref
+                  className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto"
+                >
                   Book Virtual Consultation
                   <span className="text-sm">›</span>
-                </button>
-                <button className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 rounded-full text-sm w-full sm:w-auto">
-                  View Advisors Recommendations
-                  <span className="text-sm">›</span>
-                </button>
+                </Link>
+                {user?.advisorRecommendation && (
+                  <a
+                    target="_blank"
+                    href={`${process.env.NEXT_PUBLIC_API_URL}${user?.advisorRecommendation}`}
+                    className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-200 rounded-full text-sm w-full sm:w-auto"
+                  >
+                    View Advisors Recommendations
+                    <span className="text-sm">›</span>
+                  </a>
+                )}
               </div>
-              <a href="#" className="text-navy text-sm underline">
+              {/* <a href="#" className="text-navy text-sm underline">
                 Upload Financial Documents
-              </a>
-            </div> */}
+              </a> */}
+            </div>
 
             {/* Right Section */}
             <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
@@ -504,14 +517,6 @@ export const Dashboard: React.FC = () => {
                     <Calendar className="h-3 w-3" />
                     <span>{getCurrentDate()}</span>
                   </div>
-                  <Link
-                    href="/advisors"
-                    passHref
-                    className="flex items-center justify-center gap-2 px-3 py-3 bg-navy text-white rounded-full text-sm w-full sm:w-auto"
-                  >
-                    Book Virtual Consultation
-                    <span className="text-sm">›</span>
-                  </Link>
                 </div>
                 {/* <button className="flex items-center gap-2 px-2 py-2 bg-navy text-white rounded-xl w-full sm:w-auto justify-center">
                   Export
@@ -549,7 +554,7 @@ export const Dashboard: React.FC = () => {
             currency={data?.currency || "usd"}
             title="Cashflow"
             metric={{
-              value: data?.totalIncome || 0 - data?.totalExpense || 0,
+              value: data?.totalIncomeFromExpense?.value || 0,
               currency: data?.currency || "usd",
             }}
             icon={<PiggyBank className="h-5 w-5 text-gray-400" />}
@@ -576,7 +581,7 @@ export const Dashboard: React.FC = () => {
             currency={data?.currency || "usd"}
             title="Debt and Liability"
             metric={{
-              value: +data.debt || 0,
+              value: +data.debt?.value || 0,
               currency: data?.currency || "usd",
             }}
             icon={<CreditCard className="h-5 w-5 text-gray-400" />}
