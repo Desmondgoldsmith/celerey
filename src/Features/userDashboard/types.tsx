@@ -123,6 +123,7 @@ export interface GoalFormData {
   goalDuration: string;
   durationStart: string;
   durationEnd: string;
+  targetDuration: string;
   durationLeft: string;
 }
 
