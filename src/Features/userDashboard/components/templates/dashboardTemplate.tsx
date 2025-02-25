@@ -1,13 +1,13 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import { DashboardLayout } from './dashboardLayout'
-import { MetricCard } from '../molecules/metricCard'
-import { FinancialGoalsCard } from '../molecules/financialGoalsCard'
-import BalanceOverviewCard from '../molecules/balanceOverview'
-import AddFinancialGoalModal from '../molecules/addFinancialGoalModal'
-import PortfolioRecommendationsModal from '../molecules/portfolioRecommendationModal'
-import { DUMMY_DASHBOARD_DATA } from '../../constants'
-import Link from 'next/link'
+"use client";
+import React, { useState, useEffect } from "react";
+import { DashboardLayout } from "./dashboardLayout";
+import { MetricCard } from "../molecules/metricCard";
+import { FinancialGoalsCard } from "../molecules/financialGoalsCard";
+import BalanceOverviewCard from "../molecules/balanceOverview";
+import AddFinancialGoalModal from "../molecules/addFinancialGoalModal";
+import PortfolioRecommendationsModal from "../molecules/portfolioRecommendationModal";
+import { DUMMY_DASHBOARD_DATA } from "../../constants";
+import Link from "next/link";
 import {
   Wallet,
   PiggyBank,
@@ -20,7 +20,8 @@ import {
   Bell,
   Search,
   Calendar,
-} from 'lucide-react'
+  CreditCard,
+} from "lucide-react";
 import type {
   AssetType,
   CountryType,
@@ -32,52 +33,52 @@ import type {
   LiabilityItem,
   SubscriptionTier,
   FinancialGoal,
-} from '../../types'
-import EditAssetModal from '../molecules/editAssetModal'
-import EditIncomeModal from '../molecules/editIncomeModal'
-import EditExpenseModal from '../molecules/editExpenseModal'
-import RiskAttitudeModal from '../molecules/riskAttitudeModal'
-import InvestmentExperienceModal from '../molecules/investmentExperience'
-import FinancialKnowledgeModal from '../molecules/financialknowledgeModal'
-import EditDebtModal from '../molecules/editDebtModal'
-import { useRouter } from 'next/navigation'
-import DebtServicingModal from '../molecules/debtServicingModal'
-import MiniIncomeStatementModal from '../molecules/miniIncomeStatementModal'
-import CreateBudgetModal from '../molecules/createBudgetModal'
-import GenerateBudgetModal from '../molecules/generateBudgetModal'
-import EditLiabilitiesModal from '../molecules/editLiabilityModal'
-import EmergencyFundModal from '../molecules/emergencyFundModal'
-import { SubscriptionModal } from '../molecules/subscriptionModal'
-import { useDashboardStore } from '../../state'
+} from "../../types";
+import EditAssetModal from "../molecules/editAssetModal";
+import EditIncomeModal from "../molecules/editIncomeModal";
+import EditExpenseModal from "../molecules/editExpenseModal";
+import RiskAttitudeModal from "../molecules/riskAttitudeModal";
+import InvestmentExperienceModal from "../molecules/investmentExperience";
+import FinancialKnowledgeModal from "../molecules/financialknowledgeModal";
+import EditDebtModal from "../molecules/editDebtModal";
+import { useRouter } from "next/navigation";
+import DebtServicingModal from "../molecules/debtServicingModal";
+import MiniIncomeStatementModal from "../molecules/miniIncomeStatementModal";
+import CreateBudgetModal from "../molecules/createBudgetModal";
+import GenerateBudgetModal from "../molecules/generateBudgetModal";
+import EditLiabilitiesModal from "../molecules/editLiabilityModal";
+import EmergencyFundModal from "../molecules/emergencyFundModal";
+import { SubscriptionModal } from "../molecules/subscriptionModal";
+import { useDashboardStore } from "../../state";
 
 export const Dashboard: React.FC = () => {
-  const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false)
-  const [isAddEmergencyModalOpen, setIsAddEmergencyModalOpen] = useState(false)
+  const [isAddGoalModalOpen, setIsAddGoalModalOpen] = useState(false);
+  const [isAddEmergencyModalOpen, setIsAddEmergencyModalOpen] = useState(false);
   const [financialPlans, setFinancialPlans] = useState<FinancialPlan[]>(
     DUMMY_DASHBOARD_DATA.financialPlans.map((plan) => ({
       ...plan,
-      durationStart: '',
-      durationEnd: '',
+      durationStart: "",
+      durationEnd: "",
       durationLeft: 0,
-    })),
-  )
+    }))
+  );
   const [emergencyPlans, setEmergencyPlans] = useState<EmergencyPlan[]>(
     DUMMY_DASHBOARD_DATA.emergencyPlans.map((plan) => ({
       ...plan,
-      durationStart: '',
-      durationEnd: '',
+      durationStart: "",
+      durationEnd: "",
       durationLeft: 0,
-    })),
-  )
-  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal | null>()
+    }))
+  );
+  const [selectedPlan, setSelectedPlan] = useState<FinancialGoal | null>();
   const [selectedEPlan, setSelectedEPlan] = useState<
     EmergencyPlan | undefined
-  >()
+  >();
 
   const [selectedTier, setSelectedTier] = useState<SubscriptionTier | null>(
-    null,
-  )
-  const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false)
+    null
+  );
+  const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
   const {
     populateDashboardData,
@@ -86,247 +87,244 @@ export const Dashboard: React.FC = () => {
     populateBudget,
     financialGoals,
     populateSubscription,
-    subscription
-  } = useDashboardStore()
+    subscription,
+  } = useDashboardStore();
 
   useEffect(() => {
-    fetchDashboardData()
-  }, [])
+    fetchDashboardData();
+  }, []);
 
   const fetchDashboardData = async () => {
-    await populateDashboardData()
-    await populateFinancialGoals()
-    await populateBudget()
-    await populateSubscription()
-  }
+    await populateDashboardData();
+    await populateFinancialGoals();
+    await populateBudget();
+    await populateSubscription();
+  };
 
   const handlePortfolioRecommendationClick = () => {
-    setIsPortfolioModalOpen(true)
-  }
+    setIsPortfolioModalOpen(true);
+  };
 
   const handleAddGoal = (newGoal: FinancialPlan) => {
     if (selectedPlan) {
       // If modifying, update existing plan
       setFinancialPlans((prev) =>
-        prev.map((plan) => (plan.name === newGoal.name ? newGoal : plan)),
-      )
+        prev.map((plan) => (plan.name === newGoal.name ? newGoal : plan))
+      );
     } else {
       // If adding new plan
-      setFinancialPlans((prev) => [...prev, newGoal])
+      setFinancialPlans((prev) => [...prev, newGoal]);
     }
-  }
+  };
 
   const handleModifyGoal = (goal: FinancialGoal) => {
-    setSelectedPlan(goal)
-    setIsAddGoalModalOpen(true)
-  }
+    setSelectedPlan(goal);
+    setIsAddGoalModalOpen(true);
+  };
 
   const handleModifyEmergency = (plan: EmergencyPlan) => {
-    setSelectedEPlan(plan)
-    setIsAddEmergencyModalOpen(true)
-  }
+    setSelectedEPlan(plan);
+    setIsAddEmergencyModalOpen(true);
+  };
 
-  const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false)
-  const [isLiabilityModalOpen, setIsLiabilityModalOpen] = useState(false)
-  const [isEditDebtModalOpen, setIsEditDebtModalOpen] = useState(false)
+  const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
+  const [isLiabilityModalOpen, setIsLiabilityModalOpen] = useState(false);
+  const [isEditDebtModalOpen, setIsEditDebtModalOpen] = useState(false);
   const [incomeData, setIncomeData] = useState<IncomeItem[]>([
     {
-      category: 'Dividends',
+      category: "Dividends",
       amount: 18354.23,
       percentage: 30,
-      color: '#8BA78D',
+      color: "#8BA78D",
     },
     {
-      category: 'Rental',
+      category: "Rental",
       amount: 12493.32,
       percentage: 28,
-      color: '#1B1856',
+      color: "#1B1856",
     },
     {
-      category: 'Interest Income',
+      category: "Interest Income",
       amount: 14245.21,
       percentage: 18,
-      color: '#E15B2D',
+      color: "#E15B2D",
     },
     {
-      category: 'Other Income',
+      category: "Other Income",
       amount: 9234.64,
       percentage: 24,
-      color: '#383396',
+      color: "#383396",
     },
-  ])
+  ]);
 
   const handleSaveIncome = (updatedIncome: IncomeItem[]) => {
-    setIncomeData(updatedIncome)
-  }
+    setIncomeData(updatedIncome);
+  };
   const [liabilityData, setLiabilityData] = useState<LiabilityItem[]>([
     {
-      category: 'Mortgages',
+      category: "Mortgages",
       amount: 33472.81,
       percentage: 31,
-      color: '#8BA78D',
+      color: "#8BA78D",
     },
     {
-      category: 'Loans',
+      category: "Loans",
       amount: 25353.94,
       percentage: 23,
-      color: '#383396',
+      color: "#383396",
     },
     {
-      category: 'Credit Cards',
+      category: "Credit Cards",
       amount: 23253.43,
       percentage: 20,
-      color: '#E15B2D',
+      color: "#E15B2D",
     },
     {
-      category: 'Asset Finance',
+      category: "Asset Finance",
       amount: 19343.65,
       percentage: 16,
-      color: '#1B1856',
+      color: "#1B1856",
     },
     {
-      category: 'Other Liabilities',
+      category: "Other Liabilities",
       amount: 14353.89,
       percentage: 10,
-      color: '#6B7280',
+      color: "#6B7280",
     },
-  ])
+  ]);
   const handleSaveLiability = (updatedLiability: LiabilityItem[]) => {
-    setLiabilityData(updatedLiability)
-  }
+    setLiabilityData(updatedLiability);
+  };
 
   const openIncomeModal = () => {
-    setIsIncomeModalOpen(true)
-  }
+    setIsIncomeModalOpen(true);
+  };
 
   const openLiabilityModal = () => {
-    setIsLiabilityModalOpen(true)
-  }
+    setIsLiabilityModalOpen(true);
+  };
 
   const openDebtModal = () => {
-    setIsEditDebtModalOpen(true)
-  }
+    setIsEditDebtModalOpen(true);
+  };
 
   const handleSaveModifiedGoal = (modifiedGoal: FinancialPlan) => {
     setFinancialPlans((prev) =>
       prev.map((plan) =>
-        plan.name === modifiedGoal.name ? modifiedGoal : plan,
-      ),
-    )
-    setSelectedPlan(undefined)
-  }
+        plan.name === modifiedGoal.name ? modifiedGoal : plan
+      )
+    );
+    setSelectedPlan(undefined);
+  };
 
   const handleModifiedEmergency = (modifiedEmergency: EmergencyPlan) => {
     setEmergencyPlans((prev) =>
       prev.map((plan) =>
-        plan.name === modifiedEmergency.name ? modifiedEmergency : plan,
-      ),
-    )
-    setSelectedEPlan(undefined)
-  }
+        plan.name === modifiedEmergency.name ? modifiedEmergency : plan
+      )
+    );
+    setSelectedEPlan(undefined);
+  };
 
-  const [isEditAssetModalOpen, setIsEditAssetModalOpen] = useState(false)
-  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false)
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
-  const [isViewRiskModal, setisViewRiskModal] = useState(false)
-  const [isViewInvestModal, setisViewInvestModal] = useState(false)
-  const [isViewFinancialModal, setisViewFinancialModal] = useState(false)
-  const [userAssets, setUserAssets] = useState<AssetType[]>([])
-  const [userLiabilities, setUserLiabilities] = useState<LiabilityItem[]>([])
-  const [userLiabilitiesEstimation, setUserLiabilitiesEstimation] = useState<
-    any
-  >({
-    servicingAmount: 0,
-    servicingPeriod: 10,
-  })
+  const [isEditAssetModalOpen, setIsEditAssetModalOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isViewRiskModal, setisViewRiskModal] = useState(false);
+  const [isViewInvestModal, setisViewInvestModal] = useState(false);
+  const [isViewFinancialModal, setisViewFinancialModal] = useState(false);
+  const [userAssets, setUserAssets] = useState<AssetType[]>([]);
+  const [userLiabilities, setUserLiabilities] = useState<LiabilityItem[]>([]);
+  const [userLiabilitiesEstimation, setUserLiabilitiesEstimation] =
+    useState<any>({
+      servicingAmount: 0,
+      servicingPeriod: 10,
+    });
 
-  const [userIncome, setUserIncome] = useState<IncomeItem[]>([])
-  const [userExpense, setUserExpense] = useState<ExpenseItem[]>([])
+  const [userIncome, setUserIncome] = useState<IncomeItem[]>([]);
+  const [userExpense, setUserExpense] = useState<ExpenseItem[]>([]);
 
   const [userCountries, setUserCountries] = useState<{ [key: string]: number }>(
-    {},
-  )
+    {}
+  );
 
   const handleEditAssetClick = () => {
-    setIsEditAssetModalOpen(true)
-  }
+    setIsEditAssetModalOpen(true);
+  };
 
   const handleViewRiskModal = () => {
-    setisViewRiskModal(true)
-  }
+    setisViewRiskModal(true);
+  };
 
   const handleViewFinancialModal = () => {
-    setisViewFinancialModal(true)
-  }
+    setisViewFinancialModal(true);
+  };
 
   const handleViewInvestModal = () => {
-    setisViewInvestModal(true)
-  }
+    setisViewInvestModal(true);
+  };
 
   const handleSaveAssets = (assets: AssetType[], countries: CountryType[]) => {
     // setUserAssets(assets)
     // setUserCountries(countries)
-  }
+  };
 
-  const [isGenBudgetModalOpen, setIsGenBudgetModalOpen] = useState(false)
+  const [isGenBudgetModalOpen, setIsGenBudgetModalOpen] = useState(false);
   const [generatedBudget, setGeneratedBudget] = useState<
     GeneratedBudget | undefined
-  >()
+  >();
 
   const handleGenerateBudget = (budget: GeneratedBudget) => {
-    setGeneratedBudget(budget)
-    setIsGenBudgetModalOpen(false)
-  }
+    setGeneratedBudget(budget);
+    setIsGenBudgetModalOpen(false);
+  };
 
-  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false)
+  const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [expensesData, setExpensesData] = useState<ExpenseItem[]>([
     {
-      category: 'Home',
+      category: "Home",
       amount: 33472.81,
       percentage: 18,
-      color: '#1B1856',
+      color: "#1B1856",
     },
     {
-      category: 'Healthcare',
+      category: "Healthcare",
       amount: 25353.94,
       percentage: 8,
-      color: '#D3D3D3',
+      color: "#D3D3D3",
     },
     {
-      category: 'Education',
+      category: "Education",
       amount: 14353.89,
       percentage: 23,
-      color: '#FF69B4',
+      color: "#FF69B4",
     },
     {
-      category: 'Travel',
+      category: "Travel",
       amount: 23253.43,
       percentage: 15,
-      color: '#E15B2D',
+      color: "#E15B2D",
     },
     {
-      category: 'Giving',
+      category: "Giving",
       amount: 19343.65,
       percentage: 13,
-      color: '#383396',
+      color: "#383396",
     },
     {
-      category: 'Childcare',
+      category: "Childcare",
       amount: 14353.89,
       percentage: 20,
-      color: '#8BA78D',
+      color: "#8BA78D",
     },
-  ])
+  ]);
 
   const handleSaveExpenses = (updatedExpenses: ExpenseItem[]) => {
-    setExpensesData(updatedExpenses)
-    setIsExpenseModalOpen(false)
-  }
+    setExpensesData(updatedExpenses);
+    setIsExpenseModalOpen(false);
+  };
 
-  const [
-    isEditDebtServicingModalOpen,
-    setIsEditDebtServicingModalOpen,
-  ] = useState(false)
+  const [isEditDebtServicingModalOpen, setIsEditDebtServicingModalOpen] =
+    useState(false);
 
   // const handleUpdateDebtServicing = (amount: number) => {
   //   setDebtMetrics(prev => ({
@@ -337,133 +335,134 @@ export const Dashboard: React.FC = () => {
   // };
 
   const openDebtServicingModal = () => {
-    setIsEditDebtServicingModalOpen(true)
-  }
+    setIsEditDebtServicingModalOpen(true);
+  };
 
-  const [isStatementModalOpen, setIsStatementModalOpen] = useState(false)
+  const [isStatementModalOpen, setIsStatementModalOpen] = useState(false);
 
   // Handle statement download
   const handleStatementDownload = (duration: string) => {
-    console.log(`Downloading statement for ${duration} months`)
-  }
+    console.log(`Downloading statement for ${duration} months`);
+  };
 
   const openStatementModal = () => {
-    setIsStatementModalOpen(true)
-  }
+    setIsStatementModalOpen(true);
+  };
 
-  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false)
+  const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false);
 
   // Handle budget creation
   const handleCreateBudget = (duration: string, categories: any) => {
-    console.log('Creating budget:', { duration, categories })
-  }
+    console.log("Creating budget:", { duration, categories });
+  };
 
   const openBudgetModal = () => {
-    setIsBudgetModalOpen(true)
-  }
+    setIsBudgetModalOpen(true);
+  };
 
   const handleSubscriptionSelect = (tier: SubscriptionTier) => {
-    setSelectedTier(tier)
-    setIsSubscriptionModalOpen(false)
-    setIsPaymentModalOpen(true)
-  }
+    setSelectedTier(tier);
+    setIsSubscriptionModalOpen(false);
+    setIsPaymentModalOpen(true);
+  };
 
   const handleOpenSubscriptionModal = () => {
-    setIsSubscriptionModalOpen(true)
-  }
+    setIsSubscriptionModalOpen(true);
+  };
 
-  const router = useRouter()
+  const router = useRouter();
   const handleAdvisors = () => {
-    router.push('/advisors')
-  }
+    router.push("/advisors");
+  };
 
   useEffect(() => {
     const assetColors = [
-      '#1B1856',
-      '#E15B2D',
-      '#8BA78D',
-      '#383396',
-      '#6B7280',
-      '#F56767',
-    ]
+      "#1B1856",
+      "#E15B2D",
+      "#8BA78D",
+      "#383396",
+      "#6B7280",
+      "#F56767",
+    ];
 
     const assets = Object.keys(data?.assets || {}).map((key, index) => ({
       category: key
-        .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
         .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
       key,
       amount: data.assets[key].value,
       percentage: data.assets[key].percentage.toFixed(0),
       color: assetColors[index],
-    }))
-    setUserAssets(assets)
+    }));
+    setUserAssets(assets);
 
-    const userCountries: any = {}
+    const userCountries: any = {};
 
-    ;(data?.assetCountries || []).map(
-      (country: string, index: number) => (userCountries[country] = index + 1),
-    )
-    setUserCountries(userCountries)
+    (data?.assetCountries || []).map(
+      (country: string, index: number) => (userCountries[country] = index + 1)
+    );
+    setUserCountries(userCountries);
 
     const liabilities = Object.keys(data?.liabilities || {}).map(
       (key, index) => ({
         category: key
-          .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+          .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
           .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
         key,
         amount: data.liabilities[key]?.value || 0,
         percentage: Number(data.liabilities[key]?.percentage || 0).toFixed(0),
         color: assetColors[index],
-      }),
-    )
-    setUserLiabilities(liabilities)
+      })
+    );
+    setUserLiabilities(liabilities);
 
     const income = Object.keys(data?.allIncome || {}).map((key, index) => ({
       category: key
-        .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
         .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
       key,
       amount: data.allIncome[key]?.value || 0,
       percentage: Number(data.allIncome[key]?.percentage || 0).toFixed(0),
       color: assetColors[index],
-    }))
-    setUserIncome(income)
+    }));
+    setUserIncome(income);
 
     const expense = Object.keys(data?.expense || {}).map((key, index) => ({
       category: key
-        .replace(/([A-Z])/g, ' $1') // Add space before uppercase letters
+        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
         .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
       key,
       amount: data?.expense[key]?.value || 0,
       percentage: Number(data?.expense[key]?.percentage || 0).toFixed(0),
       color: assetColors[index],
-    }))
-    setUserExpense(expense)
+    }));
+    setUserExpense(expense);
 
-
-    setUserLiabilitiesEstimation(data?.liabilitiesEstimation || {servicingAmount: 0, servicingPeriod: 10})
-  }, [data])
+    setUserLiabilitiesEstimation(
+      data?.liabilitiesEstimation || { servicingAmount: 0, servicingPeriod: 10 }
+    );
+  }, [data]);
 
   const getCurrentDate = (): string => {
-    const date = new Date()
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-    return formatter.format(date)
-  }
+    const date = new Date();
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    return formatter.format(date);
+  };
 
   return (
     <DashboardLayout onUpgradeClick={handleOpenSubscriptionModal}>
-      <div className="max-w-7xl mx-auto px-3 pt-4 space-y-6">
+      <div className="max-w-screen-2xl mx-auto px-3 pt-4 space-y-6">
         {/* Header */}
         <div className="bg-white rounded-2xl p-3">
           <div className="flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-0">
             {/* Left Section */}
             <div className="space-y-2 w-full lg:w-auto">
               <h1 className="text-3xl lg:text-4xl text-center lg:text-start font-cirka tracking-tight">
-                Welcome, {data?.userName || ''}!
+                Welcome, {data?.userName || ""}!
               </h1>
               <div className="flex items-center text-center lg:text-start gap-1.5">
                 <span className="text-sm text-center lg:text-start">
@@ -472,10 +471,12 @@ export const Dashboard: React.FC = () => {
                 <span className="text-gray-400 text-sm hover:cursor-pointer">
                   ⓘ
                 </span>
-                <span className='bg-[#ECF4FF] text-[#0840D0] capitalize px-2 ml-1 rounded-sm'>{subscription?.plan || ''} User</span>
+                <span className="bg-[#ECF4FF] text-[#0840D0] capitalize px-2 ml-1 rounded-sm">
+                  {subscription?.plan || ""} User
+                </span>
               </div>
               <p className="text-gray-400 text-center lg:text-start text-medium">
-                Manage your money easily with Celerey.
+                Manage your wealth easily with Celerey.
               </p>
             </div>
 
@@ -498,7 +499,7 @@ export const Dashboard: React.FC = () => {
             {/* Right Section */}
             <div className="flex flex-col items-start lg:items-end gap-2 w-full lg:w-auto">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full lg:w-auto">
-                <div className='flex flex-col gap-y-2'>
+                <div className="flex flex-col gap-y-2">
                   <div className="flex items-center gap-2 px-2 py-2 bg-gray-50 rounded-xl text-gray-600 w-full sm:w-auto justify-center sm:justify-start">
                     <Calendar className="h-3 w-3" />
                     <span>{getCurrentDate()}</span>
@@ -536,61 +537,76 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <MetricCard
             currency="usd"
-            title="Net Worth"
-            metric={{ value: data.netWorth, currency: data?.currency || 'usd' }}
+            title="Total Net Worth"
+            metric={{ value: data.netWorth, currency: data?.currency || "usd" }}
             icon={<Wallet className="h-5 w-5 text-gray-400" />}
+            infoText="Your total net worth is calculated from your liabilities and assets. It is an estimate of wealth considering these factors."
           />
           <MetricCard
-            currency={data?.currency || 'usd'}
-            title="Balance"
+            currency={data?.currency || "usd"}
+            title="Cashflow"
             metric={{
-              value: data?.totalIncome || 0 + data?.debt?.value || 0,
-              currency: data?.currency || 'usd',
+              value: data?.totalIncome || 0 - data?.totalExpense || 0,
+              currency: data?.currency || "usd",
             }}
             icon={<PiggyBank className="h-5 w-5 text-gray-400" />}
+            infoText="Your cashflow is a measure of your cash inflows and outflows. It is the result of this, a positive cashflow is usually a good indicator."
           />
           <MetricCard
-            currency={data?.currency || 'usd'}
+            currency={data?.currency || "usd"}
+            title="Savings"
+            metric={{ value: +data.savings, currency: data?.currency || "usd" }}
+            icon={<Banknote className="h-5 w-5 text-gray-400" />}
+            infoText="Savings is a measure of how much money you have in your personal reserves to cater for things in emergency situations."
+          />
+          <MetricCard
+            currency={data?.currency || "usd"}
             title="Income"
             metric={{
               value: data?.income?.value || 0,
-              currency: data?.currency || 'usd',
+              currency: data?.currency || "usd",
             }}
             icon={<TrendingUp className="h-5 w-5 text-gray-400" />}
+            infoText="This is a general measure of how much revenue you are personally generating. This allows us to estimate how much you personally make over a specific duration."
           />
           <MetricCard
-            currency={data?.currency || 'usd'}
+            currency={data?.currency || "usd"}
+            title="Debt and Liability"
+            metric={{
+              value: +data.debt || 0,
+              currency: data?.currency || "usd",
+            }}
+            icon={<CreditCard className="h-5 w-5 text-gray-400" />}
+            infoText="This is a quick measure of how much debt you have and what you have to pay off in the long and medium term"
+          />
+          <MetricCard
+            currency={data?.currency || "usd"}
             title="Expenses"
             metric={{
               value: data.totalExpense,
-              currency: data?.currency || 'usd',
+              currency: data?.currency || "usd",
             }}
             icon={<TrendingDown className="h-5 w-5 text-gray-400" />}
-          />
-          <MetricCard
-            currency={data?.currency || 'usd'}
-            title="Savings"
-            metric={{ value: +data.savings, currency: data?.currency || 'usd' }}
-            icon={<Banknote className="h-5 w-5 text-gray-400" />}
+            infoText="Expenses are a quick measure of what you have been spending your income on, it allows us to monitor and effectively track your spending."
           />
         </div>
 
         {/* Financial Goals and Balance Overview */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <FinancialGoalsCard
-            currency={data?.currency || 'usd'}
+            currency={data?.currency || "usd"}
             goals={financialGoals || []}
             onAddGoalClick={() => {
-              setSelectedPlan(null)
-              setIsAddGoalModalOpen(true)
+              setSelectedPlan(null);
+              setIsAddGoalModalOpen(true);
             }}
             onModifyGoal={handleModifyGoal}
           />
           <BalanceOverviewCard
-            currency={data?.currency || 'usd'}
+            currency={data?.currency || "usd"}
             onPortfolioRecommendationClick={handlePortfolioRecommendationClick}
             onEditAssetClick={handleEditAssetClick}
             assets={userAssets}
@@ -628,7 +644,7 @@ export const Dashboard: React.FC = () => {
               </h3>
               <span
                 onClick={() => {
-                  router.push('/questionnaire/risk')
+                  router.push("/questionnaire/risk");
                 }}
                 className="text-navyLight text-sm hover:cursor-pointer"
               >
@@ -646,7 +662,7 @@ export const Dashboard: React.FC = () => {
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
             {data?.calculatedRiskTolerance?.title ||
               data?.userRiskTolerance ||
-              ''}
+              ""}
           </p>
         </div>
 
@@ -659,7 +675,7 @@ export const Dashboard: React.FC = () => {
               </h3>
               <span
                 onClick={() => {
-                  router.push('/questionnaire/financial')
+                  router.push("/questionnaire/financial");
                 }}
                 className="text-navyLight text-sm hover:cursor-pointer"
               >
@@ -675,7 +691,7 @@ export const Dashboard: React.FC = () => {
             </button>
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
-            {data?.userFinancialKnowledge || ''}
+            {data?.userFinancialKnowledge || ""}
           </p>
         </div>
 
@@ -704,16 +720,16 @@ export const Dashboard: React.FC = () => {
         data?.calculatedFinancialKnowledge && (
           <div className="bg-gray-50 p-4 rounded-lg mt-6 flex flex-col lg:flex-row justify-between items-start gap-4 lg:gap-6">
             <p className="text-gray-600 flex-grow text-sm lg:text-base leading-relaxed">
-              You are a{' '}
+              You are a{" "}
               <span className="font-medium text-navy capitalize">
                 {data?.calculatedRiskTolerance?.title}
-              </span>{' '}
-              risk taker with an{' '}
+              </span>{" "}
+              risk taker with an{" "}
               <span className="font-medium text-navy capitalize">
-                {data?.userFinancialKnowledge || ''}
-              </span>{' '}
+                {data?.userFinancialKnowledge || ""}
+              </span>{" "}
               investment experience. Notwithstanding this, your financial
-              knowledge is{' '}
+              knowledge is{" "}
               <span className="font-medium text-navy capitalize">
                 {data?.calculatedFinancialKnowledge}
               </span>
@@ -735,8 +751,8 @@ export const Dashboard: React.FC = () => {
       <AddFinancialGoalModal
         isOpen={isAddGoalModalOpen}
         onClose={() => {
-          setIsAddGoalModalOpen(false)
-          setSelectedPlan(undefined)
+          setIsAddGoalModalOpen(false);
+          setSelectedPlan(undefined);
         }}
         initialData={selectedPlan}
         isModifying={!!selectedPlan}
@@ -745,8 +761,8 @@ export const Dashboard: React.FC = () => {
       <EmergencyFundModal
         isOpen={isAddEmergencyModalOpen}
         onClose={() => {
-          setIsAddEmergencyModalOpen(false)
-          setSelectedEPlan(undefined)
+          setIsAddEmergencyModalOpen(false);
+          setSelectedEPlan(undefined);
         }}
         onEditEmergency={handleModifiedEmergency}
         initialData={selectedEPlan}
@@ -819,7 +835,7 @@ export const Dashboard: React.FC = () => {
         isOpen={isEditDebtModalOpen}
         onClose={() => setIsEditDebtModalOpen(false)}
         onSave={(updatedDebts) => {
-          setIsEditDebtModalOpen(false)
+          setIsEditDebtModalOpen(false);
         }}
       />
 
@@ -841,7 +857,7 @@ export const Dashboard: React.FC = () => {
         onSubscriptionSelect={handleSubscriptionSelect}
       />
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

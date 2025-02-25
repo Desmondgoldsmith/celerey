@@ -1,17 +1,17 @@
-import React from 'react'
-import { Info } from 'lucide-react'
-import Link from 'next/link'
-import formatCurrency from '@/utils/formatCurrency'
+import React from "react";
+import { Info } from "lucide-react";
+import Link from "next/link";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface DebtMetrics {
-  totalDebt: number
-  estimatedDebtServicing: number | null
-  debtServicingPeriod: number
-  netBalance: number
-  incomePercentage: number
-  amortizedDebtPercentage: number
-  incomeAmount: number
-  amortizedDebtAmount: number
+  totalDebt: number;
+  estimatedDebtServicing: number | null;
+  debtServicingPeriod: number;
+  netBalance: number;
+  incomePercentage: number;
+  amortizedDebtPercentage: number;
+  incomeAmount: number;
+  amortizedDebtAmount: number;
 }
 
 const initialMetrics: DebtMetrics = {
@@ -23,16 +23,16 @@ const initialMetrics: DebtMetrics = {
   amortizedDebtPercentage: 35,
   incomeAmount: 33880.76,
   amortizedDebtAmount: 18243.48,
-}
+};
 
 interface IncomeVsDebtProps {
-  totalDebt: { value: number; percentage: number }
-  income: { value: number; percentage: number }
-  incomeAndDebt: number
-  userLiabilitiesEstimation: any
-  openDebtModal: () => void
-  openDebtServicingModal: () => void
-  currency: string
+  totalDebt: { value: number; percentage: number };
+  income: { value: number; percentage: number };
+  incomeAndDebt: number;
+  userLiabilitiesEstimation: any;
+  openDebtModal: () => void;
+  openDebtServicingModal: () => void;
+  currency: string;
 }
 
 const IncomeVsDebtSection = ({
@@ -59,7 +59,7 @@ const IncomeVsDebtSection = ({
               </div>
               <button
                 onClick={openDebtModal}
-                className="text-navyLight text-sm hover:underline"
+                className="text-navy rounded-sm border  border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:underline"
               >
                 Modify
               </button>
@@ -80,7 +80,7 @@ const IncomeVsDebtSection = ({
               </div>
               <button
                 onClick={openDebtServicingModal}
-                className="text-navyLight text-sm hover:underline"
+                className="text-navy rounded-sm border border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:underline"
               >
                 Modify
               </button>
@@ -88,7 +88,7 @@ const IncomeVsDebtSection = ({
             <span className="text-[#1B1856] text-2xl font-bold">
               {formatCurrency(
                 String(userLiabilitiesEstimation?.servicingAmount || 0),
-                currency,
+                currency
               )}
             </span>
           </div>
@@ -115,7 +115,7 @@ const IncomeVsDebtSection = ({
           <div>
             <Link
               href="/advisors"
-              className="text-navyLight text-sm hover:underline"
+              className="text-navy rounded-sm border mt-2 border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:underline"
             >
               Speak to an Advisor
             </Link>
@@ -180,7 +180,7 @@ const IncomeVsDebtSection = ({
                     className="h-full bg-[#FFA500] rounded-full transition-all duration-500"
                     style={{
                       width: `${Number(totalDebt?.percentage || 0).toFixed(
-                        0,
+                        0
                       )}%`,
                     }}
                   />
@@ -228,7 +228,7 @@ const IncomeVsDebtSection = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default IncomeVsDebtSection
+export default IncomeVsDebtSection;

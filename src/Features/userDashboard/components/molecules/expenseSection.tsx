@@ -1,26 +1,26 @@
-import React from 'react'
-import { Info } from 'lucide-react'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
-import { ExpenseItem } from '../../types'
-import formatCurrency from '@/utils/formatCurrency'
-import { useDashboardStore } from '../../state'
+import React from "react";
+import { Info } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { ExpenseItem } from "../../types";
+import formatCurrency from "@/utils/formatCurrency";
+import { useDashboardStore } from "../../state";
 
 interface ExpenseSectionProps {
-  onEditClick: () => void
-  expenses: ExpenseItem[]
-  totalExpense: number
-  currency: string
-  openBudgetModal: () => void
+  onEditClick: () => void;
+  expenses: ExpenseItem[];
+  totalExpense: number;
+  currency: string;
+  openBudgetModal: () => void;
 }
 
 const colors = [
-  '#1B1856',
-  '#E15B2D',
-  '#8BA78D',
-  '#383396',
-  '#6B7280',
-  '#F56767',
-]
+  "#1B1856",
+  "#E15B2D",
+  "#8BA78D",
+  "#383396",
+  "#6B7280",
+  "#F56767",
+];
 
 const ExpensesSection = ({
   onEditClick,
@@ -34,9 +34,9 @@ const ExpensesSection = ({
     name: item.category,
     value: Number(item.percentage),
     fill: item.color,
-  }))
+  }));
 
-  const { budget } = useDashboardStore()
+  const { budget } = useDashboardStore();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -48,7 +48,7 @@ const ExpensesSection = ({
               <h3 className="text-lg font-bold">Created Budget</h3>
               <span
                 onClick={openBudgetModal}
-                className="text-navyLight text-sm hover:cursor-pointer"
+                className="text-navy rounded-sm border  border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
               >
                 Modify
               </span>
@@ -94,7 +94,7 @@ const ExpensesSection = ({
                 <div key={category.id}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-gray-600">
-                      {category?.name || ''}
+                      {category?.name || ""}
                     </span>
                     <span className="text-gray-900">
                       {Number(category?.percentage).toFixed(0)}%
@@ -106,14 +106,14 @@ const ExpensesSection = ({
                         className="h-full rounded-full transition-all duration-500"
                         style={{
                           width: `${Number(category?.percentage).toFixed(0)}%`,
-                          backgroundColor: colors[index] || '',
+                          backgroundColor: colors[index] || "",
                         }}
                       />
                     </div>
                     <span className="text-sm text-gray-600 whitespace-nowrap">
                       {formatCurrency(
                         (category?.amount || 0).toString(),
-                        currency,
+                        currency
                       )}
                     </span>
                   </div>
@@ -158,7 +158,7 @@ const ExpensesSection = ({
           </div>
           <span
             onClick={onEditClick}
-            className="text-navyLight text-sm hover:cursor-pointer"
+            className="text-navy rounded-sm border  border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
           >
             Edit Category
           </span>
@@ -231,7 +231,7 @@ const ExpensesSection = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ExpensesSection
+export default ExpensesSection;
