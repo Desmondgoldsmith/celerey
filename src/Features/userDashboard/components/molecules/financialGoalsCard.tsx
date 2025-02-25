@@ -167,7 +167,7 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
 
       <button
         onClick={handleModifyClick}
-        className="absolute top-0 right-0 text-navy rounded-md px-3 py-1 bg-white border border-navy text-xs font-bold hover:text-purple-700 hover:border-purple-700"
+        className="absolute top-0 right-0 text-navy rounded-md px-3 py-1 bg-white border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
       >
         Modify
       </button>
@@ -305,7 +305,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
             <div className="flex items-center justify-center border rounded-lg border-dashed border-gray-300 p-4">
               <button
                 onClick={onAddGoalClick}
-                className="flex items-center border border-navy rounded-sm p-1 justify-center text-navy hover:text-purple-700 font-medium"
+                className="flex items-center border border-navy rounded-sm p-1 justify-center text-navy hover:text-navyLight font-medium"
               >
                 Add Financial Goal
               </button>

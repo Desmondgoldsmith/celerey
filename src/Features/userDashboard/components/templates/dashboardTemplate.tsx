@@ -646,7 +646,7 @@ export const Dashboard: React.FC = () => {
                 onClick={() => {
                   router.push("/questionnaire/risk");
                 }}
-                className="text-navyLight text-sm hover:cursor-pointer"
+                className="text-white bg-navy border-navy border rounded-sm p-1 text-sm hover:cursor-pointer"
               >
                 Take Assessment
               </span>
@@ -677,7 +677,7 @@ export const Dashboard: React.FC = () => {
                 onClick={() => {
                   router.push("/questionnaire/financial");
                 }}
-                className="text-navyLight text-sm hover:cursor-pointer"
+                className="text-white bg-navy border-navy border rounded-sm p-1 text-sm hover:cursor-pointer"
               >
                 Take Assessment
               </span>
