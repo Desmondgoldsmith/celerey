@@ -439,6 +439,9 @@ export const Dashboard: React.FC = () => {
       color: assetColors[index],
     }))
     setUserExpense(expense)
+
+
+    setUserLiabilitiesEstimation(data?.liabilitiesEstimation || {servicingAmount: 0, servicingPeriod: 10})
   }, [data])
 
   const getCurrentDate = (): string => {

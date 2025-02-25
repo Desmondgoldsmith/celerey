@@ -45,15 +45,16 @@ export const saveFinancialInfoApi = async (
 ): Promise<ApiResponse> => {
   const financialInfoToBeSaved = {
     currency: data.currency,
-    income: data.income,
+    active_income: data.activeIncome,
+    passive_income: data.passiveIncome,
     expense: data.annualExpenses,
     assets: data.assets,
     liabilities: data.liabilities,
     savings: data.savings,
     emergency_fund: {
-      hasEmergencyFund: true,
-      currentMonths: "6 Months",
-      targetMonths: "14 Months",
+      hasEmergencyFund: data.emergencyFund?.hasEmergencyFunds,
+      currentMonths: data.emergencyFund?.emergencyFundAmount,
+      targetMonths: data.emergencyFund?.targetMonths,
     },
     retirement: data.retirement,
   };
