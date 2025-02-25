@@ -126,7 +126,13 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
   financial: {
     netWorth: "0",
     currency: "",
-    income: {
+    activeIncome: {
+      salary: "",
+      commissions: "",
+      bonuses: "",
+      otherIncome: "",
+    },
+    passiveIncome: {
       rentalIncome: "",
       dividends: "",
       interestIncome: "",
@@ -366,7 +372,8 @@ export const useOnboardingStore = create<OnboardingStore>()(
           state.formData.financial.savings = response.data.savings;
           state.formData.financial.netWorth = response.data.net_worth;
           state.formData.financial.retirement = response.data.retirement;
-          state.formData.financial.income = response.data.income;
+          state.formData.financial.activeIncome = response.data.active_income;
+          state.formData.financial.passiveIncome = response.data.passive_income;
         });
       }
     },

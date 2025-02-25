@@ -248,7 +248,13 @@ export interface PersonalInfoFormData {
 
 export interface FinancialInfoFormData {
   currency: string;
-  income: {
+  activeIncome: {
+    salary: string;
+    bonuses: string;
+    commissions: string;
+    otherIncome: string;
+  };
+  passiveIncome: {
     rentalIncome: string;
     dividends: string;
     interestIncome: string;
@@ -281,15 +287,11 @@ export interface FinancialInfoFormData {
     currentSavings: string;
     targetSavings: string;
   };
-   emergencyFund: {
+  emergencyFund: {
     hasEmergencyFunds: string;
     emergencyFundAmount: string;
     targetMonths: string;
   };
-  // debt: {
-  // hasDebt: string;
-  // debtAmount: string;
-  // };
   retirement: {
     retirementAge: string;
     targetRetirementIncome: string;

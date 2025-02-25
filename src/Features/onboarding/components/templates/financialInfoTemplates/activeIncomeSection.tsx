@@ -1,44 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface ExpensesSectionProps {
+interface ActiveIncomeSectionProps {
   values: {
-    home: string;
-    childcare: string;
-    education: string;
-    healthcare: string;
-    travel: string;
-    giving: string;
+    salary: string;
+    bonuses: string;
+    commissions: string;
+    otherIncome: string;
   };
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean;
-    isNextSectionComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
-const ExpensesSection: React.FC<ExpensesSectionProps> = ({
+const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
   values,
   onChange,
+  isComplete,
   isNextSectionComplete,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
+    console.log(`Field: ${field}, Value: ${value}`);
     if (/^\d*$/.test(value)) {
       onChange(field, value);
     }
   };
 
-  const isComplete =
-    values &&
-    values?.home !== "" &&
-    values?.childcare !== "" &&
-    values?.education !== "" &&
-    values?.healthcare !== "" &&
-    values?.travel !== "" &&
-    values?.giving !== "";
+  useEffect(() => {
+    if (isComplete && isNextSectionComplete) {
+    }
+  }, [isComplete, isNextSectionComplete]);
 
   return (
     <div>
@@ -51,13 +47,14 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            3
+            1
           </div>
-          <h3 className="font-medium">Expenses</h3>
+
+          <h3 className="font-medium">Active Income</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="text-blue-800 text-sm font-semibold"
+          className="text-blue-900 text-sm font-semibold"
         >
           {isComplete ? "Edit" : "Fill Details"}
         </button>
@@ -65,96 +62,70 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Whats your annual expenses?"
-        description="Enter your annual expenses below."
-        // sectionNumber={2}
-        sectionTitle="Expenses"
-        nextSectionTitle="Assets"
+        title="What is your annual active income?"
+        description="Enter your annual active income details below."
+        // sectionNumber={1}
+        sectionTitle="Active Income"
+        nextSectionTitle="Passive Income"
         isSectionComplete={isComplete}
         isNextSectionComplete={isNextSectionComplete}
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Home</label>
+            <label className="flex-1">Salary</label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.home || ""}
-              onChange={(e) => handleInputChange("home", e.target.value)}
+              value={values?.salary || ""}
+              onChange={(e) => handleInputChange("salary", e.target.value)}
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Childcare</label>
+            <label className="flex-1">Bonuses</label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.childcare || ""}
-              onChange={(e) => handleInputChange("childcare", e.target.value)}
+              value={values?.bonuses || ""}
+              onChange={(e) => handleInputChange("bonuses", e.target.value)}
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Education</label>
+            <label className="flex-1">Commissions</label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.education || ""}
-              onChange={(e) => handleInputChange("education", e.target.value)}
+              value={values?.commissions || ""}
+              onChange={(e) => handleInputChange("commissions", e.target.value)}
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Healthcare</label>
+            <label className="flex-1">Other Income</label>
             <Input
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values?.healthcare || ""}
-              onChange={(e) => handleInputChange("healthcare", e.target.value)}
-            />
-          </div>
-          <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Travel</label>
-            <Input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              className="flex-1 appearance-none"
-              value={values?.travel || ""}
-              onChange={(e) => handleInputChange("travel", e.target.value)}
-            />
-          </div>
-          <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Giving</label>
-            <Input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              className="flex-1 appearance-none"
-              value={values?.giving || ""}
-              onChange={(e) => handleInputChange("giving", e.target.value)}
+              value={values?.otherIncome || ""}
+              onChange={(e) => handleInputChange("otherIncome", e.target.value)}
             />
           </div>
         </div>
         {/* <div className="flex gap-4 mt-4">
           <Button
             variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1"
           >
             Back
           </Button>
           <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
+            onClick={() => setIsModalOpen(false)}
             className="flex-1 bg-navy hover:bg-navyLight text-white"
             disabled={!isComplete}
           >
@@ -166,4 +137,4 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
   );
 };
 
-export { ExpensesSection };
+export { ActiveIncomeSection };

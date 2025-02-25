@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { IncomeSection } from "./incomeSection";
+import { PassiveIncomeSection } from "./passiveIncomeSection";
+import { ActiveIncomeSection } from "./ActiveIncomeSection";
+
 import { AssetsSection } from "./assetsSection";
 import { ExpensesSection } from "./expensesSection";
 import { LiabilitiesSection } from "./liabilitiesSection";
@@ -18,25 +20,61 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     updateSectionProgress,
     completeSection,
   } = useOnboardingStore();
-  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>(
-    formData.financial
-  );
+  const [localFormData, setLocalFormData] = useState<FinancialInfoSchema>({
+    ...formData.financial,
+    activeIncome: {
+      salary: formData.financial.activeIncome?.salary || "",
+      bonuses: formData.financial.activeIncome?.bonuses || "",
+      commissions: formData.financial.activeIncome?.commissions || "",
+      otherIncome: formData.financial.activeIncome?.otherIncome || "",
+    },
+    passiveIncome: {
+      rentalIncome: formData.financial.passiveIncome?.rentalIncome || "",
+      dividends: formData.financial.passiveIncome?.dividends || "",
+      interestIncome: formData.financial.passiveIncome?.interestIncome || "",
+      otherIncome: formData.financial.passiveIncome?.otherIncome || "",
+    },
+  });
 
   const [sectionCompletion, setSectionCompletion] = useState({
-    income: false,
+    activeIncome: false,
+    passiveIncome: false,
     annualExpenses: false,
     assets: false,
     liabilities: false,
   });
 
   useEffect(() => {
-    setLocalFormData(formData.financial);
+    setLocalFormData({
+      ...formData.financial,
+      activeIncome: {
+        salary: formData.financial.activeIncome?.salary || "",
+        bonuses: formData.financial.activeIncome?.bonuses || "",
+        commissions: formData.financial.activeIncome?.commissions || "",
+        otherIncome: formData.financial.activeIncome?.otherIncome || "",
+      },
+      passiveIncome: {
+        rentalIncome: formData.financial.passiveIncome?.rentalIncome || "",
+        dividends: formData.financial.passiveIncome?.dividends || "",
+        interestIncome: formData.financial.passiveIncome?.interestIncome || "",
+        otherIncome: formData.financial.passiveIncome?.otherIncome || "",
+      },
+    });
   }, [formData.financial]);
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const { income, assets, annualExpenses, liabilities } = localFormData;
-      const isIncomeComplete = Object.values(income || {}).every(
+      const {
+        activeIncome,
+        passiveIncome,
+        assets,
+        annualExpenses,
+        liabilities,
+      } = localFormData;
+      const isActiveIncomeComplete = Object.values(activeIncome || {}).every(
+        (value) => value !== ""
+      );
+      const isPassiveIncomeComplete = Object.values(passiveIncome || {}).every(
         (value) => value !== ""
       );
       const isExpensesComplete = Object.values(annualExpenses || {}).every(
@@ -50,7 +88,8 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       );
 
       setSectionCompletion({
-        income: isIncomeComplete,
+        activeIncome: isActiveIncomeComplete,
+        passiveIncome: isPassiveIncomeComplete,
         annualExpenses: isExpensesComplete,
         assets: isAssetsComplete,
         liabilities: isLiabilitiesComplete,
@@ -127,23 +166,32 @@ const FinancialDetailsScreen: React.FC<any> = () => {
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
         {" "}
-        <h1 className="text-4xl font-cirka">
-          Financial Details
-        </h1>
+        <h1 className="text-4xl font-cirka">Financial Details</h1>
         <p className="text-gray-600">
           Fill the different forms that appear from the pop-ups
         </p>
       </div>
       <div className="space-y-4 max-w-sm mx-auto">
         <div className="border-b pb-4">
-          <IncomeSection
-            values={localFormData.income}
+          <ActiveIncomeSection
+            values={localFormData.activeIncome}
             onChange={(field, value) =>
-              handleFormUpdate("income", field, value)
+              handleFormUpdate("activeIncome", field, value)
             }
             onContinue={handleContinue}
-            isComplete={sectionCompletion.income}
-            isNextSectionComplete={sectionCompletion.annualExpenses} 
+            isComplete={sectionCompletion.activeIncome}
+            isNextSectionComplete={sectionCompletion.passiveIncome}
+          />
+        </div>
+        <div className="border-b pb-4">
+          <PassiveIncomeSection
+            values={localFormData.passiveIncome}
+            onChange={(field, value) =>
+              handleFormUpdate("passiveIncome", field, value)
+            }
+            onContinue={handleContinue}
+            isComplete={sectionCompletion.passiveIncome}
+            isNextSectionComplete={sectionCompletion.annualExpenses}
           />
         </div>
         <div className="border-b pb-4">
@@ -154,8 +202,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.annualExpenses}
-            isNextSectionComplete={sectionCompletion.assets} 
-            
+            isNextSectionComplete={sectionCompletion.assets}
           />
         </div>
         <div className="border-b pb-4">
@@ -166,7 +213,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.assets}
-            isNextSectionComplete={sectionCompletion.liabilities} 
+            isNextSectionComplete={sectionCompletion.liabilities}
           />
         </div>
 
@@ -178,7 +225,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
             }
             onContinue={handleContinue}
             isComplete={sectionCompletion.liabilities}
-            isAssetsComplete={sectionCompletion.assets} 
+            isAssetsComplete={sectionCompletion.assets}
           />
         </div>
       </div>

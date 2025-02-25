@@ -78,7 +78,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            3
+            4
           </div>
           <h3 className="font-medium">Assets</h3>
         </div>

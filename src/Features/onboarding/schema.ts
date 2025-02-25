@@ -40,7 +40,13 @@ export interface PersonalInfoSchema {
 export interface FinancialInfoSchema {
   netWorth?: string;
   currency: string;
-  income: {
+  activeIncome: {
+    salary: string;
+    commissions: string;
+    bonuses: string;
+    otherIncome: string;
+  };
+  passiveIncome: {
     rentalIncome: string;
     dividends: string;
     interestIncome: string;
@@ -94,7 +100,7 @@ export interface GoalsInfoSchema {
 }
 
 export interface RiskInfoSchema {
-  userRiskTolerance: Option,
+  userRiskTolerance: Option;
   riskTolerance: Option;
   riskAttitude: Option;
   riskReaction: Option;
