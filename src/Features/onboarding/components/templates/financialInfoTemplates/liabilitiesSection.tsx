@@ -48,7 +48,7 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            4
+            5
           </div>
           <h3 className="font-medium">Liabilities</h3>
         </div>

@@ -51,7 +51,7 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            2
+            3
           </div>
           <h3 className="font-medium">Expenses</h3>
         </div>
