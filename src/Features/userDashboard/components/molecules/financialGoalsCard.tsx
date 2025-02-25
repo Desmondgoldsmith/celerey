@@ -36,13 +36,6 @@ const getIcon = (name: string) => {
   }
 };
 
-// Helper function to determine progress bar color
-const getProgressBarColor = (progress: number): string => {
-  if (progress < 30) return "bg-red-500";
-  if (progress < 70) return "bg-yellow-500";
-  return "bg-green-500";
-};
-
 const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
   goal,
   className = "",
@@ -52,6 +45,7 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
   const handleModifyClick = () => {
     onModifyGoal(goal);
   };
+
   const getMonthsBetweenDates = (
     startDate: string,
     endDate: string
@@ -60,44 +54,14 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
     return differenceInMonths(parseISO(endDate), parseISO(startDate));
   };
 
-  const formatDate = (dateString: string): string => {
-    return format(new Date(dateString), "MMM yyyy");
-  };
-
-  const getCurrentAmountLabel = (): string => {
-    if (isEmergencyGoal(goal)) {
-      return "Duration";
-    }
-    return goal.type === "retirement" ? "Current Amount" : "Current Savings";
-  };
-
-  const getCurrentAmountDisplay = (): string => {
-    if (isEmergencyGoal(goal)) {
-      return `${goal?.currentValue || 0}`;
-    }
-    return formatCurrency(
-      String(goal?.currentValue || "0"),
-      currency
-    ).toString();
-  };
-
-  const getTargetAmountDisplay = (): string => {
-    if (isEmergencyGoal(goal)) {
-      return `${goal?.targetValue || 0}`;
-    }
-    return formatCurrency(
-      String(goal?.targetValue || "0"),
-      currency
-    ).toString();
-  };
-
   const getCurrentValueLabel = (type: string) => {
     switch (type) {
       case "emergency":
-        return "Emergency Duration";
+        return "Current Duration";
       case "retirement":
-        return "Current Pension";
+        return "Current Amount";
       case "saving":
+      case "savings":
         return "Current Savings";
       default:
         return "Current Amount";
@@ -109,124 +73,104 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
       case "emergency":
         return "Target Duration";
       case "retirement":
-        return "Target Pension";
+        return "Target Amount";
       case "saving":
-        return "Target Savings";
+      case "savings":
+        return "Target Amount";
       default:
         return "Target Amount";
     }
   };
 
+  const getCurrentAmountDisplay = (): string => {
+    if (isEmergencyGoal(goal)) {
+      return `${goal?.currentValue || 0} `;
+    }
+    return formatCurrency(
+      String(goal?.currentValue || "0"),
+      currency
+    ).toString();
+  };
+
+  const getTargetAmountDisplay = (): string => {
+    if (isEmergencyGoal(goal)) {
+      return `${goal?.targetValue || 0} `;
+    }
+    return formatCurrency(
+      String(goal?.targetValue || "0"),
+      currency
+    ).toString();
+  };
+
+  const hasTargetValue =
+    goal?.targetValue !== undefined && goal?.targetValue !== null;
+  const hasGoalDuration = goal?.startDate && goal?.endDate;
+
   return (
     <div className={`relative w-full ${className}`}>
+      <h3 className="font-medium text-lg mb-2">{goal.name}</h3>
+
+      <p className="text-xl font-bold mb-2">
+        {Number(goal?.percentage || 0).toFixed(0)}%
+      </p>
+
       {/* Progress bar section */}
-      <div className="mb-3 sm:mb-4">
+      <div className="mb-3">
         <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className={`h-full ${getProgressBarColor(
-              goal?.percentage || 0
-            )} transition-all duration-300`}
+            className="h-full bg-navy transition-all duration-300"
             style={{ width: `${goal?.percentage || 0}%` }}
           />
         </div>
-        <p className="text-lg sm:text-xl font-bold mt-2">
-          {Number(goal?.percentage || 0).toFixed(1)}%
-        </p>
       </div>
 
-      {/* Plan details card */}
-      <div className="p-3 sm:p-4 bg-white rounded-lg border border-gray-100">
-        <div className="flex justify-between items-center mb-3 sm:mb-4">
-          <div className="flex items-center gap-1.5 sm:gap-2">
-            {getIcon(goal?.type || "")}
-            <span className="font-medium text-gray-900 text-sm sm:text-base">
-              {goal.name}
-            </span>
-          </div>
-          <button
-            onClick={handleModifyClick}
-            className="text-navy rounded-md p-2 bg-white border  border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
-          >
-            Modify
-          </button>
+      {/* Plan details */}
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div>
+          <p className="text-sm text-gray-600">
+            {getCurrentValueLabel(goal?.type || "")}
+          </p>
+          <p className="font-bold text-base">{getCurrentAmountDisplay()}</p>
         </div>
 
-        {/* Plan details grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3 sm:gap-y-2 text-sm">
+        {hasTargetValue && (
           <div>
-            <p className="text-gray-600">
-              {getCurrentValueLabel(goal?.type || "")}
-            </p>
-            <p className="font-medium text-gray-900">
-              {getCurrentAmountDisplay()}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-gray-600">Duration Start</p>
-            <div className="flex items-center justify-between">
-              <p className="text-green-600 font-medium">
-                {goal?.startDate ? formatDate(goal.startDate) : "Not Set"}
-              </p>
-              {!goal?.startDate && (
-                <button
-                  onClick={handleModifyClick}
-                  className="text-white rounded-md p-1 bg-navy border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
-                >
-                  Add
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <p className="text-gray-600">
+            <p className="text-sm text-gray-600">
               {getTargetValueLabel(goal?.type || "")}
             </p>
             <p className="text-gray-400">{getTargetAmountDisplay()}</p>
           </div>
+        )}
 
-          <div>
-            <p className="text-gray-600">Duration End</p>
-            <div className="flex items-center justify-between">
-              <p className="text-gray-400">
-                {" "}
-                {goal?.endDate ? formatDate(goal.endDate) : "Not Set"}
-              </p>
-              {!goal?.endDate && (
-                <button
-                  onClick={handleModifyClick}
-                  className="text-white rounded-md p-1 bg-navy border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
-                >
-                  Add
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div>
-            <p className="text-gray-600">Goal Duration</p>
-            <p className="font-medium text-gray-900">
+        <div>
+          <p className="text-sm text-gray-600">Goal Duration</p>
+          {hasGoalDuration ? (
+            <p className="text-base font-bold">
               {getMonthsBetweenDates(
                 goal?.startDate || "",
                 goal?.endDate || ""
               )}{" "}
-              Months
+              months
             </p>
-          </div>
-
-          <div>
-            <p className="text-gray-600">Duration Left</p>
-            <p className="text-red-500 font-medium">
-              {getMonthsBetweenDates(
-                new Date().toISOString(),
-                goal?.endDate || ""
-              )}{" "}
-              Months
-            </p>
-          </div>
+          ) : (
+            <div className="flex items-center mt-1">
+              <button
+                onClick={handleModifyClick}
+                className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
+              >
+                Add
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      <button
+        onClick={handleModifyClick}
+        className="absolute top-0 right-0 text-navy rounded-md px-3 py-1 bg-white border border-navy text-xs font-bold hover:text-navyLight hover:border-navyLight"
+      >
+        Modify
+      </button>
     </div>
   );
 };
@@ -237,80 +181,154 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
   onModifyGoal,
   currency,
 }) => {
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const [plansPerPage, setPlansPerPage] = useState(4);
-  const totalPages = Math.ceil((goals.length + 1) / plansPerPage);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  useEffect(() => {
-    // Check if window is available (client-side)
-    if (typeof window !== "undefined") {
-      setPlansPerPage(window.innerWidth < 640 ? 2 : 4);
-    }
-  }, []); // Empty dependency array ensures this runs only once on mount
+  const emergencyGoal = goals.find((goal) => goal.type === "emergency");
+  const retirementGoal = goals.find((goal) => goal.type === "retirement");
+  const savingsGoal = goals.find(
+    (goal) => goal.type === "savings" || goal.type === "saving"
+  );
 
-  // Get plans for current page
-  const getCurrentPagePlans = () => {
-    const startIdx = currentPage * plansPerPage;
-    let endIdx = startIdx + plansPerPage;
+  const additionalGoals = goals.filter((goal) => {
+    return (
+      goal.type !== "emergency" &&
+      goal.type !== "retirement" &&
+      goal.type !== "savings" &&
+      goal.type !== "saving"
+    );
+  });
 
-    // Show all types of plans on the first page
+  // Calculate total pages needed
+  const totalAdditionalPages = Math.ceil(additionalGoals.length / 4);
+  const totalPages = 1 + totalAdditionalPages;
+
+  // Get goals for the current page
+  const getCurrentPageGoals = () => {
     if (currentPage === 0) {
-      endIdx = plansPerPage - 1;
-      return goals.slice(startIdx, endIdx);
+      // First page shows standard goals
+      return [];
+    } else {
+      // Get additional goals for this page (4 per page)
+      const startIdx = (currentPage - 1) * 4;
+      const endIdx = startIdx + 4;
+      return additionalGoals.slice(startIdx, endIdx);
     }
-
-    // Show remaining plans on subsequent pages
-    return goals.slice(startIdx - 1, endIdx - 1);
   };
 
+  // Determine if pagination should be shown
+  const shouldShowPagination = additionalGoals.length > 0;
+
   return (
-    <div className="bg-white rounded-lg p-3 shadow-sm">
+    <div className="bg-white rounded-lg p-6">
       {/* Header section */}
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <CircleDollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
-          <h2 className="text-lg sm:text-xl font-cirka text-navy font-medium">
-            Financial & Emergency Goals
-          </h2>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <CircleDollarSign className="w-5 h-5 text-navy" />
+          <h2 className="text-xl font-medium text-navy">Financial Goals</h2>
           <span className="text-sm text-gray-500 hover:cursor-pointer">ⓘ</span>
         </div>
+        <h3 className="text-xl font-medium">{goals.length} Financial plans</h3>
       </div>
 
-      <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-        {goals.length} plans
-      </h3>
+      {/* Plans grid layout (2x2) */}
+      <div className="grid grid-cols-2 gap-4">
+        {currentPage === 0 ? (
+          // First page with standard goals
+          <>
+            {/* Top-left: Emergency Fund */}
+            <div className="border rounded-lg p-4">
+              {emergencyGoal ? (
+                <FinancialPlanItem
+                  goal={emergencyGoal}
+                  onModifyGoal={onModifyGoal}
+                  className="relative"
+                  currency={currency}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full">
+                  <p className="text-gray-500 mb-2">No Emergency Fund</p>
+                  <button
+                    onClick={onAddGoalClick}
+                    className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
+            </div>
 
-      {/* plans */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
-        <div className="hidden sm:block absolute right-1/2 top-0 bottom-0 border-l border-dashed border-gray-200 -ml-3" />
-        <div className="hidden sm:block absolute left-0 right-0 top-1/2 border-t border-dashed border-gray-200" />
+            {/* Top-right: Retirement Fund */}
+            <div className="border rounded-lg p-4">
+              {retirementGoal ? (
+                <FinancialPlanItem
+                  goal={retirementGoal}
+                  onModifyGoal={onModifyGoal}
+                  className="relative"
+                  currency={currency}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full">
+                  <p className="text-gray-500 mb-2">No Retirement Fund</p>
+                  <button
+                    onClick={onAddGoalClick}
+                    className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
+            </div>
 
-        {getCurrentPagePlans().map((goal, index: number) => (
-          <FinancialPlanItem
-            key={goal?.id || index}
-            goal={goal}
-            onModifyGoal={onModifyGoal}
-            className="relative"
-            currency={currency}
-          />
-        ))}
+            {/* Bottom-left: Savings Plan */}
+            <div className="border rounded-lg p-4">
+              {savingsGoal ? (
+                <FinancialPlanItem
+                  goal={savingsGoal}
+                  onModifyGoal={onModifyGoal}
+                  className="relative"
+                  currency={currency}
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full">
+                  <p className="text-gray-500 mb-2">No Savings Plan</p>
+                  <button
+                    onClick={onAddGoalClick}
+                    className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
+            </div>
 
-        {/* Add Goal button on first page */}
-        {currentPage === 0 && (
-          <div className="flex items-center justify-center min-h-[150px] sm:min-h-[200px] border rounded-lg border-dashed border-gray-300">
-            <button
-              onClick={onAddGoalClick}
-              className="text-navy  text-sm hover:text-navyLight font-medium hover:border-navyLight transition-colors sm:p-0"
-            >
-              Add Goal
-            </button>
-          </div>
+            {/* Bottom-right: Add Financial Goal button */}
+            <div className="flex items-center justify-center border rounded-lg border-dashed border-gray-300 p-4">
+              <button
+                onClick={onAddGoalClick}
+                className="flex items-center border border-navy rounded-sm p-1 justify-center text-navy hover:text-navyLight font-medium"
+              >
+                Add Financial Goal
+              </button>
+            </div>
+          </>
+        ) : (
+          // Additional pages with extra goals (4 per page)
+          getCurrentPageGoals().map((goal, idx) => (
+            <div key={goal?.id || idx} className="border rounded-lg p-4">
+              <FinancialPlanItem
+                goal={goal}
+                onModifyGoal={onModifyGoal}
+                className="relative"
+                currency={currency}
+              />
+            </div>
+          ))
         )}
       </div>
 
       {/* Pagination dots */}
-      {totalPages > 1 && (
-        <div className="flex justify-center gap-2 mt-6 sm:mt-4">
+      {shouldShowPagination && (
+        <div className="flex justify-center gap-2 mt-6">
           {Array.from({ length: totalPages }).map((_, idx) => (
             <button
               key={idx}
@@ -318,6 +336,7 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
               className={`w-2 h-2 rounded-full transition-colors ${
                 currentPage === idx ? "bg-navy" : "bg-gray-300"
               }`}
+              aria-label={`Go to page ${idx + 1}`}
             />
           ))}
         </div>
