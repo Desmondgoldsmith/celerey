@@ -3,7 +3,7 @@ import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface IncomeSectionProps {
+interface PassiveIncomeSectionProps {
   values: {
     rentalIncome: string;
     dividends: string;
@@ -16,7 +16,7 @@ interface IncomeSectionProps {
   isNextSectionComplete: boolean;
 }
 
-const IncomeSection: React.FC<IncomeSectionProps> = ({
+const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
   values,
   onChange,
   isComplete,
@@ -46,10 +46,10 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
                 : "bg-white border-blue-900 border text-blue-900"
             }`}
           >
-            1
+            2
           </div>
 
-          <h3 className="font-medium">Income</h3>
+          <h3 className="font-medium">Passive Income</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
@@ -64,8 +64,8 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
         title="What is your annual passive income?"
         description="Enter your annual passive income details below."
         // sectionNumber={1}
-        sectionTitle="Income"
-        nextSectionTitle="Expenses"
+        sectionTitle="Passive Income"
+        nextSectionTitle="Active Income"
         isSectionComplete={isComplete}
         isNextSectionComplete={isNextSectionComplete}
       >
@@ -140,4 +140,4 @@ const IncomeSection: React.FC<IncomeSectionProps> = ({
   );
 };
 
-export { IncomeSection };
+export { PassiveIncomeSection };
