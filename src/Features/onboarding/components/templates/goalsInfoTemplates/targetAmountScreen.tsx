@@ -1,16 +1,16 @@
-import React from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useOnboardingStore } from '@/Features/onboarding/state'
-import Spinner from '@/components/ui/spinner'
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import Spinner from "@/components/ui/spinner";
 
 interface TargetAmountScreenProps {
   values: {
-    targetAmount: string
-  }
-  onBack: () => void
-  onContinue: () => void
-  onChange: (field: string, value: string) => void
+    targetAmount: string;
+  };
+  onBack: () => void;
+  onContinue: () => void;
+  onChange: (field: string, value: string) => void;
 }
 
 export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
@@ -19,25 +19,28 @@ export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
   onContinue,
   onBack,
 }) => {
-  const { loading, saveGoalsInfo } = useOnboardingStore()
+  const { loading, saveGoalsInfo } = useOnboardingStore();
 
-  const isComplete = values.targetAmount !== ''
+  const isComplete = values.targetAmount !== "";
 
-  const handleInputChange = (field: 'targetAmount', value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value)
+  const formatNumberWithCommas = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const handleInputChange = (field: "targetAmount", value: string) => {
+    if (/^\d*$/.test(value.replace(/,/g, ""))) {
+      onChange(field, formatNumberWithCommas(value.replace(/,/g, "")));
     }
-  }
+  };
 
   const handleContinue = async () => {
     try {
-      await saveGoalsInfo()
-      onContinue()
-    }catch(error) {
-      console.log("Error", error)
+      await saveGoalsInfo();
+      onContinue();
+    } catch (error) {
+      console.log("Error", error);
     }
-
-  }
+  };
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
@@ -53,11 +56,11 @@ export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
           <Input
             type="text"
             inputMode="numeric"
-            pattern="[0-9]*"
+            pattern="[0-9,]*"
             className="flex-1 appearance-none"
-            value={values.targetAmount || ''}
+            value={values.targetAmount || ""}
             onChange={(e) => {
-              handleInputChange('targetAmount', e.target.value)
+              handleInputChange("targetAmount", e.target.value);
             }}
           />
         </div>
@@ -67,7 +70,6 @@ export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
           Back
         </Button>
         <Button
-          
           onClick={handleContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
           disabled={!isComplete || loading}
@@ -76,5 +78,5 @@ export const TargetAmountScreen: React.FC<TargetAmountScreenProps> = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};

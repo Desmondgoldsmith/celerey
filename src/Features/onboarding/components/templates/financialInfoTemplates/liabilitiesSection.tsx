@@ -23,14 +23,42 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
   const isComplete =
-  values &&
+    values &&
     values?.mortgages !== "" &&
     values?.loans !== "" &&
     values?.creditCards !== "" &&
@@ -65,7 +93,6 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What are your liabilities?"
         description="Enter your liabilities"
-        // sectionNumber={4}
         sectionTitle="Liabilities"
         isSectionComplete={isComplete}
       >
@@ -74,10 +101,9 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             <label className="flex-1">Mortgages</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.mortgages || ""}
+              value={formatCurrency(values?.mortgages)}
               onChange={(e) => handleInputChange("mortgages", e.target.value)}
             />
           </div>
@@ -85,10 +111,9 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             <label className="flex-1">Loans</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.loans || ""}
+              value={formatCurrency(values?.loans)}
               onChange={(e) => handleInputChange("loans", e.target.value)}
             />
           </div>
@@ -96,10 +121,9 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             <label className="flex-1">Credit Cards</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.creditCards || ""}
+              value={formatCurrency(values?.creditCards)}
               onChange={(e) => handleInputChange("creditCards", e.target.value)}
             />
           </div>
@@ -107,10 +131,9 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             <label className="flex-1">Asset Finance</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.assetFinance || ""}
+              value={formatCurrency(values?.assetFinance)}
               onChange={(e) =>
                 handleInputChange("assetFinance", e.target.value)
               }
@@ -120,36 +143,15 @@ const LiabilitiesSection: React.FC<LiabilitiesSectionProps> = ({
             <label className="flex-1">Other Liabilities</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.otherLiabilities || ""}
+              value={formatCurrency(values?.otherLiabilities)}
               onChange={(e) =>
                 handleInputChange("otherLiabilities", e.target.value)
               }
             />
           </div>
         </div>
-        {/* <div className="flex gap-4 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={!isComplete}
-          >
-            Continue
-          </Button>
-        </div> */}
       </Modal>
     </div>
   );

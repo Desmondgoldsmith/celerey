@@ -31,22 +31,52 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   const [bgIndex, setBgIndex] = useState(0);
 
   const backgroundColors = [
-    "rgba(56, 51, 150, 0.05)", 
-    "rgba(225, 91, 45, 0.05)", 
-    "rgba(27, 24, 86, 0.05)", 
-    "rgba(139, 167, 141, 0.05)", 
-    "rgba(170, 170, 170, 0.05)", 
+    "rgba(56, 51, 150, 0.05)",
+    "rgba(225, 91, 45, 0.05)",
+    "rgba(27, 24, 86, 0.05)",
+    "rgba(139, 167, 141, 0.05)",
+    "rgba(170, 170, 170, 0.05)",
   ];
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
   const handleAddCountry = () => {
     if (selectedCountry && !values?.assetCountries?.includes(selectedCountry)) {
-      const updatedCountries = values?.assetCountries ? [...values?.assetCountries, selectedCountry] : [selectedCountry];
+      const updatedCountries = values?.assetCountries
+        ? [...values?.assetCountries, selectedCountry]
+        : [selectedCountry];
       onChange("assetCountries", updatedCountries);
       setSelectedCountry("");
       setBgIndex((bgIndex + 1) % backgroundColors.length); // Rotate to the next color
@@ -105,10 +135,9 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             <label className="flex-1">Real Estate</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.realEstate || ""}
+              value={formatCurrency(values?.realEstate)}
               onChange={(e) => handleInputChange("realEstate", e.target.value)}
             />
           </div>
@@ -116,10 +145,9 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             <label className="flex-1">Cash</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.cash || ""}
+              value={formatCurrency(values?.cash)}
               onChange={(e) => handleInputChange("cash", e.target.value)}
             />
           </div>
@@ -127,10 +155,9 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             <label className="flex-1">Public Securities</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.publicSecurities || ""}
+              value={formatCurrency(values?.publicSecurities)}
               onChange={(e) =>
                 handleInputChange("publicSecurities", e.target.value)
               }
@@ -140,10 +167,9 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             <label className="flex-1">Private Securities</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.privateSecurities || ""}
+              value={formatCurrency(values?.privateSecurities)}
               onChange={(e) =>
                 handleInputChange("privateSecurities", e.target.value)
               }
@@ -180,7 +206,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
           </div>
           <div className="flex flex-wrap gap-2">
             {values?.assetCountries?.map((country, index) => {
-              const bgColor = backgroundColors[index % backgroundColors.length]; 
+              const bgColor = backgroundColors[index % backgroundColors.length];
               return (
                 <div
                   key={index}

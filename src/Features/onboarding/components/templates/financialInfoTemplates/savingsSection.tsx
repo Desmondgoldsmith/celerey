@@ -13,19 +13,49 @@ interface SavingsSectionProps {
   isNextSectionComplete: boolean;
 }
 
-const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNextSectionComplete }) => {
+const SavingsSection: React.FC<SavingsSectionProps> = ({
+  values,
+  onChange,
+  isNextSectionComplete,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
   const isComplete =
-  values &&
-    values?.currentSavings !== "" &&
-    values?.targetSavings !== "";
+    values && values?.currentSavings !== "" && values?.targetSavings !== "";
 
   return (
     <div>
@@ -65,10 +95,9 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNex
             <label className="flex-1">Current Savings</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.currentSavings || ""}
+              value={formatCurrency(values?.currentSavings)}
               onChange={(e) =>
                 handleInputChange("currentSavings", e.target.value)
               }
@@ -78,10 +107,9 @@ const SavingsSection: React.FC<SavingsSectionProps> = ({ values, onChange, isNex
             <label className="flex-1">Target Savings</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.targetSavings || ""}
+              value={formatCurrency(values?.targetSavings)}
               onChange={(e) =>
                 handleInputChange("targetSavings", e.target.value)
               }

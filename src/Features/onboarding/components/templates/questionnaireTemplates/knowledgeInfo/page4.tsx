@@ -11,7 +11,27 @@ interface PageProps {
 }
 const QUESTIONS = [
   {
-    id: "hybridInvestmentsKnowledge",
+    id: "commoditiesKnowledge",
+    question:
+      "How much knowledge do you have about commodities (oil, metals, agricultural, etc.)?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
+    ],
+  },
+  {
+    id: "commoditiesExperience",
+    question:
+      "How much investing experience do you have with commodities (oil, metals, agricultural, etc.)?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "1-3", value: "1 to 3 years" },
+      { id: "over3Years", value: "More Than 3 Years" },
+    ],
+  },
+  {
+    id: "structuredProductsKnowledge",
     question:
       "How much knowledge do you have about structured products (hybrid investments)?",
     options: [
@@ -34,26 +54,6 @@ const QUESTIONS = [
     id: "privateMarketInstrumentsExperience",
     question:
       "How much investing experience do you have with private market instruments (venture capital, private equity, hedge funds, etc.)?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "1-3", value: "1 to 3 years" },
-      { id: "over3Years", value: "More Than 3 Years" },
-    ],
-  },
-  {
-    id: "realEstateKnowledge",
-    question:
-      "How much knowledge do you have about real estate (residential, commercial, industrial, REITS, etc.)?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
-    ],
-  },
-  {
-    id: "realEstateExperience",
-    question:
-      "How much investing experience do you have with real estate (residential, commercial, industrial, REITS, etc.)?",
     options: [
       { id: "none", value: "None" },
       { id: "1-3", value: "1 to 3 years" },
