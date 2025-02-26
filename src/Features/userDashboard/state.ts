@@ -112,6 +112,7 @@ interface DashboardState {
     currency: string;
     savings: string;
     liabilitiesEstimation: any;
+    riskAllocation: any
   };
   financialGoals: FinancialGoal[];
   subscription: {
@@ -237,6 +238,7 @@ const DEFAULT_DATA = {
     servicingAmount: 0,
     servicingPeriod: 0,
   },
+  riskAllocation: null
 };
 const DEFAULT_FINANCIAL_GOALS: any[] = [];
 
@@ -298,6 +300,7 @@ export const useDashboardStore = create<DashboardStore>()(
               typeof response.data.calculated_risk_tolerance === "string"
                 ? JSON.parse(response?.data?.calculated_risk_tolerance || "{}")
                 : response?.data?.calculated_risk_tolerance,
+            riskAllocation: response.data?.risk_allocation || null
           };
         });
       }

@@ -1,11 +1,11 @@
 import React from "react";
 import { InvestmentRiskProfile } from "./investmentRiskProfile";
 
-export default function InvestmentRiskPage() {
+export default function InvestmentRiskPage({riskAllocation}: any) {
   const riskProfiles = [
     {
       level: "Low",
-      percentage: 33,
+      percentage: riskAllocation?.low_risk || 0,
       investmentTypes: [
         { name: "US Government Securities" },
         { name: "Other G7 Government Securities" },
@@ -15,7 +15,7 @@ export default function InvestmentRiskPage() {
     },
     {
       level: "Medium",
-      percentage: 49,
+      percentage: riskAllocation?.medium_risk || 0,
       investmentTypes: [
         { name: "Publicly Listed Large Corporates" },
         { name: "Mutual Funds (Equity Or Bonds)" },
@@ -25,7 +25,7 @@ export default function InvestmentRiskPage() {
     },
     {
       level: "High",
-      percentage: 17,
+      percentage: riskAllocation?.high_risk || 0,
       investmentTypes: [
         { name: "Public Shares Of Small Companies" },
         { name: "Private Equity (Growth Stage Businesses)" },

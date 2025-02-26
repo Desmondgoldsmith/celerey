@@ -637,6 +637,7 @@ export const Dashboard: React.FC = () => {
             openBudgetModal={openBudgetModal}
             openGenBudgetModal={() => setIsGenBudgetModalOpen(true)}
             generatedBudget={generatedBudget ?? undefined}
+            riskAllocation={data.riskAllocation}
           />
         </div>
 
