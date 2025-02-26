@@ -23,7 +23,11 @@ export const BioDataScreen = ({
 }: BioDataScreenProps) => {
   const { form, setForm } = useForm();
   const [query, setQuery] = useState("");
-  const [isFocused, setIsFocused] = useState(false); // Track focus state
+  const [dualCitizenshipQuery, setDualCitizenshipQuery] = useState("");
+  const [isCitizenshipFocused, setIsCitizenshipFocused] = useState(false);
+  const [isDualCitizenshipFocused, setIsDualCitizenshipFocused] =
+    useState(false);
+  const [hasDualCitizenship, setHasDualCitizenship] = useState(false); // Track dual citizenship state
 
   useEffect(() => {
     console.log("Form state updated:", form);
@@ -37,11 +41,26 @@ export const BioDataScreen = ({
     if (selectedCountry) {
       setQuery(selectedCountry.name);
     }
-  }, [value.citizenship]);
+
+    const selectedDualCountry = countries.find(
+      (country) => country.code === value.dualCitizenship
+    );
+
+    if (selectedDualCountry) {
+      setDualCitizenshipQuery(selectedDualCountry.name);
+      setHasDualCitizenship(true); // Default to checked if a second country is entered
+    }
+  }, [value.citizenship, value.dualCitizenship]);
 
   const filteredCountries = query
     ? countries.filter((country) =>
         country.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : countries;
+
+  const filteredDualCountries = dualCitizenshipQuery
+    ? countries.filter((country) =>
+        country.name.toLowerCase().includes(dualCitizenshipQuery.toLowerCase())
       )
     : countries;
 
@@ -74,7 +93,27 @@ export const BioDataScreen = ({
   const handleCountrySelect = (countryCode: string, countryName: string) => {
     setQuery(countryName);
     onChange({ ...value, citizenship: countryCode });
-    setIsFocused(false); // Hide the dropdown after selection
+    setIsCitizenshipFocused(false); 
+  };
+
+  const handleDualCountrySelect = (
+    countryCode: string,
+    countryName: string
+  ) => {
+    setDualCitizenshipQuery(countryName);
+    onChange({ ...value, dualCitizenship: countryCode });
+    setIsDualCitizenshipFocused(false); 
+  };
+
+  const handleDualCitizenshipChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const isChecked = e.target.checked;
+    setHasDualCitizenship(isChecked);
+    if (!isChecked) {
+      onChange({ ...value, dualCitizenship: "" });
+      setDualCitizenshipQuery(""); // Clear the second country input
+    }
   };
 
   return (
@@ -246,12 +285,14 @@ export const BioDataScreen = ({
                   onChange({ ...value, citizenship: "" });
                 }
               }}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setTimeout(() => setIsFocused(false), 200)}
+              onFocus={() => setIsCitizenshipFocused(true)}
+              onBlur={() =>
+                setTimeout(() => setIsCitizenshipFocused(false), 200)
+              }
               placeholder="Type to search..."
               className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy w-full"
             />
-            {isFocused && filteredCountries.length > 0 && (
+            {isCitizenshipFocused && filteredCountries.length > 0 && (
               <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
                 {filteredCountries.map((country) => (
                   <div
@@ -271,6 +312,68 @@ export const BioDataScreen = ({
             )}
           </div>
         </div>
+
+        {/* Dual Citizenship Checkbox */}
+        <div className="grid grid-cols-3 text-left items-center">
+          <label className="text-gray-600 text-sm font-helvetica font-medium whitespace-nowrap">
+            Dual Citizenship
+          </label>
+          <div className="col-span-2">
+            <input
+              type="checkbox"
+              checked={hasDualCitizenship}
+              onChange={handleDualCitizenshipChange}
+              className="h-4 w-4 text-navy focus:ring-navy border-gray-300 rounded"
+            />
+          </div>
+        </div>
+
+        {/* Second Citizenship Dropdown */}
+        {hasDualCitizenship && (
+          <div className="grid grid-cols-3 text-left items-center">
+            <label className="text-gray-600 text-sm font-helvetica font-medium whitespace-nowrap">
+              Second Country of Citizenship
+            </label>
+            <div className="relative col-span-2">
+              <input
+                type="text"
+                value={dualCitizenshipQuery}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  setDualCitizenshipQuery(newValue);
+
+                  if (newValue === "") {
+                    onChange({ ...value, dualCitizenship: "" });
+                  }
+                }}
+                onFocus={() => setIsDualCitizenshipFocused(true)}
+                onBlur={() =>
+                  setTimeout(() => setIsDualCitizenshipFocused(false), 200)
+                }
+                placeholder="Type to search..."
+                className="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-navy w-full"
+              />
+              {isDualCitizenshipFocused && filteredDualCountries.length > 0 && (
+                <div className="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 max-h-40 overflow-y-auto">
+                  {filteredDualCountries.map((country) => (
+                    <div
+                      key={country.code}
+                      className={clsx(
+                        "p-2 hover:bg-gray-100 cursor-pointer",
+                        value.dualCitizenship === country.code && "bg-gray-200"
+                      )}
+                      onMouseDown={() =>
+                        handleDualCountrySelect(country.code, country.name)
+                      }
+                    >
+                      {country.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Action Buttons */}
