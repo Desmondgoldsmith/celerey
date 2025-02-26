@@ -12,6 +12,26 @@ interface PageProps {
 
 const QUESTIONS = [
   {
+    id: "collectiveInvestmentInstrumentsKnowledge",
+    question:
+      "How much knowledge do you have about collective investment instruments, such as funds?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
+    ],
+  },
+  {
+    id: "collectiveInvestmentInstrumentsExperience",
+    question:
+      "How much experience do you have with collective investment instruments, such as funds?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "1-3", value: "1 to 3 years" },
+      { id: "over3Years", value: "More Than 3 Years" },
+    ],
+  },
+  {
     id: "derivativesKnowledge",
     question:
       "How much knowledge do you have about derivatives, such as options, futures, and swaps?",
@@ -39,26 +59,6 @@ const QUESTIONS = [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
       { id: "informed", value: "Informed" },
-    ],
-  },
-  {
-    id: "commoditiesKnowledge",
-    question:
-      "How much knowledge do you have about commodities (oil, metals, agricultural, etc.)?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
-    ],
-  },
-  {
-    id: "commoditiesExperience",
-    question:
-      "How much investing experience do you have with commodities (oil, metals, agricultural, etc.)?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "1-3", value: "1 to 3 years" },
-      { id: "over3Years", value: "More Than 3 Years" },
     ],
   },
 ];

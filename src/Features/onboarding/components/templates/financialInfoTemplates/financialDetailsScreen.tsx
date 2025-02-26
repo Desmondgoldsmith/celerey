@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { PassiveIncomeSection } from "./passiveIncomeSection";
-import { ActiveIncomeSection } from "./ActiveIncomeSection";
-
+import { ActiveIncomeSection } from "./activeIncomeSection";
 import { AssetsSection } from "./assetsSection";
 import { ExpensesSection } from "./expensesSection";
 import { LiabilitiesSection } from "./liabilitiesSection";

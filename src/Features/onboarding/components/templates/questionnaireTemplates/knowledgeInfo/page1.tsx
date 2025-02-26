@@ -8,14 +8,31 @@ interface PageProps {
   onChange: (updates: Partial<KnowledgeInfoSchema>) => void;
   onBack: () => void;
   onContinue: () => void;
-  enableBack:boolean
-
+  enableBack: boolean;
 }
 
 const QUESTIONS = [
   {
     id: "cashKnowledge",
     question: "How much knowledge do you have about cash and cash equivalents?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
+    ],
+  },
+  {
+    id: "cashExperience",
+    question: "How much experience do you have with cash and cash equivalents?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "1-3", value: "1 to 3 years" },
+      { id: "over3Years", value: "More Than 3 Years" },
+    ],
+  },
+  {
+    id: "investingKnowledge",
+    question: "How much knowledge do you have about investing?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -49,15 +66,6 @@ const QUESTIONS = [
       { id: "over3Years", value: "More Than 3 Years" },
     ],
   },
-  {
-    id: "investmentGradeBondsKnowledge",
-    question: "How much knowledge do you have about investment grade bonds?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "basic", value: "Basic" },
-      { id: "informed", value: "Informed" },
-    ],
-  },
 ];
 
 export const Page1: React.FC<PageProps> = ({
@@ -65,7 +73,7 @@ export const Page1: React.FC<PageProps> = ({
   onChange,
   onBack,
   onContinue,
-  enableBack
+  enableBack,
 }) => {
   const handleOptionSelect = (questionId: string, optionId: string) => {
     console.log(`Selected option for ${questionId}: ${optionId}`);
@@ -104,9 +112,11 @@ export const Page1: React.FC<PageProps> = ({
       ))}
 
       <div className="flex gap-4 max-w-md mx-auto">
-        {enableBack && <Button variant="outline" onClick={onBack} className="flex-1">
-          Back
-        </Button>}
+        {enableBack && (
+          <Button variant="outline" onClick={onBack} className="flex-1">
+            Back
+          </Button>
+        )}
         <Button
           onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"

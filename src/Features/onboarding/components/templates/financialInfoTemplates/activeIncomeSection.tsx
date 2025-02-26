@@ -24,10 +24,37 @@ const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
     console.log(`Field: ${field}, Value: ${value}`);
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
@@ -75,10 +102,9 @@ const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
             <label className="flex-1">Salary</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.salary || ""}
+              value={formatCurrency(values?.salary)}
               onChange={(e) => handleInputChange("salary", e.target.value)}
             />
           </div>
@@ -86,10 +112,9 @@ const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
             <label className="flex-1">Bonuses</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.bonuses || ""}
+              value={formatCurrency(values?.bonuses)}
               onChange={(e) => handleInputChange("bonuses", e.target.value)}
             />
           </div>
@@ -97,10 +122,9 @@ const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
             <label className="flex-1">Commissions</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.commissions || ""}
+              value={formatCurrency(values?.commissions)}
               onChange={(e) => handleInputChange("commissions", e.target.value)}
             />
           </div>
@@ -108,10 +132,9 @@ const ActiveIncomeSection: React.FC<ActiveIncomeSectionProps> = ({
             <label className="flex-1">Other Income</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.otherIncome || ""}
+              value={formatCurrency(values?.otherIncome)}
               onChange={(e) => handleInputChange("otherIncome", e.target.value)}
             />
           </div>

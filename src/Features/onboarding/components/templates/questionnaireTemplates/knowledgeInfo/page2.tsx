@@ -12,6 +12,15 @@ interface PageProps {
 
 const QUESTIONS = [
   {
+    id: "investmentGradeBondsKnowledge",
+    question: "How much knowledge do you have about investment grade bonds?",
+    options: [
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
+    ],
+  },
+  {
     id: "investmentGradeBondsExperience",
     question:
       "How much investing experience do you have with investment grade bonds?",
@@ -42,23 +51,13 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "collectiveInvestmentsInstrumentsKnowledge",
+    id: "privateCreditKnowledge",
     question:
-      "How much knowledge do you have about collective investment instruments, such as funds?",
+      "How much knowledge do you have about private credit or commercial paper",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
       { id: "informed", value: "Informed" },
-    ],
-  },
-  {
-    id: "collectiveInvestmentsInstrumentsExperience",
-    question:
-      "How much experience do you have with collective investment instruments, such as funds?",
-    options: [
-      { id: "none", value: "None" },
-      { id: "1-3", value: "1 to 3 years" },
-      { id: "over3Years", value: "More Than 3 Years" },
     ],
   },
 ];

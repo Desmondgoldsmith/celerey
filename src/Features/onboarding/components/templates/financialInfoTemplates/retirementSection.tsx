@@ -21,9 +21,37 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
@@ -60,7 +88,6 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What are your goals for retirement"
         description="Please fill in your retirement details below."
-        // sectionNumber={3}
         sectionTitle="Retirement"
         nextSectionTitle=""
         isSectionComplete={isComplete}
@@ -74,7 +101,7 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.retirementAge || ""}
+              value={formatCurrency(values.retirementAge || "")}
               onChange={(e) =>
                 handleInputChange("retirementAge", e.target.value)
               }
@@ -89,13 +116,12 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.targetRetirementIncome || ""}
+              value={formatCurrency(values.targetRetirementIncome || "")}
               onChange={(e) =>
                 handleInputChange("targetRetirementIncome", e.target.value)
               }
             />
           </div>
-          {/* New Input Field */}
           <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">
               What is your desired Annual Retirement Income
@@ -105,31 +131,11 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={values.pensionFund || ""}
+              value={formatCurrency(values.pensionFund || "")}
               onChange={(e) => handleInputChange("pensionFund", e.target.value)}
             />
           </div>
         </div>
-        {/* <div className="flex gap-4 mt-10">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={!isComplete}
-          >
-            Continue
-          </Button>
-        </div> */}
       </Modal>
     </div>
   );

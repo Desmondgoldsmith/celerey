@@ -15,7 +15,7 @@ interface ExpensesSectionProps {
   onChange: (field: string, value: string) => void;
   onContinue: () => void;
   isComplete: boolean;
-    isNextSectionComplete: boolean;
+  isNextSectionComplete: boolean;
 }
 
 const ExpensesSection: React.FC<ExpensesSectionProps> = ({
@@ -25,9 +25,37 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
@@ -67,7 +95,6 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="Whats your annual expenses?"
         description="Enter your annual expenses below."
-        // sectionNumber={2}
         sectionTitle="Expenses"
         nextSectionTitle="Assets"
         isSectionComplete={isComplete}
@@ -78,10 +105,9 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Home</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.home || ""}
+              value={formatCurrency(values?.home)}
               onChange={(e) => handleInputChange("home", e.target.value)}
             />
           </div>
@@ -89,10 +115,9 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Childcare</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.childcare || ""}
+              value={formatCurrency(values?.childcare)}
               onChange={(e) => handleInputChange("childcare", e.target.value)}
             />
           </div>
@@ -100,10 +125,9 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Education</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.education || ""}
+              value={formatCurrency(values?.education)}
               onChange={(e) => handleInputChange("education", e.target.value)}
             />
           </div>
@@ -111,10 +135,9 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Healthcare</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.healthcare || ""}
+              value={formatCurrency(values?.healthcare)}
               onChange={(e) => handleInputChange("healthcare", e.target.value)}
             />
           </div>
@@ -122,10 +145,9 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Travel</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.travel || ""}
+              value={formatCurrency(values?.travel)}
               onChange={(e) => handleInputChange("travel", e.target.value)}
             />
           </div>
@@ -133,34 +155,13 @@ const ExpensesSection: React.FC<ExpensesSectionProps> = ({
             <label className="flex-1">Giving</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.giving || ""}
+              value={formatCurrency(values?.giving)}
               onChange={(e) => handleInputChange("giving", e.target.value)}
             />
           </div>
         </div>
-        {/* <div className="flex gap-4 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={!isComplete}
-          >
-            Continue
-          </Button>
-        </div> */}
       </Modal>
     </div>
   );

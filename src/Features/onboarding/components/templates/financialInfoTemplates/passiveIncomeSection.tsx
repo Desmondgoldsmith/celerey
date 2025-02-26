@@ -24,9 +24,37 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const formatCurrency = (value: string) => {
+    if (!value) return "";
+
+    // Remove all non-numeric characters except for the decimal point
+    let numericValue = value.replace(/[^0-9.]/g, "");
+
+    // Ensure there is at most one decimal point
+    const parts = numericValue.split(".");
+    if (parts.length > 2) {
+      numericValue = parts[0] + "." + parts.slice(1).join("");
+    }
+
+    // Format the integer part with commas
+    let [integer, decimal] = numericValue.split(".");
+    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Ensure two decimal places
+    decimal = decimal ? decimal.slice(0, 2) : "";
+
+    return decimal ? `${integer}.${decimal}` : integer;
+  };
+
   const handleInputChange = (field: string, value: string) => {
-    if (/^\d*$/.test(value)) {
-      onChange(field, value);
+    console.log(`Field: ${field}, Value: ${value}`);
+
+    // Remove commas before updating state
+    const rawValue = value.replace(/,/g, "");
+
+    // Allow only valid numbers
+    if (/^\d*\.?\d{0,2}$/.test(rawValue)) {
+      onChange(field, rawValue);
     }
   };
 
@@ -63,9 +91,8 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
         onClose={() => setIsModalOpen(false)}
         title="What is your annual passive income?"
         description="Enter your annual passive income details below."
-        // sectionNumber={1}
         sectionTitle="Passive Income"
-        nextSectionTitle="Active Income"
+        nextSectionTitle="Annual Expenses"
         isSectionComplete={isComplete}
         isNextSectionComplete={isNextSectionComplete}
       >
@@ -74,10 +101,9 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
             <label className="flex-1">Rental Income</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.rentalIncome || ""}
+              value={formatCurrency(values?.rentalIncome)}
               onChange={(e) =>
                 handleInputChange("rentalIncome", e.target.value)
               }
@@ -87,10 +113,9 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
             <label className="flex-1">Dividends</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.dividends || ""}
+              value={formatCurrency(values?.dividends)}
               onChange={(e) => handleInputChange("dividends", e.target.value)}
             />
           </div>
@@ -98,10 +123,9 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
             <label className="flex-1">Interest Income</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.interestIncome || ""}
+              value={formatCurrency(values?.interestIncome)}
               onChange={(e) =>
                 handleInputChange("interestIncome", e.target.value)
               }
@@ -111,30 +135,13 @@ const PassiveIncomeSection: React.FC<PassiveIncomeSectionProps> = ({
             <label className="flex-1">Other Income</label>
             <Input
               type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
+              inputMode="decimal"
               className="flex-1 appearance-none"
-              value={values?.otherIncome || ""}
+              value={formatCurrency(values?.otherIncome)}
               onChange={(e) => handleInputChange("otherIncome", e.target.value)}
             />
           </div>
         </div>
-        {/* <div className="flex gap-4 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => setIsModalOpen(false)}
-            className="flex-1"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => setIsModalOpen(false)}
-            className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={!isComplete}
-          >
-            Continue
-          </Button>
-        </div> */}
       </Modal>
     </div>
   );

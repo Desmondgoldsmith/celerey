@@ -1,61 +1,72 @@
-import * as React from 'react'
-import { Button } from '@/components/ui/button'
-import { OptionCard } from '@/Features/onboarding/components/molecules/knowledgeOptionCard'
-import { KnowledgeInfoSchema } from '@/Features/onboarding/schema'
-import { useOnboardingStore } from '@/Features/onboarding/state'
-import { useRouter } from 'next/navigation'
-import { useDashboardStore } from '@/Features/userDashboard/state'
-import Spinner from '@/components/ui/spinner'
+import * as React from "react";
+import { Button } from "@/components/ui/button";
+import { OptionCard } from "@/Features/onboarding/components/molecules/knowledgeOptionCard";
+import { KnowledgeInfoSchema } from "@/Features/onboarding/schema";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import { useRouter } from "next/navigation";
+import { useDashboardStore } from "@/Features/userDashboard/state";
+import Spinner from "@/components/ui/spinner";
 
 interface PageProps {
-  value: KnowledgeInfoSchema
-  onChange: (updates: Partial<KnowledgeInfoSchema>) => void
-  onBack: () => void
-  onContinue: () => void
+  value: KnowledgeInfoSchema;
+  onChange: (updates: Partial<KnowledgeInfoSchema>) => void;
+  onBack: () => void;
+  onContinue: () => void;
 }
 
 const QUESTIONS = [
   {
-    id: 'altAssetsKnowledge',
+    id: "realEstateKnowledge",
     question:
-      'How much knowledge do you have about alternative assets, such as crypto, fine art, etc.?',
+      "How much knowledge do you have about real estate (residential, commercial, industrial, REITS, etc.)?",
     options: [
-      { id: 'none', value: 'None' },
-      { id: 'basic', value: 'Basic' },
-      { id: 'informed', value: 'Informed' },
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
     ],
   },
   {
-    id: 'leveragedInstrumentsKnowledge',
+    id: "realEstateExperience",
     question:
-      'How much knowledge do you have about leveraged investments (such as Lombard lending, mortgages, etc.)?',
+      "How much investing experience do you have with real estate (residential, commercial, industrial, REITS, etc.)?",
     options: [
-      { id: 'none', value: 'None' },
-      { id: 'basic', value: 'Basic' },
-      { id: 'informed', value: 'Informed' },
+      { id: "none", value: "None" },
+      { id: "1-3", value: "1 to 3 years" },
+      { id: "over3Years", value: "More Than 3 Years" },
     ],
   },
   {
-    id: 'leveragedInstrumentsExperience',
+    id: "altAssetsKnowledge",
     question:
-      'How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)?',
+      "How much knowledge do you have about alternative assets, such as crypto, fine art, etc.?",
     options: [
-      { id: 'none', value: 'None' },
-      { id: '1-3', value: '1 to 3 years' },
-      { id: 'over3Years', value: 'More Than 3 Years' },
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
     ],
   },
   {
-    id: 'privateCreditKnowledge',
+    id: "leveragedInvestmentsKnowledge",
     question:
-      'How much knowledge do you have about private credit or commercial paper?',
+      "How much knowledge do you have about leveraged investments (such as Lombard lending, mortgages, etc.)",
     options: [
-      { id: 'none', value: 'None' },
-      { id: 'basic', value: 'Basic' },
-      { id: 'informed', value: 'Informed' },
+      { id: "none", value: "None" },
+      { id: "basic", value: "Basic" },
+      { id: "informed", value: "Informed" },
     ],
   },
-]
+  {
+    id: "leveragedInvestmentsExperience",
+    question:
+      "How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)",
+    options: [
+      { id: "none", value: "None" },
+      { id: "1-3", value: "1 to 3 years" },
+      { id: "over3Years", value: "More Than 3 Years" },
+    ],
+  },
+ 
+];
 
 export const Page5: React.FC<PageProps> = ({
   value,
@@ -63,27 +74,29 @@ export const Page5: React.FC<PageProps> = ({
   onBack,
   onContinue,
 }) => {
-  const { loading, saveKnowledgeInfo, resetOnboarding } = useOnboardingStore()
-  const { populateDashboardData } = useDashboardStore()
+  const { loading, saveKnowledgeInfo, resetOnboarding } = useOnboardingStore();
+  const { populateDashboardData } = useDashboardStore();
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleOptionSelect = (questionId: string, optionId: string) => {
-    onChange({ [questionId]: optionId })
-  }
+    onChange({ [questionId]: optionId });
+  };
 
-  const allQuestionsAnswered = QUESTIONS.every((question) => value[question.id])
+  const allQuestionsAnswered = QUESTIONS.every(
+    (question) => value[question.id]
+  );
 
   const save = async () => {
     try {
-      await saveKnowledgeInfo()
-      await populateDashboardData()
-      resetOnboarding()
-      router.push('/dashboard')
+      await saveKnowledgeInfo();
+      await populateDashboardData();
+      resetOnboarding();
+      router.push("/dashboard");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -125,5 +138,5 @@ export const Page5: React.FC<PageProps> = ({
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
