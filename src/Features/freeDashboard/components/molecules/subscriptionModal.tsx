@@ -24,13 +24,13 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogTitle />
       <DialogContent className="max-w-7xl w-[95vw] max-h-[90vh] overflow-y-auto bg-white p-4 md:p-6">
-        <button
+        {/* <button
           onClick={onClose}
           className="absolute right-2 md:right-4 top-2 md:top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100"
         >
           <X className="h-5 w-5 md:h-6 md:w-6" />
           <span className="sr-only">Close</span>
-        </button>
+        </button> */}
 
         <div className="mt-4 md:mt-6">
           <div className="text-center mb-8 md:mb-12">

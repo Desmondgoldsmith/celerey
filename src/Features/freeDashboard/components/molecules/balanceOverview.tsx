@@ -229,7 +229,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
     <Card className="bg-white p-2 w-full">
       {/* Header */}
       <div className="flex justify-between p-2 items-center mb-3 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy md:text-2xl">
+        <h2 className="text-xl font-cirka text-navy md:text-xl">
           Wealth Overview
         </h2>
         <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
@@ -241,14 +241,14 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
           {/* Annual Income */}
           <div>
             <div className="flex items-center space-x-2">
-              <h3 className="text-gray-700 font-cirka text-xl">
+              <h3 className="text-gray-700 font-cirka text-md">
                 Annual Income
               </h3>
-              <Info className="h-4 w-4 text-gray-400" />
+              <Info className="h-3 w-3 text-gray-400" />
             </div>
 
             <div className="mb-2 mt-1">
-              <span className="text-green-500 text-4xl font-semibold">
+              <span className="text-navy text-2xl font-semibold">
                 {formatCurrency(
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
@@ -261,14 +261,14 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             <div className="mt-4 flex justify-end">
               <button
                 onClick={onAddCategory}
-                className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+                className="flex items-center space-x-1 border border-navy text-navy rounded p-1 text-sm"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3 w-3" />
                 <span>Add Income</span>
               </button>
             </div>
 
-            <div className="space-y-4 mt-3">
+            <div className="space-y-3 mt-4">
               {incomeData.map((item) => (
                 <div key={item.name} className="space-y-1">
                   <div className="flex justify-between items-center">
@@ -277,7 +277,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                       {formatCurrency(item.value, currency)}
                     </span>
                   </div>
-                  <div className="w-full h-4 bg-gray-100 rounded-sm overflow-hidden">
+                  <div className="w-full h-3 bg-gray-100 rounded-sm overflow-hidden">
                     <div
                       className="h-full"
                       style={{
@@ -295,15 +295,15 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
 
           {/* Annual Expenditure */}
           <div>
-            <div className="flex items-center space-x-2 ">
-              <h3 className="text-gray-700 font-cirka text-xl">
+            <div className="flex items-center justify-end space-x-2 ">
+              <h3 className="text-gray-700 font-cirka text-md">
                 Annual Expenditure
               </h3>
-              <Info className="h-4 w-4 text-gray-400" />
+              <Info className="h-3 w-3 text-gray-400" />
             </div>
 
-            <div className="mb-2 mt-1">
-              <span className="text-red-500 text-4xl font-semibold">
+            <div className="flex justify-end mb-2 mt-1">
+              <span className="text-navy text-2xl font-semibold">
                 {formatCurrency(
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
@@ -316,14 +316,14 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
             <div className="mt-3 flex justify-end">
               <button
                 onClick={onAddCategory}
-                className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+                className="flex items-center space-x-1 border border-navy text-navy rounded p-1 text-sm"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-3 w-3" />
                 <span>Add Expense</span>
               </button>
             </div>
 
-            <div className="space-y-4 mt-6">
+            <div className="space-y-3 mt-4">
               {expenditureData.map((item) => (
                 <div key={item.name} className="space-y-1">
                   <div className="flex justify-between items-center">
@@ -332,7 +332,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                       {formatCurrency(item.value, currency)}
                     </span>
                   </div>
-                  <div className="w-full h-4 bg-gray-100 rounded-sm overflow-hidden">
+                  <div className="w-full h-3 bg-gray-100 rounded-sm overflow-hidden">
                     <div
                       className="h-full"
                       style={{
@@ -350,20 +350,20 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
         </div>
       </CardContent>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-2 pb-2 border-b border-[#AAAAAA]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 p-2 pb-2 border-b border-[#AAAAAA] mb-3">
         {/* Assets Section */}
         <CardContent className="p-2 md:pr-2 md:border-r border-[#AAAAAA]">
-          <div className="flex justify-between mb-5 items-center mt-3">
+          <div className="flex justify-between mb-3 items-center">
             <div className="flex items-center space-x-1">
-              <h3 className="text-gray-700 font-cirka text-lg">Assets</h3>
+              <h3 className="text-gray-700 font-cirka text-md">Assets</h3>
               <Info className="h-3 w-3 text-gray-400" />
             </div>
 
             <button
               onClick={onAddCategory}
-              className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+              className="flex items-center space-x-1 border border-navy text-navy rounded p-1 text-sm"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3 w-3" />
               <span>Add Category</span>
             </button>
           </div>
@@ -480,9 +480,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
 
             <button
               onClick={onAddCategory}
-              className="flex items-center space-x-1 border border-navy text-navy rounded px-3 py-1 text-sm"
+              className="flex items-center space-x-1 border border-navy text-navy rounded p-1 text-sm"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-3 w-3" />
               <span>Add Category</span>
             </button>
           </div>
@@ -608,7 +608,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
       </div>
 
       {/* Footer */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 my-4">
+      {/* <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 my-3">
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div className="flex flex-col space-y-2">
             <h3 className="font-helvetica text-base font-semibold text-gray-800">
@@ -622,12 +622,12 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
 
           <button
             onClick={onAddCategory}
-            className="bg-white hover:bg-gray-50 text-navy font-medium px-4 py-2 rounded-md border border-navy transition-colors duration-200 whitespace-nowrap self-end sm:self-center"
+            className="bg-white hover:bg-gray-50 text-navy font-medium p-1 rounded-md border border-navy transition-colors duration-200 whitespace-nowrap self-end sm:self-center"
           >
             Request Advisory Service
           </button>
         </div>
-      </div>
+      </div> */}
     </Card>
   );
 };

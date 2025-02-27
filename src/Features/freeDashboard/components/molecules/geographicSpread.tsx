@@ -37,7 +37,7 @@ export const GeographicSpread: React.FC<{ assetCountries: string[] }> = ({
   return (
     <Card className="p-6 bg-white">
       <div className="flex justify-between items-center mb-4 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-[#1C1F33]">
+        <h2 className="text-xl font-cirka text-navy">
           Geographic Spread of Assets
         </h2>
         <button>
