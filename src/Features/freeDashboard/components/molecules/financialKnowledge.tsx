@@ -1,55 +1,35 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { MoreHorizontal } from "lucide-react";
 
 interface FinancialKnowledgeAssessmentProps {
-  progress: number;
   onUpgradeClick: () => void;
 }
 
 export const FinancialKnowledgeAssessment: React.FC<
   FinancialKnowledgeAssessmentProps
-> = ({ progress, onUpgradeClick }) => {
+> = ({ onUpgradeClick }) => {
   return (
-    <Card className="p-6 bg-white">
+    <Card className="p-6 bg-white rounded-lg shadow-sm md:h-[480px] flex flex-col">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-5 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy">Financial Knowledge</h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
+      <div className="flex justify-between items-center border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-xl font-cirka text-navy">Connect With Us</h2>
       </div>
 
-      <div className="space-y-4 mb-5">
-        <p className="font-helvatica font-bold">
-          Financial Knowledge Assessment
-        </p>
+      {/* Main Content Section - This takes up all available space and centers its children */}
+      <div className="flex flex-col justify-center items-center flex-grow">
+        <div className="text-center mb-8">
+          <p className="text-lg font-helvatica text-gray-700">
+            Your pathway to financial freedom begins here!
+          </p>
+        </div>
+
         <button
           onClick={onUpgradeClick}
-          className="bg-navy border border-navy text-white rounded-md p-1 ml-auto mr-auto"
+          className="border-2 border-navy text-navy rounded-md py-2 px-4 font-medium text-md hover:bg-indigo-50 transition-colors"
         >
-          Upgrade
+          Request Advisory Service
         </button>
-        <div className="font-helvatica font bold text-2xl">Incomplete</div>
       </div>
-
-      <div className="flex items-center">
-        <div className="w-full bg-gray-200 rounded-full h-3.5 mr-4">
-          <div
-            className="bg-navy h-5 rounded-full"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <span className="text-navy font-medium">{progress}%</span>
-      </div>
-      <p className="text-gray-500 mt-5 font-helvatica text-sm">
-        Take the full financial assessment with a{" "}
-        <span className="text-blue-500 hover: text-undeline hover:cursor-pointer">
-          Pro Account
-        </span>
-        . Get Started Today!
-      </p>
-
-      {/* Bottom Border */}
-      <div className="border-b border-gray-200 mt-8 p-4 mb-10" />
     </Card>
   );
 };
