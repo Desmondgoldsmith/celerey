@@ -18,13 +18,13 @@ export const WelcomeScreen = ({
     >
       Let&apos;s Get Started
     </Button>
-    <Button
+    {/* <Button
       onClick={onBack}
       className="md:w-[380px] w-full px-8 mt-4"
       variant={"outline"}
     >
       Back
-    </Button>
+    </Button> */}
     <p className="text-gray-500 mt-6 font-thin">
       Tell us your goals and aspirations
     </p>

@@ -364,7 +364,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           state.formData.financial.currency = response.data.currency;
           state.formData.financial.emergencyFund = {
             hasEmergencyFunds:
-              response.data.emergency_fund?.hasEmergencyFund,
+              response.data.emergency_fund?.hasEmergencyFund || "no",
             emergencyFundAmount:
               response.data.emergency_fund?.currentMonths || "",
             targetMonths: response.data.emergency_fund?.targetMonths || "",
