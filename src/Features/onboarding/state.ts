@@ -182,7 +182,19 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     investmentType: "",
   },
   risk: {
-    userRiskTolerance: {
+    investmentGrowthPreference: {
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
+    },
+    lossTolerance: {
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
+    },
+    marketReaction: {
       id: 0,
       key: "",
       title: "",
@@ -194,26 +206,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       title: "",
       description: "",
     },
-    riskAttitude: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-
-    riskReaction: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-    riskApproach: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-    investmentObjective: {
+    investmentGoal: {
       id: 0,
       key: "",
       title: "",
@@ -225,7 +218,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       title: "",
       description: "",
     },
-    illiquidInvestmentPercentage: {
+    liquidityPreference: {
       id: 0,
       key: "",
       title: "",

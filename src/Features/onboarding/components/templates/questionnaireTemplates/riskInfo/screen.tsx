@@ -1,20 +1,29 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { RiskToleranceScreen } from "./riskToleranceSection";
-import { RiskReactionScreen } from "./riskReactionSection";
-import { RiskAttitudeScreen } from "./riskAttitudeSection";
-import { RiskApproachScreen } from "./riskApproachSection";
-import { InvestmentObjectiveScreen } from "./investmentObjectiveSection";
-import { InvestmentHorizonScreen } from "./investmentHorizonSection";
-import { IlliquidInvestmentScreen } from "./illiquidInvestmentSection";
+import { InvestmentGrowthPreferenceScreen } from "./InvestmentGrowthPreference";
+import { LossToleranceScreen } from "./LossTolerance";
+import { MarketReactionScreen } from "./MarketReaction";
+import { RiskToleranceScreen } from "./RiskTolerance";
+import { InvestmentGoalScreen } from "./InvestmentGoal";
+import { InvestmentHorizonScreen } from "./InvestmentHorizon";
+import { LiquidityPreferenceScreen } from "./LiquidityPreference";
 import { RiskInfoSchema } from "@/Features/onboarding/schema";
 import { useOnboardingStore } from "@/Features/onboarding/state";
 
 const RiskInfoScreen: React.FC = () => {
   const router = useRouter();
-  const { formData, updateFormData, sections, currentSection, updateSectionProgress, completeSection } = useOnboardingStore();
-  const [localFormData, setLocalFormData] = useState<RiskInfoSchema>(formData.risk);
+  const {
+    formData,
+    updateFormData,
+    sections,
+    currentSection,
+    updateSectionProgress,
+    completeSection,
+  } = useOnboardingStore();
+  const [localFormData, setLocalFormData] = useState<RiskInfoSchema>(
+    formData.risk
+  );
   const [isSectionComplete, setIsSectionComplete] = useState(false);
 
   useEffect(() => {
@@ -23,7 +32,9 @@ const RiskInfoScreen: React.FC = () => {
 
   useEffect(() => {
     const checkSectionComplete = () => {
-      const isComplete = Object.values(localFormData).every(value => value !== "");
+      const isComplete = Object.values(localFormData).every(
+        (value) => value !== ""
+      );
       setIsSectionComplete(isComplete);
     };
 
@@ -52,10 +63,13 @@ const RiskInfoScreen: React.FC = () => {
 
   const handleContinue = useCallback(() => {
     const currentStepIndex = sections[currentSection].currentStep;
-    const isLastStep = currentStepIndex === sections[currentSection].totalSteps - 1;
+    const isLastStep =
+      currentStepIndex === sections[currentSection].totalSteps - 1;
 
     if (!isSectionComplete) {
-      alert("Please fill in all the information in the section before continuing.");
+      alert(
+        "Please fill in all the information in the section before continuing."
+      );
       return;
     }
 
@@ -66,82 +80,91 @@ const RiskInfoScreen: React.FC = () => {
       const newStep = currentStepIndex + 1;
       updateSectionProgress(currentSection, newStep);
     }
-  }, [currentSection, sections, isSectionComplete, completeSection, router, updateSectionProgress]);
+  }, [
+    currentSection,
+    sections,
+    isSectionComplete,
+    completeSection,
+    router,
+    updateSectionProgress,
+  ]);
 
   return (
     <div className="font-helvetica max-w-xl mx-auto">
       <div className="text-center mb-8 flex flex-col gap-4">
-        <h1 className="text-4xl font-cirka">Please provide your risk preferences</h1>
-        <p className="text-gray-600">Fill the different forms that appear from the pop-ups</p>
+        <h1 className="text-4xl font-cirka">
+          Please provide your risk preferences
+        </h1>
+        <p className="text-gray-600">
+          Fill the different forms that appear from the pop-ups
+        </p>
       </div>
-      <div className="space-y-4 max-w-sm mx-auto">
-        <div className="border-b pb-4">
-          <RiskToleranceScreen
-            value={localFormData.riskTolerance}
-            onChange={(value) => handleFormUpdate({ riskTolerance: value })}
+      <div className="flex flex-col items-center space-y-4 max-w-sm mx-auto">
+        <div className="border-b pb-4 w-full">
+          <InvestmentGrowthPreferenceScreen
+            value={localFormData.investmentGrowthPreference}
+            onChange={(value) =>
+              handleFormUpdate({ investmentGrowthPreference: value })
+            }
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={false}
           />
         </div>
-        <div className="border-b pb-4">
-          <RiskReactionScreen
-            value={localFormData.riskReaction}
-            onChange={(value) => handleFormUpdate({ riskReaction: value })}
+        <div className="border-b pb-4 w-full">
+          <LossToleranceScreen
+            value={localFormData.lossTolerance}
+            onChange={(value) => handleFormUpdate({ lossTolerance: value })}
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
-        <div className="border-b pb-4">
-          <RiskAttitudeScreen
-            value={localFormData.riskAttitude}
-            onChange={(value) => handleFormUpdate({ riskAttitude: value })}
+        <div className="border-b pb-4 w-full">
+          <MarketReactionScreen
+            value={localFormData.marketReaction}
+            onChange={(value) => handleFormUpdate({ marketReaction: value })}
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
-        <div className="border-b pb-4">
-          <RiskApproachScreen
-            value={localFormData.riskApproach}
-            onChange={(value) => handleFormUpdate({ riskApproach: value })}
+        <div className="border-b pb-4 w-full">
+          <RiskToleranceScreen
+            value={localFormData.riskTolerance}
+            onChange={(value) => handleFormUpdate({ riskTolerance: value })}
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
-        <div className="border-b pb-4">
-          <InvestmentObjectiveScreen
-            value={localFormData.investmentObjective}
-            onChange={(value) => handleFormUpdate({ investmentObjective: value })}
+        <div className="border-b pb-4 w-full">
+          <InvestmentGoalScreen
+            value={localFormData.investmentGoal}
+            onChange={(value) => handleFormUpdate({ investmentGoal: value })}
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
-        <div className="border-b pb-4">
+        <div className="border-b pb-4 w-full">
           <InvestmentHorizonScreen
             value={localFormData.investmentHorizon}
             onChange={(value) => handleFormUpdate({ investmentHorizon: value })}
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
-        <div className="border-b pb-4">
-          <IlliquidInvestmentScreen
-            value={localFormData.illiquidInvestmentPercentage}
-            onChange={(value) => handleFormUpdate({ illiquidInvestmentPercentage: value })}
+        <div className="border-b pb-4 w-full">
+          <LiquidityPreferenceScreen
+            value={localFormData.liquidityPreference}
+            onChange={(value) =>
+              handleFormUpdate({ liquidityPreference: value })
+            }
             onBack={handleBack}
             onContinue={handleContinue}
             enableBack={true}
-
           />
         </div>
       </div>
