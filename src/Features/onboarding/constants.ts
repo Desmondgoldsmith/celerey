@@ -38,22 +38,22 @@ export const SECTIONS: Section[] = [
     steps: [],
     isActive: false,
   },
-  {
-    id: "risk",
-    title: "Risk Profile",
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    steps: [],
-    isActive: false,
-  },
-  {
-    id: "knowledge",
-    title: "Financial Knowledge",
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    steps: [],
-    isActive: false,
-  },
+  // {
+  //   id: "risk",
+  //   title: "Risk Profile",
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore
+  //   steps: [],
+  //   isActive: false,
+  // },
+  // {
+  //   id: "knowledge",
+  //   title: "Financial Knowledge",
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore
+  //   steps: [],
+  //   isActive: false,
+  // },
 ];
 
 export const citizenshipOptions = [

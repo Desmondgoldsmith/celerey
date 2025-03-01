@@ -28,9 +28,7 @@ import { DEFAULT_AUTH_ERROR_MESSAGE } from "../auth/constants";
 export type SectionId =
   | "personal"
   | "financial"
-  | "goals"
-  | "risk"
-  | "knowledge";
+  | "goals";
 
 // the various section structures
 const DEFAULT_SECTIONS: Record<SectionId, Section> = {
@@ -53,27 +51,27 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   goals: {
     id: "goals",
     title: "Goals & Aspirations",
-    totalSteps: 3,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
   },
-  risk: {
-    id: "risk",
-    title: "Risk Profile",
-    totalSteps: 3,
-    currentStep: 0,
-    isCompleted: false,
-    isActive: false,
-  },
-  knowledge: {
-    id: "knowledge",
-    title: "Financial Knowledge",
-    totalSteps: 2,
-    currentStep: 0,
-    isCompleted: false,
-    isActive: false,
-  },
+  // risk: {
+  //   id: "risk",
+  //   title: "Risk Profile",
+  //   totalSteps: 3,
+  //   currentStep: 0,
+  //   isCompleted: false,
+  //   isActive: false,
+  // },
+  // knowledge: {
+  //   id: "knowledge",
+  //   title: "Financial Knowledge",
+  //   totalSteps: 2,
+  //   currentStep: 0,
+  //   isCompleted: false,
+  //   isActive: false,
+  // },
 };
 
 interface OnboardingFormData {
