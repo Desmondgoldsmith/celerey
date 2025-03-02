@@ -100,14 +100,13 @@ export interface GoalsInfoSchema {
 }
 
 export interface RiskInfoSchema {
-  userRiskTolerance: Option;
+  investmentGrowthPreference: Option;
+  lossTolerance: Option;
+  marketReaction: Option;
   riskTolerance: Option;
-  riskAttitude: Option;
-  riskReaction: Option;
-  riskApproach: Option;
-  investmentObjective: Option;
+  investmentGoal: Option;
   investmentHorizon: Option;
-  illiquidInvestmentPercentage: Option;
+  liquidityPreference: Option;
 }
 
 export interface KnowledgeInfoSchema {

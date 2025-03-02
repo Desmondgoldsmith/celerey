@@ -31,6 +31,9 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
     },
   })
 
+  console.log('Initial values:', values)
+  console.log('Initial inputValue:', inputValue)
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [emergencyFundAmountValid, setEmergencyFundAmountValid] = useState(true)
   const [targetMonthsValid, setTargetMonthsValid] = useState(true)
@@ -63,6 +66,7 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
           targetMonths: values.targetMonths?.split(' ')[0],
         },
       })
+      console.log('Modal opened, updated inputValue:', inputValue)
     }
   }, [isModalOpen])
 

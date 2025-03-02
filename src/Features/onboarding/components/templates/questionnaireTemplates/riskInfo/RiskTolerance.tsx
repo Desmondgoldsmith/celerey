@@ -6,35 +6,36 @@ import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptio
 const OPTIONS: Option[] = [
   {
     id: 0,
-    key:'increase',
-    title: "",
-    description: "Increase some positions",
+    key: "big-risks",
+    title: "I’m okay with big risks for high rewards.",
+    description: "",
   },
   {
-    key:'maintain',
     id: 1,
-    title: "",
-    description: "Maintain my positions",
+    key: "balanced-risks",
+    title: "I’ll take risks but prefer a balance.",
+    description: "",
   },
   {
-    key:'decrease',
     id: 2,
-    title: "",
-    description: "Decrease my positions",
+    key: "growth-safety",
+    title: "I want growth but with some safety.",
+    description: "",
   },
   {
-    key:'sell',
     id: 3,
-    title: "",
-    description: "sell everything",
+    key: "keep-safe",
+    title: "I prefer to keep my money safe.",
+    description: "",
   },
 ];
 
-export const RiskReactionScreen: React.FC<RiskOptionsScreenProps> = ({
+export const RiskToleranceScreen: React.FC<RiskOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
   onContinue,
+  enableBack = true,
 }) => {
   const handleOptionSelect = (option: any) => {
     onChange(option);
@@ -43,8 +44,7 @@ export const RiskReactionScreen: React.FC<RiskOptionsScreenProps> = ({
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        How would you react to sharp declines in assets that you have invested
-        in?
+        How do you feel about taking risks?
       </h1>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (
@@ -52,16 +52,18 @@ export const RiskReactionScreen: React.FC<RiskOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value.key === option.key}
+            selected={value?.key === option.key} // Add optional chaining to avoid errors
             onClick={() => handleOptionSelect(option)}
           />
         ))}
       </div>
 
       <div className="flex gap-4">
-        <Button variant="outline" onClick={onBack} className="flex-1">
-          Back
-        </Button>
+        {enableBack && (
+          <Button variant="outline" onClick={onBack} className="flex-1">
+            Back
+          </Button>
+        )}
         <Button
           onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"

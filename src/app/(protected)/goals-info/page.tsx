@@ -1,16 +1,17 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { GoalsInfoSchema } from "@/Features/onboarding/schema";
-
 import { useOnboardingStore, SectionId } from "@/Features/onboarding/state";
 import { SectionProgressBars } from "@/Features/onboarding/components/molecules/progressBar";
 import { OnboardingLayout } from "@/Features/onboarding/components/templates/sharedTemplates/onboardingLayout";
 import { WelcomeScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/welcomeScreen";
 import { FinancialGoalScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/financialGoalScreeen";
 import { TargetAmountScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/targetAmountScreen";
+import { SubmitScreen } from "@/Features/onboarding/components/templates/goalsInfoTemplates/submitScreen"; // Import the SubmitScreen
 import { useAuthStore } from "@/Features/auth/state";
+
 export default function GoalsInfo() {
   const router = useRouter();
   const {
@@ -25,28 +26,19 @@ export default function GoalsInfo() {
   } = useOnboardingStore();
 
   const { isAuthenticated } = useAuthStore();
+  const [showSubmitScreen, setShowSubmitScreen] = useState(false); // State to control the SubmitScreen
 
   useEffect(() => {
     if (isAuthenticated) {
       populateGoalInfo();
     }
-  }, []);
+  }, [isAuthenticated, populateGoalInfo]);
 
   useEffect(() => {
-    // if (!sections.financial.isCompleted) {
-    //   router.push('/financial-info')
-    //   return
-    // }
-
     if (currentSection !== "goals") {
       setActiveSection("goals");
     }
-  }, [
-    sections.financial.isCompleted,
-    currentSection,
-    router,
-    setActiveSection,
-  ]);
+  }, [currentSection, setActiveSection]);
 
   const handleFormUpdate = useCallback(
     (updates: Partial<GoalsInfoSchema>) => {
@@ -61,11 +53,13 @@ export default function GoalsInfo() {
 
     switch (currentStepIndex) {
       case 0:
-        return true;
+        return true; // WelcomeScreen is always valid
       case 1:
-        return !!data.primamryFinancialGoal.trim();
+        return !!data.primamryFinancialGoal?.trim(); // Validate primary financial goal
       case 2:
-        return parseFloat(data.targetAmount || "0") >= 0;
+        return parseFloat(data.targetAmount || "0") >= 0; // Validate target amount
+      case 3:
+        return true; // SubmitScreen is always valid
       default:
         return true;
     }
@@ -81,57 +75,44 @@ export default function GoalsInfo() {
     }
   }, [currentSection, sections, router, updateSectionProgress]);
 
-  const getNextSection = useCallback(
-    (currentSectionId: SectionId): SectionId | null => {
-      const sectionOrder: SectionId[] = [
-        "personal",
-        "financial",
-        "goals",
-        "risk",
-        "knowledge",
-      ];
-      const currentIndex = sectionOrder.indexOf(currentSectionId);
-      return currentIndex < sectionOrder.length - 1
-        ? sectionOrder[currentIndex + 1]
-        : null;
-    },
-    []
-  );
-
   const handleContinue = useCallback(() => {
-    const currentStepIndex = sections[currentSection].currentStep;
+    if (!sections || !currentSection) {
+      console.error("Sections or currentSection is undefined");
+      return;
+    }
+
+    const currentStepIndex = sections[currentSection]?.currentStep;
     const isLastStep =
-      currentStepIndex === sections[currentSection].totalSteps - 1;
+      currentStepIndex === sections[currentSection]?.totalSteps - 1;
 
     if (!validateCurrentStep()) {
+      console.error("Validation failed on step:", currentStepIndex);
       return;
     }
 
     if (isLastStep) {
-      completeSection(currentSection);
-      const nextSection = getNextSection(currentSection);
-      if (nextSection) {
-        setActiveSection(nextSection);
-        router.push(`/${nextSection}-info`);
-      }
+      completeSection("goals");
+      router.replace("/freebie"); // Redirect to the dashboard
     } else {
-      const newStep = currentStepIndex + 1;
-      updateSectionProgress(currentSection, newStep);
+      updateSectionProgress(currentSection, currentStepIndex + 1);
     }
   }, [
     currentSection,
     sections,
     validateCurrentStep,
     completeSection,
-    getNextSection,
-    setActiveSection,
     router,
     updateSectionProgress,
   ]);
 
   const renderStep = () => {
-    const currentStepIndex = sections[currentSection].currentStep;
-    const goalsData = formData.goals;
+    if (!sections || !currentSection) {
+      console.error("Sections or currentSection is undefined");
+      return null;
+    }
+
+    const currentStepIndex = sections[currentSection]?.currentStep || 0;
+    const goalsData = formData.goals || {};
 
     switch (currentStepIndex) {
       case 0:
@@ -149,7 +130,6 @@ export default function GoalsInfo() {
             onContinue={handleContinue}
           />
         );
-
       case 2:
         return (
           <TargetAmountScreen
@@ -159,6 +139,8 @@ export default function GoalsInfo() {
             onContinue={handleContinue}
           />
         );
+      case 3:
+        return <SubmitScreen onContinue={handleContinue} onBack={handleBack} />;
       default:
         return null;
     }

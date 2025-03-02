@@ -195,7 +195,7 @@ export interface GoalsScreenProps {
 }
 
 export interface Section {
-  id: "personal" | "financial" | "goals" | "risk" | "knowledge";
+  id: "personal" | "financial" | "goals";
   title: string;
   totalSteps: number;
   currentStep: number;

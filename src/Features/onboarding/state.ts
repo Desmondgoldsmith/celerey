@@ -28,9 +28,7 @@ import { DEFAULT_AUTH_ERROR_MESSAGE } from "../auth/constants";
 export type SectionId =
   | "personal"
   | "financial"
-  | "goals"
-  | "risk"
-  | "knowledge";
+  | "goals";
 
 // the various section structures
 const DEFAULT_SECTIONS: Record<SectionId, Section> = {
@@ -53,27 +51,27 @@ const DEFAULT_SECTIONS: Record<SectionId, Section> = {
   goals: {
     id: "goals",
     title: "Goals & Aspirations",
-    totalSteps: 3,
+    totalSteps: 4,
     currentStep: 0,
     isCompleted: false,
     isActive: false,
   },
-  risk: {
-    id: "risk",
-    title: "Risk Profile",
-    totalSteps: 3,
-    currentStep: 0,
-    isCompleted: false,
-    isActive: false,
-  },
-  knowledge: {
-    id: "knowledge",
-    title: "Financial Knowledge",
-    totalSteps: 2,
-    currentStep: 0,
-    isCompleted: false,
-    isActive: false,
-  },
+  // risk: {
+  //   id: "risk",
+  //   title: "Risk Profile",
+  //   totalSteps: 3,
+  //   currentStep: 0,
+  //   isCompleted: false,
+  //   isActive: false,
+  // },
+  // knowledge: {
+  //   id: "knowledge",
+  //   title: "Financial Knowledge",
+  //   totalSteps: 2,
+  //   currentStep: 0,
+  //   isCompleted: false,
+  //   isActive: false,
+  // },
 };
 
 interface OnboardingFormData {
@@ -182,7 +180,19 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
     investmentType: "",
   },
   risk: {
-    userRiskTolerance: {
+    investmentGrowthPreference: {
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
+    },
+    lossTolerance: {
+      id: 0,
+      key: "",
+      title: "",
+      description: "",
+    },
+    marketReaction: {
       id: 0,
       key: "",
       title: "",
@@ -194,26 +204,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       title: "",
       description: "",
     },
-    riskAttitude: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-
-    riskReaction: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-    riskApproach: {
-      id: 0,
-      key: "",
-      title: "",
-      description: "",
-    },
-    investmentObjective: {
+    investmentGoal: {
       id: 0,
       key: "",
       title: "",
@@ -225,7 +216,7 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       title: "",
       description: "",
     },
-    illiquidInvestmentPercentage: {
+    liquidityPreference: {
       id: 0,
       key: "",
       title: "",
@@ -364,7 +355,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           state.formData.financial.currency = response.data.currency;
           state.formData.financial.emergencyFund = {
             hasEmergencyFunds:
-              response.data.emergency_fund?.hasEmergencyFund,
+              response.data.emergency_fund?.hasEmergencyFund || "no",
             emergencyFundAmount:
               response.data.emergency_fund?.currentMonths || "",
             targetMonths: response.data.emergency_fund?.targetMonths || "",

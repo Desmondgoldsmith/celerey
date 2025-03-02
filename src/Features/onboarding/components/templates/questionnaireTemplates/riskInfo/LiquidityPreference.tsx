@@ -5,52 +5,47 @@ import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptio
 
 const OPTIONS: Option[] = [
   {
-    id:0,
-    key: "cautious",
-    title: "Cautious",
-    description:
-      "Investors prioritizing capital preservation over high returns",
-  },
-  { id:1,
-    key: "moderate",
-    title: "Moderate",
-    description: "Investors seeking a balance between risk and return",
+    id: 0,
+    key: "locked-away",
+    title: "I’m okay with my money being locked away.",
+    description: "",
   },
   {
-    id:2,
-    key: "somwhat-aggressive",
-    title: "Somewhat Aggressive",
-    description: "Investors willing to take on more risk for higher returns",
+    id: 1,
+    key: "wait-grow",
+    title: "I can wait for some of my money to grow.",
+    description: "",
   },
   {
-    id:3,
-    key: "aggressive",
-    title: "Aggressive",
-    description: "Investors with high risk, focused on high returns",
+    id: 2,
+    key: "accessible",
+    title: "I prefer most of my money to be accessible.",
+    description: "",
   },
   {
-    id:4,
-    key: "very-aggressive",
-    title: "Very Aggressive",
-    description:
-      "Investors with highest tolerance for risk, in for the highest possible returns",
+    id: 3,
+    key: "quick-access",
+    title: "I need quick access to my funds.",
+    description: "",
   },
 ];
 
-export const RiskAttitudeScreen: React.FC<RiskOptionsScreenProps> = ({
+export const LiquidityPreferenceScreen: React.FC<RiskOptionsScreenProps> = ({
   value,
   onChange,
   onBack,
   onContinue,
+  enableBack = true,
 }) => {
-  const handleOptionSelect = (option: Option) => {
+  const handleOptionSelect = (option: any) => {
     onChange(option);
   };
 
   return (
     <div className="text-center max-w-xl mx-auto">
       <h1 className="text-4xl font-cirka mb-4">
-        How do you describe your attitude towards risk?
+        How much of your money can be in long-term investments? (e.g., real
+        estate, private equity, etc.)
       </h1>
       <div className="space-y-4 mb-8">
         {OPTIONS.map((option) => (
@@ -58,16 +53,18 @@ export const RiskAttitudeScreen: React.FC<RiskOptionsScreenProps> = ({
             key={option.id}
             title={option.title}
             description={option.description}
-            selected={value.key === option.key}
+            selected={value?.key === option.key} // Add optional chaining to avoid errors
             onClick={() => handleOptionSelect(option)}
           />
         ))}
       </div>
 
       <div className="flex gap-4">
-        <Button variant="outline" onClick={onBack} className="flex-1">
-          Back
-        </Button>
+        {enableBack && (
+          <Button variant="outline" onClick={onBack} className="flex-1">
+            Back
+          </Button>
+        )}
         <Button
           onClick={onContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
