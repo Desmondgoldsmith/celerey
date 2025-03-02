@@ -33,6 +33,21 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       interestIncome: formData.financial.passiveIncome?.interestIncome || "",
       otherIncome: formData.financial.passiveIncome?.otherIncome || "",
     },
+    assets: {
+      equity: formData.financial.assets?.equity || "",
+      cashEquivalents: formData.financial.assets?.cashEquivalents || "",
+      fixedIncome: formData.financial.assets?.fixedIncome || "",
+      altAssets: {
+        realEstate: formData.financial.assets?.altAssets?.realEstate || "",
+        privateEquity:
+          formData.financial.assets?.altAssets?.privateEquity || "",
+        hedgeFunds: formData.financial.assets?.altAssets?.hedgeFunds || "",
+        commodities: formData.financial.assets?.altAssets?.commodities || "",
+        cryptocurrency:
+          formData.financial.assets?.altAssets?.cryptocurrency || "",
+      },
+      assetCountries: formData.financial.assets?.assetCountries || [],
+    },
   });
 
   const [sectionCompletion, setSectionCompletion] = useState({
@@ -58,6 +73,21 @@ const FinancialDetailsScreen: React.FC<any> = () => {
         interestIncome: formData.financial.passiveIncome?.interestIncome || "",
         otherIncome: formData.financial.passiveIncome?.otherIncome || "",
       },
+      assets: {
+        equity: formData.financial.assets?.equity || "",
+        cashEquivalents: formData.financial.assets?.cashEquivalents || "",
+        fixedIncome: formData.financial.assets?.fixedIncome || "",
+        altAssets: {
+          realEstate: formData.financial.assets?.altAssets?.realEstate || "",
+          privateEquity:
+            formData.financial.assets?.altAssets?.privateEquity || "",
+          hedgeFunds: formData.financial.assets?.altAssets?.hedgeFunds || "",
+          commodities: formData.financial.assets?.altAssets?.commodities || "",
+          cryptocurrency:
+            formData.financial.assets?.altAssets?.cryptocurrency || "",
+        },
+        assetCountries: formData.financial.assets?.assetCountries || [],
+      },
     });
   }, [formData.financial]);
 
@@ -79,9 +109,12 @@ const FinancialDetailsScreen: React.FC<any> = () => {
       const isExpensesComplete = Object.values(annualExpenses || {}).every(
         (value) => value !== ""
       );
-      const isAssetsComplete = Object.values(assets || {}).every(
-        (value) => value !== ""
-      );
+      const isAssetsComplete =
+        assets?.equity !== "" &&
+        assets?.cashEquivalents !== "" &&
+        assets?.fixedIncome !== "" &&
+        Object.values(assets?.altAssets || {}).every((value) => value !== "") &&
+        assets?.assetCountries?.length > 0;
       const isLiabilitiesComplete = Object.values(liabilities || {}).every(
         (value) => value !== ""
       );
@@ -101,7 +134,7 @@ const FinancialDetailsScreen: React.FC<any> = () => {
   const handleFormUpdate = (
     section: keyof FinancialInfoSchema,
     field: string,
-    value: string | string[]
+    value: string | string[] | object
   ) => {
     const updatedSection = {
       ...(typeof localFormData[section] === "object"
