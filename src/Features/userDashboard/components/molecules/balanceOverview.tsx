@@ -194,7 +194,7 @@ interface BalanceOverviewProps {
   totalExpenseFromIncome: { value: number; percentage: number };
   userLiabilitiesEstimation: any;
   currency: string;
-  riskAllocation: any
+  riskAllocation: any;
 }
 
 export default function BalanceOverview({
@@ -224,7 +224,7 @@ export default function BalanceOverview({
   totalExpenseFromIncome,
   userLiabilitiesEstimation,
   currency,
-  riskAllocation
+  riskAllocation,
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
 
@@ -438,7 +438,7 @@ export default function BalanceOverview({
       <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-bold text-navy font-cirka">
-            Balance Overview
+            Wealth Overview
           </h2>
           <Info className="h-3 w-3 text-gray-400" />
         </div>
@@ -516,7 +516,9 @@ export default function BalanceOverview({
           />
         )}
 
-        {activeTab === "Risk Allocation" && riskAllocation && <InvestmentRiskPage riskAllocation={riskAllocation} />}
+        {activeTab === "Risk Allocation" && riskAllocation && (
+          <InvestmentRiskPage riskAllocation={riskAllocation} />
+        )}
       </div>
     </Card>
   );

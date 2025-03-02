@@ -677,7 +677,7 @@ export const Dashboard: React.FC = () => {
           <div className="flex justify-between items-center flex-wrap gap-2">
             <div className="flex items-baseline gap-x-3">
               <h3 className="font-medium font-cirka text-navy text-sm lg:text-base">
-                Your Investment Experience
+                Financial Knowledge and Experience Assessment
               </h3>
               <span
                 onClick={() => {
@@ -702,7 +702,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Financial Knowledge Assessment Card */}
-        {data?.calculatedFinancialKnowledge && (
+        {/* {data?.calculatedFinancialKnowledge && (
           <div className="bg-gray-50 p-4 rounded-lg space-y-2 md:col-span-2 lg:col-span-1">
             <div className="flex justify-between items-center flex-wrap gap-2">
               <h3 className="font-medium font-cirka text-navy text-sm lg:text-base">
@@ -719,7 +719,7 @@ export const Dashboard: React.FC = () => {
               {data?.calculatedFinancialKnowledge}
             </p>
           </div>
-        )}
+        )} */}
       </div>
 
       {data?.calculatedRiskTolerance?.title &&
