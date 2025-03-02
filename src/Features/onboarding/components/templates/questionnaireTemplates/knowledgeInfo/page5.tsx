@@ -45,7 +45,16 @@ const QUESTIONS = [
       { id: "basic", value: "Basic" },
       { id: "informed", value: "Informed" },
     ],
-    // No experienceQuestion for this question
+    experienceQuestion: {
+      id: "altAssetsExperience",
+      question:
+        "How much expereince do you have with alternative assets, such as crypto, fine art, etc.?",
+      options: [
+        { id: "none", value: "None" },
+        { id: "1-3", value: "1 to 3 years" },
+        { id: "over3Years", value: "More Than 3 Years" },
+      ],
+    },
   },
   {
     id: "leveragedInvestmentsKnowledge",
