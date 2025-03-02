@@ -46,8 +46,8 @@ export const SignupOTPTemplate = () => {
         personal: '/personal-info',
         financial: '/financial-info',
         goals: '/goals-info',
-        risk: '/risk-info',
-        knowledge: '/knowledge-info',
+        // risk: '/risk-info',
+        // knowledge: '/knowledge-info',
       }
 
       const activeRoute = sectionToRouteMap[activeSection || 'personal']
