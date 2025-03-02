@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,15 +11,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X } from "lucide-react";
+
 interface AssetsSectionProps {
   values: {
-    realEstate: string;
-    cash: string;
-    publicSecurities: string;
-    privateSecurities: string;
+    equity: string;
+    cashEquivalents: string;
+    fixedIncome: string;
+    altAssets: {
+      realEstate: string;
+      privateEquity: string;
+      hedgeFunds: string;
+      commodities: string;
+      cryptocurrency: string;
+    };
     assetCountries: string[];
   };
-  onChange: (field: string, value: string | string[]) => void;
+  onChange: (field: string, value: string | string[] | object) => void;
   onContinue: () => void;
   isComplete: boolean;
   isNextSectionComplete: boolean;
@@ -27,6 +34,7 @@ interface AssetsSectionProps {
 
 const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAltAssetsModalOpen, setIsAltAssetsModalOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [bgIndex, setBgIndex] = useState(0);
 
@@ -72,6 +80,11 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
     }
   };
 
+  const handleAltAssetsChange = (field: string, value: string) => {
+    const updatedAltAssets = { ...values.altAssets, [field]: value };
+    onChange("altAssets", updatedAltAssets);
+  };
+
   const handleAddCountry = () => {
     if (selectedCountry && !values?.assetCountries?.includes(selectedCountry)) {
       const updatedCountries = values?.assetCountries
@@ -90,11 +103,31 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
     onChange("assetCountries", updatedCountries);
   };
 
+  const calculateAltAssetsSum = () => {
+    const {
+      realEstate,
+      privateEquity,
+      hedgeFunds,
+      commodities,
+      cryptocurrency,
+    } = values.altAssets;
+    const sum = [
+      realEstate,
+      privateEquity,
+      hedgeFunds,
+      commodities,
+      cryptocurrency,
+    ]
+      .map((val) => parseFloat(val) || 0)
+      .reduce((acc, curr) => acc + curr, 0);
+    return formatCurrency(sum.toString());
+  };
+
   const isComplete =
-    values?.realEstate !== "" &&
-    values?.cash !== "" &&
-    values?.publicSecurities !== "" &&
-    values?.privateSecurities !== "" &&
+    values?.equity !== "" &&
+    values?.cashEquivalents !== "" &&
+    values?.fixedIncome !== "" &&
+    Object.values(values?.altAssets).every((val) => val !== "") &&
     values?.assetCountries?.length > 0;
 
   return (
@@ -124,7 +157,6 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
         onClose={() => setIsModalOpen(false)}
         title="What assets do you have?"
         description="Enter your asset details below."
-        // sectionNumber={3}
         sectionTitle="Assets"
         nextSectionTitle="Liabilities"
         isSectionComplete={isComplete}
@@ -132,49 +164,56 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
       >
         <div className="space-y-2">
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Real Estate</label>
+            <label className="flex-1">Equity (Stocks)</label>
             <Input
               type="text"
               inputMode="decimal"
               className="flex-1 appearance-none"
-              value={formatCurrency(values?.realEstate)}
-              onChange={(e) => handleInputChange("realEstate", e.target.value)}
+              value={formatCurrency(values?.equity)}
+              onChange={(e) => handleInputChange("equity", e.target.value)}
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Cash</label>
+            <label className="flex-1">Cash and Cash Equivalents</label>
             <Input
               type="text"
               inputMode="decimal"
               className="flex-1 appearance-none"
-              value={formatCurrency(values?.cash)}
-              onChange={(e) => handleInputChange("cash", e.target.value)}
-            />
-          </div>
-          <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Public Securities</label>
-            <Input
-              type="text"
-              inputMode="decimal"
-              className="flex-1 appearance-none"
-              value={formatCurrency(values?.publicSecurities)}
+              value={formatCurrency(values?.cashEquivalents)}
               onChange={(e) =>
-                handleInputChange("publicSecurities", e.target.value)
+                handleInputChange("cashEquivalents", e.target.value)
               }
             />
           </div>
           <div className="flex border-b border-gray-300 pb-2 items-center">
-            <label className="flex-1">Private Securities</label>
+            <label className="flex-1">Fixed Income (Bonds)</label>
             <Input
               type="text"
               inputMode="decimal"
               className="flex-1 appearance-none"
-              value={formatCurrency(values?.privateSecurities)}
-              onChange={(e) =>
-                handleInputChange("privateSecurities", e.target.value)
-              }
+              value={formatCurrency(values?.fixedIncome)}
+              onChange={(e) => handleInputChange("fixedIncome", e.target.value)}
             />
           </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center gap-4">
+            <div className="flex flex-col flex-1">
+              <label>Alternative Assets</label>
+              <Button
+                className="bg-navy mt-1 w-fit"
+                onClick={() => setIsAltAssetsModalOpen(true)}
+              >
+                Edit Assets
+              </Button>
+            </div>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={calculateAltAssetsSum()}
+              readOnly
+            />
+          </div>
+
           <div className="flex border-b border-gray-300 pb-2 items-center">
             <label className="flex-1">
               In which country(ies) are your assets
@@ -225,26 +264,81 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
             })}
           </div>
         </div>
-        {/* <div className="flex gap-4 mt-4">
-          <Button
-            variant="outline"
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1"
-          >
-            Back
-          </Button>
-          <Button
-            onClick={() => {
-              setIsModalOpen(false);
-            }}
-            className="flex-1 bg-navy hover:bg-navyLight text-white"
-            disabled={!isComplete}
-          >
-            Continue
-          </Button>
-        </div> */}
+      </Modal>
+      <Modal
+        isOpen={isAltAssetsModalOpen}
+        onClose={() => setIsAltAssetsModalOpen(false)}
+        title="Alternative Assets Details"
+        description="Enter your alternative asset details below."
+        sectionTitle="Alternative Assets"
+        nextSectionTitle="Assets"
+        isSectionComplete={Object.values(values.altAssets).every(
+          (val) => val !== ""
+        )}
+        isNextSectionComplete={isComplete}
+      >
+        <div className="space-y-2">
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Real Estate</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={formatCurrency(values.altAssets.realEstate)}
+              onChange={(e) =>
+                handleAltAssetsChange("realEstate", e.target.value)
+              }
+            />
+          </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Private Equity</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={formatCurrency(values.altAssets.privateEquity)}
+              onChange={(e) =>
+                handleAltAssetsChange("privateEquity", e.target.value)
+              }
+            />
+          </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Hedge Funds</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={formatCurrency(values.altAssets.hedgeFunds)}
+              onChange={(e) =>
+                handleAltAssetsChange("hedgeFunds", e.target.value)
+              }
+            />
+          </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Commodities</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={formatCurrency(values.altAssets.commodities)}
+              onChange={(e) =>
+                handleAltAssetsChange("commodities", e.target.value)
+              }
+            />
+          </div>
+          <div className="flex border-b border-gray-300 pb-2 items-center">
+            <label className="flex-1">Cryptocurrency</label>
+            <Input
+              type="text"
+              inputMode="decimal"
+              className="flex-1 appearance-none"
+              value={formatCurrency(values.altAssets.cryptocurrency)}
+              onChange={(e) =>
+                handleAltAssetsChange("cryptocurrency", e.target.value)
+              }
+            />
+          </div>
+        </div>
       </Modal>
     </div>
   );

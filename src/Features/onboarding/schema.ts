@@ -61,10 +61,16 @@ export interface FinancialInfoSchema {
     giving: string;
   };
   assets: {
-    realEstate: string;
-    cash: string;
-    publicSecurities: string;
-    privateSecurities: string;
+    equity: string;
+    cashEquivalents: string;
+    fixedIncome: string;
+    altAssets: {
+      realEstate: string;
+      privateEquity: string;
+      hedgeFunds: string;
+      commodities: string;
+      cryptocurrency: string;
+    };
     assetCountries: string[];
   };
   liabilities: {
