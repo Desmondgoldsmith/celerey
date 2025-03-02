@@ -401,7 +401,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 {/* Real Estate */}
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
-                    <span className="truncate">Real Estate</span>
+                    <span className="truncate">Equity (stocks)</span>
                     <span>{realEstate.percentage.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
@@ -418,7 +418,12 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 {/* Public Securities */}
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
-                    <span className="truncate pr-1">Public Securities</span>
+                    <span
+                      className="truncate pr-1 hover:cursor-pointer"
+                      title="Cash and Cash Equivalents"
+                    >
+                      Cash and Cash Equivalents
+                    </span>
                     <span>{publicSecurities.percentage.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
@@ -435,7 +440,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 {/* Private Securities */}
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
-                    <span className="truncate pr-1">Private Securities</span>
+                    <span className="truncate pr-1">Fixed Income</span>
                     <span>{privateSecurities.percentage.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
@@ -452,7 +457,12 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 {/* Cash */}
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
-                    <span>Cash</span>
+                    <span
+                      className="truncate pr-1 hover:cursor-pointer"
+                      title="Financial Investments"
+                    >
+                      Financial Investments
+                    </span>
                     <span>{cash.percentage.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">

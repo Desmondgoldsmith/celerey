@@ -1,13 +1,12 @@
-import React from 'react'
-import { HelpCircle } from 'lucide-react'
-import formatCurrency from '@/utils/formatCurrency'
+import React from "react";
+import formatCurrency from "@/utils/formatCurrency";
 
 interface IncomeVsExpenditureProps {
-  openStatementModal: () => void
-  totalIncome: number
-  totalExpenseFromIncome: { value: number; percentage: number }
-  totalIncomeFromExpense: { value: number; percentage: number }
-  currency: string
+  openStatementModal: () => void;
+  totalIncome: number;
+  totalExpenseFromIncome: { value: number; percentage: number };
+  totalIncomeFromExpense: { value: number; percentage: number };
+  currency: string;
 }
 
 const IncomeVsExpenditure = ({
@@ -17,133 +16,141 @@ const IncomeVsExpenditure = ({
   totalIncomeFromExpense,
   currency,
 }: IncomeVsExpenditureProps) => {
-  const data = {
-    profitability: 72,
-    annualRevenue: totalIncome || 0,
-    annualIncome: Number(totalIncomeFromExpense?.value || 0),
-    incomePercentage: Number(totalIncomeFromExpense?.percentage || 0).toFixed(
-      0,
-    ),
-    annualExpenditure: Number(totalExpenseFromIncome?.value || 0),
-    expenditurePercentage: Number(
-      totalExpenseFromIncome?.percentage || 0,
-    ).toFixed(0),
-  }
+  const dummyData = {
+    annualRevenue: 4465852,
+    annualIncome: 2225852,
+    annualExpenditure: 1525852,
+  };
+
+  // Calculate values using dummy data
+  const annualRevenue = dummyData.annualRevenue;
+  const annualIncome = dummyData.annualIncome;
+  const annualExpenditure = dummyData.annualExpenditure;
+
+  /* 
+  // Calculate values for display
+  const annualRevenue = totalIncome || 0;
+  const annualIncome = Number(totalIncomeFromExpense?.value || 0);
+  const annualExpenditure = Number(totalExpenseFromIncome?.value || 0);
+  */
+
+  // Calculate monthly averages
+  const avgMonthlyIncome = annualIncome / 12;
+  const avgMonthlyExpenditure = annualExpenditure / 12;
+
+  // Calculate percentages for the bar chart
+  const totalAmount = annualIncome + annualExpenditure;
+  const incomePercentage = (annualIncome / totalAmount) * 100;
+  const expenditurePercentage = (annualExpenditure / totalAmount) * 100;
+
+  // Format fixed values for the scale
+  const formatScaleValue = (value: string) => {
+    return value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  };
+
+  const getTextSizeClass = (value: number) => {
+    const formattedValue = formatCurrency(String(value), currency);
+    const valueLength = formattedValue ? formattedValue.length : 0;
+
+    if (valueLength > 12) {
+      return "text-sm font-bold";
+    } else if (valueLength > 10) {
+      return "text-base font-bold";
+    } else {
+      return "text-lg font-bold";
+    }
+  };
 
   return (
-    <div className="grid grid-cols-1 gap-6">
-      {/* Profitability Section */}
-      <div className="flex gap-8 items-start">
-        <div className="relative w-32 h-32">
-          {/* Circle progress indicator */}
-          <svg className="w-full h-full transform -rotate-90">
-            <circle
-              cx="60"
-              cy="60"
-              r="54"
-              className="stroke-[8] fill-none stroke-gray-200"
-            />
-            <circle
-              cx="60"
-              cy="60"
-              r="54"
-              className="stroke-[8] fill-none stroke-green-500"
-              strokeDasharray={`${2 * Math.PI * 54}`}
-              strokeDashoffset={`${
-                2 * Math.PI * 54 * (1 - data.profitability / 100)
-              }`}
-            />
-          </svg>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold">
-            {data.profitability}%
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-lg font-semibold">Profitability</h3>
-          </div>
-          <p className="text-gray-600">
-            Profitability allows us to gauge your financial wellbeing at a
-            snapshot. Think of this percentage as an indicator of how well you
-            are managing your income based on the revenue you are generating.
-          </p>
-        </div>
-      </div>
-
-      {/* Revenue and Expenditure Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Annual Revenue */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-lg">Annual Revenue</h3>
-            <HelpCircle className="w-4 h-4 text-gray-400" />
-          </div>
-          <div className="text-4xl font-bold text-green-500 mb-4">
-            {formatCurrency(String(data?.annualRevenue || 0), currency)}
-          </div>
-          <div className="mb-2">
-            <div className="text-xl">
-            {formatCurrency(String(data?.annualIncome || 0), currency)}
-            </div>
-            <div className="text-gray-600">Annual income</div>
-          </div>
-          <div className="relative pt-2">
-            <div className="text-green-500 font-medium">
-              {data.incomePercentage}%
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full">
-              <div
-                className="h-full bg-green-500 rounded-full"
-                style={{ width: `${data.incomePercentage}%` }}
-              />
-            </div>
+    <div className="w-full">
+      {/* Financial Metrics Cards */}
+      <div className="grid grid-cols-5 gap-4 mb-8">
+        <div className="border rounded-lg p-4 bg-white">
+          <div className="text-sm text-gray-600 mb-2">Annual Revenue</div>
+          <div className={getTextSizeClass(annualRevenue)}>
+            {formatCurrency(String(annualRevenue), currency)}
           </div>
         </div>
 
-        {/* Annual Expenditure */}
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <h3 className="text-lg">Annual Expenditure</h3>
-            <HelpCircle className="w-4 h-4 text-gray-400" />
+        <div className="border rounded-lg p-4 bg-white">
+          <div className="text-sm text-gray-600 mb-2">Annual Income</div>
+          <div className={getTextSizeClass(annualIncome)}>
+            {formatCurrency(String(annualIncome), currency)}
           </div>
-          <div className="text-4xl font-bold text-red-500 mb-4">
-          {formatCurrency(String(data?.annualExpenditure || 0), currency)}
+        </div>
+
+        <div className="border rounded-lg p-4 bg-white">
+          <div className="text-sm text-gray-600 mb-2">Annual Expenditure</div>
+          <div className={getTextSizeClass(annualExpenditure)}>
+            {formatCurrency(String(annualExpenditure), currency)}
           </div>
-          <div className="mb-2">
-            <div className="text-xl">
-            {formatCurrency(String(data?.annualExpenditure || 0), currency)}
-            </div>
-            <div className="text-gray-600">Annual expenditure</div>
+        </div>
+
+        <div className="border rounded-lg p-4 bg-white">
+          <div className="text-sm text-gray-600 mb-2">Avg Monthly Income</div>
+          <div className={getTextSizeClass(avgMonthlyIncome)}>
+            {formatCurrency(String(avgMonthlyIncome), currency)}
           </div>
-          <div className="relative pt-2">
-            <div className="text-red-500 font-medium">
-              {data.expenditurePercentage}%
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full">
-              <div
-                className="h-full bg-red-500 rounded-full"
-                style={{ width: `${data.expenditurePercentage}%` }}
-              />
-            </div>
+        </div>
+
+        <div className="border rounded-lg p-4 bg-white">
+          <div className="text-sm text-gray-600 mb-2">
+            Avg Monthly Expenditure
+          </div>
+          <div className={getTextSizeClass(avgMonthlyExpenditure)}>
+            {formatCurrency(String(avgMonthlyExpenditure), currency)}
           </div>
         </div>
       </div>
 
-      <div className="mt-4">
-        <p className="text-gray-600">
-          Income statements allow you to evaluate your financial health and make
-          business decisions. We can generate a mini-income statement to give
-          you a high-level perspective of how well you are doing financially.
-        </p>
-        {/* <button
-          onClick={openStatementModal}
-          className="mt-4 px-6 py-2 border border-navyLight text-navyLight rounded-md hover:bg-indigo-50 transition-colors"
-        >
-          Generate Mini Income Statement
-        </button> */}
+      {/* Money Scale */}
+      <div className="flex justify-between text-sm text-gray-600 mb-2">
+        <div>$0</div>
+        <div>
+          ${totalAmount >= 20000 ? "20,000" : formatScaleValue("20000")}
+        </div>
+        <div>
+          ${totalAmount >= 40000 ? "40,000" : formatScaleValue("40000")}
+        </div>
+        <div>
+          ${totalAmount >= 60000 ? "60,000" : formatScaleValue("60000")}
+        </div>
+        <div>
+          ${totalAmount >= 80000 ? "80,000" : formatScaleValue("80000")}
+        </div>
+        <div>
+          ${totalAmount >= 100000 ? "100,000" : formatScaleValue("100000")}
+        </div>
+        <div>
+          ${totalAmount >= 120000 ? "120,000" : formatScaleValue("120000")}
+        </div>
+      </div>
+
+      {/* Bar Chart */}
+      <div className="w-full h-20 rounded-lg overflow-hidden flex">
+        <div
+          className="h-full bg-red-300"
+          style={{ width: `${expenditurePercentage}%` }}
+        ></div>
+        <div
+          className="h-full bg-green-400"
+          style={{ width: `${incomePercentage}%` }}
+        ></div>
+      </div>
+
+      {/* Legend */}
+      <div className="flex gap-6 mt-4">
+        <div className="flex items-center">
+          <div className="w-6 h-6 bg-red-300 mr-2"></div>
+          <span className="text-sm">Expenditure</span>
+        </div>
+        <div className="flex items-center">
+          <div className="w-6 h-6 bg-green-400 mr-2"></div>
+          <span className="text-sm">Income</span>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default IncomeVsExpenditure
+export default IncomeVsExpenditure;
