@@ -390,8 +390,9 @@ export const Dashboard: React.FC = () => {
 
     const assets = Object.keys(data?.assets || {}).map((key, index) => {
 
-      const customKey = key === 'cashEquivalents' ? 'cashAndCashEquivalents' : key;
-   
+      let customKey = key === 'cashEquivalents' ? 'cashAndCashEquivalents' : key;
+      customKey = key === 'altAssets' ? 'alternativeAssets' : customKey;
+
       return ({
       category: customKey
         .replace(/([A-Z])/g, " $1") // Add space before uppercase letters

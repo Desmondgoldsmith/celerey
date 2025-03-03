@@ -48,7 +48,7 @@ const RiskPage: React.FC = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      completeSection("risk");
+      completeSection("risk" as any);
       setCurrentStep(currentStep + 1);
     }
   }, [currentStep, steps.length, completeSection, router]);

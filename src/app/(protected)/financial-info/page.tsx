@@ -76,10 +76,10 @@ export default function FinancialInfo() {
         );
       case 3: // Assets validation
         return (
-          parseFloat(data.assets.realEstate) >= 0 &&
-          parseFloat(data.assets.cash) >= 0 &&
-          parseFloat(data.assets.publicSecurities) >= 0 &&
-          parseFloat(data.assets.privateSecurities) >= 0
+          parseFloat(data.assets.fixedIncome) >= 0 &&
+          parseFloat(data.assets.cashEquivalents) >= 0 &&
+          parseFloat(data.assets.equity) >= 0 &&
+          data.assets.assetCountries.length >= 0
         );
       case 4: // Liabilities validation
         return (

@@ -142,27 +142,29 @@ const FinancialPlanItem: React.FC<FinancialGoalItemProps> = ({
           </div>
         )}
 
-        <div>
-          <p className="text-sm text-gray-600">Goal Duration</p>
-          {hasGoalDuration ? (
-            <p className="text-base font-bold">
-              {getMonthsBetweenDates(
-                goal?.startDate || "",
-                goal?.endDate || ""
-              )}{" "}
-              months
-            </p>
-          ) : (
-            <div className="flex items-center mt-1">
-              <button
-                onClick={handleModifyClick}
-                className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
-              >
-                Add
-              </button>
-            </div>
-          )}
-        </div>
+        {goal?.type !== "retirement" && (
+          <div>
+            <p className="text-sm text-gray-600">Goal Duration</p>
+            {hasGoalDuration ? (
+              <p className="text-base font-bold">
+                {getMonthsBetweenDates(
+                  goal?.startDate || "",
+                  goal?.endDate || ""
+                )}{" "}
+                months
+              </p>
+            ) : (
+              <div className="flex items-center mt-1">
+                <button
+                  onClick={handleModifyClick}
+                  className="text-white rounded-md px-3 py-1 bg-navy text-xs font-bold"
+                >
+                  Add
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <button

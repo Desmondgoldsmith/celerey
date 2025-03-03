@@ -74,7 +74,7 @@ const RiskInfoScreen: React.FC = () => {
     }
 
     if (isLastStep) {
-      completeSection("risk");
+      completeSection("risk" as any);
       router.push("/next-page");
     } else {
       const newStep = currentStepIndex + 1;

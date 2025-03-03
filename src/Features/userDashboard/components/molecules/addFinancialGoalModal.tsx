@@ -211,7 +211,11 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
     }
 
     // validation for date comparison
-    if (new Date(formData.durationStart) >= new Date(formData.durationEnd)) {
+    if (
+      formData.durationStart &&
+      formData.durationEnd &&
+      new Date(formData.durationStart) >= new Date(formData.durationEnd)
+    ) {
       alert("End date must be after start date");
       return;
     }
@@ -225,17 +229,16 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
       return;
     }
 
-    const { goalDuration, durationLeft } = calculateDurations(
-      formData.durationStart,
-      formData.durationEnd
-    );
-
     const newGoal = {
       name: formData.name.trim(),
       target_value: parseFloat(formData.targetAmount).toString(),
       current_value: parseFloat(formData.currentAmount).toString(),
-      start_date: new Date(formData.durationStart).toISOString(),
-      end_date: new Date(formData.durationEnd).toISOString(),
+      start_date: formData?.durationStart
+        ? new Date(formData.durationStart).toISOString()
+        : null,
+      end_date: formData?.durationEnd
+        ? new Date(formData.durationEnd).toISOString()
+        : null,
       type: initialData?.type || "custom",
     };
 
@@ -309,8 +312,8 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
               {getTargetValueLabel(initialData?.type || "custom")}
             </label>
             <Input
-              disabled={initialData?.type  === 'retirement'}
-              readOnly={initialData?.type  === 'retirement'}
+              disabled={initialData?.type === "retirement"}
+              readOnly={initialData?.type === "retirement"}
               type="number"
               placeholder={
                 initialData?.type !== "emergency" ? "e.g., 140000" : "e.g., 14"
@@ -367,24 +370,30 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
           </div> */}
 
           {/* Start Date Picker  */}
-          {(initialData?.type  !== 'retirement' && initialData?.type  !== 'emergency') && <CustomDatePicker
-            label="Duration Start"
-            value={formData.durationStart}
-            onChange={(date) =>
-              setFormData({ ...formData, durationStart: date })
-            }
-            placeholder="Select start date"
-            required
-          />}
+          {initialData?.type !== "retirement" && (
+            <CustomDatePicker
+              label="Duration Start"
+              value={formData.durationStart}
+              onChange={(date) =>
+                setFormData({ ...formData, durationStart: date })
+              }
+              placeholder="Select start date"
+              required
+            />
+          )}
 
           {/* End Date Picker  */}
-          {(initialData?.type  !== 'retirement' && initialData?.type  !== 'emergency') &&  <CustomDatePicker
-            label="Duration End"
-            value={formData.durationEnd}
-            onChange={(date) => setFormData({ ...formData, durationEnd: date })}
-            placeholder="Select end date"
-            required
-          />}
+          {initialData?.type !== "retirement" && (
+            <CustomDatePicker
+              label="Duration End"
+              value={formData.durationEnd}
+              onChange={(date) =>
+                setFormData({ ...formData, durationEnd: date })
+              }
+              placeholder="Select end date"
+              required
+            />
+          )}
 
           {/* Goal Duration */}
           {/* <div className="flex items-center justify-between space-x-4">

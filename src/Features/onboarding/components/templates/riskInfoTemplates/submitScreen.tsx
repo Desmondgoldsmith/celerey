@@ -34,7 +34,7 @@ export const SubmitScreen = ({ onContinue, onBack }: NetWorthScreenProps) => {
   };
 
   // Define risk descriptions based on the user's selection
-  const riskKey = formData.risk?.userRiskTolerance?.key || "";
+  const riskKey = formData.risk?.riskTolerance?.key || "";
   const riskDescriptions: Record<string, string> = {
     low: "You prioritize stability and prefer lower-risk investments to protect your capital, even if it means smaller returns.",
     medium:
