@@ -39,7 +39,6 @@ const tabs = [
   "Expenses",
   "Income Vs Debt",
   "Income Vs Expenditure",
-  "Risk Allocation",
 ];
 
 interface LiabilitiesProps {
@@ -374,33 +373,39 @@ export default function BalanceOverview({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Asset Locations</span>
             <div className="flex items-center justify-between">
-             {Object.keys(countries)?.length && <p className="text-sm text-gray-600">{findCountry(Object.keys(countries)[0])?.name}</p>}
-             {Object.keys(countries)?.length > 1 && <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-                <DropdownMenuTrigger asChild>
-                  <button className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors">
-                    more
-                    <ChevronDown className="h-3 w-3" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  align="end"
-                  className="w-48 p-2 bg-white rounded-lg shadow-lg"
-                >
-                  <div className="space-y-1">
-                    {Object.keys(countries).map((key: string, index) => (
-                      <div key={index} className="flex items-center">
-                        <div
-                          style={{ background: colorScale.scale[index] }}
-                          className={`w-2.5 h-2.5 rounded-full  mr-2`}
-                        />
-                        <span className="text-sm text-gray-600">
-                          {findCountry(key)?.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>}
+              {Object.keys(countries)?.length && (
+                <p className="text-sm text-gray-600">
+                  {findCountry(Object.keys(countries)[0])?.name}
+                </p>
+              )}
+              {Object.keys(countries)?.length > 1 && (
+                <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                  <DropdownMenuTrigger asChild>
+                    <button className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors">
+                      more
+                      <ChevronDown className="h-3 w-3" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-48 p-2 bg-white rounded-lg shadow-lg"
+                  >
+                    <div className="space-y-1">
+                      {Object.keys(countries).map((key: string, index) => (
+                        <div key={index} className="flex items-center">
+                          <div
+                            style={{ background: colorScale.scale[index] }}
+                            className={`w-2.5 h-2.5 rounded-full  mr-2`}
+                          />
+                          <span className="text-sm text-gray-600">
+                            {findCountry(key)?.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </div>
         </div>
@@ -461,6 +466,19 @@ export default function BalanceOverview({
               {tab}
             </button>
           ))}
+          {riskAllocation && (
+            <button
+              key={"Risk Allocation"}
+              className={`px-4 py-2 rounded-md text-sm transition-colors ${
+                activeTab === "Risk Allocation"
+                  ? "bg-white shadow-sm text-gray-900"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+              onClick={() => setActiveTab("Risk Allocation")}
+            >
+              {"Risk Allocation"}
+            </button>
+          )}
         </div>
       </div>
 
