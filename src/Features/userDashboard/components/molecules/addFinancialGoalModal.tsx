@@ -309,6 +309,8 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
               {getTargetValueLabel(initialData?.type || "custom")}
             </label>
             <Input
+              disabled={initialData?.type  === 'retirement'}
+              readOnly={initialData?.type  === 'retirement'}
               type="number"
               placeholder={
                 initialData?.type !== "emergency" ? "e.g., 140000" : "e.g., 14"
@@ -346,7 +348,7 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
           </div>
 
           {/* Target Duration Field */}
-          <div className="flex items-center justify-between space-x-4">
+          {/* <div className="flex items-center justify-between space-x-4">
             <label className="text-gray-900 w-1/3">
               Target Duration (months)
             </label>
@@ -362,10 +364,10 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
               min="1"
               step="1"
             />
-          </div>
+          </div> */}
 
           {/* Start Date Picker  */}
-          {/* <CustomDatePicker
+          {(initialData?.type  !== 'retirement' && initialData?.type  !== 'emergency') && <CustomDatePicker
             label="Duration Start"
             value={formData.durationStart}
             onChange={(date) =>
@@ -373,16 +375,16 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
             }
             placeholder="Select start date"
             required
-          /> */}
+          />}
 
           {/* End Date Picker  */}
-          {/* <CustomDatePicker
+          {(initialData?.type  !== 'retirement' && initialData?.type  !== 'emergency') &&  <CustomDatePicker
             label="Duration End"
             value={formData.durationEnd}
             onChange={(date) => setFormData({ ...formData, durationEnd: date })}
             placeholder="Select end date"
             required
-          /> */}
+          />}
 
           {/* Goal Duration */}
           {/* <div className="flex items-center justify-between space-x-4">

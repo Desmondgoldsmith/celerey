@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 interface FinancialKnowledgeModalProps {
   isOpen: boolean;
   onClose: () => void;
+  calculatedFinancialKnowledge: string
 }
 
 interface GuidingPrinciple {
@@ -23,6 +24,7 @@ interface GuidingPrinciple {
 const FinancialKnowledgeModal: React.FC<FinancialKnowledgeModalProps> = ({
   isOpen,
   onClose,
+  calculatedFinancialKnowledge
 }) => {
   const guidingPrinciples: GuidingPrinciple[] = [
     {
@@ -56,7 +58,7 @@ const FinancialKnowledgeModal: React.FC<FinancialKnowledgeModalProps> = ({
             <h3 className="text-medium font-normal mb-2">
               Financial Knowledge Summary
             </h3>
-            <p className="text-lg text-navy font-normal mb-4">Intermediate</p>
+            <p className="text-lg text-navy font-normal mb-4">{calculatedFinancialKnowledge}</p>
 
             <div className="w-40 h-40 mx-auto mb-4">
               <Image

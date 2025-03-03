@@ -141,8 +141,9 @@ export const Page5: React.FC<PageProps> = ({
     }
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (allQuestionsAnswered) {
+      await save()
       setShowSubmitScreen(true);
     }
   };

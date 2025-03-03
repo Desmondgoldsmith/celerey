@@ -17,8 +17,8 @@ import { OnboardingLayout } from "@/Features/onboarding/components/templates/sha
 
 const RiskPage: React.FC = () => {
   const router = useRouter();
-  const { formData, updateFormData, completeSection } = useOnboardingStore();
-
+  const { formData, updateFormData, completeSection, loading } =
+    useOnboardingStore();
   const [localFormData, setLocalFormData] = useState<RiskInfoSchema>(
     formData.risk
   );

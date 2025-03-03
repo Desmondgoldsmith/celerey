@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 interface RiskAttitudeModalProps {
   isOpen: boolean;
   onClose: () => void;
+  riskTolerance: string
 }
 
 interface GuidingPrinciple {
@@ -23,6 +24,7 @@ interface GuidingPrinciple {
 const RiskAttitudeModal: React.FC<RiskAttitudeModalProps> = ({
   isOpen,
   onClose,
+  riskTolerance
 }) => {
   const guidingPrinciples: GuidingPrinciple[] = [
     {
@@ -55,7 +57,7 @@ const RiskAttitudeModal: React.FC<RiskAttitudeModalProps> = ({
           <div className="text-center mb-4">
             <h3 className="text-medium font-normal mb-2">Attitude Summary</h3>
             <p className="text-lg text-navyLight font-normal mb-4">
-              Somewhat Aggressive
+              {riskTolerance}
             </p>
 
             <div className="w-40 h-40 mx-auto mb-4">

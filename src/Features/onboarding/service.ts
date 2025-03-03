@@ -86,22 +86,15 @@ export const saveGoalsInfoApi = async (
 export const saveRiskInfoApi = async (
   data: RiskInfoSchema
 ): Promise<ApiResponse> => {
-  let riskInfoToBeSaved = {};
-  if (data.userRiskTolerance?.title) {
-    riskInfoToBeSaved = {
-      user_risk_tolerance: data.userRiskTolerance?.title,
-    };
-  } else {
-    riskInfoToBeSaved = {
-      risk_reaction: data.riskReaction,
-      risk_approach: data.riskApproach,
-      investment_objective: data.investmentObjective,
-      investment_horizon: data.investmentHorizon,
-      illiquid_investment_percentage: data.illiquidInvestmentPercentage,
-      risk_attitude: data.riskAttitude,
-      risk_tolerance: data.riskTolerance,
-    };
-  }
+  const riskInfoToBeSaved = {
+    risk_reaction: data.marketReaction,
+    risk_approach: data.investmentGrowthPreference,
+    investment_objective: data.investmentGoal,
+    investment_horizon: data.investmentHorizon,
+    illiquid_investment_percentage: data.liquidityPreference,
+    risk_attitude: data.marketReaction,
+    risk_tolerance: data.riskTolerance,
+  };
   const response = await apiClient.post(
     "/create/risk-profile",
     riskInfoToBeSaved

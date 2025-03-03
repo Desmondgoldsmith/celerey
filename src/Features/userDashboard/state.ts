@@ -58,19 +58,15 @@ interface DashboardState {
         value: number;
         percentage: number;
       };
-      cash: {
+      fixedIncome: {
         value: number;
         percentage: number;
       };
-      realEstate: {
+      equity: {
         value: number;
         percentage: number;
       };
-      publicSecurities: {
-        value: number;
-        percentage: number;
-      };
-      privateSecurities: {
+      cashEquivalents: {
         value: number;
         percentage: number;
       };
@@ -112,7 +108,12 @@ interface DashboardState {
     currency: string;
     savings: string;
     liabilitiesEstimation: any;
-    riskAllocation: any
+    riskAllocation: any;
+    altAsset: {
+      value: number;
+      percentage: number;
+    };
+    altAssets: any;
   };
   financialGoals: FinancialGoal[];
   subscription: {
@@ -123,6 +124,7 @@ interface DashboardState {
     start_date: string;
     end_date: string;
   };
+  
   budget: any;
   error: string;
   loading: boolean;
@@ -177,22 +179,18 @@ const DEFAULT_DATA = {
     percentage: 0,
   },
   assets: {
-    cash: {
+    cashEquivalents: {
       value: 0,
       percentage: 0,
     },
-    realEstate: {
+    equity: {
       value: 0,
       percentage: 0,
     },
-    publicSecurities: {
+    fixedIncome: {
       value: 0,
       percentage: 0,
-    },
-    privateSecurities: {
-      value: 0,
-      percentage: 0,
-    },
+    }
   },
   totalExpense: 0,
   totalExpenseFromIncome: {
@@ -238,7 +236,12 @@ const DEFAULT_DATA = {
     servicingAmount: 0,
     servicingPeriod: 0,
   },
-  riskAllocation: null
+  riskAllocation: null,
+  altAsset: {
+    value: 0,
+    percentage: 0,
+  },
+  altAssets: {},
 };
 const DEFAULT_FINANCIAL_GOALS: any[] = [];
 
@@ -294,13 +297,15 @@ export const useDashboardStore = create<DashboardStore>()(
             totalExpenseFromIncome: response.data.total_expense_from_income,
             totalIncomeFromExpense: response.data.total_income_from_expense,
             liabilitiesEstimation: response.data.liabilities_estimation,
+            altAsset: response.data.alt_asset,
+            altAssets: response.data.alt_assets,
             calculatedFinancialKnowledge:
               response.data.calculated_financial_knowledge,
             calculatedRiskTolerance:
               typeof response.data.calculated_risk_tolerance === "string"
                 ? JSON.parse(response?.data?.calculated_risk_tolerance || "{}")
                 : response?.data?.calculated_risk_tolerance,
-            riskAllocation: response.data?.risk_allocation || null
+            riskAllocation: response.data?.risk_allocation || null,
           };
         });
       }

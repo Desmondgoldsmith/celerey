@@ -374,8 +374,8 @@ export default function BalanceOverview({
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-gray-600">Asset Locations</span>
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-600">Ghana, UK</p>
-              <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+             {Object.keys(countries)?.length && <p className="text-sm text-gray-600">{findCountry(Object.keys(countries)[0])?.name}</p>}
+             {Object.keys(countries)?.length > 1 && <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
                 <DropdownMenuTrigger asChild>
                   <button className="text-navyLight text-sm px-2 py-1 hover:bg-gray-50 rounded-md flex items-center gap-1 transition-colors">
                     more
@@ -400,7 +400,7 @@ export default function BalanceOverview({
                     ))}
                   </div>
                 </DropdownMenuContent>
-              </DropdownMenu>
+              </DropdownMenu>}
             </div>
           </div>
         </div>

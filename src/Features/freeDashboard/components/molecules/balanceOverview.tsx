@@ -23,6 +23,7 @@ interface BalanceOverviewProps {
   income: any;
   expense: any;
   currency: string;
+  altAsset: any,
   onAddCategory: () => void;
   // annualIncome: {
   //   Rental: number;
@@ -71,23 +72,26 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   income,
   onAddCategory,
   currency = "usd",
+  altAsset
 }) => {
+
+  console.log(assets, liabilities, expense, income, currency, altAsset);
   // Dummy data
   const realEstate = {
-    percentage: assets.realEstate.percentage,
-    value: assets.realEstate.value,
+    percentage: assets.equity.percentage,
+    value: assets.equity.value,
   };
   const privateSecurities = {
-    percentage: assets.privateSecurities.percentage,
-    value: assets.privateSecurities.value,
+    percentage: assets.cashEquivalents.percentage,
+    value: assets.cashEquivalents.value,
   };
   const publicSecurities = {
-    percentage: assets.publicSecurities.percentage,
-    value: assets.publicSecurities.value,
+    percentage: assets.fixedIncome.percentage,
+    value: assets.fixedIncome.value,
   };
   const cash = {
-    percentage: assets.cash.percentage,
-    value: assets.cash.value,
+    percentage: altAsset.percentage,
+    value: altAsset.value,
   };
 
   // =====

@@ -23,9 +23,9 @@ const IncomeVsExpenditure = ({
   };
 
   // Calculate values using dummy data
-  const annualRevenue = dummyData.annualRevenue;
-  const annualIncome = dummyData.annualIncome;
-  const annualExpenditure = dummyData.annualExpenditure;
+  const annualRevenue = totalIncome;
+  const annualIncome = totalIncomeFromExpense.value;
+  const annualExpenditure = totalExpenseFromIncome.value;
 
   /* 
   // Calculate values for display

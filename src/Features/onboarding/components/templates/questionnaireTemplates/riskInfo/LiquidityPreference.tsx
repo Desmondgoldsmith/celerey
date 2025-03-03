@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Option } from "@/Features/onboarding/types";
 import { RiskOptionsScreenProps } from "@/Features/onboarding/types";
 import { OptionCard } from "@/Features/onboarding/components/molecules/riskOptionCard";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import Spinner from "@/components/ui/spinner";
 
 const OPTIONS: Option[] = [
   {
@@ -37,8 +39,15 @@ export const LiquidityPreferenceScreen: React.FC<RiskOptionsScreenProps> = ({
   onContinue,
   enableBack = true,
 }) => {
+  const { saveRiskInfo, loading } = useOnboardingStore();
+
   const handleOptionSelect = (option: any) => {
     onChange(option);
+  };
+
+  const handleContinue = async () => {
+    await saveRiskInfo();
+    onContinue();
   };
 
   return (
@@ -66,11 +75,11 @@ export const LiquidityPreferenceScreen: React.FC<RiskOptionsScreenProps> = ({
           </Button>
         )}
         <Button
-          onClick={onContinue}
+          onClick={handleContinue}
           className="flex-1 bg-navy hover:bg-navyLight text-white"
-          disabled={!value}
+          disabled={!value || loading}
         >
-          Continue
+          {loading && <Spinner />} Continue
         </Button>
       </div>
     </div>

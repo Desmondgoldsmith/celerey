@@ -388,15 +388,20 @@ export const Dashboard: React.FC = () => {
       "#F56767",
     ];
 
-    const assets = Object.keys(data?.assets || {}).map((key, index) => ({
-      category: key
+    const assets = Object.keys(data?.assets || {}).map((key, index) => {
+
+      const customKey = key === 'cashEquivalents' ? 'cashAndCashEquivalents' : key;
+   
+      return ({
+      category: customKey
         .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
         .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
       key,
       amount: data.assets[key].value,
       percentage: data.assets[key].percentage.toFixed(0),
       color: assetColors[index],
-    }));
+    })});
+
     setUserAssets(assets);
 
     const userCountries: any = {};
@@ -638,6 +643,7 @@ export const Dashboard: React.FC = () => {
             openGenBudgetModal={() => setIsGenBudgetModalOpen(true)}
             generatedBudget={generatedBudget ?? undefined}
             riskAllocation={data.riskAllocation}
+            
           />
         </div>
 
@@ -658,12 +664,12 @@ export const Dashboard: React.FC = () => {
               </span>
             </div>
 
-            <button
-              onClick={handleViewInvestModal}
+            {data?.calculatedRiskTolerance?.title && <button
+              onClick={handleViewRiskModal}
               className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
             >
               View Details
-            </button>
+            </button>}
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
             {data?.calculatedRiskTolerance?.title ||
@@ -689,15 +695,15 @@ export const Dashboard: React.FC = () => {
               </span>
             </div>
 
-            <button
-              onClick={handleViewInvestModal}
+            {data?.calculatedFinancialKnowledge && <button
+              onClick={handleViewFinancialModal}
               className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
             >
               View Details
-            </button>
+            </button>}
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
-            {data?.userFinancialKnowledge || ""}
+            {data?.calculatedFinancialKnowledge || ""}
           </p>
         </div>
 
@@ -812,6 +818,7 @@ export const Dashboard: React.FC = () => {
       <RiskAttitudeModal
         isOpen={isViewRiskModal}
         onClose={() => setisViewRiskModal(false)}
+        riskTolerance={data?.calculatedRiskTolerance?.title || ""}
       />
 
       <InvestmentExperienceModal
@@ -822,6 +829,7 @@ export const Dashboard: React.FC = () => {
       <FinancialKnowledgeModal
         isOpen={isViewFinancialModal}
         onClose={() => setisViewFinancialModal(false)}
+        calculatedFinancialKnowledge={data?.calculatedFinancialKnowledge}
       />
       <DebtServicingModal
         liabilities={userLiabilities}

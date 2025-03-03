@@ -241,6 +241,7 @@ const DashboardTemplate: React.FC = () => {
                       liabilities={data?.liabilities}
                       income={data?.allIncome}
                       expense={data?.expense}
+                      altAsset={data?.altAsset}
                       onAddCategory={handleOpenSubscriptionModal}
                     />
                   )}
@@ -267,6 +268,7 @@ const DashboardTemplate: React.FC = () => {
                 data?.allIncome &&
                 data?.expense && (
                   <BalanceOverview
+                    altAsset={data?.altAsset}
                     currency={data?.currency || "usd"}
                     Chart={Chart}
                     timeframe={timeframe}

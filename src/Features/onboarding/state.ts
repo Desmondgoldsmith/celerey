@@ -25,10 +25,7 @@ import {
 import { AxiosError } from "axios";
 import { DEFAULT_AUTH_ERROR_MESSAGE } from "../auth/constants";
 
-export type SectionId =
-  | "personal"
-  | "financial"
-  | "goals";
+export type SectionId = "personal" | "financial" | "goals";
 
 // the various section structures
 const DEFAULT_SECTIONS: Record<SectionId, Section> = {
@@ -145,10 +142,16 @@ const DEFAULT_FORM_DATA: OnboardingFormData = {
       giving: "",
     },
     assets: {
-      realEstate: "",
-      cash: "",
-      publicSecurities: "",
-      privateSecurities: "",
+      fixedIncome: "",
+      cashEquivalents: "",
+      equity: "",
+      altAssets: {
+        realEstate: "",
+        privateEquity: "",
+        hedgeFunds: "",
+        commodities: "",
+        cryptocurrency: "",
+      },
       assetCountries: [],
     },
     liabilities: {
@@ -448,6 +451,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
         state.loading = true;
       });
       try {
+        console.log(get().formData);
         await saveRiskInfoApi(get().formData.risk);
         set((state) => {
           state.loading = false;
