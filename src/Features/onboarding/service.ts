@@ -79,7 +79,7 @@ export const saveGoalsInfoApi = async (
   };
 
   const response = await apiClient.post("/create/goals", goalsInfoToBeSaved);
-  await updateOnboardingProgressApi("risk");
+  await updateOnboardingProgressApi("completed");
   return response.data;
 };
 

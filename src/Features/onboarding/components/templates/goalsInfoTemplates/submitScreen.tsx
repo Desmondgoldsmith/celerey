@@ -24,7 +24,6 @@ export const SubmitScreen = ({ onContinue, onBack }: SubmitScreenProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     setLoading(true);
     e.preventDefault();
-    await saveKnowledgeInfo();
     setLoading(false);
     onContinue(); // Call the onContinue function to proceed
   };
