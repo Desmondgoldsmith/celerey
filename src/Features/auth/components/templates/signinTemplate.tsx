@@ -50,7 +50,7 @@ export const SignInTemplate = () => {
       <form onSubmit={handleSubmit} className="space-y-4 mb-6">
         <input
           type="text"
-          placeholder="Enter Email address or Mobile No."
+          placeholder="Enter Email address"
           className="w-full p-3 border mb-4 rounded-md focus:border-navy focus:ring-1 focus:ring-navy"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
