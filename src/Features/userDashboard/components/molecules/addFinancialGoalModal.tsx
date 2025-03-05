@@ -378,7 +378,6 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
                 setFormData({ ...formData, durationStart: date })
               }
               placeholder="Select start date"
-              required
             />
           )}
 
@@ -391,7 +390,6 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
                 setFormData({ ...formData, durationEnd: date })
               }
               placeholder="Select end date"
-              required
             />
           )}
 

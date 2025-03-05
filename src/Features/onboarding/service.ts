@@ -40,6 +40,18 @@ export const savePersonalInfoApi = async (
   return response.data;
 };
 
+
+
+// Function to clean and replace values properly
+const cleanValues = (obj: any) => {
+  return Object.fromEntries(
+      Object.entries(obj).map(([key, value]: any) => [
+          key,
+          parseInt(value.replace(/[^0-9]/g, ''), 10) || 0 // Remove non-numeric characters and convert to number
+      ])
+  );
+};
+
 export const saveFinancialInfoApi = async (
   data: Partial<FinancialInfoSchema>
 ): Promise<ApiResponse> => {
@@ -48,7 +60,7 @@ export const saveFinancialInfoApi = async (
     active_income: data.activeIncome,
     passive_income: data.passiveIncome,
     expense: data.annualExpenses,
-    assets: data.assets,
+    assets: {...data.assets, altAssets: cleanValues(data?.assets?.altAssets || {})},
     liabilities: data.liabilities,
     savings: data.savings,
     emergency_fund: {

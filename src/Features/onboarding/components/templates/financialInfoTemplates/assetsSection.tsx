@@ -118,7 +118,7 @@ const AssetsSection: React.FC<AssetsSectionProps> = ({ values, onChange }) => {
       commodities,
       cryptocurrency,
     ]
-      .map((val) => parseFloat(val) || 0)
+      .map((val) => parseInt(val.replace(/[^0-9]/g, '')) || 0)
       .reduce((acc, curr) => acc + curr, 0);
     return formatCurrency(sum.toString());
   };
