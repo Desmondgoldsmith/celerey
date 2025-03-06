@@ -8,17 +8,14 @@ import { SubscriptionTier } from "../../types";
 interface SubscriptionModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubscriptionSelect: (tier: SubscriptionTier) => void;
+  handlePaymentComplete: any
 }
 
 export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
   isOpen,
   onClose,
-  onSubscriptionSelect,
+  handlePaymentComplete
 }) => {
-  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
-    onSubscriptionSelect(tier);
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -55,7 +52,7 @@ export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
               <PricingCard
                 key={tier.name}
                 tier={tier}
-                onSubscribe={() => handleSubscriptionSelect(tier)}
+                handlePaymentComplete={handlePaymentComplete}
               />
             ))}
           </div>

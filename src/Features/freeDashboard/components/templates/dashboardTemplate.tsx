@@ -144,16 +144,9 @@ const DashboardTemplate: React.FC = () => {
     setIsSubscriptionModalOpen(true);
   };
 
-  // Handle tier selection
-  const handleSubscriptionSelect = (tier: SubscriptionTier) => {
-    setSelectedTier(tier);
-    setIsSubscriptionModalOpen(false);
-    setIsPaymentModalOpen(true);
-  };
-
   // Handle payment completion
   const handlePaymentComplete = async () => {
-    setIsPaymentModalOpen(false);
+    setIsSubscriptionModalOpen(false);
     setIsCongratsModalOpen(true);
     await populateSubscription();
     setTimeout(() => {
@@ -301,7 +294,7 @@ const DashboardTemplate: React.FC = () => {
       <SubscriptionModal
         isOpen={isSubscriptionModalOpen}
         onClose={() => setIsSubscriptionModalOpen(false)}
-        onSubscriptionSelect={handleSubscriptionSelect}
+        handlePaymentComplete={handlePaymentComplete}
       />
 
       <PaymentModal
@@ -310,6 +303,7 @@ const DashboardTemplate: React.FC = () => {
         selectedTier={selectedTier}
         onPaymentComplete={handlePaymentComplete}
       />
+
       {showCalendarModal && <CalendarModal />}
 
       <CongratulationsModal

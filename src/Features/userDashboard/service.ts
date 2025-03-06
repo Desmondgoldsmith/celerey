@@ -33,13 +33,21 @@ export const createSubscriptionApi = async (
   return response.data;
 };
 
-/***
- * {
-      subscription_id: subscriptionId,
-      new_price_id: newPriceId,
-      prorate: true, // Apply prorated charges
-    }
- */
+export const getStripeCustomerPortalApi = async (): Promise<ApiResponse> => {
+  const response = await apiClient.get("/subscription/customer-portal");
+  return response.data;
+};
+
+export const createSubscriptionCheckoutSessionApi = async (
+  payload: any
+): Promise<ApiResponse> => {
+  const response = await apiClient.post(
+    "/subscription/checkout-session",
+    payload
+  );
+  return response.data;
+};
+
 export const changeSubscriptionApi = async (
   payload: any
 ): Promise<ApiResponse> => {

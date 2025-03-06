@@ -16,6 +16,7 @@ import { useOnboardingStore } from "@/Features/onboarding/state";
 import { useAuthStore } from "@/Features/auth/state";
 import { useDashboardStore } from "../../state";
 import { useRouter } from "next/navigation";
+import { getStripeCustomerPortalApi } from "../../service";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -66,6 +67,20 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     }, 100);
   };
 
+  const handleManageSubscription = async (e: React.MouseEvent) => {
+    console.log("Plans button clicked"); // Debug log
+    e.preventDefault();
+    e.stopPropagation();
+
+    const response = await getStripeCustomerPortalApi();
+
+    if (response?.data?.url) {
+      window.open(response.data.url, "_blank");
+    }
+    // Close dropdown first
+    setIsUserDropdownOpen(false);
+  };
+
   // User dropdown menu component
   const UserDropdownMenu = () => (
     <div
@@ -86,6 +101,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
       >
         <Wallet className="h-4 w-4 mr-2" />
         View Current Plans
+      </button>
+      <button
+        type="button"
+        onClick={handleManageSubscription}
+        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Manage Subscription
       </button>
       <button
         type="button"
