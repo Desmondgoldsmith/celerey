@@ -790,7 +790,8 @@ export const Dashboard: React.FC = () => {
         isOpen={isEditAssetModalOpen}
         onClose={() => setIsEditAssetModalOpen(false)}
         onSave={handleSaveAssets}
-        initialAssets={userAssets}
+        altAssets={data?.altAssets || {}}
+        initialAssets={userAssets.filter(asset=> asset.key !== 'altAssets')}
         initialCountries={userCountries}
       />
 

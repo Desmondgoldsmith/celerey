@@ -24,7 +24,7 @@ const IncomeVsExpenditure = ({
 
   // Calculate values using dummy data
   const annualRevenue = totalIncome;
-  const annualIncome = totalIncomeFromExpense.value;
+  const annualIncome = totalIncome;
   const annualExpenditure = totalExpenseFromIncome.value;
 
   /* 
@@ -39,8 +39,8 @@ const IncomeVsExpenditure = ({
   const avgMonthlyExpenditure = annualExpenditure / 12;
 
   // Calculate percentages for the bar chart
-  const totalAmount = annualIncome + annualExpenditure;
-  const incomePercentage = (annualIncome / totalAmount) * 100;
+  const totalAmount = annualIncome ;
+  const incomePercentage = ((annualIncome - annualExpenditure) / totalAmount) * 100;
   const expenditurePercentage = (annualExpenditure / totalAmount) * 100;
 
   // Format fixed values for the scale

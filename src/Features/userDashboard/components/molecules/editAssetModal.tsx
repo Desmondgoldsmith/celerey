@@ -21,6 +21,7 @@ interface EditAssetModalProps {
   onSave: (assets: AssetType[], countries: CountryType[]) => void
   initialAssets?: AssetType[]
   initialCountries?: {[key:string]: number}
+  altAssets: any
 }
 
 const availableCountries = [...countries]
@@ -31,6 +32,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   onSave,
   initialAssets = [],
   initialCountries = [],
+  altAssets
 }) => {
 
   const [assets, setAssets] = useState<AssetType[]>(initialAssets)
@@ -87,7 +89,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
 
   const handleSave = async () => {
     try {
-      await updateAssets(assets, selectedCountries)
+      await updateAssets(assets, selectedCountries, altAssets)
       onClose()
     } catch (error) {
       console.log('Error', error)

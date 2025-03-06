@@ -8,6 +8,7 @@ import {
   RiskInfoSchema,
 } from "./schema";
 import camelToSnake from "@/utils/convertCamelCaseToSnakeCase";
+import { object } from "zod";
 
 export const savePersonalInfoApi = async (
   data: PersonalInfoSchema
@@ -40,15 +41,13 @@ export const savePersonalInfoApi = async (
   return response.data;
 };
 
-
-
 // Function to clean and replace values properly
 const cleanValues = (obj: any) => {
   return Object.fromEntries(
-      Object.entries(obj).map(([key, value]: any) => [
-          key,
-          parseInt(value.replace(/[^0-9]/g, ''), 10) || 0 // Remove non-numeric characters and convert to number
-      ])
+    Object.entries(obj).map(([key, value]: any) => [
+      key,
+      parseInt(String(value)?.replace(/[^0-9]/g, ""), 10) || 0, // Remove non-numeric characters and convert to number
+    ])
   );
 };
 
@@ -60,7 +59,10 @@ export const saveFinancialInfoApi = async (
     active_income: data.activeIncome,
     passive_income: data.passiveIncome,
     expense: data.annualExpenses,
-    assets: {...data.assets, altAssets: cleanValues(data?.assets?.altAssets || {})},
+    assets: {
+      ...data.assets,
+      altAssets: cleanValues(data?.assets?.altAssets || {}),
+    },
     liabilities: data.liabilities,
     savings: data.savings,
     emergency_fund: {
@@ -78,6 +80,72 @@ export const saveFinancialInfoApi = async (
   await updateOnboardingProgressApi("goals");
 
   return response.data;
+};
+
+export const updateFinancialInfoApi = async (
+  data: any
+): Promise<any> => {
+  try {
+    const payload: any = {};
+
+    console.log("data", data);
+
+    if (Object.keys(data).includes("assets")) {
+      payload.assets = {
+        ...data.assets,
+        altAssets: cleanValues(data?.assets?.altAssets || {}),
+      };
+    }
+
+    if (Object.keys(data).includes("emergencyFund")) {
+      payload.emergency_fund = {
+        hasEmergencyFund: data.emergencyFund?.hasEmergencyFunds,
+        currentMonths: data.emergencyFund?.emergencyFundAmount,
+        targetMonths: data.emergencyFund?.targetMonths,
+      };
+    }
+
+    if (Object.keys(data).includes("retirement")) {
+      payload.retirement = data.retirement;
+    }
+
+    if (Object.keys(data).includes("currency")) {
+      payload.currency = data.currency;
+    }
+
+    if (Object.keys(data).includes("income")) {
+      payload.active_income = data.income;
+    }
+
+    if (Object.keys(data).includes("passiveIncome")) {
+      payload.passive_income = data.passiveIncome;
+    }
+
+    if (Object.keys(data).includes("annualExpenses")) {
+      payload.expense = data.annualExpenses;
+    }
+
+    if (Object.keys(data).includes("liabilities")) {
+      payload.liabilities = data.liabilities;
+    }
+
+    if (Object.keys(data).includes("savings")) {
+      payload.savings = data.savings;
+    }
+
+    if (Object.keys(data).includes("expense")) {
+      payload.expense = data.expense;
+    }
+
+    console.log(payload);
+
+    const response = await apiClient.post("/create/financial-info", payload);
+
+    return response.data;
+  } catch (error) {
+    console.log("error", error);
+    return null
+  }
 };
 
 export const saveGoalsInfoApi = async (

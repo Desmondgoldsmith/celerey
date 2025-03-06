@@ -151,7 +151,7 @@ const DashboardTemplate: React.FC = () => {
     await populateSubscription();
     setTimeout(() => {
       router.replace("/dashboard");
-    }, 3000);
+    }, 5000);
   };
 
   const [showCalendarModal, setShowCalendarModal] = useState(false);

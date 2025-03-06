@@ -13,7 +13,7 @@ import {
 } from "./service";
 import { AssetType, FinancialGoal } from "./types";
 import { PersonalInfoSchema } from "../onboarding/schema";
-import { saveFinancialInfoApi } from "../onboarding/service";
+import { saveFinancialInfoApi, updateFinancialInfoApi } from "../onboarding/service";
 
 interface DashboardState {
   data: {
@@ -124,7 +124,7 @@ interface DashboardState {
     start_date: string;
     end_date: string;
   };
-  
+
   budget: any;
   error: string;
   loading: boolean;
@@ -136,7 +136,7 @@ interface DashboardStore extends DashboardState {
   populateFinancialGoals: () => Promise<void>;
   populateSubscription: () => Promise<any>;
   populateBudget: () => Promise<void>;
-  updateAssets: (assets: AssetType[], assetCountries: string[]) => void;
+  updateAssets: (assets: AssetType[], assetCountries: string[], altAssets?:any) => void;
   updateBalance: (
     balance: AssetType[],
     key: string,
@@ -190,7 +190,7 @@ const DEFAULT_DATA = {
     fixedIncome: {
       value: 0,
       percentage: 0,
-    }
+    },
   },
   totalExpense: 0,
   totalExpenseFromIncome: {
@@ -373,7 +373,7 @@ export const useDashboardStore = create<DashboardStore>()(
         state.loading = false;
       });
     },
-    updateAssets: async (assets: AssetType[], assetCountries: string[]) => {
+    updateAssets: async (assets: AssetType[], assetCountries: string[], altAssets?: any) => {
       try {
         set((state) => {
           state.loading = true;
@@ -385,12 +385,14 @@ export const useDashboardStore = create<DashboardStore>()(
           }
         });
         updatedAssets["assetCountries"] = assetCountries;
-        await saveFinancialInfoApi({ assets: updatedAssets });
+        console.log({ assets: {...updatedAssets, altAssets} })
+        await updateFinancialInfoApi({ assets: {...updatedAssets, altAssets} });
         await get().populateDashboardData();
         set((state) => {
           state.loading = false;
         });
       } catch (error) {
+        console.log("error", error);
         set((state) => {
           state.loading = false;
         });
@@ -416,7 +418,10 @@ export const useDashboardStore = create<DashboardStore>()(
           (key) => (updatedAssets[key] = additionalItems[key])
         );
 
-        await saveFinancialInfoApi({ [key]: updatedAssets });
+        console.log("updatedAssets", updatedAssets, key);
+        console.log("updatedAssets", { [key]: updatedAssets });
+
+        await updateFinancialInfoApi({ [key]: updatedAssets });
         await get().populateDashboardData();
         set((state) => {
           state.loading = false;
