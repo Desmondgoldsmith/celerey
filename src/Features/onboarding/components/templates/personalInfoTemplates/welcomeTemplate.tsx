@@ -8,7 +8,7 @@ export const WelcomeTemplate = ({ onStart }: { onStart: () => void }) => (
       <br></br>
       we need to know some basic information that will ensure the Celerey&apos;s
       <br></br>
-      financial modelling fits your personal situation, ambition and goals
+      financial modelling fits your personal situation, ambition and goals.
     </p>
     <Button
       onClick={onStart}
