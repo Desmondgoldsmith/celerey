@@ -37,7 +37,7 @@ const tabs = [
   "Liabilities",
   "Income",
   "Expenses",
-  "Income Vs Debt",
+  // "Income Vs Debt",
   "Income Vs Expenditure",
 ];
 
@@ -447,7 +447,7 @@ export default function BalanceOverview({
           </h2>
           <Info className="h-3 w-3 text-gray-400" />
         </div>
-        <MoreHorizontal className="h-3 w-3 text-gray-400" />
+        {/* <MoreHorizontal className="h-3 w-3 text-gray-400" /> */}
       </div>
 
       {/* Tabs */}
@@ -513,7 +513,7 @@ export default function BalanceOverview({
             totalExpense={totalExpense}
           />
         )}
-        {activeTab === "Income Vs Debt" && (
+        {/* {activeTab === "Income Vs Debt" && (
           <IncomeVsDebtSection
             currency={currency}
             totalDebt={totalDebt}
@@ -523,7 +523,7 @@ export default function BalanceOverview({
             openDebtModal={openLiabilityModal}
             openDebtServicingModal={openDebtServicingModal}
           />
-        )}
+        )} */}
         {activeTab === "Income Vs Expenditure" && (
           <IncomeVsExpenditure
             currency={currency}

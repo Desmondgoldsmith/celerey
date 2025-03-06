@@ -23,7 +23,7 @@ interface BalanceOverviewProps {
   income: any;
   expense: any;
   currency: string;
-  altAsset: any,
+  altAsset: any;
   onAddCategory: () => void;
   // annualIncome: {
   //   Rental: number;
@@ -45,7 +45,10 @@ type IncomeCategory =
   | "Dividends"
   | "Rental"
   | "Interest Income"
-  | "Other Income";
+  | "Other Income"
+  | "Salary"
+  | "Bonuses"
+  | "Commissions";
 type ExpenditureCategory =
   | "Education"
   | "Childcare"
@@ -72,26 +75,25 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   income,
   onAddCategory,
   currency = "usd",
-  altAsset
+  altAsset,
 }) => {
-
   console.log(assets, liabilities, expense, income, currency, altAsset);
   // Dummy data
   const realEstate = {
-    percentage: assets.equity.percentage,
-    value: assets.equity.value,
+    percentage: assets.equity?.percentage,
+    value: assets.equity?.value,
   };
   const privateSecurities = {
-    percentage: assets.cashEquivalents.percentage,
-    value: assets.cashEquivalents.value,
+    percentage: assets.cashEquivalents?.percentage,
+    value: assets.cashEquivalents?.value,
   };
   const publicSecurities = {
-    percentage: assets.fixedIncome.percentage,
-    value: assets.fixedIncome.value,
+    percentage: assets.fixedIncome?.percentage,
+    value: assets.fixedIncome?.value,
   };
   const cash = {
-    percentage: altAsset.percentage,
-    value: altAsset.value,
+    percentage: altAsset?.percentage,
+    value: altAsset?.value,
   };
 
   // =====
@@ -142,6 +144,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   ];
 
   const dummyAnnualIncome = {
+    Salary: income.salary || { value: 120000 },
+    Bonuses: income.bonuses || { value: 25000 },
+    Commissions: income.commissions || { value: 18000 },
     Rental: income.rentalIncome,
     Dividends: income.dividends,
     "Interest Income": income.interestIncome,
@@ -170,6 +175,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
     Rental: "#F65A3B",
     "Interest Income": "#8BA78D",
     "Other Income": "#383396",
+    Salary: "#2B7A77",
+    Bonuses: "#D3455B",
+    Commissions: "#6B9080",
   };
 
   const expenditureColors: Record<ExpenditureCategory, string> = {
@@ -236,7 +244,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
         <h2 className="text-xl font-cirka text-navy md:text-xl">
           Wealth Overview
         </h2>
-        <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" />
+        {/* <MoreHorizontal className="h-6 w-6 text-gray-400 cursor-pointer" /> */}
       </div>
 
       {/* Income and Expenditure Section */}
@@ -272,7 +280,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
               </button>
             </div>
 
-            <div className="space-y-3 mt-4">
+            <div className="space-y-2 mt-2">
               {incomeData.map((item) => (
                 <div key={item.name} className="space-y-1">
                   <div className="flex justify-between items-center">
@@ -281,7 +289,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                       {formatCurrency(item.value, currency)}
                     </span>
                   </div>
-                  <div className="w-full h-3 bg-gray-100 rounded-sm overflow-hidden">
+                  <div className="w-full h-2 bg-gray-100 rounded-sm overflow-hidden">
                     <div
                       className="h-full"
                       style={{
@@ -406,7 +414,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
                     <span className="truncate">Equity (stocks)</span>
-                    <span>{realEstate.percentage.toFixed(0)}%</span>
+                    <span>{realEstate.percentage?.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
@@ -415,7 +423,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                     ></div>
                   </div>
                   <div className="text-left text-gray-700 text-sm">
-                    ${realEstate.value.toLocaleString()}
+                    ${realEstate.value?.toLocaleString()}
                   </div>
                 </div>
 
@@ -428,16 +436,16 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                     >
                       Cash and Cash Equivalents
                     </span>
-                    <span>{publicSecurities.percentage.toFixed(0)}%</span>
+                    <span>{publicSecurities.percentage?.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-full bg-navy rounded-full"
-                      style={{ width: `${publicSecurities.percentage}%` }}
+                      style={{ width: `${publicSecurities?.percentage}%` }}
                     ></div>
                   </div>
                   <div className="text-left text-gray-700 text-sm">
-                    ${publicSecurities.value.toLocaleString()}
+                    ${publicSecurities.value?.toLocaleString()}
                   </div>
                 </div>
 
@@ -445,16 +453,16 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
                 <div className="flex flex-col">
                   <div className="flex justify-between text-gray-700 text-sm font-medium">
                     <span className="truncate pr-1">Fixed Income</span>
-                    <span>{privateSecurities.percentage.toFixed(0)}%</span>
+                    <span>{privateSecurities.percentage?.toFixed(0)}%</span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-full bg-[#8BA78D] rounded-full"
-                      style={{ width: `${privateSecurities.percentage}%` }}
+                      style={{ width: `${privateSecurities?.percentage}%` }}
                     ></div>
                   </div>
                   <div className="text-left text-gray-700 text-sm">
-                    ${privateSecurities.value.toLocaleString()}
+                    ${privateSecurities.value?.toLocaleString()}
                   </div>
                 </div>
 

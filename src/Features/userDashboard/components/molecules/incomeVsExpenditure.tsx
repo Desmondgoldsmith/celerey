@@ -64,36 +64,29 @@ const IncomeVsExpenditure = ({
   return (
     <div className="w-full">
       {/* Financial Metrics Cards */}
-      <div className="grid grid-cols-5 gap-4 mb-8">
-        <div className="border rounded-lg p-4 bg-white">
-          <div className="text-sm text-gray-600 mb-2">Annual Revenue</div>
-          <div className={getTextSizeClass(annualRevenue)}>
-            {formatCurrency(String(annualRevenue), currency)}
-          </div>
-        </div>
-
-        <div className="border rounded-lg p-4 bg-white">
+      <div className="grid grid-cols-4 gap-4 mb-8">
+        <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Annual Income</div>
           <div className={getTextSizeClass(annualIncome)}>
             {formatCurrency(String(annualIncome), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-white">
+        <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Annual Expenditure</div>
           <div className={getTextSizeClass(annualExpenditure)}>
             {formatCurrency(String(annualExpenditure), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-white">
+        <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Avg Monthly Income</div>
           <div className={getTextSizeClass(avgMonthlyIncome)}>
             {formatCurrency(String(avgMonthlyIncome), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-4 bg-white">
+        <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">
             Avg Monthly Expenditure
           </div>
