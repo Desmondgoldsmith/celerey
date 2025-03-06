@@ -16,50 +16,30 @@ const IncomeVsExpenditure = ({
   totalIncomeFromExpense,
   currency,
 }: IncomeVsExpenditureProps) => {
-  const dummyData = {
-    annualRevenue: 4465852,
-    annualIncome: 2225852,
-    annualExpenditure: 1525852,
-  };
+  const annualIncome = totalIncome || 0;
+  const annualExpenditure = totalExpenseFromIncome?.value || 0;
 
-  // Calculate values using dummy data
-  const annualRevenue = totalIncome;
-  const annualIncome = totalIncome;
-  const annualExpenditure = totalExpenseFromIncome.value;
-
-  /* 
-  // Calculate values for display
-  const annualRevenue = totalIncome || 0;
-  const annualIncome = Number(totalIncomeFromExpense?.value || 0);
-  const annualExpenditure = Number(totalExpenseFromIncome?.value || 0);
-  */
-
-  // Calculate monthly averages
+  // Calculate monthly values
   const avgMonthlyIncome = annualIncome / 12;
   const avgMonthlyExpenditure = annualExpenditure / 12;
 
-  // Calculate percentages for the bar chart
-  const totalAmount = annualIncome ;
-  const incomePercentage = ((annualIncome - annualExpenditure) / totalAmount) * 100;
-  const expenditurePercentage = (annualExpenditure / totalAmount) * 100;
+  // Determine the dynamic scale (maximum value)
+  const maxValue = Math.max(annualIncome, annualExpenditure);
+  const scaleStep = Math.ceil(maxValue / 5 / 1000) * 1000; // Rounded step
 
-  // Format fixed values for the scale
-  const formatScaleValue = (value: string) => {
-    return value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-  };
+  // Generate scale labels dynamically
+  const scaleLabels = Array.from({ length: 6 }, (_, i) =>
+    formatCurrency(String(i * scaleStep), currency)
+  );
 
-  const getTextSizeClass = (value: number) => {
-    const formattedValue = formatCurrency(String(value), currency);
-    const valueLength = formattedValue ? formattedValue.length : 0;
+  // **Fixed Percentage Calculation**
+  const incomePercentage = annualIncome - annualExpenditure; // Direct value
+  const expenditurePercentage = annualExpenditure; // Direct value
 
-    if (valueLength > 12) {
-      return "text-sm font-bold";
-    } else if (valueLength > 10) {
-      return "text-base font-bold";
-    } else {
-      return "text-lg font-bold";
-    }
-  };
+  // Convert percentages for bar width
+  const totalAmount = maxValue > 0 ? maxValue : 1; // Prevent division by zero
+  const incomeWidth = ((annualIncome - annualExpenditure) / totalAmount) * 100;
+  const expenditureWidth = (annualExpenditure / totalAmount) * 100;
 
   return (
     <div className="w-full">
@@ -67,21 +47,21 @@ const IncomeVsExpenditure = ({
       <div className="grid grid-cols-4 gap-4 mb-8">
         <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Annual Income</div>
-          <div className={getTextSizeClass(annualIncome)}>
+          <div className="text-lg font-bold">
             {formatCurrency(String(annualIncome), currency)}
           </div>
         </div>
 
         <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Annual Expenditure</div>
-          <div className={getTextSizeClass(annualExpenditure)}>
+          <div className="text-lg font-bold">
             {formatCurrency(String(annualExpenditure), currency)}
           </div>
         </div>
 
         <div className="border rounded-lg p-2 bg-white">
           <div className="text-sm text-gray-600 mb-2">Avg Monthly Income</div>
-          <div className={getTextSizeClass(avgMonthlyIncome)}>
+          <div className="text-lg font-bold">
             {formatCurrency(String(avgMonthlyIncome), currency)}
           </div>
         </div>
@@ -90,44 +70,28 @@ const IncomeVsExpenditure = ({
           <div className="text-sm text-gray-600 mb-2">
             Avg Monthly Expenditure
           </div>
-          <div className={getTextSizeClass(avgMonthlyExpenditure)}>
+          <div className="text-lg font-bold">
             {formatCurrency(String(avgMonthlyExpenditure), currency)}
           </div>
         </div>
       </div>
 
-      {/* Money Scale */}
+      {/* Dynamic Money Scale */}
       <div className="flex justify-between text-sm text-gray-600 mb-2">
-        <div>$0</div>
-        <div>
-          ${totalAmount >= 20000 ? "20,000" : formatScaleValue("20000")}
-        </div>
-        <div>
-          ${totalAmount >= 40000 ? "40,000" : formatScaleValue("40000")}
-        </div>
-        <div>
-          ${totalAmount >= 60000 ? "60,000" : formatScaleValue("60000")}
-        </div>
-        <div>
-          ${totalAmount >= 80000 ? "80,000" : formatScaleValue("80000")}
-        </div>
-        <div>
-          ${totalAmount >= 100000 ? "100,000" : formatScaleValue("100000")}
-        </div>
-        <div>
-          ${totalAmount >= 120000 ? "120,000" : formatScaleValue("120000")}
-        </div>
+        {scaleLabels.map((label, index) => (
+          <div key={index}>{label}</div>
+        ))}
       </div>
 
-      {/* Bar Chart */}
-      <div className="w-full h-20 rounded-lg overflow-hidden flex">
+      {/* Dynamic Bar Chart */}
+      <div className="w-full h-20 rounded-lg overflow-hidden flex border">
         <div
           className="h-full bg-red-300"
-          style={{ width: `${expenditurePercentage}%` }}
+          style={{ width: `${expenditureWidth}%` }}
         ></div>
         <div
           className="h-full bg-green-400"
-          style={{ width: `${incomePercentage}%` }}
+          style={{ width: `${incomeWidth}%` }}
         ></div>
       </div>
 
@@ -139,7 +103,7 @@ const IncomeVsExpenditure = ({
         </div>
         <div className="flex items-center">
           <div className="w-6 h-6 bg-green-400 mr-2"></div>
-          <span className="text-sm">Income</span>
+          <span className="text-sm">Remaining Income</span>
         </div>
       </div>
     </div>
