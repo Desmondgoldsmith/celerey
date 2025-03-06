@@ -258,12 +258,12 @@ export default function BalanceOverview({
             Geographical Spread of Assets
             <Info className="inline-block ml-1 h-3 w-3 text-gray-400" />
           </h3>
-          <span
+          {/* <span
             className="text-navy rounded-sm border mt-2 border-navy hover:border-navyLight p-1 hover:text-navyLight text-sm hover:cursor-pointer"
             onClick={handlePortfolioRecommendationClick}
           >
             Portfolio Recommendation
-          </span>
+          </span> */}
         </div>
 
         <div className="h-[280px] relative mb-4">

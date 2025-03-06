@@ -33,9 +33,9 @@ const PortfolioRecommendationsModal: React.FC<
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] p-6">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-2xl text-center font-cirka">
-            Portfolio Recommendations
-          </DialogTitle>
+        <DialogTitle className="text-2xl text-center font-cirka">
+          Portfolio Recommendations
+        </DialogTitle>
           <p className="text-gray-600 text-center">
             Improve your portfolio with our recommendations
           </p>

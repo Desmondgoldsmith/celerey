@@ -45,32 +45,38 @@ const IncomeVsExpenditure = ({
     <div className="w-full">
       {/* Financial Metrics Cards */}
       <div className="grid grid-cols-4 gap-4 mb-8">
-        <div className="border rounded-lg p-2 bg-white">
-          <div className="text-sm text-gray-600 mb-2">Annual Income</div>
-          <div className="text-lg font-bold">
+        <div className="border flex flex-col justify-between rounded-lg p-2 bg-white">
+          <div className="text-sm text-gray-600 mb-2 text-left">
+            Annual Income
+          </div>
+          <div className="text-lg font-bold text-center">
             {formatCurrency(String(annualIncome), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-2 bg-white">
-          <div className="text-sm text-gray-600 mb-2">Annual Expenditure</div>
-          <div className="text-lg font-bold">
+        <div className="border flex flex-col justify-between rounded-lg p-2 bg-white">
+          <div className="text-sm text-gray-600 mb-2 text-left">
+            Annual Expenditure
+          </div>
+          <div className="text-lg font-bold text-center">
             {formatCurrency(String(annualExpenditure), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-2 bg-white">
-          <div className="text-sm text-gray-600 mb-2">Avg Monthly Income</div>
-          <div className="text-lg font-bold">
+        <div className="border flex flex-col justify-between rounded-lg p-2 bg-white">
+          <div className="text-sm text-gray-600 mb-2 text-left">
+            Avg Monthly Income
+          </div>
+          <div className="text-lg font-bold text-center">
             {formatCurrency(String(avgMonthlyIncome), currency)}
           </div>
         </div>
 
-        <div className="border rounded-lg p-2 bg-white">
-          <div className="text-sm text-gray-600 mb-2">
+        <div className="border flex flex-col justify-between rounded-lg p-2 bg-white">
+          <div className="text-sm text-gray-600 mb-2 text-left">
             Avg Monthly Expenditure
           </div>
-          <div className="text-lg font-bold">
+          <div className="text-lg font-bold text-center">
             {formatCurrency(String(avgMonthlyExpenditure), currency)}
           </div>
         </div>

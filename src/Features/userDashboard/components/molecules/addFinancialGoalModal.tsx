@@ -199,6 +199,14 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
     }
   };
 
+  const formatNumberWithCommas = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const parseNumberFromCommas = (value: string) => {
+    return value.replace(/,/g, "");
+  };
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -314,13 +322,16 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
             <Input
               disabled={initialData?.type === "retirement"}
               readOnly={initialData?.type === "retirement"}
-              type="number"
+              type="text"
               placeholder={
-                initialData?.type !== "emergency" ? "e.g., 140000" : "e.g., 14"
+                initialData?.type !== "emergency" ? "e.g., 140,000" : "e.g., 14"
               }
-              value={formData.targetAmount}
+              value={formatNumberWithCommas(formData.targetAmount)}
               onChange={(e) =>
-                setFormData({ ...formData, targetAmount: e.target.value })
+                setFormData({
+                  ...formData,
+                  targetAmount: parseNumberFromCommas(e.target.value),
+                })
               }
               className="w-2/3 rounded-lg border-gray-200"
               required
@@ -335,13 +346,16 @@ const AddFinancialGoalModal: React.FC<AddFinancialGoalModalProps> = ({
               {getCurrentValueLabel(initialData?.type || "custom")}
             </label>
             <Input
-              type="number"
+              type="text"
               placeholder={
-                initialData?.type !== "emergency" ? "e.g., 2000" : "e.g., 4"
+                initialData?.type !== "emergency" ? "e.g., 2,000" : "e.g., 4"
               }
-              value={formData.currentAmount}
+              value={formatNumberWithCommas(formData.currentAmount)}
               onChange={(e) =>
-                setFormData({ ...formData, currentAmount: e.target.value })
+                setFormData({
+                  ...formData,
+                  currentAmount: parseNumberFromCommas(e.target.value),
+                })
               }
               className="w-2/3 rounded-lg border-gray-200"
               required
