@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
-import { X } from 'lucide-react'
-import { SubscriptionTier } from '../../types'
-import { Elements } from '@stripe/react-stripe-js'
-import { getStripe } from '@/lib/stripe'
-import { PaymentForm } from './PaymentForm'
+import React, { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { X } from "lucide-react";
+import { SubscriptionTier } from "../../types";
+import { Elements } from "@stripe/react-stripe-js";
+import { getStripe } from "@/lib/stripe";
+import { PaymentForm } from "./PaymentForm";
 
 interface PaymentModalProps {
-  isOpen: boolean
-  onClose: () => void
-  selectedTier: SubscriptionTier | null
-  onPaymentComplete: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  selectedTier: SubscriptionTier | null;
+  onPaymentComplete: () => void;
 }
 
 export const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -19,13 +19,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   selectedTier,
   onPaymentComplete,
 }) => {
-  
-  const [stripePromise, setStripePromise]: any = useState(null)
+  const [stripePromise, setStripePromise]: any = useState(null);
 
   useEffect(() => {
-    getStripe().then(setStripePromise)
-  }, [])
-
+    getStripe().then(setStripePromise);
+  }, []);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -35,7 +33,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           onClick={onClose}
           className="absolute right-2 md:right-4 top-2 md:top-4 rounded-sm opacity-70 hover:opacity-100"
         >
-          <X className="h-5 w-5 md:h-6 md:w-6" />
+          {/* <X className="h-5 w-5 md:h-6 md:w-6" /> */}
           <span className="sr-only">Close</span>
         </button>
 
@@ -60,5 +58,5 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

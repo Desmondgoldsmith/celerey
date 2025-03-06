@@ -41,7 +41,7 @@ export const GeographicSpread: React.FC<{ assetCountries: string[] }> = ({
           Geographic Spread of Assets
         </h2>
         <button>
-          <MoreHorizontal className="h-6 w-6 text-gray-400" />
+          {/* <MoreHorizontal className="h-6 w-6 text-gray-400" /> */}
         </button>
       </div>
 
