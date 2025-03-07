@@ -41,7 +41,7 @@ export const CurrencyScreen = ({
     <div className="text-center max-w-xl mx-auto">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-cirka mb-4">
-          Let&apos;s talk about your finances; income, expenses, assets and
+          Let&apos;s talk about your finances: income, expenses, assets and
           liabilities
         </h1>
         <p className="text-gray-600">

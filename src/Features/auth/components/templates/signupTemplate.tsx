@@ -76,7 +76,7 @@ export const SignUpTemplate = () => {
       </div> */}
 
       <p className="mt-6 text-sm">
-        <span className="text-navy">Already have an account ?</span>{" "}
+        <span className="text-navy">Already have an account?</span>{" "}
         <span
           onClick={handleSignup}
           className="text-navyLight hover:cursor-pointer hover:underline "
