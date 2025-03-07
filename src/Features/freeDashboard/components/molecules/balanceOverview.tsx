@@ -144,9 +144,9 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
   ];
 
   const dummyAnnualIncome = {
-    Salary: income.salary || { value: 120000 },
-    Bonuses: income.bonuses || { value: 25000 },
-    Commissions: income.commissions || { value: 18000 },
+    Salary: income.salary,
+    Bonuses: income.bonuses,
+    Commissions: income.commissions,
     Rental: income.rentalIncome,
     Dividends: income.dividends,
     "Interest Income": income.interestIncome,
@@ -496,7 +496,7 @@ const BalanceOverview: React.FC<BalanceOverviewProps> = ({
         <CardContent className="p-2 mt-3 md:mt-0 md:pl-1">
           <div className="flex justify-between items-center mb-3">
             <div className="flex items-center space-x-1">
-              <h3 className="text-gray-700 font-cirka text-lg">Liabilities</h3>
+              <h3 className="text-gray-700 font-cirka text-md">Liabilities</h3>
               <Info className="h-3 w-3 text-gray-400" />
             </div>
 

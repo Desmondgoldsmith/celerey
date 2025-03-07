@@ -55,7 +55,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
 
         {/* Welcome Section */}
         <div className="space-y-0.5 mb-4">
-          <p className="text-gray-600 text-xs font-cirka mb-2">{currentDate}</p>
+          <p className="text-gray-600 text-sm font-cirka mb-2">{currentDate}</p>
           <h1 className="text-2xl mb-2 font-medium font-cirka">
             Welcome {userName}
           </h1>

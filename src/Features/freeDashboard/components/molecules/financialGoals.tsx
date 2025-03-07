@@ -171,10 +171,12 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({
   };
 
   return (
-    <Card className="p-2 bg-white">
+    <Card className="p-6 bg-white">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4 border-b border-[#AAAAAA] pb-1">
-        <h2 className="text-xl font-cirka text-navy">Financial Goals</h2>
+      <div className="flex justify-between items-center mb-4 border-b border-[#AAAAAA] pb-2">
+        <h2 className="text-xl font-cirka text-navy md:text-xl">
+          Financial Goals
+        </h2>
         {/* <MoreHorizontal className="h-4 w-4 text-gray-400 cursor-pointer" /> */}
       </div>
       <CardContent className="p-2">
