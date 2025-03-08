@@ -440,8 +440,8 @@ export default function BalanceOverview({
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
-        <div className="flex items-center gap-2">
+      <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-6">
+        <div className="flex items-center gap-2 pt-3">
           <h2 className="text-xl font-bold text-navy font-cirka">
             Wealth Overview
           </h2>
