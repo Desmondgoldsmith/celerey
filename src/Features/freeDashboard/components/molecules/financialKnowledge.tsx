@@ -9,10 +9,12 @@ export const FinancialKnowledgeAssessment: React.FC<
   FinancialKnowledgeAssessmentProps
 > = ({ onUpgradeClick }) => {
   return (
-    <Card className="p-6 bg-white rounded-lg shadow-sm md:h-[480px] flex flex-col">
+    <Card className="p-6 bg-white rounded-lg shadow-sm md:h-[508px] flex flex-col">
       {/* Header Section */}
       <div className="flex justify-between items-center border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-xl font-cirka text-navy">Connect With Us</h2>
+        <h2 className="text-xl font-cirka text-navy md:text-xl">
+          Connect With Us
+        </h2>
       </div>
 
       {/* Main Content Section - This takes up all available space and centers its children */}

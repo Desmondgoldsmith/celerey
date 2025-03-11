@@ -96,7 +96,7 @@ const IncomeVsExpenditure = ({
           style={{ width: `${expenditureWidth}%` }}
         ></div>
         <div
-          className="h-full bg-green-400"
+          className="h-full bg-green-600"
           style={{ width: `${incomeWidth}%` }}
         ></div>
       </div>
@@ -108,8 +108,8 @@ const IncomeVsExpenditure = ({
           <span className="text-sm">Expenditure</span>
         </div>
         <div className="flex items-center">
-          <div className="w-6 h-6 bg-green-400 mr-2"></div>
-          <span className="text-sm">Remaining Income</span>
+          <div className="w-6 h-6 bg-green-600 mr-2"></div>
+          <span className="text-sm">Disposable Income</span>
         </div>
       </div>
     </div>

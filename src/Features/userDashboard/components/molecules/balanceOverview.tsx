@@ -226,6 +226,7 @@ export default function BalanceOverview({
   riskAllocation,
 }: BalanceOverviewProps) {
   const [activeTab, setActiveTab] = useState("Assets");
+  const [isRiskTabBlinking, setIsRiskTabBlinking] = useState(true);
 
   const handlePortfolioRecommendationClick = () => {
     onPortfolioRecommendationClick();
@@ -440,8 +441,8 @@ export default function BalanceOverview({
   return (
     <Card className="bg-white p-3 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-4">
-        <div className="flex items-center gap-2">
+      <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-6">
+        <div className="flex items-center gap-2 pt-3">
           <h2 className="text-xl font-bold text-navy font-cirka">
             Wealth Overview
           </h2>
@@ -472,9 +473,14 @@ export default function BalanceOverview({
               className={`px-4 py-2 rounded-md text-sm transition-colors ${
                 activeTab === "Risk Allocation"
                   ? "bg-white shadow-sm text-gray-900"
+                  : isRiskTabBlinking
+                  ? "text-white hover:bg-gray-100 hover:text-black animate-pulse bg-navy"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
-              onClick={() => setActiveTab("Risk Allocation")}
+              onClick={() => {
+                setActiveTab("Risk Allocation");
+                setIsRiskTabBlinking(false);
+              }}
             >
               {"Risk Allocation"}
             </button>

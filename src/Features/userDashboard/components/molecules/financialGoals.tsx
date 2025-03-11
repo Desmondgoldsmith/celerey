@@ -123,7 +123,7 @@ export const FinancialGoals: React.FC<FinancialGoalsProps> = ({ Chart }) => {
     <Card className="p-3 sm:p-5 bg-white">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6 border-b border-[#AAAAAA] pb-2">
-        <h2 className="text-lg sm:text-xl font-cirka text-navy">
+        <h2 className="text-xl font-bold text-navy font-cirka">
           Financial Goals
         </h2>
         <MoreHorizontal className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 cursor-pointer" />

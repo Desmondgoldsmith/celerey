@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircleDollarSign, Shield, Heart } from "lucide-react";
+import { CircleDollarSign, Shield, Heart, Info } from "lucide-react";
 import { FinancialPlan, EmergencyPlan, FinancialGoal } from "../../types";
 import { differenceInMonths, parseISO, format } from "date-fns";
 import formatCurrency from "@/utils/formatCurrency";
@@ -262,12 +262,9 @@ export const FinancialGoalsCard: React.FC<FinancialGoalsCardProps> = ({
       {/* Header section */}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <CircleDollarSign className="w-5 h-5 text-navy" />
-          <h2 className="text-xl font-medium text-navy flex items-center gap-1">
-            Financial Goals{" "}
-            <span className="text-sm text-gray-500 hover:cursor-pointer">
-              ⓘ
-            </span>
+          {/* <CircleDollarSign className="w-5 h-5 text-navy" /> */}
+          <h2 className="text-xl font-bold text-navy font-cirka flex items-center gap-1">
+            Financial Goals <Info className="h-3 w-3 text-gray-400" />
           </h2>
         </div>
         <h3 className="text-xl font-medium">{goals.length} Financial plans</h3>

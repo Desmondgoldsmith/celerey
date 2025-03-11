@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Plus, X } from 'lucide-react'
-import { AssetType, CountryType } from '../../types'
-import { countries } from '@/Features/onboarding/countries'
-import { useOnboardingStore } from '@/Features/onboarding/state'
-import Spinner from '@/components/ui/spinner'
-import { useDashboardStore } from '../../state'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Plus, X } from "lucide-react";
+import { AssetType, CountryType } from "../../types";
+import { countries } from "@/Features/onboarding/countries";
+import { useOnboardingStore } from "@/Features/onboarding/state";
+import Spinner from "@/components/ui/spinner";
+import { useDashboardStore } from "../../state";
 
 interface EditAssetModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSave: (assets: AssetType[], countries: CountryType[]) => void
-  initialAssets?: AssetType[]
-  initialCountries?: {[key:string]: number}
-  altAssets: any
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (assets: AssetType[], countries: CountryType[]) => void;
+  initialAssets?: AssetType[];
+  initialCountries?: { [key: string]: number };
+  altAssets: any;
 }
 
-const availableCountries = [...countries]
+const availableCountries = [...countries];
 
 const EditAssetModal: React.FC<EditAssetModalProps> = ({
   isOpen,
@@ -32,30 +32,29 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   onSave,
   initialAssets = [],
   initialCountries = [],
-  altAssets
+  altAssets,
 }) => {
-
-  const [assets, setAssets] = useState<AssetType[]>(initialAssets)
-  const [showAdditionalField, setShowAdditionalField] = useState(false)
-  const [newAssetName, setNewAssetName] = useState('')
+  const [assets, setAssets] = useState<AssetType[]>(initialAssets);
+  const [showAdditionalField, setShowAdditionalField] = useState(false);
+  const [newAssetName, setNewAssetName] = useState("");
   const [selectedCountries, setSelectedCountries] = useState<any>(
-    Object.keys(initialCountries),
-  )
-  const [countrySearchValue, setCountrySearchValue] = useState('')
-  const [userSelectedCountry, setUserSelectedCountry]: any = useState()
-  const { loading, updateAssets } = useDashboardStore()
+    Object.keys(initialCountries)
+  );
+  const [countrySearchValue, setCountrySearchValue] = useState("");
+  const [userSelectedCountry, setUserSelectedCountry]: any = useState();
+  const { loading, updateAssets } = useDashboardStore();
 
   useEffect(() => {
-    setAssets(initialAssets)
-    setSelectedCountries(Object.keys(initialCountries))
-  }, [initialAssets, initialCountries])
+    setAssets(initialAssets);
+    setSelectedCountries(Object.keys(initialCountries));
+  }, [initialAssets, initialCountries]);
 
   const handleAmountChange = (key: string, value: string) => {
     const newAssets = assets.map((asset) =>
-      asset.key === key ? { ...asset, amount: parseFloat(value) || 0 } : asset,
-    )
-    setAssets(newAssets)
-  }
+      asset.key === key ? { ...asset, amount: parseFloat(value) || 0 } : asset
+    );
+    setAssets(newAssets);
+  };
 
   const handleAddAsset = () => {
     if (newAssetName.trim()) {
@@ -63,42 +62,42 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
         id: `new-${Date.now()}`,
         category: newAssetName.trim(),
         amount: 0,
-      }
-      setAssets([...assets, newAsset])
-      setNewAssetName('')
-      setShowAdditionalField(false)
+      };
+      setAssets([...assets, newAsset]);
+      setNewAssetName("");
+      setShowAdditionalField(false);
     }
-  }
+  };
 
   const handleAddCountry = () => {
     if (!selectedCountries.includes(userSelectedCountry.code)) {
-      setSelectedCountries([...selectedCountries, userSelectedCountry.code])
-      setUserSelectedCountry(null)
-      setCountrySearchValue('')
+      setSelectedCountries([...selectedCountries, userSelectedCountry.code]);
+      setUserSelectedCountry(null);
+      setCountrySearchValue("");
     } else {
-      setUserSelectedCountry('')
-      setCountrySearchValue('')
+      setUserSelectedCountry("");
+      setCountrySearchValue("");
     }
-  }
+  };
 
   const handleRemoveCountry = (index: number) => {
-    const countries = [...selectedCountries]
-    countries.splice(index, 1)
-    setSelectedCountries(countries)
-  }
+    const countries = [...selectedCountries];
+    countries.splice(index, 1);
+    setSelectedCountries(countries);
+  };
 
   const handleSave = async () => {
     try {
-      await updateAssets(assets, selectedCountries, altAssets)
-      onClose()
+      await updateAssets(assets, selectedCountries, altAssets);
+      onClose();
     } catch (error) {
-      console.log('Error', error)
+      console.log("Error", error);
     }
-  }
+  };
 
   const filteredCountries = availableCountries.filter((country) =>
-    country.name.toLowerCase().includes(countrySearchValue.toLowerCase()),
-  )
+    country.name.toLowerCase().includes(countrySearchValue.toLowerCase())
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -126,7 +125,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                   type="number"
                   value={asset.amount}
                   onChange={(e) =>
-                    handleAmountChange(asset?.key || '', e.target.value)
+                    handleAmountChange(asset?.key || "", e.target.value)
                   }
                   className="w-full md:w-[200px] text-right"
                 />
@@ -169,7 +168,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
           <div className="space-y-4">
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-8">
               <label className="text-base text-gray-700 md:min-w-[200px]">
-                In Which Country(ies) are your assets?
+                In which country(ies) are your assets located?
               </label>
               <div className="flex-1 w-full">
                 <div className="flex gap-2">
@@ -198,8 +197,8 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
                         key={country.code}
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                         onClick={() => {
-                          setUserSelectedCountry(country)
-                          setCountrySearchValue(country.name)
+                          setUserSelectedCountry(country);
+                          setCountrySearchValue(country.name);
                         }}
                       >
                         {country.name}
@@ -250,7 +249,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
 
-export default EditAssetModal
+export default EditAssetModal;

@@ -389,19 +389,20 @@ export const Dashboard: React.FC = () => {
     ];
 
     const assets = Object.keys(data?.assets || {}).map((key, index) => {
+      let customKey =
+        key === "cashEquivalents" ? "cashAndCashEquivalents" : key;
+      customKey = key === "altAssets" ? "alternativeAssets" : customKey;
 
-      let customKey = key === 'cashEquivalents' ? 'cashAndCashEquivalents' : key;
-      customKey = key === 'altAssets' ? 'alternativeAssets' : customKey;
-
-      return ({
-      category: customKey
-        .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
-        .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
-      key,
-      amount: data.assets[key].value,
-      percentage: data.assets[key].percentage.toFixed(0),
-      color: assetColors[index],
-    })});
+      return {
+        category: customKey
+          .replace(/([A-Z])/g, " $1") // Add space before uppercase letters
+          .replace(/^./, (str) => str.toUpperCase()), // Capitalize first letter
+        key,
+        amount: data.assets[key].value,
+        percentage: data.assets[key].percentage.toFixed(0),
+        color: assetColors[index],
+      };
+    });
 
     setUserAssets(assets);
 
@@ -564,14 +565,14 @@ export const Dashboard: React.FC = () => {
               currency: data?.currency || "usd",
             }}
             icon={<PiggyBank className="h-5 w-5 text-gray-400" />}
-            infoText="Your cashflow is a measure of your cash inflows and outflows. It is the result of this, a positive cashflow is usually a good indicator."
+            infoText="Cash flow measures your inflows and outflows, with a positive cash flow often indicating financial health."
           />
           <MetricCard
             currency={data?.currency || "usd"}
             title="Savings"
             metric={{ value: +data.savings, currency: data?.currency || "usd" }}
             icon={<Banknote className="h-5 w-5 text-gray-400" />}
-            infoText="Savings is a measure of how much money you have in your personal reserves to cater for things in emergency situations."
+            infoText="Savings reflect the money set aside for emergencies and personal reserves."
           />
           <MetricCard
             currency={data?.currency || "usd"}
@@ -581,7 +582,7 @@ export const Dashboard: React.FC = () => {
               currency: data?.currency || "usd",
             }}
             icon={<TrendingUp className="h-5 w-5 text-gray-400" />}
-            infoText="This is a general measure of how much revenue you are personally generating. This allows us to estimate how much you personally make over a specific duration."
+            infoText="This measures your personal revenue, helping estimate your earnings over a specific period."
           />
           <MetricCard
             currency={data?.currency || "usd"}
@@ -591,7 +592,7 @@ export const Dashboard: React.FC = () => {
               currency: data?.currency || "usd",
             }}
             icon={<CreditCard className="h-5 w-5 text-gray-400" />}
-            infoText="This is a quick measure of how much debt you have and what you have to pay off in the long and medium term"
+            infoText="This provides a quick estimate of your debt and outstanding payments over the medium and long term."
           />
           <MetricCard
             currency={data?.currency || "usd"}
@@ -601,7 +602,7 @@ export const Dashboard: React.FC = () => {
               currency: data?.currency || "usd",
             }}
             icon={<TrendingDown className="h-5 w-5 text-gray-400" />}
-            infoText="Expenses are a quick measure of what you have been spending your income on, it allows us to monitor and effectively track your spending."
+            infoText="Expenses provide a snapshot of your spending, helping track and manage your financial outflows."
           />
         </div>
 
@@ -644,7 +645,6 @@ export const Dashboard: React.FC = () => {
             openGenBudgetModal={() => setIsGenBudgetModalOpen(true)}
             generatedBudget={generatedBudget ?? undefined}
             riskAllocation={data.riskAllocation}
-            
           />
         </div>
 
@@ -665,12 +665,14 @@ export const Dashboard: React.FC = () => {
               </span>
             </div>
 
-            {data?.calculatedRiskTolerance?.title && <button
-              onClick={handleViewRiskModal}
-              className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
-            >
-              View Details
-            </button>}
+            {data?.calculatedRiskTolerance?.title && (
+              <button
+                onClick={handleViewRiskModal}
+                className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
+              >
+                View Details
+              </button>
+            )}
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
             {data?.calculatedRiskTolerance?.title ||
@@ -696,12 +698,14 @@ export const Dashboard: React.FC = () => {
               </span>
             </div>
 
-            {data?.calculatedFinancialKnowledge && <button
-              onClick={handleViewFinancialModal}
-              className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
-            >
-              View Details
-            </button>}
+            {data?.calculatedFinancialKnowledge && (
+              <button
+                onClick={handleViewFinancialModal}
+                className="text-navyLight text-sm px-3 py-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 transition-colors"
+              >
+                View Details
+              </button>
+            )}
           </div>
           <p className="text-lg lg:text-xl font-bold font-cirka text-navy capitalize">
             {data?.calculatedFinancialKnowledge || ""}
@@ -791,7 +795,7 @@ export const Dashboard: React.FC = () => {
         onClose={() => setIsEditAssetModalOpen(false)}
         onSave={handleSaveAssets}
         altAssets={data?.altAssets || {}}
-        initialAssets={userAssets.filter(asset=> asset.key !== 'altAssets')}
+        initialAssets={userAssets.filter((asset) => asset.key !== "altAssets")}
         initialCountries={userCountries}
       />
 

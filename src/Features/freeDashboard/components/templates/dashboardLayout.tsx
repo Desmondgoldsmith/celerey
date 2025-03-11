@@ -99,8 +99,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <div className="min-h-screen flex flex-col">
-      <nav className="px-6 py-4 border-b bg-white">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <nav className="px-10 py-4 border-b bg-white">
+        <div className="max-w-screen-2xl mx-auto flex justify-between items-center">
           <Link href="/freebie" passHref className="w-32">
             <Image
               src="/assets/logo2.svg"
