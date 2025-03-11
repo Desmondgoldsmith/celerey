@@ -116,20 +116,19 @@ export const DUMMY_ADVISORS: Advisor[] = [
       "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3qL1AKAiTz1_OHBFYgn2Ijx0waFxyT9NI3wgl37xPlsTnog7wddYY-Bxg7cTjV7IWlZVoJB0AK?gv=true",
   },
   {
-    id: "dele-adesani",
-    name: "Dele Adesani",
+    id: "michael-abebe",
+    name: "Michael Abebe",
     title: "Investment Strategist",
-    bio: "Dele Adesina has spent over 20 years guiding High Net Worth Individuals (HNWIs) to financial success. As a Chartered Wealth Manager accredited by the UK’s Chartered Institute for Securities & Investment (CISI), he has held leadership roles at prestigious institutions like Coutts & Co, Royal Bank of Canada, and Standard Chartered Private Bank London.As the founder of Hekima International Private Office and co-founder of Carrick Wealth Nigeria, Dele specializes in investment strategy, estate planning, and corporate advisory, empowering African HNWIs with tailored financial solutions. A graduate of the London School of Economics (LSE) and an Old Alleynian, Dele combines deep expertise with a visionary approach to help clients achieve lasting financial security and freedom.",
-    imageUrl: "/assets/advisors/dele.png",
+    bio: "Having graduated from the London School of Economics and after a highly successful 20-year career in Investment Management, Private Banking and Structured Finance, Michael set up Blackhill Private Finance in 2020. Blackhill, which is authorized and regulated by the UK Financial Conduct Authority, has built established partnerships with over 250 Financial Lenders and manages over 400 High Net Worth Clients globally. Via Michael’s efforts, Blackhill has access to over £5 billion in immediate capital via its Principal Lender partners in the UK and globally",
+    imageUrl: "/assets/advisors/abebe.jpeg",
     specialties: [
-      "Wealth Management & Investment Strategy",
-      "Estate Planning & Legacy Preservation",
-      "Corporate Advisory & Financial Structuring",
-      "Leadership in Global Financial Institutions",
-      "African Market Expertise & Financial Empowerment",
+      "Investment Management",
+      "Structured Finance",
+      "Financial Advisory & Lending",
+      "High-Net-Worth Client Management",
+      "Capital Access & Fundraising",
     ],
-    googleCalendarUrl:
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3RKampOqYj57m0ZP0FWSMT32Gwci01PAgI8rA_ofE3UsAjHtAu27LyWK8ZuboUp3cVM6Cn7JmK?gv=true",
+    googleCalendarUrl: "https://calendar.app.google/66Ym1AnNzH1Zezfz5",
   },
 ];
 
