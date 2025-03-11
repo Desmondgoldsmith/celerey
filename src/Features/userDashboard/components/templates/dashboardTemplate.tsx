@@ -549,7 +549,7 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <MetricCard
             currency="usd"
             title="Total Net Worth"
@@ -584,7 +584,7 @@ export const Dashboard: React.FC = () => {
             icon={<TrendingUp className="h-5 w-5 text-gray-400" />}
             infoText="This measures your personal revenue, helping estimate your earnings over a specific period."
           />
-          <MetricCard
+          {/* <MetricCard
             currency={data?.currency || "usd"}
             title="Debt and Liability"
             metric={{
@@ -593,7 +593,7 @@ export const Dashboard: React.FC = () => {
             }}
             icon={<CreditCard className="h-5 w-5 text-gray-400" />}
             infoText="This provides a quick estimate of your debt and outstanding payments over the medium and long term."
-          />
+          /> */}
           <MetricCard
             currency={data?.currency || "usd"}
             title="Expenses"
