@@ -14,7 +14,7 @@ const QUESTIONS = [
   {
     id: "commoditiesKnowledge",
     question:
-      "How much knowledge do you have about commodities (oil, metals, agricultural, etc.)?",
+      "⛏️ How much do you know about commodities (oil, metals, agriculture, etc.)?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -23,7 +23,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "commoditiesExperience",
       question:
-        "How much investing experience do you have with commodities (oil, metals, agricultural, etc.)?",
+        "⛏️ How much experience do you have with commodities (oil, metals, agriculture, etc.)?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -33,7 +33,7 @@ const QUESTIONS = [
   {
     id: "structuredProductsKnowledge",
     question:
-      "How much knowledge do you have about structured products (hybrid investments)?",
+      "📦 How much do you know about structured products (hybrid investments)?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -42,7 +42,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "structuredProductsExperience",
       question:
-        "How much investing experience do you have with structured products (hybrid investments)?",
+        "📦 How much experience do you have with structured products (hybrid investments)?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -52,7 +52,7 @@ const QUESTIONS = [
   {
     id: "privateMarketInstrumentsKnowledge",
     question:
-      "How much knowledge do you have about private market instruments (venture capital, private equity, hedge funds, etc.)?",
+      "💼 How much do you know about private market instruments (venture capital, private equity, hedge funds, etc.)?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -61,7 +61,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "privateMarketInstrumentsExperience",
       question:
-        "How much investing experience do you have with private market instruments (venture capital, private equity, hedge funds, etc.)?",
+        "💼 How much experience do you have with private market instruments (venture capital, private equity, hedge funds, etc.)?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -69,6 +69,7 @@ const QUESTIONS = [
     },
   },
 ];
+
 
 export const Page4: React.FC<PageProps> = ({
   value,

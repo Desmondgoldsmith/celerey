@@ -19,7 +19,7 @@ const QUESTIONS = [
   {
     id: "realEstateKnowledge",
     question:
-      "How much knowledge do you have about real estate (residential, commercial, industrial, REITS, etc.)?",
+      "🏡 How much do you know about real estate (residential, commercial, industrial, REITs, etc.)?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -28,7 +28,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "realEstateExperience",
       question:
-        "How much investing experience do you have with real estate (residential, commercial, industrial, REITS, etc.)?",
+        "🏡 How much investing experience do you have with real estate (residential, commercial, industrial, REITs, etc.)?",
       options: [
         { id: "none", value: "None" },
         { id: "1-3", value: "1 to 3 years" },
@@ -39,7 +39,7 @@ const QUESTIONS = [
   {
     id: "altAssetsKnowledge",
     question:
-      "How much knowledge do you have about alternative assets, such as crypto, fine art, etc.?",
+      "🖼️ How much do you know about alternative assets, such as crypto, fine art, etc.?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -48,7 +48,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "altAssetsExperience",
       question:
-        "How much expereince do you have with alternative assets, such as crypto, fine art, etc.?",
+        "🖼️ How much experience do you have with alternative assets, such as crypto, fine art, etc.?",
       options: [
         { id: "none", value: "None" },
         { id: "1-3", value: "1 to 3 years" },
@@ -59,7 +59,7 @@ const QUESTIONS = [
   {
     id: "leveragedInvestmentsKnowledge",
     question:
-      "How much knowledge do you have about leveraged investments (such as Lombard lending, mortgages, etc.)",
+      "💰 How much do you know about leveraged investments (such as Lombard lending, mortgages, etc.)?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -68,7 +68,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "leveragedInvestmentsExperience",
       question:
-        "How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)",
+        "💰 How much investing experience do you have with leveraged investments (such as Lombard lending, mortgages, etc.)?",
       options: [
         { id: "none", value: "None" },
         { id: "1-3", value: "1 to 3 years" },
@@ -77,6 +77,7 @@ const QUESTIONS = [
     },
   },
 ];
+
 
 export const Page5: React.FC<PageProps> = ({
   value,

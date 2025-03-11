@@ -14,7 +14,7 @@ interface PageProps {
 const QUESTIONS = [
   {
     id: "cashKnowledge",
-    question: "How much knowledge do you have about cash and cash equivalents?",
+    question: "💵 How much do you know about cash and cash equivalents?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -22,8 +22,7 @@ const QUESTIONS = [
     ],
     experienceQuestion: {
       id: "cashExperience",
-      question:
-        "How much experience do you have with cash and cash equivalents?",
+      question: "💵 How much experience do you have handling cash?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -32,7 +31,7 @@ const QUESTIONS = [
   },
   {
     id: "investingKnowledge",
-    question: "How much knowledge do you have about investing?",
+    question: "📈 How much do you know about investing?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -40,7 +39,7 @@ const QUESTIONS = [
     ],
     experienceQuestion: {
       id: "investingExperience",
-      question: "How much experience do you have with investing?",
+      question: "📈 How much experience do you have with investing?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -49,7 +48,7 @@ const QUESTIONS = [
   },
   {
     id: "publicSharesKnowledge",
-    question: "How much knowledge do you have about public shares?",
+    question: "📊 How much do you know about public shares?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -57,7 +56,7 @@ const QUESTIONS = [
     ],
     experienceQuestion: {
       id: "publicSharesExperience",
-      question: "How much experience do you have with public shares?",
+      question: "📊 How much experience do you have with public shares?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -65,6 +64,7 @@ const QUESTIONS = [
     },
   },
 ];
+
 
 export const Page1: React.FC<PageProps> = ({
   value,

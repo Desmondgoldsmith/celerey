@@ -14,7 +14,7 @@ const QUESTIONS = [
   {
     id: "collectiveInvestmentInstrumentsKnowledge",
     question:
-      "How much knowledge do you have about collective investment instruments, such as funds?",
+      "📊 How much do you know about collective investment instruments, such as funds?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -23,7 +23,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "collectiveInvestmentInstrumentsExperience",
       question:
-        "How much experience do you have with collective investment instruments, such as funds?",
+        "📊 How much experience do you have with collective investment instruments, such as funds?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -33,7 +33,7 @@ const QUESTIONS = [
   {
     id: "derivativesKnowledge",
     question:
-      "How much knowledge do you have about derivatives, such as options, futures, and swaps?",
+      "📉 How much do you know about derivatives, such as options, futures, and swaps?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -42,7 +42,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "derivativesExperience",
       question:
-        "How much investing experience do you have with derivatives, such as options, futures, and swaps?",
+        "📉 How much experience do you have with derivatives, such as options, futures, and swaps?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -52,7 +52,7 @@ const QUESTIONS = [
   {
     id: "forexKnowledge",
     question:
-      "How much knowledge do you have about foreign exchange related (FOREX) investments?",
+      "💱 How much do you know about foreign exchange (FOREX) investments?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -61,7 +61,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "forexExperience",
       question:
-        "How much investing experience do you have with foreign exchange (FOREX) investments?",
+        "💱 How much experience do you have with foreign exchange (FOREX) investments?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -69,6 +69,7 @@ const QUESTIONS = [
     },
   },
 ];
+
 
 export const Page3: React.FC<PageProps> = ({
   value,
