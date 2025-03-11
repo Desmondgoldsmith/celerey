@@ -13,7 +13,7 @@ interface PageProps {
 const QUESTIONS = [
   {
     id: "investmentGradeBondsKnowledge",
-    question: "How much knowledge do you have about investment grade bonds?",
+    question: "🏦 How much do you know about investment-grade bonds?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -22,7 +22,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "investmentGradeBondsExperience",
       question:
-        "How much investing experience do you have with investment grade bonds?",
+        "🏦 How much experience do you have with investment-grade bonds?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -31,8 +31,7 @@ const QUESTIONS = [
   },
   {
     id: "nonInvestmentGradeBondsKnowledge",
-    question:
-      "How much knowledge do you have about non-investment grade bonds?",
+    question: "💰 How much do you know about non-investment-grade bonds?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -41,7 +40,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "nonInvestmentGradeBondsExperience",
       question:
-        "How much investing experience do you have with non-investment grade bonds?",
+        "💰 How much experience do you have with non-investment-grade bonds?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -51,7 +50,7 @@ const QUESTIONS = [
   {
     id: "privateCreditKnowledge",
     question:
-      "How much knowledge do you have about private credit or commercial paper?",
+      "📜 How much do you know about private credit or commercial paper?",
     options: [
       { id: "none", value: "None" },
       { id: "basic", value: "Basic" },
@@ -60,7 +59,7 @@ const QUESTIONS = [
     experienceQuestion: {
       id: "privateCreditExperience",
       question:
-        "How much investing experience do you have with private credit or commercial paper?",
+        "📜 How much experience do you have with private credit or commercial paper?",
       options: [
         { id: "1-3", value: "1 to 3 years" },
         { id: "over3Years", value: "More Than 3 Years" },
@@ -68,6 +67,7 @@ const QUESTIONS = [
     },
   },
 ];
+
 
 export const Page2: React.FC<PageProps> = ({
   value,
