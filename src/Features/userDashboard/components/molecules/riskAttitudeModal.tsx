@@ -9,11 +9,12 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ASSESSMENT } from "../../constants";
 
 interface RiskAttitudeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  riskTolerance: string
+  riskTolerance: any;
 }
 
 interface GuidingPrinciple {
@@ -24,7 +25,7 @@ interface GuidingPrinciple {
 const RiskAttitudeModal: React.FC<RiskAttitudeModalProps> = ({
   isOpen,
   onClose,
-  riskTolerance
+  riskTolerance,
 }) => {
   const guidingPrinciples: GuidingPrinciple[] = [
     {
@@ -72,43 +73,7 @@ const RiskAttitudeModal: React.FC<RiskAttitudeModalProps> = ({
           </div>
           <div className="relative pl-6 mb-6">
             <div className="absolute left-0 top-0 h-full w-1 bg-navyLight" />
-            <p className="text-gray-700 text-sm">
-              The assessment indicates that your attitude towards risk is
-              somewhat aggressive. This means you are conservative about your
-              investments but are willing to take a risk when you really need
-              to. This approach can be helpful in managing risk before making
-              investment decisions.
-            </p>
-          </div>
-
-          <div className="mb-6">
-            <h4 className="text-lg font-semibold text-center mb-3">
-              Your Key Investment Guiding Principles
-            </h4>
-            <div className="space-y-3">
-              {guidingPrinciples.map((principle, index) => (
-                <div
-                  key={index}
-                  className="flex items-center items-start gap-3"
-                >
-                  <Image
-                    src="/assets/tick.png"
-                    alt="tick"
-                    width={20}
-                    height={20}
-                  />
-                  <div>
-                    <span className="font-semibold text-medium">
-                      {principle.title}
-                    </span>
-                    {" - "}
-                    <span className="text-gray-700 text-sm">
-                      {principle.description}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p className="text-gray-700 text-sm">{ASSESSMENT[riskTolerance]}</p>
           </div>
         </div>
 

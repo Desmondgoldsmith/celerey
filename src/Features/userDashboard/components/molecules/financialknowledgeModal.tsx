@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ASSESSMENT } from "../../constants";
 
 interface FinancialKnowledgeModalProps {
   isOpen: boolean;
@@ -73,45 +74,10 @@ const FinancialKnowledgeModal: React.FC<FinancialKnowledgeModalProps> = ({
           <div className="relative pl-6 mb-6">
             <div className="absolute left-0 top-0 h-full w-1 bg-navy" />
             <p className="text-navy text-sm">
-              The assessment indicates that your financial knowledge is at the
-              <span className="text-bold"> intermediate</span> level. This
-              indicates that you have a fair grasp of finance. Although you are
-              not an expert, you understand how macroeconomics play a key role
-              and influence in a lot of financial instruments. You have a good
-              appreciation of sentimental analysis which has been very helpful
-              to you in the past
+            {ASSESSMENT[calculatedFinancialKnowledge]}            
             </p>
           </div>
 
-          <div className="mb-6">
-            <h4 className="text-lg font-semibold text-center mb-3">
-              Your Key Investment Guiding Principles
-            </h4>
-            <div className="space-y-3">
-              {guidingPrinciples.map((principle, index) => (
-                <div
-                  key={index}
-                  className="flex items-center items-start gap-3"
-                >
-                  <Image
-                    src="/assets/tick.png"
-                    alt="tick"
-                    width={20}
-                    height={20}
-                  />
-                  <div>
-                    <span className="font-semibold text-medium">
-                      {principle.title}
-                    </span>
-                    {" - "}
-                    <span className="text-gray-700 text-sm">
-                      {principle.description}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         <DialogFooter className="px-6 py-4 border-t">

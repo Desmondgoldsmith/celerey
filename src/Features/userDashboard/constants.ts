@@ -322,3 +322,22 @@ export const DUMMY_DASHBOARD_DATA: DashboardData = {
       "You are a somewhat aggressive risk taker with an advanced investment experience. Your financial knowledge is intermediate. This means you have a solid grasp of finance.",
   },
 };
+
+export const ASSESSMENT: any = {
+  Inexperienced:
+    "You’re at the beginning of your financial journey, and that’s perfectly okay. You may not have much experience with investing, wealth planning, or financial strategies—but that doesn’t mean you can’t take control. With the right guidance and insights, you can build a solid foundation and start making informed decisions for your financial future.",
+  Informed:
+    "You have a good understanding of financial concepts and may already be making decisions about saving, investing, and planning for the future. You’re aware of the importance of financial security and wealth-building strategies, but there’s still room to refine your approach, optimize your portfolio, and gain deeper insights into advanced strategies.",
+  Experienced:
+    "You’re confident in your financial knowledge and decision-making. Whether it’s investing, wealth preservation, or strategic financial planning, you have the expertise to navigate complex financial landscapes. You likely have an established approach but could benefit from specialized insights, market trends, and expert guidance to further maximize opportunities and mitigate risks.",
+  Cautious:
+    "You prioritize stability and preservation over high returns. Your investment decisions focus on minimizing risk, preferring secure, low-volatility options such as fixed income, government bonds, and high-quality dividend stocks. Your primary goal is to protect your wealth while achieving modest, predictable growth.",
+  Moderate:
+    "You seek a balanced approach, aiming for steady growth while managing risk. You’re comfortable with a mix of conservative and growth-focused investments, such as diversified portfolios combining bonds, equities, and real estate. You understand that taking some risk is necessary for long-term gains but prefer to avoid excessive exposure to market fluctuations.",
+  "Somewhat Aggressive":
+    "You are open to taking calculated risks to achieve higher returns. You invest in a mix of asset classes, including stocks, mutual funds, and alternative investments, while maintaining a degree of security through diversification. You recognize that short-term volatility is part of long-term wealth-building but still prefer a structured investment strategy.",
+  Aggressive:
+    "You prioritize high returns and are willing to take on significant risk. Your portfolio likely includes a strong allocation to equities, private investments, and high-growth sectors. Market fluctuations do not deter you, and you focus on long-term capital appreciation, understanding that volatility is the price of higher rewards.",
+  "Very Aggressive":
+    "You are a high-risk, high-reward investor with a strong appetite for growth. Your strategy involves investing in venture capital, startups, cryptocurrency, leveraged positions, and emerging markets. You embrace uncertainty, recognizing that substantial risk can lead to exponential returns. You have a long-term horizon and a deep understanding of market cycles.",
+};
