@@ -5,7 +5,7 @@ import axios, {
   AxiosError,
   AxiosHeaders,
 } from "axios";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL as string,
@@ -16,8 +16,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-
-    const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get("accessToken");
 
     if (accessToken) {
       if (!config.headers) {
@@ -41,9 +40,19 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error: AxiosError): Promise<AxiosError> => {
-    if (error.response?.status === 401) {
+    console.log(error.response);
 
-      useAuthStore.getState().logout()
+    if (
+      error.response?.request?.responseURL ===
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/user" &&
+      error.response?.status === 404
+    ) {
+      useAuthStore.getState().logout();
+      window.location.href = "/auth/signin";
+    }
+
+    if (error.response?.status === 401) {
+      useAuthStore.getState().logout();
       window.location.href = "/auth/signin";
     }
 
