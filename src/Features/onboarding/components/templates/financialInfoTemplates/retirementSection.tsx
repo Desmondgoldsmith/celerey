@@ -116,9 +116,9 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={formatCurrency(values.targetRetirementIncome || "")}
+              value={formatCurrency(values.pensionFund || "")}
               onChange={(e) =>
-                handleInputChange("targetRetirementIncome", e.target.value)
+                handleInputChange("pensionFund", e.target.value)
               }
             />
           </div>
@@ -131,8 +131,8 @@ const RetirementSection: React.FC<RetirementSectionProps> = ({
               inputMode="numeric"
               pattern="[0-9]*"
               className="flex-1 appearance-none"
-              value={formatCurrency(values.pensionFund || "")}
-              onChange={(e) => handleInputChange("pensionFund", e.target.value)}
+              value={formatCurrency(values.targetRetirementIncome || "")}
+              onChange={(e) => handleInputChange("targetRetirementIncome", e.target.value)}
             />
           </div>
         </div>

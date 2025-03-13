@@ -67,7 +67,7 @@ export const saveFinancialInfoApi = async (
     savings: data.savings,
     emergency_fund: {
       hasEmergencyFund: data.emergencyFund?.hasEmergencyFunds,
-      currentMonths: data.emergencyFund?.emergencyFundAmount,
+      emergencyFundAmount: data.emergencyFund?.emergencyFundAmount,
       targetMonths: data.emergencyFund?.targetMonths,
     },
     retirement: data.retirement,
@@ -100,7 +100,7 @@ export const updateFinancialInfoApi = async (
     if (Object.keys(data).includes("emergencyFund")) {
       payload.emergency_fund = {
         hasEmergencyFund: data.emergencyFund?.hasEmergencyFunds,
-        currentMonths: data.emergencyFund?.emergencyFundAmount,
+        emergencyFundAmount: data.emergencyFund?.emergencyFundAmount,
         targetMonths: data.emergencyFund?.targetMonths,
       };
     }
