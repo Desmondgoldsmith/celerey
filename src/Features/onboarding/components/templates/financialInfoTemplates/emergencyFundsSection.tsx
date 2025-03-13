@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "@/Features/onboarding/components/molecules/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useOnboardingStore } from "@/Features/onboarding/state";
 
 type EmergencyFundsDataType = {
   emergencyFund: {
@@ -21,7 +22,48 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
   isNextSectionComplete,
   values,
 }) => {
-  const currentEmergencyMonths = values.emergencyFundAmount || "0";
+  // Access the financial data directly from the store
+  const financialData = useOnboardingStore((state) => state.formData.financial);
+
+  console.log("Financial data from store:", financialData);
+
+  // Calculate available emergency funds in months
+  const calculateEmergencyFundMonths = () => {
+    // Get current savings from the store
+    const currentSavings = parseFloat(
+      financialData.savings?.currentSavings || "0"
+    );
+
+    // Get expenses from the store
+    const expenses = financialData.annualExpenses || {};
+
+    // Sum up all expenses
+    const totalAnnualExpenses =
+      parseFloat(expenses.home || "0") +
+      parseFloat(expenses.childcare || "0") +
+      parseFloat(expenses.education || "0") +
+      parseFloat(expenses.healthcare || "0") +
+      parseFloat(expenses.travel || "0") +
+      parseFloat(expenses.giving || "0");
+
+    // Calculate monthly expenses
+    const monthlyExpenses = totalAnnualExpenses / 12;
+
+    console.log("Emergency calculation details:", {
+      currentSavings,
+      totalAnnualExpenses,
+      monthlyExpenses,
+    });
+
+    // Calculate months of emergency funds (avoid division by zero)
+    if (monthlyExpenses <= 0) return 0;
+
+    const months = currentSavings / monthlyExpenses;
+    return Math.round(months * 10) / 10; // Round to 1 decimal place
+  };
+
+  const emergencyFundMonths = calculateEmergencyFundMonths();
+  console.log("Calculated emergency fund months:", emergencyFundMonths);
 
   const [inputValue, setInputValue] = useState<EmergencyFundsDataType>({
     emergencyFund: {
@@ -66,25 +108,23 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
     inputValue.emergencyFund?.targetMonths !== "" && targetMonthsValid;
 
   return (
-    <div className="text-center max-w-xl mx-auto px-6 py-6 bg-white shadow-lg rounded-2xl">
-      {/* Header */}
-      <div className="flex justify-between items-center border-b pb-3 mb-4">
-        <div className="flex items-center gap-3">
+    <div>
+      <div className="flex justify-between items-center">
+        <div className="flex items-center">
           <div
-            className={`flex items-center justify-center w-8 h-8 text-sm font-semibold rounded-full transition-all
-              ${
-                isComplete
-                  ? "bg-blue-900 text-white"
-                  : "bg-white border-blue-900 border text-blue-900"
-              }`}
+            className={`text-xs mr-2 flex items-center justify-center w-6 h-6 rounded-full ${
+              isComplete
+                ? "bg-blue-900 text-white"
+                : "bg-white border-blue-900 border text-blue-900"
+            }`}
           >
             2
           </div>
-          <h3 className="font-medium text-lg text-gray-800">Emergency Funds</h3>
+          <h3 className="font-medium text-gray-800">Emergency Funds</h3>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="text-blue-700 text-sm font-semibold hover:underline"
+          className="text-blue-800 text-sm font-semibold hover:underline"
         >
           {isComplete ? "Edit" : "Fill Details"}
         </button>
@@ -104,8 +144,11 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
         <div className="space-y-6">
           <p className="text-gray-900">
             Based on your expenses and savings, you currently have approximately
-            <span className="text-navyLight font-semibold"> 5 months</span> of
-            emergency funds.
+            <span className="text-navyLight font-semibold">
+              {" "}
+              {emergencyFundMonths} months
+            </span>{" "}
+            of emergency funds.
           </p>
           <p className="text-sm text-gray-700">
             We recommend saving at least <strong>6 to 12 months</strong> of
@@ -126,7 +169,6 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
               onChange={handleTargetMonthsChange}
             />
           </div>
-
         </div>
       </Modal>
     </div>
