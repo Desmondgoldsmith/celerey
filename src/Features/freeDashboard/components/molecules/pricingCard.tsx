@@ -59,7 +59,6 @@ export const PricingCard: React.FC<PricingCardProps> = ({
     } catch (error: any) {
       setErrorMessage(error?.message);
       setLoading(false);
-
     }
   };
 
@@ -85,7 +84,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <p className="text-xs md:text-sm text-[#242424] font-circa mb-2">
           {tier.description}
         </p>
-        <p className="text-xs md:text-xs text-navy font-circa italic">
+        <p className="text-xs md:text-sm text-navy font-circa ">
           {tier.idealCustomer}
         </p>
       </div>
@@ -106,7 +105,11 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <button
           onClick={handleSubscription}
           disabled={loading}
-          className={`w-full   flex items-center justify-center gap-4 rounded-md py-2 px-4 text-sm md:text-base transition-colors bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white ${loading? 'bg-gray-300 hover:bg-gray-300 text-gray-700 hover:text-gray-700 cursor-not-allowed' : ''}`}
+          className={`w-full   flex items-center justify-center gap-4 rounded-md py-2 px-4 text-sm md:text-base transition-colors bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white ${
+            loading
+              ? "bg-gray-300 hover:bg-gray-300 text-gray-700 hover:text-gray-700 cursor-not-allowed"
+              : ""
+          }`}
         >
           {loading && <Spinner />}
           {tier.buttonText}

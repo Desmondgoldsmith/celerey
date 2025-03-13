@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
-import { SubscriptionTier } from '../../types'
-import { FeaturesList } from './featureList'
-import { getStripe } from '@/lib/stripe'
-import { changeSubscriptionApi, getSubscriptionStatusApi } from '../../service'
-import Spinner from '@/components/ui/spinner'
+import React, { useState } from "react";
+import { SubscriptionTier } from "../../types";
+import { FeaturesList } from "./featureList";
+import { getStripe } from "@/lib/stripe";
+import { changeSubscriptionApi, getSubscriptionStatusApi } from "../../service";
+import Spinner from "@/components/ui/spinner";
 
 interface PricingCardProps {
-  tier: SubscriptionTier
-  subscription: any
-  onSubscribe: () => void
+  tier: SubscriptionTier;
+  subscription: any;
+  onSubscribe: () => void;
 }
 
 export const PricingCard: React.FC<PricingCardProps> = ({
@@ -16,61 +16,61 @@ export const PricingCard: React.FC<PricingCardProps> = ({
   onSubscribe,
   subscription,
 }) => {
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
   function confirmSubscriptionChange() {
     const userConfirmed = window.confirm(
-      'Are you sure you want to change your subscription?',
-    )
+      "Are you sure you want to change your subscription?"
+    );
 
     if (userConfirmed) {
-      console.log('User confirmed. Proceed with subscription change.')
+      console.log("User confirmed. Proceed with subscription change.");
       // Call your function to update the subscription
-      upgradePlan()
+      upgradePlan();
     } else {
-      console.log('User canceled. No changes made.')
+      console.log("User canceled. No changes made.");
     }
   }
 
   const upgradePlan = async () => {
-    const stripe = await getStripe()
-    if (!stripe || !subscription?.stripe_subscription_id) return
+    const stripe = await getStripe();
+    if (!stripe || !subscription?.stripe_subscription_id) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       // 2️⃣ Send Payment Method to Backend
       await changeSubscriptionApi({
         plan: tier.id.toLowerCase(),
-        billing_interval: 'yearly',
+        billing_interval: "yearly",
         stripe_subscription_id: subscription.stripe_subscription_id,
-      })
+      });
 
-      const subscriptionResponse = await getSubscriptionStatusApi()
+      const subscriptionResponse = await getSubscriptionStatusApi();
 
       if (
-        subscriptionResponse.data.status === 'active' ||
-        subscriptionResponse.data.status === 'pending'
+        subscriptionResponse.data.status === "active" ||
+        subscriptionResponse.data.status === "pending"
       ) {
-        alert('Subscription Change Successful!')
-        onSubscribe()
+        alert("Subscription Change Successful!");
+        onSubscribe();
       } else {
-        alert('Subscription Pending. Please check your email.')
+        alert("Subscription Pending. Please check your email.");
       }
 
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      alert('Subscription failed. Please try again.')
+      alert("Subscription failed. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div
       className={`bg-[#F4F5F6] ${
-        tier.isPopular ? 'border border-navy' : 'border-transparent'
+        tier.isPopular ? "border border-navy" : "border-transparent"
       } text-[#242424] rounded-lg p-4 md:p-6 flex flex-col h-full relative`}
     >
       <div className="mb-4 md:mb-6">
@@ -89,7 +89,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <p className="text-xs md:text-sm text-[#242424] font-circa mb-2">
           {tier.description}
         </p>
-        <p className="text-xs md:text-xs text-navy font-circa italic">
+        <p className="text-xs md:text-sm text-navy font-circa">
           {tier.idealCustomer}
         </p>
       </div>
@@ -110,14 +110,14 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <button
           onClick={confirmSubscriptionChange}
           className={`w-full rounded-md py-2 px-4 text-sm md:text-base transition-colors flex gap-x-3 items-center justify-center ${
-            tier.id === (subscription?.plan || '')
-              ? 'bg-gray-300 text-gray-700 cursor-not-allowed'
-              : 'bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white'
+            tier.id === (subscription?.plan || "")
+              ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+              : "bg-[#F4F5F6] border border-navy text-navy hover:bg-navy hover:text-white"
           }`}
-          disabled={tier.id === (subscription?.plan || '')}
+          disabled={tier.id === (subscription?.plan || "")}
         >
-          {loading && <Spinner className="text-navy" />}{' '}
-          {tier.id === (subscription?.plan || '')
+          {loading && <Spinner className="text-navy" />}{" "}
+          {tier.id === (subscription?.plan || "")
             ? `You are on ${tier.name}`
             : tier.buttonText}
         </button>
@@ -133,5 +133,5 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <FeaturesList features={tier.features} />
       </div>
     </div>
-  )
-}
+  );
+};
