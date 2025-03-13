@@ -6,6 +6,8 @@ import { useOnboardingStore } from "@/Features/onboarding/state";
 
 type EmergencyFundsDataType = {
   emergencyFund: {
+    hasEmergencyFunds?: string;
+    emergencyFundAmount?: string;
     targetMonths?: string;
   };
 };
@@ -67,6 +69,8 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
 
   const [inputValue, setInputValue] = useState<EmergencyFundsDataType>({
     emergencyFund: {
+      hasEmergencyFunds: values.hasEmergencyFunds || "yes",
+      emergencyFundAmount: String(emergencyFundMonths) || "0",
       targetMonths: values.targetMonths || "",
     },
   });
@@ -84,11 +88,13 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
     if (isModalOpen && values.targetMonths) {
       setInputValue({
         emergencyFund: {
+          hasEmergencyFunds: values.hasEmergencyFunds || "yes",
+          emergencyFundAmount: String(emergencyFundMonths) || "0",
           targetMonths: values.targetMonths,
         },
       });
     }
-  }, [isModalOpen]);
+  }, [isModalOpen, emergencyFundMonths, values]);
 
   const handleTargetMonthsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetMonthsValue = e.target.value;
@@ -96,13 +102,24 @@ const EmergencyFundsSection: React.FC<EmergencyFundsSectionProps> = ({
       const updatedValue = {
         ...inputValue,
         emergencyFund: {
+          ...inputValue.emergencyFund,
           targetMonths: targetMonthsValue,
         },
       };
       setInputValue(updatedValue);
-      onChange("targetMonths", updatedValue.emergencyFund.targetMonths);
+      
+      // Pass all emergency fund values to parent
+      onChange("hasEmergencyFunds", updatedValue.emergencyFund.hasEmergencyFunds || "yes");
+      onChange("emergencyFundAmount", updatedValue.emergencyFund.emergencyFundAmount || String(emergencyFundMonths));
+      onChange("targetMonths", updatedValue.emergencyFund.targetMonths || "");
     }
   };
+
+  // Update parent component with emergency fund values on mount
+  useEffect(() => {
+    onChange("hasEmergencyFunds", "yes");
+    onChange("emergencyFundAmount", String(emergencyFundMonths));
+  }, [emergencyFundMonths]);
 
   const isComplete =
     inputValue.emergencyFund?.targetMonths !== "" && targetMonthsValid;
